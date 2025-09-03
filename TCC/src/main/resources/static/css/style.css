@@ -2,11 +2,101 @@ body {
   margin: 0;
 }
 
+@media screen and (max-width: 768px) {
+
+  .topbar {
+    height: 60px;
+    padding: 8px 16px;
+  }
+
+  .topbar-left h1 {
+    font-size: 18px;
+  }
+
+  .icon-button {
+    padding: 10px;
+  }
+
+  .img-user {
+    height: 40px;
+    width: 40px;
+  }
+
+  ul.sidebar {
+    width: 60px;
+  }
+
+  ul.sidebar li a {
+    font-size: 0;
+    padding: 20px 0;
+  }
+
+  ul.sidebar li a i {
+    font-size: 22px;
+    margin: 0;
+  }
+
+  .bottom-image img {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 480px) {
+
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    height: auto;
+    gap: 10px;
+  }
+
+  .topbar-right {
+    margin-top: 10px;
+    gap: 10px;
+  }
+
+  .topbar-left h1 {
+    font-size: 16px;
+  }
+
+  .icon-button {
+    padding: 8px;
+  }
+
+  .img-user {
+    height: 35px;
+    width: 35px;
+  }
+
+  ul.sidebar {
+    width: 50px;
+  }
+
+  ul.sidebar li a {
+    padding: 18px 0;
+  }
+
+  ul.sidebar li a i {
+    font-size: 20px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  ul.sidebar li a {
+    font-size: 17px;
+  }
+
+  ul.sidebar li a i {
+    font-size: 20px;
+  }
+}
+
 .topbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(to right, #e9e9ec 80%, #0074b8 80%);
+  background: #020024;
+  background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(0, 212, 255, 1) 100%);
   padding: 10px 20px;
   height: 80px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.1);
@@ -18,11 +108,17 @@ body {
 }
 
 .topbar-left h1 {
-  color: #0e3f8c;
+  color: #e9e9ec;
   font-size: 28px;
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
 }
+
+.img-user {
+    border-radius: 30px;
+    border: solid #e9e9ec 2px;
+}
+
 
 .topbar-right {
   display: flex;
@@ -63,7 +159,7 @@ ul {
   margin: 0;
   padding: 0;
   width: 130px;
-  background-color: #04548c;
+  background-color: #001F3F;
   position: fixed;
   height: 100%;
   overflow: auto;
@@ -101,6 +197,9 @@ li a:hover {
 }
 
 .bottom-image img {
-  width: 80px;
+  width: 120px;
   margin-bottom: 10px;
+  position: absolute;
+  left: 0px;
+  top: 73%;
 }
