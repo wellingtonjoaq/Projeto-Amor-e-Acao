@@ -6,26 +6,28 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
 
+import java.util.Date;
+
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Aluno {
+public class Curso {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long id;
 
-    private String cep;
-    private String cpf;
-    private String email;
-    private String endereco;
-    private String genero;
     private String nome;
-    private String numero;
-    private String telefone;
-
+    private String instrutor;
+    private String formacao;
+    private String descricao;
+    private int cargaHoraria;
+    private String local;
+    private Date dataInicio;
+    private Date dataFim;
+    private String categoria;
 }

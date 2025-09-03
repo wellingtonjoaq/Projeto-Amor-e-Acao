@@ -12,20 +12,23 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Aluno {
+public class Voluntario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long id;
 
-    private String cep;
+    private String nome;
     private String cpf;
     private String email;
-    private String endereco;
-    private String genero;
-    private String nome;
-    private String numero;
     private String telefone;
-
+    private String funcao;
+    private String genero;
+    private String motivacao;
+    private String cep;
+    private String bairro;
+    private String cidade;
+    private String estado;
+    private String numero;
 }

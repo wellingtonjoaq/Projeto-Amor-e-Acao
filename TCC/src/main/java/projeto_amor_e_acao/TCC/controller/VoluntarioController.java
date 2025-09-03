@@ -7,54 +7,52 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import projeto_amor_e_acao.TCC.model.Aluno;
-import projeto_amor_e_acao.TCC.service.AlunoService;
-
-import java.util.Arrays;
+import projeto_amor_e_acao.TCC.model.Voluntario;
+import projeto_amor_e_acao.TCC.service.VoluntarioService;
 
 @Controller
-@RequestMapping("aluno")
-public class AlunoController {
+@RequestMapping("voluntario")
+public class VoluntarioController {
 
     @Autowired
-    private AlunoService service;
+    private VoluntarioService service;
 
     @GetMapping()
-    public String iniciar(Aluno aluno, Model model) {
-        return "aluno/formulario";
+    public String iniciar(Voluntario voluntario, Model model) {
+        return "voluntario/formulario";
     }
 
     @PostMapping()
-    public String inserir(Aluno aluno, Model model) {
-        return iniciar(aluno, model);
+    public String inserir(Voluntario voluntario, Model model) {
+        return iniciar(voluntario, model);
     }
 
     @PostMapping("salvar")
-    public String salvar(Aluno aluno, Model model) {
+    public String salvar(Voluntario voluntario, Model model) {
         try {
-            service.salvar(aluno);
-            return "redirect:/aluno/listar";
+            service.salvar(voluntario);
+            return "redirect:/voluntario/listar";
         } catch (Exception e) {
             model.addAttribute("erro", "Algo de errado não deu certo: ");
-            return iniciar(aluno, model);
+            return iniciar(voluntario, model);
         }
     }
 
     @GetMapping("listar")
     public String listar(Model model) {
-        model.addAttribute("alunos", service.listarTodos());
-        return "aluno/lista";
+        model.addAttribute("voluntario", service.listarTodos());
+        return "voluntario/lista";
     }
 
     @GetMapping("editar/{id}")
     public String alterar(@PathVariable Long id, Model model) {
-        model.addAttribute("aluno", service.buscarPorId(id));
-        return "aluno/formulario";
+        model.addAttribute("voluntario", service.buscarPorId(id));
+        return "voluntario/formulario";
     }
 
     @GetMapping("remover/{id}")
     public String remover(@PathVariable Long id, Model model) {
         service.deletarPorId(id);
-        return "redirect:/aluno/listar";
+        return "redirect:/voluntario/lista";
     }
 }
