@@ -20,14 +20,14 @@ public class UsuarioController {
     public String listarUsuarios(Model model) {
         List<Usuario> usuarios = usuarioService.findAll();
         model.addAttribute("usuarios", usuarios);
-        return "listar";
+        return "usuarios/listar";
     }
 
     @GetMapping("/novo")
     public String exibirFormulario(Model model) {
         model.addAttribute("usuario", new Usuario());
         model.addAttribute("acao", "criar");
-        return "formulario";
+        return "usuarios/formulario";
     }
 
     @PostMapping
@@ -44,7 +44,7 @@ public class UsuarioController {
         }
         model.addAttribute("usuario", usuario);
         model.addAttribute("acao", "editar");
-        return "formulario";
+        return "usuarios/formulario";
     }
 
     @PostMapping("/atualizar/{id}")

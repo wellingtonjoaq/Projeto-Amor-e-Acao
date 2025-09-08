@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Empresas Parceiras</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .actions a, .actions button {
+            margin-right: 10px;
+            text-decoration: none;
+            color: blue;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        .actions a.delete {
+            color: red;
+        }
+        /* Estilo do modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.6);
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 60%;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .close {
+            color: red;
+            font-size: 22px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .modal-body p {
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+<h1>Lista de Empresas Parceiras</h1>
+<a href="/empresasParceiras/novo">Nova Empresa Parceira</a>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Nome da Empresa</th>
+        <th>CNPJ</th>
+        <th>Status</th>
+        <th>Ações</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="empresa : ${empresasParceiras}">
+        <td th:text="${empresa.id}"></td>
+        <td th:text="${empresa.nome_empresa}"></td>
+        <td th:text="${empresa.cnpj}"></td>
+        <td th:text="${empresa.status}"></td>
+        <td class="actions">
+            <button type="button"
+                    th:attr="onclick=|showDetails('${empresa.id}','${empresa.nome_empresa}','${empresa.cnpj}','${empresa.endereco}','${empresa.nome_representante}','${empresa.cpf_representante}','${empresa.email}','${empresa.data_inicio}','${empresa.data_fim}','${empresa.telefone}','${empresa.objetivo}','${empresa.termos}','${empresa.status}')|">
+                Visualizar
+            </button>
+            <a th:href="@{/empresasParceiras/editar/{id}(id=${empresa.id})}">Editar</a>
+            <a th:href="@{/empresasParceiras/deletar/{id}(id=${empresa.id})}" class="delete"
+               onclick="return confirm('Tem certeza que deseja deletar esta empresa?');">Deletar</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- Modal de detalhes -->
+<div id="detailsModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Detalhes da Empresa Parceira</h2>
+            <span class="close" onclick="closeModal()">&times;</span>
+        </div>
+        <div class="modal-body" id="modalBody"></div>
+    </div>
+</div>
+
+<script>
+    function showDetails(id, nome, cnpj, endereco, representante, cpf, email, inicio, fim, telefone, objetivo, termos, status) {
+        let html = `
+            <p><b>ID:</b> ${id}</p>
+            <p><b>Nome da Empresa:</b> ${nome}</p>
+            <p><b>CNPJ:</b> ${cnpj}</p>
+            <p><b>Endereço:</b> ${endereco}</p>
+            <p><b>Nome do Representante:</b> ${representante}</p>
+            <p><b>CPF do Representante:</b> ${cpf}</p>
+            <p><b>Email:</b> ${email}</p>
+            <p><b>Data de Início:</b> ${inicio}</p>
+            <p><b>Data de Fim:</b> ${fim || 'Não definido'}</p>
+            <p><b>Telefone:</b> ${telefone}</p>
+            <p><b>Objetivo:</b> ${objetivo}</p>
+            <p><b>Termos:</b> ${termos}</p>
+            <p><b>Status:</b> ${status}</p>
+        `;
+        document.getElementById("modalBody").innerHTML = html;
+        document.getElementById("detailsModal").style.display = "block";
+    }
+
+    function closeModal() {
+        document.getElementById("detailsModal").style.display = "none";
+    }
+
+    // Fechar modal ao clicar fora
+    window.onclick = function(event) {
+        let modal = document.getElementById("detailsModal");
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+</body>
+</html>
