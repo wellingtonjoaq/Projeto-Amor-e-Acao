@@ -19,13 +19,16 @@ public class Aluno {
     @EqualsAndHashCode.Include
     private Long id;
 
-    private String cep;
+    private String nome;
     private String cpf;
     private String email;
-    private String endereco;
-    private String genero;
-    private String nome;
-    private String numero;
     private String telefone;
+    private String genero;
+    private String cep;
+    private String bairro;
+    private String endereco;
+    private String nrCasa;
+    private String status;
+
 
 }

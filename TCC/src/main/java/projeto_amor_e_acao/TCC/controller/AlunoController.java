@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import projeto_amor_e_acao.TCC.model.Aluno;
 import projeto_amor_e_acao.TCC.service.AlunoService;
 
-import java.util.Arrays;
 
 @Controller
 @RequestMapping("aluno")
