@@ -14,24 +14,15 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Curso {
+public class Matricula {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long id;
 
-    private String nome;
-    private String professor;
-    private String formacao;
-    private String cep;
-    private String bairro;
-    private String endereco;
-    private String nrLocal;
-    private int cargaHoraria;
-    private Date dataComeco;
-    private Date dataFim;
-    private String foto;
-    private String descricao;
-    private String status;
+    // id_aluno
+    // id_curso
+
+    private Date data;
 }

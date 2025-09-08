@@ -28,7 +28,9 @@ public class Voluntario {
     private String motivacao;
     private String cep;
     private String bairro;
+    private String endereco;
+    private String nrCasa;
     private String cidade;
     private String estado;
-    private String numero;
+    private String status;
 }
