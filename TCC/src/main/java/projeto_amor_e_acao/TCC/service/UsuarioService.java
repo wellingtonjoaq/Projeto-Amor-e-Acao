@@ -23,10 +23,35 @@ public class UsuarioService {
     }
 
     public Usuario save(Usuario usuario) {
+        //Impedir e-mail duplicado
+        usuarioRepository.findByEmail(usuario.getEmail())
+                .ifPresent(existing -> {
+                    if (!existing.getId().equals(usuario.getId())) {
+                        throw new IllegalArgumentException("E-mail já está em uso");
+                    }
+                });
+
         return usuarioRepository.save(usuario);
     }
 
     public void deleteById(Long id) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
+
+        //Não permitir excluir o último administrador ativo
+        if (usuario.getCargo() == Usuario.Cargo.USUARIO_ADMINISTRADOR
+                && usuario.getStatus() == Usuario.Status.ATIVO)
+        {
+            long adminsAtivos = usuarioRepository.findAll().stream().filter(
+                    u -> u.getCargo() == Usuario.Cargo.USUARIO_ADMINISTRADOR
+                    && u.getStatus() == Usuario.Status.ATIVO).count();
+
+            if (adminsAtivos <= 1) {
+                throw new IllegalStateException(
+                        "Não é possível excluir o último administrador ativo");
+            }
+        }
+
         usuarioRepository.deleteById(id);
     }
 }

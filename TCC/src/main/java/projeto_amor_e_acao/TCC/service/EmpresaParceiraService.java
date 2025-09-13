@@ -25,10 +25,36 @@ public class EmpresaParceiraService {
     }
 
     public EmpresaParceira save(EmpresaParceira empresaParceira) {
+        //Verificar duplicidade de CNPJ
+        repository.findAll().stream().filter(
+                e -> e.getCnpj().equals(empresaParceira.getCnpj()) &&
+                !e.getId().equals(empresaParceira.getId())).findAny().ifPresent(
+                e -> {throw new IllegalArgumentException(
+                "Já existe uma empresa cadastrada com este CNPJ.");});
+
+        //Verificar datas
+        if (empresaParceira.getData_fim() != null &&
+                empresaParceira.getData_fim().isBefore(
+                empresaParceira.getData_inicio().toLocalDate()))
+        {
+            throw new IllegalArgumentException(
+                    "A data de fim não pode ser anterior à data de início.");
+        }
+
         return repository.save(empresaParceira);
     }
 
     public void deleteById(Long id) {
+        EmpresaParceira empresa = repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Empresa não encontrada"));
+
+        //Regra para não excluir empresas ativas
+        if (empresa.getStatus() == EmpresaParceira.Status.ATIVO) {
+            throw new IllegalStateException(
+                    "Não é possível excluir uma empresa ativa. " +
+                    "Altere o status para INATIVO antes de excluir.");
+        }
+
         repository.deleteById(id);
     }
 }
