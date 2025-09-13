@@ -1,8 +1,10 @@
 package projeto_amor_e_acao.TCC.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import projeto_amor_e_acao.TCC.model.Usuario;
 import projeto_amor_e_acao.TCC.service.UsuarioService;
@@ -31,7 +33,14 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public String salvarUsuario(@ModelAttribute Usuario usuario) {
+    public String salvarUsuario(@ModelAttribute @Valid Usuario usuario,
+                                BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("usuario", usuario);
+            model.addAttribute("acao", "criar");
+            return "usuarios/formulario";
+        }
+
         usuarioService.save(usuario);
         return "redirect:/usuarios";
     }
@@ -42,17 +51,27 @@ public class UsuarioController {
         if (usuario == null) {
             return "redirect:/usuarios";
         }
+
         model.addAttribute("usuario", usuario);
         model.addAttribute("acao", "editar");
         return "usuarios/formulario";
     }
 
     @PostMapping("/atualizar/{id}")
-    public String atualizarUsuario(@PathVariable Long id, @ModelAttribute Usuario usuario) {
+    public String atualizarUsuario(@PathVariable Long id,
+                                   @ModelAttribute @Valid Usuario usuario,
+                                   BindingResult result, Model model) {
         Usuario existente = usuarioService.findById(id).orElse(null);
         if (existente == null) {
             return "redirect:/usuarios";
         }
+
+        if (result.hasErrors()) {
+            model.addAttribute("usuario", usuario);
+            model.addAttribute("acao", "editar");
+            return "usuarios/formulario";
+        }
+
         usuario.setId(id);
         usuario.setSenha(existente.getSenha());
         usuarioService.save(usuario);

@@ -23,20 +23,30 @@ public class Usuario implements UserDetails {
     private Long id;
 
     @Column(nullable = false)
+    @jakarta.validation.constraints.NotBlank(message = "O nome é obrigatório")
+    @jakarta.validation.constraints.Size(
+            min = 3, max = 100, message = "O nome deve ter entre 3 e 100 caracteres")
     private String nome;
 
     @Column(unique = true, nullable = false)
+    @jakarta.validation.constraints.NotBlank(message = "O e-mail é obrigatório")
+    @jakarta.validation.constraints.Email(message = "E-mail inválido")
     private String email;
 
     @Column(nullable = false)
+    @jakarta.validation.constraints.NotBlank(message = "A senha é obrigatória")
+    @jakarta.validation.constraints.Size(
+            min = 6, message = "A senha deve ter no mínimo 6 caracteres")
     private String senha;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @jakarta.validation.constraints.NotNull(message = "O cargo é obrigatório")
     private Cargo cargo;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @jakarta.validation.constraints.NotNull(message = "O status é obrigatório")
     private Status status;
 
     @Column(name = "foto_perfil")
@@ -55,9 +65,12 @@ public class Usuario implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (this.cargo == Cargo.USUARIO_ADMINISTRADOR) {
-            return Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"));
+            return Collections.singletonList(
+                    new SimpleGrantedAuthority("ROLE_ADMIN"));
         }
-        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+
+        return Collections.singletonList(
+                new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     @Override
