@@ -7,7 +7,7 @@
     <link rel="stylesheet" th:href="@{/imgens}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
-<body>
+<body th:fragment="menu">
 <div class="topbar">
     <div class="topbar-left">
         <h1>Painel Administrativo</h1>
@@ -21,11 +21,11 @@
     </div>
 </div>
 <ul class="sidebar">
-    <li><a href="#usuarios"><i class="fa-solid fa-user"></i> Usuários</a></li>
+    <li><a href="/usuarios"><i class="fa-solid fa-user"></i> Usuários</a></li>
     <li><a href="#formularios"><i class="fa-solid fa-table"></i> Formulários</a></li>
     <li><a href="#alunos"><i class="fa-solid fa-user-graduate"></i> Alunos</a></li>
     <li><a href="#voluntarios"><i class="fa-solid fa-handshake-angle"></i> Voluntários</a></li>
-    <li><a href="#parcerias"><i class="fa-solid fa-building"></i> Parcerias</a></li>
+    <li><a href="/empresasParceiras"><i class="fa-solid fa-building"></i> Parcerias</a></li>
 
     <li class="bottom-image">
         <img th:src="@{/imagens/logo.png}" alt="Logo Ong"/>

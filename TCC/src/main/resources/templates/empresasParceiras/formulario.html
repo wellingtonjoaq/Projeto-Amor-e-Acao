@@ -3,103 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <title>Formulário de Empresa Parceira</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        form {
-            margin-top: 20px;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            width: 50%;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        input[type="text"],
-        input[type="number"],
-        input[type="email"],
-        input[type="date"],
-        select {
-            width: calc(100% - 22px);
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        a {
-            display: block;
-            margin-top: 10px;
-            text-align: center;
-            text-decoration: none;
-            color: blue;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-<h1 th:text="${empresaParceira.id == null ? 'Nova Empresa Parceira' : 'Editar Empresa Parceira'}"></h1>
-<form th:action="@{/empresasParceiras}" th:object="${empresaParceira}" method="post">
-    <input type="hidden" th:field="*{id}" />
+<div th:replace="/navbar/dashboard :: menu"></div>
 
-    <label for="nome_empresa">Nome da Empresa:</label>
-    <input type="text" id="nome_empresa" th:field="*{nome_empresa}" required />
+<div class="container">
 
-    <label for="cnpj">CNPJ:</label>
-    <input type="number" id="cnpj" th:field="*{cnpj}" required />
+    <h1 th:text="${empresaParceira.id == null ? 'Nova Empresa Parceira' : 'Editar Empresa Parceira'}"></h1>
 
-    <label for="endereco">Endereço:</label>
-    <input type="text" id="endereco" th:field="*{endereco}" />
+    <form th:action="@{/empresasParceiras}" th:object="${empresaParceira}" method="post" class="form-adm">
+        <input type="hidden" th:field="*{id}" />
 
-    <label for="nome_representante">Nome do Representante:</label>
-    <input type="text" id="nome_representante" th:field="*{nome_representante}" />
+        <div class="form-group">
+            <label for="nome_empresa">Nome da Empresa:</label>
+            <input type="text" id="nome_empresa" th:field="*{nome_empresa}" required />
+        </div>
 
-    <label for="cpf_representante">CPF do Representante:</label>
-    <input type="number" id="cpf_representante" th:field="*{cpf_representante}" />
+        <div class="form-group">
+            <label for="cnpj">CNPJ:</label>
+            <input type="number" id="cnpj" th:field="*{cnpj}" required />
+        </div>
 
-    <label for="email">Email:</label>
-    <input type="email" id="email" th:field="*{email}" />
+        <div class="form-group">
+            <label for="endereco">Endereço:</label>
+            <input type="text" id="endereco" th:field="*{endereco}" />
+        </div>
 
-    <label for="data_inicio">Data de Início:</label>
-    <input type="date" id="data_inicio" th:field="*{data_inicio}" required />
+        <div class="form-group">
+            <label for="nome_representante">Nome do Representante:</label>
+            <input type="text" id="nome_representante" th:field="*{nome_representante}" />
+        </div>
 
-    <label for="data_fim">Data de Fim:</label>
-    <input type="date" id="data_fim" th:field="*{data_fim}" />
+        <div class="form-group">
+            <label for="cpf_representante">CPF do Representante:</label>
+            <input type="number" id="cpf_representante" th:field="*{cpf_representante}" />
+        </div>
 
-    <label for="telefone">Telefone:</label>
-    <input type="number" id="telefone" th:field="*{telefone}" />
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" th:field="*{email}" />
+        </div>
 
-    <label for="objetivo">Objetivo:</label>
-    <input type="text" id="objetivo" th:field="*{objetivo}" />
+        <div class="form-group">
+            <label for="data_inicio">Data de Início:</label>
+            <input type="date" id="data_inicio" th:field="*{data_inicio}" required />
+        </div>
 
-    <label for="termos">Termos:</label>
-    <input type="text" id="termos" th:field="*{termos}" />
+        <div class="form-group">
+            <label for="data_fim">Data de Fim:</label>
+            <input type="date" id="data_fim" th:field="*{data_fim}" />
+        </div>
 
-    <label for="status">Status:</label>
-    <select id="status" th:field="*{status}" required>
-        <option value="ATIVO">ATIVO</option>
-        <option value="INATIVO">INATIVO</option>
-    </select>
+        <div class="form-group">
+            <label for="telefone">Telefone:</label>
+            <input type="number" id="telefone" th:field="*{telefone}" />
+        </div>
 
-    <button type="submit">Salvar</button>
-</form>
-<a href="/empresasParceiras">Voltar para a Lista</a>
+        <div class="form-group">
+            <label for="objetivo">Objetivo:</label>
+            <input type="text" id="objetivo" th:field="*{objetivo}" />
+        </div>
+
+        <div class="form-group">
+            <label for="termos">Termos:</label>
+            <input type="text" id="termos" th:field="*{termos}" />
+        </div>
+
+        <div class="form-group">
+            <label for="status">Status:</label>
+            <select id="status" th:field="*{status}" required>
+                <option value="ATIVO">ATIVO</option>
+                <option value="INATIVO">INATIVO</option>
+            </select>
+        </div>
+
+        <button type="submit" class="button-sav">Salvar</button>
+    </form>
+</div>
+
 </body>
 </html>
