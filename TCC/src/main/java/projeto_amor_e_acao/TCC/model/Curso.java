@@ -1,12 +1,11 @@
 package projeto_amor_e_acao.TCC.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -21,7 +20,9 @@ public class Curso {
     @EqualsAndHashCode.Include
     private Long id;
 
+    @Column(nullable = false, length = 100)
     private String nome;
+
     private String professor;
     private String formacao;
     private String cep;
@@ -33,5 +34,13 @@ public class Curso {
     private Date dataFim;
     private String foto;
     private String descricao;
+
+    @Column(nullable = false, length = 20)
     private String status;
+
+    /*
+    @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Matricula> matriculas;
+    */
 }
