@@ -4,31 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listagem de Usuários</title>
-    <style>
-        /* Mantenha o CSS original se desejar */
-        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; }
-        .container { background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); max-width: 1000px; margin: 0 auto; }
-        h1 { text-align: center; color: #333; margin-bottom: 30px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-        th { background-color: #007bff; color: white; }
-        tr:nth-child(even) { background-color: #f2f2f2; }
-        .actions { text-align: center; }
-        .delete-btn {
-            background-color: #dc3545; color: white; padding: 5px 10px; border: none; border-radius: 3px;
-            cursor: pointer; font-size: 12px;
-        }
-        .delete-btn:hover { background-color: #c82333; }
-        .navigation { text-align: center; margin-bottom: 20px; }
-        .navigation a { color: #007bff; text-decoration: none; margin: 0 10px; }
-        .navigation a:hover { text-decoration: underline; }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/imgens}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
+<div th:replace="/navbar/dashboard :: menu"></div>
+
 <div class="container">
     <div class="navigation">
         <a th:href="@{/usuarios/novo}">Cadastrar Usuário</a>
-        <a th:href="@{/usuarios}">Listar Usuários</a>
     </div>
 
     <h1>Listagem de Usuários</h1>
@@ -47,19 +32,20 @@
         </thead>
         <tbody>
         <tr th:each="user : ${usuarios}">
-            <td th:text="${user.id}">1</td>
-            <td th:text="${user.nome}">Nome</td>
-            <td th:text="${user.email}">email@example.com</td>
-            <td th:text="${user.cargo}">USUARIO_SIMPLES</td>
-            <td th:text="${user.status}">ATIVO</td>
-            <td>
-                <img th:if="${user.fotoPerfil != null}" th:src="${user.fotoPerfil}" alt="Foto de Perfil" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;" />
+            <td data-label="ID" th:text="${user.id}">1</td>
+            <td data-label="Nome" th:text="${user.nome}">Nome</td>
+            <td data-label="Email" th:text="${user.email}">email@example.com</td>
+            <td data-label="Cargo" th:text="${user.cargo}">USUARIO_SIMPLES</td>
+            <td data-label="Status" th:text="${user.status}">ATIVO</td>
+            <td data-label="Foto de Perfil">
+                <img th:if="${user.fotoPerfil != null}" th:src="${user.fotoPerfil}"
+                     alt="Foto de Perfil"
+                     style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;" />
                 <span th:if="${user.fotoPerfil == null}">N/A</span>
             </td>
-            <td class="actions">
+            <td data-label="Ações" class="actions">
                 <a th:href="@{/usuarios/editar/{id}(id=${user.id})}">Editar</a>
-                <form th:action="@{/usuarios/deletar/{id}(id=${user.id})}" method="post" style="display:inline;">
-                    <!-- Usar método POST com hidden input _method para DELETE se configurado -->
+                <form th:action="@{/usuarios/deletar/{id}(id=${user.id})}" method="post">
                     <button type="submit" class="delete-btn" onclick="return confirm('Tem certeza que deseja excluir este usuário?');">Excluir</button>
                 </form>
             </td>
