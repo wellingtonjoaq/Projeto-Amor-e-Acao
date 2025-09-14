@@ -40,7 +40,7 @@ public class CursoController {
 
     @GetMapping("listar")
     public String listar(Model model) {
-        model.addAttribute("curso", service.listarTodos());
+        model.addAttribute("cursos", service.listarTodos());
         return "curso/lista";
     }
 
@@ -53,6 +53,6 @@ public class CursoController {
     @GetMapping("remover/{id}")
     public String remover(@PathVariable Long id, Model model) {
         service.deletarPorId(id);
-        return "redirect:/curso/lista";
+        return "redirect:/curso/listar";
     }
 }
