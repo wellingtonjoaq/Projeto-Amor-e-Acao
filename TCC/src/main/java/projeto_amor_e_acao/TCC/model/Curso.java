@@ -1,11 +1,10 @@
 package projeto_amor_e_acao.TCC.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -23,16 +22,39 @@ public class Curso {
     @Column(nullable = false, length = 100)
     private String nome;
 
+    @Column
     private String professor;
+
+    @Column
     private String formacao;
+
+    @Column
     private String cep;
+
+    @Column
     private String bairro;
+
+    @Column
     private String endereco;
+
+    @Column
     private String nrLocal;
+
+    @Column
     private int cargaHoraria;
-    private Date dataComeco;
-    private Date dataFim;
+
+    @Column
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dataInicio;
+
+    @Column
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dataFim;
+
+    @Column
     private String foto;
+
+    @Column
     private String descricao;
 
     @Column(nullable = false, length = 20)
