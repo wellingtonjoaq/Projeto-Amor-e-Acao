@@ -34,7 +34,7 @@ public class AlunoController {
             service.salvar(aluno);
             return "redirect:/aluno/listar";
         } catch (Exception e) {
-            model.addAttribute("erro", "Algo de errado não deu certo: ");
+            model.addAttribute("erro", "Erro: " + e.getMessage());
             return iniciar(aluno, model);
         }
     }

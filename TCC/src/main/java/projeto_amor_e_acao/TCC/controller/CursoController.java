@@ -33,7 +33,7 @@ public class CursoController {
             service.salvar(curso);
             return "redirect:/curso/listar";
         } catch (Exception e) {
-            model.addAttribute("erro", "Algo de errado não deu certo: ");
+            model.addAttribute("erro", "Erro: " + e.getMessage());
             return iniciar(curso, model);
         }
     }

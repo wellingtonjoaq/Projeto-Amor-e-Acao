@@ -18,6 +18,11 @@ public class CursoService {
 
     @Transactional
     public void salvar(Curso curso) {
+
+        if (curso.getNome().isBlank() || curso.getStatus().isBlank()){
+            return;
+        }
+        //curso.getMatriculas().forEach(matricula -> matricula.setCurso(curso));
         repository.save(curso);
     }
 

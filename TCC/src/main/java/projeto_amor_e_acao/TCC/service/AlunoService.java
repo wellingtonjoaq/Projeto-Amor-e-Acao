@@ -16,7 +16,11 @@ public class AlunoService {
 
     @Transactional
     public void salvar(Aluno aluno) {
-        repository.save(aluno);
+            if (aluno.getNome().isBlank() || aluno.getCpf().isBlank() || aluno.getStatus().isBlank()){
+                return;
+            }
+            //aluno.getMatriculas().forEach(matricula -> matricula.setAluno(aluno));
+            repository.save(aluno);
     }
 
     public List<Aluno> listarTodos() {

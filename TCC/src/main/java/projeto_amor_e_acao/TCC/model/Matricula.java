@@ -1,12 +1,12 @@
 package projeto_amor_e_acao.TCC.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -21,8 +21,13 @@ public class Matricula {
     @EqualsAndHashCode.Include
     private Long id;
 
-    // id_aluno
-    // id_curso
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
+    private Aluno aluno;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
+    private Curso curso;
 
     private Date data;
 }
