@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import projeto_amor_e_acao.TCC.model.Usuario;
 import projeto_amor_e_acao.TCC.service.UsuarioService;
 
@@ -59,25 +60,18 @@ public class UsuarioController {
 
     @PostMapping("/atualizar/{id}")
     public String atualizarUsuario(@PathVariable Long id,
-                                   @ModelAttribute @Valid Usuario usuario,
-                                   BindingResult result, Model model) {
-        Usuario existente = usuarioService.findById(id).orElse(null);
-        if (existente == null) {
-            return "redirect:/usuarios";
+                                   @ModelAttribute Usuario usuario,
+                                   RedirectAttributes redirectAttributes) {
+        try {
+            usuarioService.atualizarUsuario(id, usuario);
+            redirectAttributes.addFlashAttribute(
+                    "sucesso", "Usuário atualizado com sucesso!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute(
+                    "erro", "Erro ao atualizar usuário: " + e.getMessage());
         }
-
-        if (result.hasErrors()) {
-            model.addAttribute("usuario", usuario);
-            model.addAttribute("acao", "editar");
-            return "usuarios/formulario";
-        }
-
-        usuario.setId(id);
-        usuario.setSenha(existente.getSenha());
-        usuarioService.save(usuario);
         return "redirect:/usuarios";
     }
-
 
     @PostMapping("/deletar/{id}")
     public String deletarUsuario(@PathVariable Long id) {
