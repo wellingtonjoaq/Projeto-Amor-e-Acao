@@ -24,7 +24,6 @@ public class Voluntario {
     private String email;
     private String telefone;
     private String funcao;
-    private String genero;
     private String motivacao;
     private String cep;
     private String bairro;

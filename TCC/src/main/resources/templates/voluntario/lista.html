@@ -1,10 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Lista de Voluntario</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
+
+<div th:replace="/navbar/dashboard :: menu"></div>
+
+<div class="container">
+    <div class="navigation">
+        <a th:href="@{/voluntario}">Cadastrar Voluntario</a>
+    </div>
+
+    <h1>Lista de Voluntario</h1>
+
+    <table>
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>Função</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="voluntario : ${voluntarios}">
+            <td th:text="${voluntario.id}">1</td>
+            <td th:text="${voluntario.nome}">Nome</td>
+            <td th:text="${voluntario.cpf}">CPF</td>
+            <td th:text="${voluntario.funcao}">Função</td>
+            <td th:text="${voluntario.status}">Status</td>
+            <td class="actions">
+                <a th:href="@{'/voluntario/vizualiza/' + ${voluntario.id}}">Vizualizar</a>
+                <a th:href="@{'/voluntario/editar/' + ${voluntario.id}}">Editar</a>
+                <form th:action="@{'/voluntario/remover/' + ${voluntario.id}}" style="display:inline;">
+                    <button type="submit" class="delete-btn" onclick="return confirm('Tem certeza que deseja remover este voluntario?');">Remover</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
 </body>
 </html>

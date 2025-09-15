@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Vizualizar Voluntario</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<div th:replace="/navbar/dashboard :: menu"></div>
+
+<div class="container">
+
+  <h1 th:text="${voluntario.id == null ? 'Novo Voluntario' : (modo == 'visualizar' ? 'Visualizar Voluntario' : 'Editar Voluntario')}"></h1>
+
+  <form th:action="@{/voluntario/listar}" class="form-adm" >
+    <input type="hidden" name="id" th:value="${voluntario.id}" th:disabled="${modo == 'visualizar'}" />
+
+    <div class="form-group">
+      <label for="nomeVoluntario">Nome</label>
+      <input id="nomeVoluntario" name="nome" type="text" th:value="${voluntario.nome}" th:disabled="${modo == 'visualizar'}" />
+    </div>
+
+    <div class="form-group">
+      <label for="cpfVoluntario">CPF</label>
+      <input id="cpfVoluntario" name="cpf" type="text" th:value="${voluntario.cpf}" th:disabled="${modo == 'visualizar'}" />
+    </div>
+
+    <div class="form-group">
+      <label for="emailVoluntario">Email</label>
+      <input id="emailVoluntario" name="email" type="email" th:value="${voluntario.email}" th:disabled="${modo == 'visualizar'}" />
+    </div>
+
+    <div class="form-group">
+      <label for="telefoneVoluntario">Telefone</label>
+      <input id="telefoneVoluntario" name="telefone" type="text" th:value="${voluntario.telefone}" th:disabled="${modo == 'visualizar'}" />
+    </div>
+
+    <div class="form-group">
+      <label for="funcaoVoluntario">Função</label>
+      <input id="funcaoVoluntario" name="funcao" type="text" th:value="${voluntario.funcao}" th:disabled="${modo == 'visualizar'}" />
+    </div>
+
+    <div class="form-group">
+      <label for="motivacaoVoluntario">Motivação</label>
+      <input id="motivacaoVoluntario" name="motivacao" type="text" th:value="${voluntario.motivacao}" th:disabled="${modo == 'visualizar'}" />
+    </div>
+
+    <div class="form-group">
+      <label for="cepVoluntario">CEP</label>
+      <input id="cepVoluntario" name="cep" type="text" th:value="${voluntario.cep}" th:disabled="${modo == 'visualizar'}" />
+    </div>
+
+    <div class="form-group">
+      <label for="bairroVoluntario">Bairro</label>
+      <input id="bairroVoluntario" name="bairro" type="text" th:value="${voluntario.bairro}" th:disabled="${modo == 'visualizar'}" />
+    </div>
+
+    <div class="form-group">
+      <label for="enderecoVoluntario">Endereço</label>
+      <input id="enderecoVoluntario" name="endereco" type="text" th:value="${voluntario.endereco}" th:disabled="${modo == 'visualizar'}" />
+    </div>
+
+    <div class="form-group">
+      <label for="nrCasaVoluntario">Número</label>
+      <input id="nrCasaVoluntario" name="nrCasa" type="text" th:value="${voluntario.nrCasa}" th:disabled="${modo == 'visualizar'}" />
+    </div>
+
+    <div class="form-group">
+      <label for="cidadeVoluntario">Cidade</label>
+      <input id="cidadeVoluntario" name="cidade" type="text" th:value="${voluntario.cidade}" th:disabled="${modo == 'visualizar'}" />
+    </div>
+
+    <div class="form-group">
+      <label for="estadoVoluntario">Estado</label>
+      <input id="estadoVoluntario" name="estado" type="text" th:value="${voluntario.estado}" th:disabled="${modo == 'visualizar'}" />
+    </div>
+
+    <div class="form-group">
+      <label for="statusVoluntario">Status</label>
+      <input id="statusVoluntario" name="nrCasa" type="text" th:value="${voluntario.status}" th:disabled="${modo == 'visualizar'}" />
+    </div>
+
+    <button type="submit" class="button-sav">Voltar</button>
+  </form>
+</div>
+
+</body>
+</html>
