@@ -24,13 +24,6 @@
             <th>#</th>
             <th>Nome</th>
             <th>CPF</th>
-            <th>Email</th>
-            <th>Telefone</th>
-            <th>Gênero</th>
-            <th>CEP</th>
-            <th>Bairro</th>
-            <th>Endereço</th>
-            <th>Número</th>
             <th>Status</th>
             <th>Ações</th>
         </tr>
@@ -40,17 +33,11 @@
             <td th:text="${aluno.id}">1</td>
             <td th:text="${aluno.nome}">Nome</td>
             <td th:text="${aluno.cpf}">CPF</td>
-            <td th:text="${aluno.email}">email@example.com</td>
-            <td th:text="${aluno.telefone}">Telefone</td>
-            <td th:text="${aluno.genero}">Gênero</td>
-            <td th:text="${aluno.cep}">CEP</td>
-            <td th:text="${aluno.bairro}">Bairro</td>
-            <td th:text="${aluno.endereco}">Endereço</td>
-            <td th:text="${aluno.nrCasa}">Número</td>
-            <td th:text="${aluno.status}">ATIVO</td>
+            <td th:text="${aluno.status}">Status</td>
             <td class="actions">
+                <a th:href="@{'/aluno/vizualiza/' + ${aluno.id}}">Vizualizar</a>
                 <a th:href="@{'/aluno/editar/' + ${aluno.id}}">Editar</a>
-                <form th:action="@{'/aluno/remover/' + ${aluno.id}}" method="post" style="display:inline;">
+                <form th:action="@{'/aluno/remover/' + ${aluno.id}}" style="display:inline;">
                     <button type="submit" class="delete-btn" onclick="return confirm('Tem certeza que deseja remover este aluno?');">Remover</button>
                 </form>
             </td>

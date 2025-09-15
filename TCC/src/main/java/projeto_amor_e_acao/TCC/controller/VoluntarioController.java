@@ -40,8 +40,15 @@ public class VoluntarioController {
 
     @GetMapping("listar")
     public String listar(Model model) {
-        model.addAttribute("voluntario", service.listarTodos());
+        model.addAttribute("voluntarios", service.listarTodos());
         return "voluntario/lista";
+    }
+
+    @GetMapping("vizualiza/{id}")
+    public String vizualizar(@PathVariable Long id,Model model) {
+        model.addAttribute("voluntario", service.buscarPorId(id));
+        model.addAttribute("modo", "visualizar");
+        return "voluntario/vizualizar";
     }
 
     @GetMapping("editar/{id}")
@@ -53,6 +60,6 @@ public class VoluntarioController {
     @GetMapping("remover/{id}")
     public String remover(@PathVariable Long id, Model model) {
         service.deletarPorId(id);
-        return "redirect:/voluntario/lista";
+        return "redirect:/voluntario/listar";
     }
 }
