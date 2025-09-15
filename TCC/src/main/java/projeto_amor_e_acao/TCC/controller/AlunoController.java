@@ -45,6 +45,13 @@ public class AlunoController {
         return "aluno/lista";
     }
 
+    @GetMapping("vizualiza/{id}")
+    public String vizualizar(@PathVariable Long id,Model model) {
+        model.addAttribute("aluno", service.buscarPorId(id));
+        model.addAttribute("modo", "visualizar");
+        return "aluno/vizualizar";
+    }
+
     @GetMapping("editar/{id}")
     public String alterar(@PathVariable Long id, Model model) {
         model.addAttribute("aluno", service.buscarPorId(id));
