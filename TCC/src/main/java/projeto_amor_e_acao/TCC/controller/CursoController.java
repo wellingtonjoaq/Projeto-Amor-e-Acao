@@ -44,6 +44,13 @@ public class CursoController {
         return "curso/lista";
     }
 
+    @GetMapping("vizualiza/{id}")
+    public String vizualizar(@PathVariable Long id,Model model) {
+        model.addAttribute("curso", service.buscarPorId(id));
+        model.addAttribute("modo", "visualizar");
+        return "curso/vizualizar";
+    }
+
     @GetMapping("editar/{id}")
     public String alterar(@PathVariable Long id, Model model) {
         model.addAttribute("curso", service.buscarPorId(id));

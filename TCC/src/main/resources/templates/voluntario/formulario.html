@@ -1,10 +1,94 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Formulário de Voluntario</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
+
+<div th:replace="/navbar/dashboard :: menu"></div>
+
+<div class="container">
+
+    <h1 th:text="${voluntario.id == null ? 'Novo Voluntario' : 'Editar Voluntario'}"></h1>
+
+    <form th:action="@{/voluntario/salvar}" method="post" class="form-adm">
+        <input type="hidden" name="id" th:value="${voluntario.id}" />
+
+        <div class="form-group">
+            <label for="nomeVoluntario">Nome</label>
+            <input id="nomeVoluntario" name="nome" type="text" th:value="${voluntario.nome}" required />
+        </div>
+
+        <div class="form-group">
+            <label for="cpfVoluntario">CPF</label>
+            <input id="cpfVoluntario" name="cpf" type="text" th:value="${voluntario.cpf}" required />
+        </div>
+
+        <div class="form-group">
+            <label for="emailVoluntario">Email</label>
+            <input id="emailVoluntario" name="email" type="email" th:value="${voluntario.email}" />
+        </div>
+
+        <div class="form-group">
+            <label for="telefoneVoluntario">Telefone</label>
+            <input id="telefoneVoluntario" name="telefone" type="text" th:value="${voluntario.telefone}" />
+        </div>
+
+        <div class="form-group">
+            <label for="funcaoVoluntario">Função</label>
+            <input id="funcaoVoluntario" name="funcao" type="text" th:value="${voluntario.funcao}" />
+        </div>
+
+        <div class="form-group">
+            <label for="cepMotivacao">Motivação</label>
+            <input id="cepMotivacao" name="cep" type="text" th:value="${voluntario.cep}" />
+        </div>
+
+        <div class="form-group">
+            <label for="cepVoluntario">CEP</label>
+            <input id="cepVoluntario" name="cep" type="text" th:value="${voluntario.cep}" />
+        </div>
+
+        <div class="form-group">
+            <label for="bairroVoluntario">Bairro</label>
+            <input id="bairroVoluntario" name="bairro" type="text" th:value="${voluntario.bairro}" />
+        </div>
+
+        <div class="form-group">
+            <label for="enderecoVoluntario">Endereço</label>
+            <input id="enderecoVoluntario" name="endereco" type="text" th:value="${voluntario.endereco}" />
+        </div>
+
+        <div class="form-group">
+            <label for="nrCasaVoluntario">Número</label>
+            <input id="nrCasaVoluntario" name="nrCasa" type="text" th:value="${voluntario.nrCasa}" />
+        </div>
+
+        <div class="form-group">
+            <label for="cidadeVoluntario">Cidade</label>
+            <input id="cidadeVoluntario" name="cidade" type="text" th:value="${voluntario.cidade}" />
+        </div>
+
+        <div class="form-group">
+            <label for="estadoVoluntario">Estado</label>
+            <input id="estadoVoluntario" name="estado" type="text" th:value="${voluntario.estado}" />
+        </div>
+
+        <div class="form-group">
+            <label for="statusVoluntario">Status</label>
+            <select id="statusVoluntario" name="status" required>
+                <option value="ATIVO" th:selected="${voluntario.status == 'ATIVO'}">ATIVO</option>
+                <option value="INATIVO" th:selected="${voluntario.status == 'INATIVO'}">INATIVO</option>
+            </select>
+        </div>
+
+        <button type="submit" class="button-sav">Salvar</button>
+    </form>
+</div>
 
 </body>
 </html>
