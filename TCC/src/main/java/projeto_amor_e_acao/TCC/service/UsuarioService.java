@@ -1,6 +1,7 @@
 package projeto_amor_e_acao.TCC.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import projeto_amor_e_acao.TCC.model.Usuario;
 import projeto_amor_e_acao.TCC.repository.UsuarioRepository;
@@ -14,12 +15,32 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public List<Usuario> findAll() {
         return usuarioRepository.findAll();
     }
 
     public Optional<Usuario> findById(Long id) {
         return usuarioRepository.findById(id);
+    }
+
+    public Usuario atualizarUsuario(Long id, Usuario usuarioAtualizado) {
+        Usuario usuarioExistente = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        usuarioExistente.setNome(usuarioAtualizado.getNome());
+        usuarioExistente.setEmail(usuarioAtualizado.getEmail());
+        usuarioExistente.setCargo(usuarioAtualizado.getCargo());
+        usuarioExistente.setStatus(usuarioAtualizado.getStatus());
+        usuarioExistente.setFotoPerfil(usuarioAtualizado.getFotoPerfil());
+
+        if (usuarioAtualizado.getSenha() != null && !usuarioAtualizado.getSenha().isBlank()) {
+            usuarioExistente.setSenha(passwordEncoder.encode(usuarioAtualizado.getSenha()));
+        }
+
+        return usuarioRepository.save(usuarioExistente);
     }
 
     public Usuario save(Usuario usuario) {
