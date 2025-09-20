@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import jakarta.validation.constraints.Pattern;
+
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.function.LongFunction;
@@ -31,24 +33,23 @@ public class EmpresaParceira {
 
     @Column(nullable = false, unique = true)
     @jakarta.validation.constraints.NotNull(message = "O CNPJ é obrigatório")
-    @jakarta.validation.constraints.Digits(
-            integer = 14, fraction = 0,
-            message = "O CNPJ deve conter 14 dígitos numéricos")
-    private Long cnpj;
+    @Pattern(regexp = "^\\d{14}$", message = "O CNPJ deve conter exatamente 14 dígitos numéricos")
+    private String cnpj;
 
     @jakarta.validation.constraints.Size(
             max = 255, message = "O endereço pode ter no máximo 255 caracteres")
     private String endereco;
 
+    @Column(nullable = false, length = 150)
+    @jakarta.validation.constraints.NotBlank(
+            message = "O nome do representante é obrigatório")
     @jakarta.validation.constraints.Size(
             max = 100,
             message = "O nome do representante pode ter no máximo 100 caracteres")
     private String nome_representante;
 
-    @jakarta.validation.constraints.Digits(
-            integer = 11, fraction = 0,
-            message = "O CPF deve conter 11 dígitos numéricos")
-    private Long cpf_representante;
+    @Pattern(regexp = "^\\d{11}$", message = "O CPF deve conter exatamente 11 dígitos numéricos")
+    private String cpf_representante;
 
     @jakarta.validation.constraints.Email(message = "E-mail inválido")
     private String email;
@@ -82,3 +83,5 @@ public class EmpresaParceira {
         INATIVO
     }
 }
+
+

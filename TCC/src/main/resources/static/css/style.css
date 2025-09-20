@@ -449,3 +449,12 @@ select {
   from {opacity: 0;}
   to {opacity: 1;}
 }
+
+/*Tratamento de excessões:*/
+.error {
+    color: red;
+    font-size: 0.9em;
+    margin-left: 5px;  /* Espaço entre os dois pontos e a mensagem */
+    display: inline;
+    vertical-align: middle;
+}
