@@ -52,22 +52,6 @@ public class EmpresaParceiraController {
             @Valid @ModelAttribute("empresaParceira") EmpresaParceira empresaParceira,
             BindingResult result, Model model, RedirectAttributes redirectAttributes) {
 
-        Optional<EmpresaParceira> exist =
-                empresaParceiraService.findByCnpj(empresaParceira.getCnpj());
-
-        if (exist.isPresent() && !exist.get().getId().equals(empresaParceira.getId())) {
-            result.rejectValue("cnpj", "error.cnpj",
-                    "Já existe uma empresa cadastrada com este CNPJ.");
-        }
-
-        if (empresaParceira.getData_fim() != null &&
-                empresaParceira.getData_inicio() != null &&
-                empresaParceira.getData_fim().isBefore(
-                empresaParceira.getData_inicio().toLocalDate())) {
-            result.rejectValue("data_fim", "error.data_fim",
-                    "A data de fim não pode ser anterior à data de início.");
-        }
-
         if (result.hasErrors()) {
             return "empresasParceiras/formulario";
         }
@@ -78,13 +62,26 @@ public class EmpresaParceiraController {
                     "Empresa parceira salva com sucesso!");
 
             return "redirect:/empresasParceiras";
-        } catch (IllegalArgumentException | IllegalStateException e) {
+        } catch (IllegalArgumentException e) {
+            if (e.getMessage().contains("CNPJ")) {
+                result.rejectValue("cnpj", "error.cnpj", e.getMessage());
+            } else if (e.getMessage().contains("data de fim")) {
+                result.rejectValue("data_fim", "error.data_fim", e.getMessage());
+            } else if (e.getMessage().contains("E-mail")) {
+                result.rejectValue("email", "error.email", e.getMessage());
+            } else if (e.getMessage().contains("data de início")) {
+                result.rejectValue("data_inicio", "error.data_inicio", e.getMessage());
+            } else {
+                model.addAttribute("errorMessage", e.getMessage());
+            }
+            return "empresasParceiras/formulario";
+        } catch (IllegalStateException e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "empresasParceiras/formulario";
         }
     }
 
-    @GetMapping("/deletar/{id}")
+    @DeleteMapping("/{id}")
     public String deletarEmpresaParceira(@PathVariable Long id,
                                          RedirectAttributes redirectAttributes) {
         try {
@@ -97,5 +94,3 @@ public class EmpresaParceiraController {
         return "redirect:/empresasParceiras";
     }
 }
-
-
