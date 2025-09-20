@@ -41,7 +41,7 @@ public class EmpresaParceiraService {
         if (empresaParceira.getData_fim() != null &&
                 empresaParceira.getData_inicio() != null &&
                 empresaParceira.getData_fim().isBefore(
-                        empresaParceira.getData_inicio().toLocalDate()))
+                empresaParceira.getData_inicio().toLocalDate()))
         {
             throw new IllegalArgumentException(
                     "A data de fim não pode ser anterior à data de início.");
@@ -54,15 +54,6 @@ public class EmpresaParceiraService {
         EmpresaParceira empresa = repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Empresa não encontrada"));
 
-        //Regra para não excluir empresas ativas
-        if (empresa.getStatus() == EmpresaParceira.Status.ATIVO) {
-            throw new IllegalStateException(
-                    "Não é possível excluir uma empresa ativa. " +
-                            "Altere o status para INATIVO antes de excluir.");
-        }
-
         repository.deleteById(id);
     }
 }
-
-

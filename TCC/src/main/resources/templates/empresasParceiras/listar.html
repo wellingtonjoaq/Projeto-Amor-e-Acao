@@ -40,7 +40,8 @@
                     Visualizar
                 </button>
                 <a th:href="@{/empresasParceiras/editar/{id}(id=${empresa.id})}">Editar</a>
-                <form th:action="@{/empresasParceiras/deletar/{id}(id=${empresa.id})}" method="post" style="display:inline;">
+                <form th:action="@{/empresasParceiras/{id}(id=${empresa.id})}" method="post" style="display:inline;">
+                    <input type="hidden" name="_method" value="delete"/>
                     <button type="submit" class="delete-btn" onclick="return confirm('Tem certeza que deseja deletar esta empresa?');">Deletar</button>
                 </form>
             </td>

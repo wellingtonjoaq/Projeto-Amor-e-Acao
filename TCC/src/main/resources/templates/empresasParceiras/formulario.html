@@ -29,6 +29,7 @@
         <p th:text="${errorMessage}"></p>
     </div>
 
+    <!-- Formulário de Cadastro / Edição -->
     <form
             th:action="@{/empresasParceiras}"
             th:object="${empresaParceira}"
@@ -99,7 +100,7 @@
                 Email:
                 <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></span>
             </label>
-            <input type="email" id="email" th:field="*{email}" />
+            <input type="text" id="email" th:field="*{email}" />
         </div>
 
         <div class="form-group">
@@ -131,7 +132,7 @@
                 Telefone:
                 <span th:if="${#fields.hasErrors('telefone')}" th:errors="*{telefone}" class="error"></span>
             </label>
-            <input type="number" id="telefone" th:field="*{telefone}" />
+            <input type="text" id="telefone" th:field="*{telefone}" />
         </div>
 
         <div class="form-group">
@@ -175,6 +176,8 @@
 
         <button type="submit" class="button-sav">Salvar</button>
     </form>
+    </div>
+
 </div>
 </body>
 </html>

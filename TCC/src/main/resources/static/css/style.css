@@ -454,7 +454,7 @@ select {
 .error {
     color: red;
     font-size: 0.9em;
-    margin-left: 5px;  /* Espaço entre os dois pontos e a mensagem */
+    margin-left: 5px;
     display: inline;
     vertical-align: middle;
 }

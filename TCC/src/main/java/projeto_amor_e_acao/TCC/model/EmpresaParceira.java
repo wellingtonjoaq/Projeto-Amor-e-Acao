@@ -33,7 +33,8 @@ public class EmpresaParceira {
 
     @Column(nullable = false, unique = true)
     @jakarta.validation.constraints.NotNull(message = "O CNPJ é obrigatório")
-    @Pattern(regexp = "^\\d{14}$", message = "O CNPJ deve conter exatamente 14 dígitos numéricos")
+    @Pattern(regexp = "^\\d{14}$",
+            message = "O CNPJ deve conter exatamente 14 dígitos numéricos")
     private String cnpj;
 
     @jakarta.validation.constraints.Size(
@@ -48,10 +49,12 @@ public class EmpresaParceira {
             message = "O nome do representante pode ter no máximo 100 caracteres")
     private String nome_representante;
 
-    @Pattern(regexp = "^\\d{11}$", message = "O CPF deve conter exatamente 11 dígitos numéricos")
+    @Pattern(regexp = "^\\d{11}$",
+            message = "O CPF deve conter exatamente 11 dígitos numéricos")
     private String cpf_representante;
 
     @jakarta.validation.constraints.Email(message = "E-mail inválido")
+    @jakarta.validation.constraints.NotNull(message = "O e-mail é obrigatório")
     private String email;
 
     @Column(nullable = false)
@@ -62,10 +65,10 @@ public class EmpresaParceira {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate data_fim;
 
-    @jakarta.validation.constraints.Digits(
-            integer = 11, fraction = 0,
-            message = "O telefone deve conter até 11 dígitos")
-    private Long telefone;
+    @Pattern(regexp = "^\\d{10,11}$",
+            message = "O telefone deve conter 10 ou 11 dígitos numéricos")
+    @jakarta.validation.constraints.NotNull(message = "O telefone é obrigatório")
+    private String telefone;
 
     @jakarta.validation.constraints.Size(
             max = 500, message = "O objetivo pode ter no máximo 500 caracteres")
@@ -83,5 +86,3 @@ public class EmpresaParceira {
         INATIVO
     }
 }
-
-
