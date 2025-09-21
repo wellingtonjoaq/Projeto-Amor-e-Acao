@@ -64,8 +64,13 @@
     </div>
 
     <div class="form-group">
+      <label>Cursos Matriculados:</label>
+      <span th:each="m : ${aluno.matriculas}" th:text="${m.curso.nome}"></span>
+    </div>
+
+    <div class="form-group">
       <label for="statusAluno">Status</label>
-      <input id="statusAluno" name="nrCasa" type="text" th:value="${aluno.status}" th:disabled="${modo == 'visualizar'}" />
+      <input id="statusAluno" name="status" type="text" th:value="${aluno.status}" th:disabled="${modo == 'visualizar'}" />
     </div>
 
     <button type="submit" class="button-sav">Voltar</button>
