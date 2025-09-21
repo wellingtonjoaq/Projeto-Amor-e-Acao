@@ -64,6 +64,18 @@
     </div>
 
     <div class="form-group">
+      <label for="matriculasAluno">Cursos</label>
+      <select id="matriculasAluno" name="cursosSelecionados" multiple required>
+        <option th:each="curso : ${cursos}"
+                th:value="${curso.id}"
+                th:text="${curso.nome}"
+                th:selected="${aluno.matriculas != null and aluno.matriculas.?[curso.id == curso.id]}">
+        </option>
+      </select>
+    </div>
+
+
+    <div class="form-group">
       <label for="statusAluno">Status</label>
       <select id="statusAluno" name="status" required>
         <option value="ATIVO" th:selected="${aluno.status == 'ATIVO'}">ATIVO</option>

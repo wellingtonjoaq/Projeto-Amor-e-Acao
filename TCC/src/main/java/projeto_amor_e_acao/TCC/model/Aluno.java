@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -39,11 +40,9 @@ public class Aluno {
     @Column(nullable = false, length = 20)
     private String status;
 
-    /*
     @OneToMany(mappedBy = "aluno", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Matricula> matriculas;
-     */
 
 
 }

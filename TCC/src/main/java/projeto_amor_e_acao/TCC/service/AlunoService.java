@@ -15,12 +15,13 @@ public class AlunoService {
     private AlunoRepository repository;
 
     @Transactional
-    public void salvar(Aluno aluno) {
+    public Aluno salvar(Aluno aluno) {
             if (aluno.getNome().isBlank() || aluno.getCpf().isBlank() || aluno.getStatus().isBlank()){
-                return;
+                return aluno;
             }
-            //aluno.getMatriculas().forEach(matricula -> matricula.setAluno(aluno));
-            repository.save(aluno);
+            aluno.getMatriculas().forEach(matricula -> matricula.setAluno(aluno));
+
+        return repository.save(aluno);
     }
 
     public List<Aluno> listarTodos() {

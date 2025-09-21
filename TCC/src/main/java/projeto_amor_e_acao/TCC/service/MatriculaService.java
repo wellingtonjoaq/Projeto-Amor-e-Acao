@@ -3,9 +3,7 @@ package projeto_amor_e_acao.TCC.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import projeto_amor_e_acao.TCC.model.Curso;
 import projeto_amor_e_acao.TCC.model.Matricula;
-import projeto_amor_e_acao.TCC.repository.CursoRepository;
 import projeto_amor_e_acao.TCC.repository.MatriculaRepository;
 
 import java.util.List;

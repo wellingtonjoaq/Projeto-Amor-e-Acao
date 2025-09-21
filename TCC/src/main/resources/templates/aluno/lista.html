@@ -24,6 +24,7 @@
             <th>#</th>
             <th>Nome</th>
             <th>CPF</th>
+            <th>Cursos</th>
             <th>Status</th>
             <th>Ações</th>
         </tr>
@@ -33,6 +34,7 @@
             <td th:text="${aluno.id}">1</td>
             <td th:text="${aluno.nome}">Nome</td>
             <td th:text="${aluno.cpf}">CPF</td>
+            <td th:text="${aluno.matriculas[0].curso.nome}">Cursos</td>
             <td th:text="${aluno.status}">Status</td>
             <td class="actions">
                 <a th:href="@{'/aluno/vizualiza/' + ${aluno.id}}">Vizualizar</a>

@@ -1,10 +1,12 @@
 package projeto_amor_e_acao.TCC.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
@@ -60,9 +62,7 @@ public class Curso {
     @Column(nullable = false, length = 20)
     private String status;
 
-    /*
     @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Matricula> matriculas;
-    */
 }
