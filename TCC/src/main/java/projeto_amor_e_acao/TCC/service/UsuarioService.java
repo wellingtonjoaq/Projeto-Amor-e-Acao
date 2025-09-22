@@ -30,13 +30,22 @@ public class UsuarioService {
         Usuario usuarioExistente = usuarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
+        Optional<Usuario> existingUserWithEmail = usuarioRepository.findByEmail(usuarioAtualizado.getEmail());
+        if (existingUserWithEmail.isPresent() && !existingUserWithEmail.get().getId().equals(id)) {
+            throw new IllegalArgumentException("E-mail já está em uso");
+        }
+
         usuarioExistente.setNome(usuarioAtualizado.getNome());
         usuarioExistente.setEmail(usuarioAtualizado.getEmail());
         usuarioExistente.setCargo(usuarioAtualizado.getCargo());
         usuarioExistente.setStatus(usuarioAtualizado.getStatus());
         usuarioExistente.setFotoPerfil(usuarioAtualizado.getFotoPerfil());
 
+        // Lógica de atualização da senha:
         if (usuarioAtualizado.getSenha() != null && !usuarioAtualizado.getSenha().isBlank()) {
+            if (usuarioAtualizado.getSenha().length() < 6) {
+                throw new IllegalArgumentException("A senha deve ter no mínimo 6 caracteres.");
+            }
             usuarioExistente.setSenha(passwordEncoder.encode(usuarioAtualizado.getSenha()));
         }
 
@@ -44,13 +53,27 @@ public class UsuarioService {
     }
 
     public Usuario save(Usuario usuario) {
-        //Impedir e-mail duplicado
+        // Validação para novos usuários
+        if (usuario.getId() == null) {
+            if (usuario.getSenha() == null || usuario.getSenha().isBlank()) {
+                throw new IllegalArgumentException("A senha é obrigatória para novos usuários.");
+            }
+            if (usuario.getSenha().length() < 6) {
+                throw new IllegalArgumentException("A senha deve ter no mínimo 6 caracteres.");
+            }
+        }
+
         usuarioRepository.findByEmail(usuario.getEmail())
                 .ifPresent(existing -> {
-                    if (!existing.getId().equals(usuario.getId())) {
+                    if (usuario.getId() == null || !existing.getId().equals(usuario.getId())) {
                         throw new IllegalArgumentException("E-mail já está em uso");
                     }
                 });
+
+        // Criptografa a senha somente se ela existir e não estiver em branco.
+        if (usuario.getSenha() != null && !usuario.getSenha().isBlank()) {
+            usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
+        }
 
         return usuarioRepository.save(usuario);
     }
@@ -65,7 +88,7 @@ public class UsuarioService {
         {
             long adminsAtivos = usuarioRepository.findAll().stream().filter(
                     u -> u.getCargo() == Usuario.Cargo.USUARIO_ADMINISTRADOR
-                    && u.getStatus() == Usuario.Status.ATIVO).count();
+                            && u.getStatus() == Usuario.Status.ATIVO).count();
 
             if (adminsAtivos <= 1) {
                 throw new IllegalStateException(

@@ -33,6 +33,19 @@ public class EmpresaParceiraController {
         return "empresasParceiras/formulario";
     }
 
+    @GetMapping("/visualizar/{id}")
+    public String visualizarEmpresaParceira(@PathVariable Long id, Model model) {
+        Optional<EmpresaParceira> empresaParceira = empresaParceiraService.findById(id);
+        if (empresaParceira.isPresent()) {
+            model.addAttribute("empresa", empresaParceira.get());
+            return "empresasParceiras/visualizar";
+        } else {
+            model.addAttribute("errorMessage",
+                    "Empresa parceira não encontrada.");
+            return "redirect:/empresasParceiras";
+        }
+    }
+
     @GetMapping("/editar/{id}")
     public String editarEmpresaParceira(@PathVariable Long id, Model model) {
         Optional<EmpresaParceira> empresaParceira = empresaParceiraService.findById(id);

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Visualizar Empresa Parceira</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<div th:replace="/navbar/dashboard :: menu"></div>
+
+<div class="container">
+
+  <h1>Visualizar Empresa Parceira</h1>
+
+  <form class="form-adm">
+    <input type="hidden" name="id" th:value="${empresa.id}" disabled="true" />
+
+    <div class="form-group">
+      <label for="nomeEmpresa">Nome da Empresa</label>
+      <input id="nomeEmpresa" name="nome_empresa" type="text" th:value="${empresa.nome_empresa}" disabled="true" />
+    </div>
+
+    <div class="form-group">
+      <label for="cnpjEmpresa">CNPJ</label>
+      <input id="cnpjEmpresa" name="cnpj" type="text" th:value="${empresa.cnpj}" disabled="true" />
+    </div>
+
+    <div class="form-group">
+      <label for="enderecoEmpresa">Endereço</label>
+      <input id="enderecoEmpresa" name="endereco" type="text" th:value="${empresa.endereco}" disabled="true" />
+    </div>
+
+    <div class="form-group">
+      <label for="representanteEmpresa">Nome do Representante</label>
+      <input id="representanteEmpresa" name="nome_representante" type="text" th:value="${empresa.nome_representante}" disabled="true" />
+    </div>
+
+    <div class="form-group">
+      <label for="cpfRepresentanteEmpresa">CPF do Representante</label>
+      <input id="cpfRepresentanteEmpresa" name="cpf_representante" type="text" th:value="${empresa.cpf_representante}" disabled="true" />
+    </div>
+
+    <div class="form-group">
+      <label for="emailEmpresa">Email</label>
+      <input id="emailEmpresa" name="email" type="email" th:value="${empresa.email}" disabled="true" />
+    </div>
+
+    <div class="form-group">
+      <label for="dataInicioEmpresa">Data de Início</label>
+      <input id="dataInicioEmpresa" name="data_inicio" type="text" th:value="${empresa.data_inicio}" disabled="true" />
+    </div>
+
+    <div class="form-group">
+      <label for="dataFimEmpresa">Data de Fim</label>
+      <input id="dataFimEmpresa" name="data_fim" type="text" th:value="${empresa.data_fim}" disabled="true" />
+    </div>
+
+    <div class="form-group">
+      <label for="telefoneEmpresa">Telefone</label>
+      <input id="telefoneEmpresa" name="telefone" type="text" th:value="${empresa.telefone}" disabled="true" />
+    </div>
+
+    <div class="form-group">
+      <label for="objetivoEmpresa">Objetivo</label>
+      <input id="objetivoEmpresa" name="objetivo" type="text" th:value="${empresa.objetivo}" disabled="true" />
+    </div>
+
+    <div class="form-group">
+      <label for="termosEmpresa">Termos</label>
+      <input id="termosEmpresa" name="termos" type="text" th:value="${empresa.termos}" disabled="true" />
+    </div>
+
+    <div class="form-group">
+      <label for="statusEmpresa">Status</label>
+      <input id="statusEmpresa" name="status" type="text" th:value="${empresa.status}" disabled="true" />
+    </div>
+
+    <a th:href="@{/empresasParceiras}" class="button-sav">Voltar</a>
+  </form>
+</div>
+
+</body>
+</html>
