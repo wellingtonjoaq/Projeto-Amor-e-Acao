@@ -24,9 +24,7 @@
             <th>ID</th>
             <th>Nome</th>
             <th>Email</th>
-            <th>Cargo</th>
             <th>Status</th>
-            <th>Foto de Perfil</th>
             <th>Ações</th>
         </tr>
         </thead>
@@ -35,15 +33,9 @@
             <td data-label="ID" th:text="${user.id}">1</td>
             <td data-label="Nome" th:text="${user.nome}">Nome</td>
             <td data-label="Email" th:text="${user.email}">email@example.com</td>
-            <td data-label="Cargo" th:text="${user.cargo}">USUARIO_SIMPLES</td>
             <td data-label="Status" th:text="${user.status}">ATIVO</td>
-            <td data-label="Foto de Perfil">
-                <img th:if="${user.fotoPerfil != null}" th:src="${user.fotoPerfil}"
-                     alt="Foto de Perfil"
-                     style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;" />
-                <span th:if="${user.fotoPerfil == null}">N/A</span>
-            </td>
             <td data-label="Ações" class="actions">
+                <a th:href="@{/usuarios/visualizar/{id}(id=${user.id})}" class="btn-visualizar">Visualizar</a>
                 <a th:href="@{/usuarios/editar/{id}(id=${user.id})}">Editar</a>
                 <form th:action="@{/usuarios/deletar/{id}(id=${user.id})}" method="post">
                     <button type="submit" class="delete-btn" onclick="return confirm('Tem certeza que deseja excluir este usuário?');">Excluir</button>

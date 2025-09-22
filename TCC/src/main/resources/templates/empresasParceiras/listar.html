@@ -24,6 +24,7 @@
             <th>ID</th>
             <th>Nome da Empresa</th>
             <th>CNPJ</th>
+            <th>Representante</th>
             <th>Status</th>
             <th>Ações</th>
         </tr>
@@ -33,13 +34,11 @@
             <td th:text="${empresa.id}"></td>
             <td th:text="${empresa.nome_empresa}"></td>
             <td th:text="${empresa.cnpj}"></td>
+            <td th:text="${empresa.nome_representante}"></td>
             <td th:text="${empresa.status}"></td>
             <td class="actions">
-                <button type="button"
-                        th:attr="onclick=|showDetails('${empresa.id}','${empresa.nome_empresa}','${empresa.cnpj}','${empresa.endereco}','${empresa.nome_representante}','${empresa.cpf_representante}','${empresa.email}','${empresa.data_inicio}','${empresa.data_fim}','${empresa.telefone}','${empresa.objetivo}','${empresa.termos}','${empresa.status}')|">
-                    Visualizar
-                </button>
-                <a th:href="@{/empresasParceiras/editar/{id}(id=${empresa.id})}">Editar</a>
+                <a th:href="@{'/empresasParceiras/visualizar/' + ${empresa.id}}" class="btn-visualizar">Visualizar</a>
+                <a th:href="@{/empresasParceiras/editar/{id}(id=${empresa.id})}" class="btn-editar">Editar</a>
                 <form th:action="@{/empresasParceiras/{id}(id=${empresa.id})}" method="post" style="display:inline;">
                     <input type="hidden" name="_method" value="delete"/>
                     <button type="submit" class="delete-btn" onclick="return confirm('Tem certeza que deseja deletar esta empresa?');">Deletar</button>
@@ -50,14 +49,5 @@
     </table>
 </div>
 
-<div id="detailsModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2>Detalhes da Empresa Parceira</h2>
-            <span class="close" onclick="closeModal()">&times;</span>
-        </div>
-        <div class="modal-body" id="modalBody"></div>
-    </div>
-</div>
 </body>
 </html>
