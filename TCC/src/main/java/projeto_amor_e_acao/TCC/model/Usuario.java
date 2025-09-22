@@ -33,10 +33,6 @@ public class Usuario implements UserDetails {
     @jakarta.validation.constraints.Email(message = "E-mail inválido")
     private String email;
 
-    @Column(nullable = false)
-    @jakarta.validation.constraints.NotBlank(message = "A senha é obrigatória")
-    @jakarta.validation.constraints.Size(
-            min = 6, message = "A senha deve ter no mínimo 6 caracteres")
     private String senha;
 
     @Enumerated(EnumType.STRING)
