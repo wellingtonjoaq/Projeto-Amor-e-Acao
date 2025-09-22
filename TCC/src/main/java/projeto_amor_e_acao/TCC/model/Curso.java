@@ -39,17 +39,17 @@ public class Curso {
     @Column
     private String endereco;
 
-    @Column
+    @Column(name = "nr_local")
     private String nrLocal;
 
-    @Column
+    @Column(name = "carga_horaria")
     private int cargaHoraria;
 
-    @Column
+    @Column(name = "data_inicio")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataInicio;
 
-    @Column
+    @Column(name = "data_fim")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataFim;
 
