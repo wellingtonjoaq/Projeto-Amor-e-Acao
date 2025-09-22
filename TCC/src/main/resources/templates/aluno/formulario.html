@@ -69,7 +69,7 @@
         <option th:each="curso : ${cursos}"
                 th:value="${curso.id}"
                 th:text="${curso.nome}"
-                th:selected="${aluno.matriculas != null and aluno.matriculas.?[curso.id == curso.id]}">
+                th:selected="${aluno.matriculas != null and #lists.contains(aluno.matriculas.![curso.id], curso.id)}">
         </option>
       </select>
     </div>

@@ -31,8 +31,7 @@ public class AlunoController {
 
     @GetMapping("editar/{id}")
     public String editar(@PathVariable Long id, Model model) {
-        Aluno aluno = service.buscarPorId(id);
-        model.addAttribute("aluno", aluno);
+        model.addAttribute("aluno", service.buscarPorId(id));
         model.addAttribute("cursos", cursoService.listarTodos());
         return "aluno/formulario";
     }
