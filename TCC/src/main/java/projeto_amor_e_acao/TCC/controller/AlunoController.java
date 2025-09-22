@@ -40,10 +40,8 @@ public class AlunoController {
     @PostMapping("salvar")
     public String salvar(Aluno aluno, @RequestParam("cursosSelecionados") List<Long> cursosIds, Model model) {
         try {
-            // Limpa matrículas antigas
             aluno.setMatriculas(new ArrayList<>());
 
-            // Para cada curso selecionado, cria uma matrícula
             for (Long cursoId : cursosIds) {
                 Curso curso = cursoService.buscarPorId(cursoId);
                 Matricula matricula = new Matricula();
@@ -52,7 +50,6 @@ public class AlunoController {
                 aluno.getMatriculas().add(matricula);
             }
 
-            // Salva aluno com todas as matrículas
             service.salvar(aluno);
 
             return "redirect:/aluno/listar";

@@ -22,15 +22,16 @@ public class Matricula {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_aluno")
+    @JoinColumn(name = "id_aluno", nullable = false)
     @JsonBackReference
     private Aluno aluno;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_curso")
+    @JoinColumn(name = "id_curso", nullable = false)
     @JsonBackReference
     private Curso curso;
 
+    @Column
     @DateTimeFormat(pattern = "yyyy/MM/dd")
     private LocalDate data = LocalDate.now();
 }
