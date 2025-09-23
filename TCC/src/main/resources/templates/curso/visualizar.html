@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Visualizar Curso</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<div th:replace="/navbar/dashboard :: menu"></div>
+
+<div class="container">
+
+    <div class="header-bar">
+        <h1 th:text="${curso.id == null ? 'Novo Curso' : (modo == 'visualizar' ? 'Visualizar Curso' : 'Editar Curso')}"></h1>
+        <a th:href="@{/curso/listar}" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Voltar
+        </a>
+    </div>
+
+    <form class="form-adm">
+        <input type="hidden" name="id" th:value="${curso.id}" th:disabled="${modo == 'visualizar'}" />
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label for="nomeCurso">Nome</label>
+                <input id="nomeCurso" name="nome" type="text" th:value="${curso.nome}" th:disabled="${modo == 'visualizar'}" />
+            </div>
+
+            <div class="form-group">
+                <label for="professorCurso">Professor</label>
+                <input id="professorCurso" name="professor" type="text" th:value="${curso.professor}" th:disabled="${modo == 'visualizar'}" />
+            </div>
+
+            <div class="form-group">
+                <label for="formacaoCurso">Formação</label>
+                <input id="formacaoCurso" name="formacao" type="text" th:value="${curso.formacao}" th:disabled="${modo == 'visualizar'}" />
+            </div>
+
+            <div class="form-group">
+                <label for="cepCurso">CEP</label>
+                <input id="cepCurso" name="cep" type="text" th:value="${curso.cep}" th:disabled="${modo == 'visualizar'}" />
+            </div>
+
+            <div class="form-group">
+                <label for="bairroCurso">Bairro</label>
+                <input id="bairroCurso" name="bairro" type="text" th:value="${curso.bairro}" th:disabled="${modo == 'visualizar'}" />
+            </div>
+
+            <div class="form-group">
+                <label for="enderecoCurso">Endereço</label>
+                <input id="enderecoCurso" name="endereco" type="text" th:value="${curso.endereco}" th:disabled="${modo == 'visualizar'}" />
+            </div>
+
+            <div class="form-group">
+                <label for="nrLocalCurso">Número</label>
+                <input id="nrLocalCurso" name="nrLocal" type="text" th:value="${curso.nrLocal}" th:disabled="${modo == 'visualizar'}" />
+            </div>
+
+            <div class="form-group">
+                <label for="cargaHorariaCurso">Carga Horária</label>
+                <input id="cargaHorariaCurso" name="cargaHoraria" type="number" th:value="${curso.cargaHoraria}" th:disabled="${modo == 'visualizar'}" />
+            </div>
+
+            <div class="form-group">
+                <label for="dataInicioCurso">Data Início</label>
+                <input id="dataInicioCurso" name="dataInicio" type="date" th:value="${curso.dataInicio}" th:disabled="${modo == 'visualizar'}" />
+            </div>
+
+            <div class="form-group">
+                <label for="dataFimCurso">Data Fim</label>
+                <input id="dataFimCurso" name="dataFim" type="date" th:value="${curso.dataFim}" th:disabled="${modo == 'visualizar'}" />
+            </div>
+
+            <div class="form-group">
+                <label for="fotoCurso">Foto (URL)</label>
+                <input id="fotoCurso" name="foto" type="text" th:value="${curso.foto}" th:disabled="${modo == 'visualizar'}" />
+            </div>
+
+            <div class="form-group" style="grid-column: 1 / -1;">
+                <label for="descricaoCurso">Descrição</label>
+                <textarea id="descricaoCurso" name="descricao" th:text="${curso.descricao}" th:disabled="${modo == 'visualizar'}"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="statusCurso">Status</label>
+                <input id="statusCurso" name="status" type="text" th:value="${curso.status}" th:disabled="${modo == 'visualizar'}" />
+            </div>
+
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
