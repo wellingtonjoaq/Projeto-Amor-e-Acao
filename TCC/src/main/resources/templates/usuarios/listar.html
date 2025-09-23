@@ -12,11 +12,14 @@
 <div th:replace="/navbar/dashboard :: menu"></div>
 
 <div class="container">
-    <div class="navigation">
-        <a th:href="@{/usuarios/novo}">Cadastrar Usuário</a>
+    <div class="header-bar">
+        <div class="header-title">
+            <h1>Listagem de Usuários</h1>
+        </div>
+        <div class="header-action">
+            <a class="btn-create" th:href="@{/usuarios/novo}">Cadastrar Usuário</a>
+        </div>
     </div>
-
-    <h1>Listagem de Usuários</h1>
 
     <table>
         <thead>

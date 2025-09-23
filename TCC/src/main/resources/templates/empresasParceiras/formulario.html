@@ -5,179 +5,109 @@
     <title>Formulário de Empresa Parceira</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" th:href="@{/css/style.css}" />
-    <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 <body>
+
 <div th:replace="/navbar/dashboard :: menu"></div>
 
 <div class="container">
-    <h1
-            th:text="${empresaParceira.id == null ? 'Nova Empresa Parceira' : 'Editar Empresa Parceira'}"
-    ></h1>
+        <h1 th:text="${empresaParceira.id == null ? 'Nova Empresa Parceira' : 'Editar Empresa Parceira'}"></h1>
 
-    <div
-            th:if="${successMessage}"
-            class="alert alert-success"
-            role="alert"
-    >
+    <div th:if="${successMessage}" class="alert alert-success" role="alert">
         <p th:text="${successMessage}"></p>
     </div>
+
     <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
         <p th:text="${errorMessage}"></p>
     </div>
 
-    <!-- Formulário de Cadastro / Edição -->
-    <form
-            th:action="@{/empresasParceiras}"
-            th:object="${empresaParceira}"
-            method="post"
-            class="form-adm"
-    >
+    <form th:action="@{/empresasParceiras}" th:object="${empresaParceira}" method="post" class="form-adm">
         <input type="hidden" th:field="*{id}" />
 
-        <div class="form-group">
-            <label for="nome_empresa">
-                Nome da Empresa:
-                <span
-                        th:if="${#fields.hasErrors('nome_empresa')}"
-                        th:errors="*{nome_empresa}"
-                        class="error"
-                ></span>
-            </label>
-            <input type="text" id="nome_empresa" th:field="*{nome_empresa}" required />
-        </div>
+        <div class="form-grid">
 
-        <div class="form-group">
-            <label for="cnpj">
-                CNPJ:
+            <div class="form-group">
+                <label for="nome_empresa">Nome da Empresa</label>
+                <input type="text" id="nome_empresa" th:field="*{nome_empresa}" required />
+                <span th:if="${#fields.hasErrors('nome_empresa')}" th:errors="*{nome_empresa}" class="error"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="cnpj">CNPJ</label>
+                <input type="text" id="cnpj" th:field="*{cnpj}" required />
                 <span th:if="${#fields.hasErrors('cnpj')}" th:errors="*{cnpj}" class="error"></span>
-            </label>
-            <input type="text" id="cnpj" th:field="*{cnpj}" required />
-        </div>
+            </div>
 
-        <div class="form-group">
-            <label for="endereco">
-                Endereço:
+            <div class="form-group">
+                <label for="endereco">Endereço</label>
+                <input type="text" id="endereco" th:field="*{endereco}" />
                 <span th:if="${#fields.hasErrors('endereco')}" th:errors="*{endereco}" class="error"></span>
-            </label>
-            <input type="text" id="endereco" th:field="*{endereco}" />
-        </div>
+            </div>
 
-        <div class="form-group">
-            <label for="nome_representante">
-                Nome do Representante:
-                <span
-                        th:if="${#fields.hasErrors('nome_representante')}"
-                        th:errors="*{nome_representante}"
-                        class="error"
-                ></span>
-            </label>
-            <input
-                    type="text"
-                    id="nome_representante"
-                    th:field="*{nome_representante}"
-                    required
-            />
-        </div>
+            <div class="form-group">
+                <label for="nome_representante">Nome do Representante</label>
+                <input type="text" id="nome_representante" th:field="*{nome_representante}" required />
+                <span th:if="${#fields.hasErrors('nome_representante')}" th:errors="*{nome_representante}" class="error"></span>
+            </div>
 
-        <div class="form-group">
-            <label for="cpf_representante">
-                CPF do Representante:
-                <span
-                        th:if="${#fields.hasErrors('cpf_representante')}"
-                        th:errors="*{cpf_representante}"
-                        class="error"
-                ></span>
-            </label>
-            <input type="text" id="cpf_representante" th:field="*{cpf_representante}" />
-        </div>
+            <div class="form-group">
+                <label for="cpf_representante">CPF do Representante</label>
+                <input type="text" id="cpf_representante" th:field="*{cpf_representante}" />
+                <span th:if="${#fields.hasErrors('cpf_representante')}" th:errors="*{cpf_representante}" class="error"></span>
+            </div>
 
-        <div class="form-group">
-            <label for="email">
-                Email:
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" id="email" th:field="*{email}" />
                 <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></span>
-            </label>
-            <input type="text" id="email" th:field="*{email}" />
-        </div>
+            </div>
 
-        <div class="form-group">
-            <label for="data_inicio">
-                Data de Início:
-                <span
-                        th:if="${#fields.hasErrors('data_inicio')}"
-                        th:errors="*{data_inicio}"
-                        class="error"
-                ></span>
-            </label>
-            <input type="date" id="data_inicio" th:field="*{data_inicio}" required />
-        </div>
+            <div class="form-group">
+                <label for="data_inicio">Data de Início</label>
+                <input type="date" id="data_inicio" th:field="*{data_inicio}" required />
+                <span th:if="${#fields.hasErrors('data_inicio')}" th:errors="*{data_inicio}" class="error"></span>
+            </div>
 
-        <div class="form-group">
-            <label for="data_fim">
-                Data de Fim:
-                <span
-                        th:if="${#fields.hasErrors('data_fim')}"
-                        th:errors="*{data_fim}"
-                        class="error"
-                ></span>
-            </label>
-            <input type="date" id="data_fim" th:field="*{data_fim}" />
-        </div>
+            <div class="form-group">
+                <label for="data_fim">Data de Fim</label>
+                <input type="date" id="data_fim" th:field="*{data_fim}" />
+                <span th:if="${#fields.hasErrors('data_fim')}" th:errors="*{data_fim}" class="error"></span>
+            </div>
 
-        <div class="form-group">
-            <label for="telefone">
-                Telefone:
+            <div class="form-group">
+                <label for="telefone">Telefone</label>
+                <input type="text" id="telefone" th:field="*{telefone}" />
                 <span th:if="${#fields.hasErrors('telefone')}" th:errors="*{telefone}" class="error"></span>
-            </label>
-            <input type="text" id="telefone" th:field="*{telefone}" />
-        </div>
+            </div>
 
-        <div class="form-group">
-            <label for="objetivo">
-                Objetivo:
-                <span
-                        th:if="${#fields.hasErrors('objetivo')}"
-                        th:errors="*{objetivo}"
-                        class="error"
-                ></span>
-            </label>
-            <input type="text" id="objetivo" th:field="*{objetivo}" />
-        </div>
+            <div class="form-group">
+                <label for="objetivo">Objetivo</label>
+                <input type="text" id="objetivo" th:field="*{objetivo}" />
+                <span th:if="${#fields.hasErrors('objetivo')}" th:errors="*{objetivo}" class="error"></span>
+            </div>
 
-        <div class="form-group">
-            <label for="termos">
-                Termos:
-                <span
-                        th:if="${#fields.hasErrors('termos')}"
-                        th:errors="*{termos}"
-                        class="error"
-                ></span>
-            </label>
-            <input type="text" id="termos" th:field="*{termos}" />
-        </div>
+            <div class="form-group">
+                <label for="termos">Termos</label>
+                <input type="text" id="termos" th:field="*{termos}" />
+                <span th:if="${#fields.hasErrors('termos')}" th:errors="*{termos}" class="error"></span>
+            </div>
 
-        <div class="form-group">
-            <label for="status">
-                Status:
-                <span
-                        th:if="${#fields.hasErrors('status')}"
-                        th:errors="*{status}"
-                        class="error"
-                ></span>
-            </label>
-            <select id="status" th:field="*{status}" required>
-                <option value="ATIVO">ATIVO</option>
-                <option value="INATIVO">INATIVO</option>
-            </select>
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select id="status" th:field="*{status}" required>
+                    <option value="ATIVO">ATIVO</option>
+                    <option value="INATIVO">INATIVO</option>
+                </select>
+                <span th:if="${#fields.hasErrors('status')}" th:errors="*{status}" class="error"></span>
+            </div>
+
         </div>
 
         <button type="submit" class="button-sav">Salvar</button>
     </form>
-    </div>
 
 </div>
+
 </body>
 </html>

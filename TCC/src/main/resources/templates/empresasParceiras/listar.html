@@ -12,11 +12,14 @@
 <div th:replace="/navbar/dashboard :: menu"></div>
 
 <div class="container">
-    <div class="navigation">
-        <a th:href="@{/empresasParceiras/novo}">Nova Empresa Parceira</a>
+    <div class="header-bar">
+        <div class="header-title">
+            <h1>Lista de Empresas Parceiras</h1>
+        </div>
+        <div class="header-action">
+            <a  class="btn-create" th:href="@{/empresasParceiras/novo}">Cadastrar Parceria</a>
+        </div>
     </div>
-
-    <h1>Lista de Empresas Parceiras</h1>
 
     <table>
         <thead>
@@ -41,7 +44,7 @@
                 <a th:href="@{/empresasParceiras/editar/{id}(id=${empresa.id})}" class="btn-editar">Editar</a>
                 <form th:action="@{/empresasParceiras/{id}(id=${empresa.id})}" method="post" style="display:inline;">
                     <input type="hidden" name="_method" value="delete"/>
-                    <button type="submit" class="delete-btn" onclick="return confirm('Tem certeza que deseja deletar esta empresa?');">Deletar</button>
+                    <button type="submit" class="delete-btn" onclick="return confirm('Tem certeza que deseja deletar esta empresa?');">Excluir</button>
                 </form>
             </td>
         </tr>

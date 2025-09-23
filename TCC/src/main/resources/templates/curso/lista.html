@@ -12,11 +12,14 @@
 <div th:replace="/navbar/dashboard :: menu"></div>
 
 <div class="container">
-    <div class="navigation">
-        <a th:href="@{/curso}">Cadastrar Curso</a>
+    <div class="header-bar">
+        <div class="header-title">
+            <h1>Listagem de Cursos</h1>
+        </div>
+        <div class="header-action">
+            <a  class="btn-create" th:href="@{/curso}">Cadastrar Curso</a>
+        </div>
     </div>
-
-    <h1>Listagem de Cursos</h1>
 
     <table>
         <thead>
@@ -55,7 +58,7 @@
 <!--            <td th:text="${curso.descricao}">Descrição</td>-->
             <td th:text="${curso.status}">ATIVO</td>
             <td class="actions">
-                <a th:href="@{'/curso/vizualiza/' + ${curso.id}}">Vizualizar</a>
+                <a th:href="@{'/curso/vizualiza/' + ${curso.id}}" class="btn-visualizar">Visualizar</a>
                 <a th:href="@{'/curso/editar/' + ${curso.id}}">Editar</a>
                 <form th:action="@{'/curso/remover/' + ${curso.id}}"  style="display:inline;">
                     <button type="submit" class="delete-btn" onclick="return confirm('Deseja excluir este curso?');">Excluir</button>
