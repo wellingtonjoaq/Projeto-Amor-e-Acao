@@ -40,7 +40,7 @@
             <td th:text="${aluno.matriculas[0].curso.nome}">Cursos</td>
             <td th:text="${aluno.status}">Status</td>
             <td class="actions">
-                <a th:href="@{'/aluno/vizualiza/' + ${aluno.id}}" class="btn-visualizar">Visualizar</a>
+                <a th:href="@{'/aluno/visualiza/' + ${aluno.id}}" class="btn-visualizar">Visualizar</a>
                 <a th:href="@{'/aluno/editar/' + ${aluno.id}}">Editar</a>
                 <form th:action="@{'/aluno/remover/' + ${aluno.id}}" style="display:inline;">
                     <button type="submit" class="delete-btn" onclick="return confirm('Tem certeza que deseja remover este aluno?');">Remover</button>
