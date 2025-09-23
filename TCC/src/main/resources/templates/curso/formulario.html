@@ -12,84 +12,84 @@
 <div th:replace="/navbar/dashboard :: menu"></div>
 
 <div class="container">
-    <div class="navigation">
-        <a th:href="@{/curso/listar}">Listar Cursos</a>
-    </div>
-
-    <h1 th:text="${curso.id == null ? 'Novo Curso' : 'Editar Curso'}"></h1>
+        <h1 th:text="${curso.id == null ? 'Novo Curso' : 'Editar Curso'}"></h1>
 
     <form th:action="@{/curso/salvar}" method="post" class="form-adm">
         <input type="hidden" name="id" th:value="${curso.id}" />
 
-        <div class="form-group">
-            <label for="nomeCurso">Nome</label>
-            <input id="nomeCurso" name="nome" type="text" th:value="${curso.nome}" required />
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label for="nomeCurso">Nome</label>
+                <input id="nomeCurso" name="nome" type="text" th:value="${curso.nome}" required />
+            </div>
+
+            <div class="form-group">
+                <label for="professorCurso">Professor</label>
+                <input id="professorCurso" name="professor" type="text" th:value="${curso.professor}" />
+            </div>
+
+            <div class="form-group">
+                <label for="formacaoCurso">Formação</label>
+                <input id="formacaoCurso" name="formacao" type="text" th:value="${curso.formacao}" />
+            </div>
+
+            <div class="form-group">
+                <label for="cepCurso">CEP</label>
+                <input id="cepCurso" name="cep" type="text" th:value="${curso.cep}" />
+            </div>
+
+            <div class="form-group">
+                <label for="bairroCurso">Bairro</label>
+                <input id="bairroCurso" name="bairro" type="text" th:value="${curso.bairro}" />
+            </div>
+
+            <div class="form-group">
+                <label for="enderecoCurso">Endereço</label>
+                <input id="enderecoCurso" name="endereco" type="text" th:value="${curso.endereco}" />
+            </div>
+
+            <div class="form-group">
+                <label for="nrLocalCurso">Número</label>
+                <input id="nrLocalCurso" name="nrLocal" type="text" th:value="${curso.nrLocal}" />
+            </div>
+
+            <div class="form-group">
+                <label for="cargaHorariaCurso">Carga Horária</label>
+                <input id="cargaHorariaCurso" name="cargaHoraria" type="number" th:value="${curso.cargaHoraria}" />
+            </div>
+
+            <div class="form-group">
+                <label for="dataInicioCurso">Data de Início</label>
+                <input id="dataInicioCurso" name="dataInicio" type="date" th:value="${curso.dataInicio}" required />
+            </div>
+
+            <div class="form-group">
+                <label for="dataFimCurso">Data de Fim</label>
+                <input id="dataFimCurso" name="dataFim" type="date" th:value="${curso.dataFim}" />
+            </div>
+
+            <div class="form-group">
+                <label for="fotoCurso">Foto (URL)</label>
+                <input id="fotoCurso" name="foto" type="text" th:value="${curso.foto}" />
+            </div>
+
+            <div class="form-group">
+                <label for="descricaoCurso">Descrição</label>
+                <input id="descricaoCurso" name="descricao" type="text" th:value="${curso.descricao}" />
+            </div>
+
+            <div class="form-group">
+                <label for="statusCurso">Status</label>
+                <select id="statusCurso" name="status" required>
+                    <option value="ATIVO" th:selected="${curso.status == 'ATIVO'}">ATIVO</option>
+                    <option value="INATIVO" th:selected="${curso.status == 'INATIVO'}">INATIVO</option>
+                </select>
+            </div>
+
         </div>
 
-        <div class="form-group">
-            <label for="professorCurso">Professor</label>
-            <input id="professorCurso" name="professor" type="text" th:value="${curso.professor}" />
-        </div>
-
-        <div class="form-group">
-            <label for="formacaoCurso">Formação</label>
-            <input id="formacaoCurso" name="formacao" type="text" th:value="${curso.formacao}" />
-        </div>
-
-        <div class="form-group">
-            <label for="cepCurso">CEP</label>
-            <input id="cepCurso" name="cep" type="text" th:value="${curso.cep}" />
-        </div>
-
-        <div class="form-group">
-            <label for="bairroCurso">Bairro</label>
-            <input id="bairroCurso" name="bairro" type="text" th:value="${curso.bairro}" />
-        </div>
-
-        <div class="form-group">
-            <label for="enderecoCurso">Endereço</label>
-            <input id="enderecoCurso" name="endereco" type="text" th:value="${curso.endereco}" />
-        </div>
-
-        <div class="form-group">
-            <label for="nrLocalCurso">Número</label>
-            <input id="nrLocalCurso" name="nrLocal" type="text" th:value="${curso.nrLocal}" />
-        </div>
-
-        <div class="form-group">
-            <label for="cargaHorariaCurso">Carga Horária</label>
-            <input id="cargaHorariaCurso" name="cargaHoraria" type="number" th:value="${curso.cargaHoraria}" />
-        </div>
-
-        <div class="form-group">
-            <label for="dataInicioCurso">Data de Início</label>
-            <input id="dataInicioCurso" name="dataInicio" type="date" th:value="${curso.dataInicio}" required />
-        </div>
-
-        <div class="form-group">
-            <label for="dataFimCurso">Data de Fim</label>
-            <input id="dataFimCurso" name="dataFim" type="date" th:value="${curso.dataFim}" />
-        </div>
-
-        <div class="form-group">
-            <label for="fotoCurso">Foto (URL)</label>
-            <input id="fotoCurso" name="foto" type="text" th:value="${curso.foto}" />
-        </div>
-
-        <div class="form-group">
-            <label for="descricaoCurso">Descrição</label>
-            <input id="descricaoCurso" name="descricao" type="text" th:value="${curso.descricao}" />
-        </div>
-
-        <div class="form-group">
-            <label for="statusCurso">Status</label>
-            <select id="statusCurso" name="status" required>
-                <option value="ATIVO" th:selected="${curso.status == 'ATIVO'}">ATIVO</option>
-                <option value="INATIVO" th:selected="${curso.status == 'INATIVO'}">INATIVO</option>
-            </select>
-        </div>
-
-        <button type="submit" class="button-sav">Salvar</button>
+        <button type="submit" class="button-sav">Salvar Curso</button>
     </form>
 </div>
 

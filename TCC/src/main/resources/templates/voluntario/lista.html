@@ -12,11 +12,14 @@
 <div th:replace="/navbar/dashboard :: menu"></div>
 
 <div class="container">
-    <div class="navigation">
-        <a th:href="@{/voluntario}">Cadastrar Voluntario</a>
+    <div class="header-bar">
+        <div class="header-title">
+            <h1>Lista de Voluntario</h1>
+        </div>
+        <div class="header-action">
+            <a  class="btn-create" th:href="@{/voluntario}">Cadastrar Voluntario</a>
+        </div>
     </div>
-
-    <h1>Lista de Voluntario</h1>
 
     <table>
         <thead>
@@ -37,10 +40,10 @@
             <td th:text="${voluntario.funcao}">Função</td>
             <td th:text="${voluntario.status}">Status</td>
             <td class="actions">
-                <a th:href="@{'/voluntario/vizualiza/' + ${voluntario.id}}">Vizualizar</a>
+                <a th:href="@{'/voluntario/vizualiza/' + ${voluntario.id}}" class="btn-visualizar">Visualizar</a>
                 <a th:href="@{'/voluntario/editar/' + ${voluntario.id}}">Editar</a>
                 <form th:action="@{'/voluntario/remover/' + ${voluntario.id}}" style="display:inline;">
-                    <button type="submit" class="delete-btn" onclick="return confirm('Tem certeza que deseja remover este voluntario?');">Remover</button>
+                    <button type="submit" class="delete-btn" onclick="return confirm('Tem certeza que deseja remover este voluntario?');">Excluir</button>
                 </form>
             </td>
         </tr>
