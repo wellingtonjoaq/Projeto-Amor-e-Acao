@@ -2,6 +2,8 @@ package projeto_amor_e_acao.TCC.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import org.hibernate.validator.constraints.br.CPF;
 
@@ -22,10 +24,12 @@ public class Voluntario {
     private String nome;
 
     @Column(unique = true)
+    @NotBlank(message = "O campo cpf é obrigatório")
+    @CPF(message = "CPF Invalido")
     private String cpf;
 
     @Column(unique = true)
-    @Email
+    @Email(message = "Email invalido")
     private String email;
 
     @Column
@@ -56,5 +60,6 @@ public class Voluntario {
     private String estado;
 
     @Column(nullable = false, length = 20)
+    @NotBlank(message = "O campo status é obrigatório")
     private String status;
 }

@@ -1,6 +1,7 @@
 package projeto_amor_e_acao.TCC.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import projeto_amor_e_acao.TCC.model.Aluno;
@@ -16,13 +17,17 @@ public class AlunoService {
 
     @Transactional
     public Aluno salvar(Aluno aluno) {
-            if (aluno.getNome().isBlank() || aluno.getCpf().isBlank() || aluno.getStatus().isBlank()){
-                return aluno;
-            }
-            aluno.getMatriculas().forEach(matricula -> matricula.setAluno(aluno));
+        aluno.getMatriculas().forEach(matricula -> matricula.setAluno(aluno));
 
-        return repository.save(aluno);
+        try {
+            return repository.save(aluno);
+        } catch (DataIntegrityViolationException e) {
+            throw new IllegalStateException("Já existe um aluno cadastrado com este CPF ou E-mail.");
+        } catch (Exception e) {
+            throw new RuntimeException("Erro inesperado ao salvar aluno.", e);
+        }
     }
+
 
     public List<Aluno> listarTodos() {
         var result = repository.findAll();

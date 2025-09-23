@@ -1,8 +1,10 @@
 package projeto_amor_e_acao.TCC.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import projeto_amor_e_acao.TCC.model.Aluno;
 import projeto_amor_e_acao.TCC.model.Curso;
@@ -29,31 +31,34 @@ public class AlunoController {
         return "aluno/formulario";
     }
 
-    @GetMapping("editar/{id}")
-    public String editar(@PathVariable Long id, Model model) {
-        model.addAttribute("aluno", service.buscarPorId(id));
-        model.addAttribute("cursos", cursoService.listarTodos());
-        return "aluno/formulario";
-    }
+    @PostMapping("/salvar")
+    public String salvar(
+            @Valid Aluno aluno,
+            BindingResult result,
+            @RequestParam("cursosSelecionados") List<Long> cursosIds,
+            Model model) {
 
-    @PostMapping("salvar")
-    public String salvar(Aluno aluno, @RequestParam("cursosSelecionados") List<Long> cursosIds, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("cursos", cursoService.listarTodos());
+            model.addAttribute("aluno", aluno);
+            return "aluno/formulario";
+        }
+
         try {
-            aluno.setMatriculas(new ArrayList<>());
-
-            for (Long cursoId : cursosIds) {
+            cursosIds.forEach(cursoId -> {
                 Curso curso = cursoService.buscarPorId(cursoId);
                 Matricula matricula = new Matricula();
-                matricula.setAluno(aluno);
                 matricula.setCurso(curso);
+                matricula.setAluno(aluno);
                 aluno.getMatriculas().add(matricula);
-            }
+            });
 
             service.salvar(aluno);
-
             return "redirect:/aluno/listar";
+
         } catch (Exception e) {
-            model.addAttribute("erro", "Erro: " + e.getMessage());
+            model.addAttribute("erro", e.getMessage());
+            model.addAttribute("aluno", aluno);
             model.addAttribute("cursos", cursoService.listarTodos());
             return "aluno/formulario";
         }
@@ -66,11 +71,18 @@ public class AlunoController {
         return "aluno/lista";
     }
 
-    @GetMapping("vizualiza/{id}")
+    @GetMapping("visualiza/{id}")
     public String visualizar(@PathVariable Long id, Model model) {
         model.addAttribute("aluno", service.buscarPorId(id));
         model.addAttribute("modo", "visualizar");
-        return "aluno/vizualizar";
+        return "aluno/visualizar";
+    }
+
+    @GetMapping("editar/{id}")
+    public String editar(@PathVariable Long id, Model model) {
+        model.addAttribute("aluno", service.buscarPorId(id));
+        model.addAttribute("cursos", cursoService.listarTodos());
+        return "aluno/formulario";
     }
 
     @GetMapping("remover/{id}")

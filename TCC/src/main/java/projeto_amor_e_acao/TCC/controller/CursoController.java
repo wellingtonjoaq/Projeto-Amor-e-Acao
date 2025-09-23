@@ -1,8 +1,10 @@
 package projeto_amor_e_acao.TCC.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,23 +20,25 @@ public class CursoController {
     private CursoService service;
 
     @GetMapping()
-    public String iniciar(Curso curso, Model model) {
+    public String formulario(Curso curso, Model model) {
         return "curso/formulario";
     }
 
-    @PostMapping()
-    public String inserir(Curso curso, Model model) {
-        return iniciar(curso, model);
-    }
-
     @PostMapping("salvar")
-    public String salvar(Curso curso, Model model) {
+    public String salvar(@Valid Curso curso, BindingResult result, Model model) {
+
+        if (result.hasErrors()) {
+            model.addAttribute("curso", curso);
+            return "curso/formulario";
+        }
+
         try {
             service.salvar(curso);
             return "redirect:/curso/listar";
         } catch (Exception e) {
-            model.addAttribute("erro", "Erro: " + e.getMessage());
-            return iniciar(curso, model);
+            model.addAttribute("erro", e.getMessage());
+            model.addAttribute("curso", curso);
+            return "curso/formulario";
         }
     }
 
@@ -44,15 +48,15 @@ public class CursoController {
         return "curso/lista";
     }
 
-    @GetMapping("vizualiza/{id}")
-    public String vizualizar(@PathVariable Long id,Model model) {
+    @GetMapping("visualiza/{id}")
+    public String visualizar(@PathVariable Long id,Model model) {
         model.addAttribute("curso", service.buscarPorId(id));
         model.addAttribute("modo", "visualizar");
-        return "curso/vizualizar";
+        return "curso/visualizar";
     }
 
     @GetMapping("editar/{id}")
-    public String alterar(@PathVariable Long id, Model model) {
+    public String editar(@PathVariable Long id, Model model) {
         model.addAttribute("curso", service.buscarPorId(id));
         return "curso/formulario";
     }
