@@ -1,6 +1,7 @@
 package projeto_amor_e_acao.TCC.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import projeto_amor_e_acao.TCC.model.Aluno;
@@ -18,12 +19,11 @@ public class CursoService {
 
     @Transactional
     public void salvar(Curso curso) {
-
-        if (curso.getNome().isBlank() || curso.getStatus().isBlank()){
-            return;
+        try {
+            repository.save(curso);
+        } catch (Exception e) {
+            throw new RuntimeException("Erro inesperado ao salvar curso.", e);
         }
-        //curso.getMatriculas().forEach(matricula -> matricula.setCurso(curso));
-        repository.save(curso);
     }
 
     public List<Curso> listarTodos() {

@@ -1,6 +1,7 @@
 package projeto_amor_e_acao.TCC.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import projeto_amor_e_acao.TCC.model.Aluno;
@@ -18,7 +19,15 @@ public class VoluntarioService {
 
     @Transactional
     public void salvar(Voluntario voluntario) {
-        repository.save(voluntario);
+
+        try {
+            repository.save(voluntario);
+        } catch (
+        DataIntegrityViolationException e) {
+            throw new IllegalStateException("Já existe um voluntario cadastrado com este CPF ou E-mail.");
+        } catch (Exception e) {
+            throw new RuntimeException("Erro inesperado ao salvar voluntario.", e);
+        }
     }
 
     public List<Voluntario> listarTodos() {

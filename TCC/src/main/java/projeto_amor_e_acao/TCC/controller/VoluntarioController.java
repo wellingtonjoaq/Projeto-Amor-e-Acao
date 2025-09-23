@@ -1,8 +1,10 @@
 package projeto_amor_e_acao.TCC.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,23 +20,25 @@ public class VoluntarioController {
     private VoluntarioService service;
 
     @GetMapping()
-    public String iniciar(Voluntario voluntario, Model model) {
+    public String formulario(Voluntario voluntario, Model model) {
         return "voluntario/formulario";
     }
 
-    @PostMapping()
-    public String inserir(Voluntario voluntario, Model model) {
-        return iniciar(voluntario, model);
-    }
-
     @PostMapping("salvar")
-    public String salvar(Voluntario voluntario, Model model) {
+    public String salvar(@Valid Voluntario voluntario, BindingResult result, Model model) {
+
+        if (result.hasErrors()) {
+            model.addAttribute("voluntario", voluntario);
+            return "voluntario/formulario";
+        }
+
         try {
             service.salvar(voluntario);
             return "redirect:/voluntario/listar";
         } catch (Exception e) {
-            model.addAttribute("erro", "Algo de errado não deu certo: ");
-            return iniciar(voluntario, model);
+            model.addAttribute("erro", e.getMessage());
+            model.addAttribute("voluntario", voluntario);
+            return "voluntario/formulario";
         }
     }
 
@@ -44,7 +48,7 @@ public class VoluntarioController {
         return "voluntario/lista";
     }
 
-    @GetMapping("vizualiza/{id}")
+    @GetMapping("visualiza/{id}")
     public String vizualizar(@PathVariable Long id,Model model) {
         model.addAttribute("voluntario", service.buscarPorId(id));
         model.addAttribute("modo", "visualizar");

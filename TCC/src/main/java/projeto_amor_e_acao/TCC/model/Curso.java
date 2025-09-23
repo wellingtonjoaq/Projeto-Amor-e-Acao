@@ -2,6 +2,8 @@ package projeto_amor_e_acao.TCC.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -22,6 +24,8 @@ public class Curso {
     private Long id;
 
     @Column(nullable = false, length = 100)
+    @NotBlank(message = "O campo nome é obrigatório")
+    @Size(min = 3, max = 100)
     private String nome;
 
     @Column
@@ -60,6 +64,7 @@ public class Curso {
     private String descricao;
 
     @Column(nullable = false, length = 20)
+    @NotBlank(message = "O campo status é obrigatório")
     private String status;
 
     @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true)
