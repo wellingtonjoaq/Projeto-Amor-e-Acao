@@ -37,7 +37,7 @@
             <td th:text="${aluno.id}">1</td>
             <td th:text="${aluno.nome}">Nome</td>
             <td th:text="${aluno.cpf}">CPF</td>
-            <td th:text="${aluno.matriculas[0].curso.nome}">Cursos</td>
+            <td th:text="${aluno.matriculas != null and !aluno.matriculas.isEmpty() ? aluno.matriculas[0].curso.nome : 'Sem curso'}"></td>
             <td th:text="${aluno.status}">Status</td>
             <td class="actions">
                 <a th:href="@{'/aluno/visualiza/' + ${aluno.id}}" class="btn-visualizar">Visualizar</a>
