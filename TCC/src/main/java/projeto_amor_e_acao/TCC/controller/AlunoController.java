@@ -11,7 +11,6 @@ import projeto_amor_e_acao.TCC.model.Curso;
 import projeto_amor_e_acao.TCC.model.Matricula;
 import projeto_amor_e_acao.TCC.service.AlunoService;
 import projeto_amor_e_acao.TCC.service.CursoService;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -56,7 +55,12 @@ public class AlunoController {
             service.salvar(aluno);
             return "redirect:/aluno/listar";
 
-        } catch (Exception e) {
+        }
+        catch (IllegalStateException e){
+            model.addAttribute("erro", e.getMessage());
+            return "aluno/formulario";
+        }
+        catch (Exception e) {
             model.addAttribute("erro", e.getMessage());
             model.addAttribute("aluno", aluno);
             model.addAttribute("cursos", cursoService.listarTodos());
@@ -74,7 +78,6 @@ public class AlunoController {
     @GetMapping("visualiza/{id}")
     public String visualizar(@PathVariable Long id, Model model) {
         model.addAttribute("aluno", service.buscarPorId(id));
-        model.addAttribute("modo", "visualizar");
         return "aluno/visualizar";
     }
 

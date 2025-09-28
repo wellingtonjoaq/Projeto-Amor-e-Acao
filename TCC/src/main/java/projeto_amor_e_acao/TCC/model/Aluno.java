@@ -33,7 +33,7 @@ public class Aluno {
     private String cpf;
 
     @Column(unique = true)
-    @Email
+    @Email(message = "Email Invalido")
     @Size(max = 255)
     private String email;
 
@@ -57,7 +57,7 @@ public class Aluno {
 
     @Column(nullable = false, length = 20)
     @NotBlank(message = "O campo status é obrigatório")
-    private String status;
+    private String status = "ATIVO";
 
     @OneToMany(mappedBy = "aluno", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
@@ -67,7 +67,7 @@ public class Aluno {
     @PreUpdate
     private void normalize() {
         if (cpf != null) {
-            cpf = cpf.replaceAll("\\D", ""); // salva só números
+            cpf = cpf.replaceAll("\\D", "");
         }
         if (email != null) {
             email = email.trim().toLowerCase();
