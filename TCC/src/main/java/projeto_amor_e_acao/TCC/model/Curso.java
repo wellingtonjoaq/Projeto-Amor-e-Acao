@@ -25,7 +25,7 @@ public class Curso {
 
     @Column(nullable = false, length = 100)
     @NotBlank(message = "O campo nome é obrigatório")
-    @Size(min = 3, max = 100)
+    @Size(min = 3, max = 100, message = "Deve conter no minimo 3 e no maximo 100 caracteres")
     private String nome;
 
     @Column
@@ -65,7 +65,7 @@ public class Curso {
 
     @Column(nullable = false, length = 20)
     @NotBlank(message = "O campo status é obrigatório")
-    private String status;
+    private String status = "ATIVO";
 
     @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference

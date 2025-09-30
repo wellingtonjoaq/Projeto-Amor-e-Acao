@@ -35,7 +35,12 @@ public class CursoController {
         try {
             service.salvar(curso);
             return "redirect:/curso/listar";
-        } catch (Exception e) {
+        }
+        catch (IllegalStateException e){
+            model.addAttribute("erro", e.getMessage());
+            return "curso/formulario";
+        }
+        catch (Exception e) {
             model.addAttribute("erro", e.getMessage());
             model.addAttribute("curso", curso);
             return "curso/formulario";
@@ -51,7 +56,6 @@ public class CursoController {
     @GetMapping("visualiza/{id}")
     public String visualizar(@PathVariable Long id,Model model) {
         model.addAttribute("curso", service.buscarPorId(id));
-        model.addAttribute("modo", "visualizar");
         return "curso/visualizar";
     }
 

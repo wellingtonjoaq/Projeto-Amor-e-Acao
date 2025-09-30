@@ -35,7 +35,12 @@ public class VoluntarioController {
         try {
             service.salvar(voluntario);
             return "redirect:/voluntario/listar";
-        } catch (Exception e) {
+        }
+        catch (IllegalStateException e){
+            model.addAttribute("erro", e.getMessage());
+            return "voluntario/formulario";
+        }
+        catch (Exception e) {
             model.addAttribute("erro", e.getMessage());
             model.addAttribute("voluntario", voluntario);
             return "voluntario/formulario";
@@ -49,14 +54,13 @@ public class VoluntarioController {
     }
 
     @GetMapping("visualiza/{id}")
-    public String vizualizar(@PathVariable Long id,Model model) {
+    public String visualizar(@PathVariable Long id,Model model) {
         model.addAttribute("voluntario", service.buscarPorId(id));
-        model.addAttribute("modo", "visualizar");
-        return "voluntario/vizualizar";
+        return "voluntario/visualizar";
     }
 
     @GetMapping("editar/{id}")
-    public String alterar(@PathVariable Long id, Model model) {
+    public String editar(@PathVariable Long id, Model model) {
         model.addAttribute("voluntario", service.buscarPorId(id));
         return "voluntario/formulario";
     }

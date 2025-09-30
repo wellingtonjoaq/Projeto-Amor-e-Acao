@@ -40,7 +40,7 @@
             <td th:text="${voluntario.funcao}">Função</td>
             <td th:text="${voluntario.status}">Status</td>
             <td class="actions">
-                <a th:href="@{'/voluntario/vizualiza/' + ${voluntario.id}}" class="btn-visualizar">Visualizar</a>
+                <a th:href="@{'/voluntario/visualiza/' + ${voluntario.id}}" class="btn-visualizar">Visualizar</a>
                 <a th:href="@{'/voluntario/editar/' + ${voluntario.id}}">Editar</a>
                 <form th:action="@{'/voluntario/remover/' + ${voluntario.id}}" style="display:inline;">
                     <button type="submit" class="delete-btn" onclick="return confirm('Tem certeza que deseja remover este voluntario?');">Excluir</button>

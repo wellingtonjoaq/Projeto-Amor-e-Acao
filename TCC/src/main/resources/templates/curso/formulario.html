@@ -12,79 +12,110 @@
 <div th:replace="/navbar/dashboard :: menu"></div>
 
 <div class="container">
-        <h1 th:text="${curso.id == null ? 'Novo Curso' : 'Editar Curso'}"></h1>
+    <h1 th:text="${curso.id == null ? 'Novo Curso' : 'Editar Curso'}"></h1>
 
-    <form th:action="@{/curso/salvar}" method="post" class="form-adm">
-        <input type="hidden" name="id" th:value="${curso.id}" />
+    <div th:if="${erro}" class="erroGlobal">
+        <p th:text="${erro}"></p>
+    </div>
+
+    <!-- Binding do objeto curso -->
+    <form th:action="@{/curso/salvar}" th:object="${curso}" method="post" class="form-adm">
+        <input type="hidden" th:field="*{id}" />
 
         <div class="form-grid">
 
             <div class="form-group">
-                <label for="nomeCurso">Nome</label>
-                <input id="nomeCurso" name="nome" type="text" th:value="${curso.nome}" required />
+                <label for="nomeCurso">Nome
+                    <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error"></span>
+                </label>
+                <input id="nomeCurso" type="text" th:field="*{nome}" required />
             </div>
 
             <div class="form-group">
-                <label for="professorCurso">Professor</label>
-                <input id="professorCurso" name="professor" type="text" th:value="${curso.professor}" />
+                <label for="professorCurso">Professor
+                    <span th:if="${#fields.hasErrors('professor')}" th:errors="*{professor}" class="error"></span>
+                </label>
+                <input id="professorCurso" type="text" th:field="*{professor}" />
             </div>
 
             <div class="form-group">
-                <label for="formacaoCurso">Formação</label>
-                <input id="formacaoCurso" name="formacao" type="text" th:value="${curso.formacao}" />
+                <label for="formacaoCurso">Formação
+                    <span th:if="${#fields.hasErrors('formacao')}" th:errors="*{formacao}" class="error"></span>
+                </label>
+                <input id="formacaoCurso" type="text" th:field="*{formacao}" />
             </div>
 
             <div class="form-group">
-                <label for="cepCurso">CEP</label>
-                <input id="cepCurso" name="cep" type="text" th:value="${curso.cep}" />
+                <label for="cepCurso">CEP
+                    <span th:if="${#fields.hasErrors('cep')}" th:errors="*{cep}" class="error"></span>
+                </label>
+                <input id="cepCurso" type="text" th:field="*{cep}" />
             </div>
 
             <div class="form-group">
-                <label for="bairroCurso">Bairro</label>
-                <input id="bairroCurso" name="bairro" type="text" th:value="${curso.bairro}" />
+                <label for="bairroCurso">Bairro
+                    <span th:if="${#fields.hasErrors('bairro')}" th:errors="*{bairro}" class="error"></span>
+                </label>
+                <input id="bairroCurso" type="text" th:field="*{bairro}" />
             </div>
 
             <div class="form-group">
-                <label for="enderecoCurso">Endereço</label>
-                <input id="enderecoCurso" name="endereco" type="text" th:value="${curso.endereco}" />
+                <label for="enderecoCurso">Endereço
+                    <span th:if="${#fields.hasErrors('endereco')}" th:errors="*{endereco}" class="error"></span>
+                </label>
+                <input id="enderecoCurso" type="text" th:field="*{endereco}" />
             </div>
 
             <div class="form-group">
-                <label for="nrLocalCurso">Número</label>
-                <input id="nrLocalCurso" name="nrLocal" type="text" th:value="${curso.nrLocal}" />
+                <label for="nrLocalCurso">Número
+                    <span th:if="${#fields.hasErrors('nrLocal')}" th:errors="*{nrLocal}" class="error"></span>
+                </label>
+                <input id="nrLocalCurso" type="text" th:field="*{nrLocal}" />
             </div>
 
             <div class="form-group">
-                <label for="cargaHorariaCurso">Carga Horária</label>
-                <input id="cargaHorariaCurso" name="cargaHoraria" type="number" th:value="${curso.cargaHoraria}" />
+                <label for="cargaHorariaCurso">Carga Horária
+                    <span th:if="${#fields.hasErrors('cargaHoraria')}" th:errors="*{cargaHoraria}" class="error"></span>
+                </label>
+                <input id="cargaHorariaCurso" type="number" th:field="*{cargaHoraria}" />
             </div>
 
             <div class="form-group">
-                <label for="dataInicioCurso">Data de Início</label>
-                <input id="dataInicioCurso" name="dataInicio" type="date" th:value="${curso.dataInicio}" required />
+                <label for="dataInicioCurso">Data de Início
+                    <span th:if="${#fields.hasErrors('dataInicio')}" th:errors="*{dataInicio}" class="error"></span>
+                </label>
+                <input id="dataInicioCurso" type="date" th:field="*{dataInicio}" required />
             </div>
 
             <div class="form-group">
-                <label for="dataFimCurso">Data de Fim</label>
-                <input id="dataFimCurso" name="dataFim" type="date" th:value="${curso.dataFim}" />
+                <label for="dataFimCurso">Data de Fim
+                    <span th:if="${#fields.hasErrors('dataFim')}" th:errors="*{dataFim}" class="error"></span>
+                </label>
+                <input id="dataFimCurso" type="date" th:field="*{dataFim}" />
             </div>
 
             <div class="form-group">
-                <label for="fotoCurso">Foto (URL)</label>
-                <input id="fotoCurso" name="foto" type="text" th:value="${curso.foto}" />
+                <label for="fotoCurso">Foto (URL)
+                    <span th:if="${#fields.hasErrors('foto')}" th:errors="*{foto}" class="error"></span>
+                </label>
+                <input id="fotoCurso" type="text" th:field="*{foto}" />
             </div>
 
             <div class="form-group">
-                <label for="descricaoCurso">Descrição</label>
-                <input id="descricaoCurso" name="descricao" type="text" th:value="${curso.descricao}" />
+                <label for="descricaoCurso">Descrição
+                    <span th:if="${#fields.hasErrors('descricao')}" th:errors="*{descricao}" class="error"></span>
+                </label>
+                <input id="descricaoCurso" type="text" th:field="*{descricao}" />
             </div>
 
-            <div class="form-group">
-                <label for="statusCurso">Status</label>
-                <select id="statusCurso" name="status" required>
-                    <option value="ATIVO" th:selected="${curso.status == 'ATIVO'}">ATIVO</option>
-                    <option value="INATIVO" th:selected="${curso.status == 'INATIVO'}">INATIVO</option>
-                </select>
+            <div th:if="${curso.id != null}">
+                <div class="form-group">
+                    <label for="statusCurso">Status</label>
+                    <select id="statusCurso" th:field="*{status}" required>
+                        <option value="ATIVO">ATIVO</option>
+                        <option value="INATIVO">INATIVO</option>
+                    </select>
+                </div>
             </div>
 
         </div>

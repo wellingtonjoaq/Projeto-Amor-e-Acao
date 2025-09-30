@@ -343,6 +343,13 @@ select {
     vertical-align: middle;
 }
 
+.erroGlobal{
+    padding: 8px 30px 8px 30px;
+    border: 3px solid rgba(255, 0, 0, 0.5);
+    background: rgba(255, 0, 0, 0.5);
+    margin-bottom: 15px;
+}
+
 .header-bar {
   width: 100%;
   display: flex;

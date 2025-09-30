@@ -14,60 +14,60 @@
 <div class="container">
 
   <div class="header-bar">
-    <h1 th:text="${aluno.id == null ? 'Novo Aluno' : (modo == 'visualizar' ? 'Visualizar Aluno' : 'Editar Aluno')}"></h1>
+    <h1>Visualizar Aluno</h1>
     <a th:href="@{/aluno/listar}" class="btn-back">
       <i class="fas fa-arrow-left"></i> Voltar
     </a>
   </div>
 
   <form class="form-adm">
-    <input type="hidden" name="id" th:value="${aluno.id}" th:disabled="${modo == 'visualizar'}" />
+    <input type="hidden" name="id" th:value="${aluno.id}" disabled />
 
     <div class="form-grid">
 
       <div class="form-group">
         <label for="nomeAluno">Nome</label>
-        <input id="nomeAluno" name="nome" type="text" th:value="${aluno.nome}" th:disabled="${modo == 'visualizar'}" />
+        <input id="nomeAluno" name="nome" type="text" th:value="${aluno.nome}" disabled />
       </div>
 
       <div class="form-group">
         <label for="cpfAluno">CPF</label>
-        <input id="cpfAluno" name="cpf" type="text" th:value="${aluno.cpf}" th:disabled="${modo == 'visualizar'}" />
+        <input id="cpfAluno" name="cpf" type="text" th:value="${aluno.cpf}" disabled />
       </div>
 
       <div class="form-group">
         <label for="emailAluno">Email</label>
-        <input id="emailAluno" name="email" type="email" th:value="${aluno.email}" th:disabled="${modo == 'visualizar'}" />
+        <input id="emailAluno" name="email" type="email" th:value="${aluno.email}" disabled />
       </div>
 
       <div class="form-group">
         <label for="telefoneAluno">Telefone</label>
-        <input id="telefoneAluno" name="telefone" type="text" th:value="${aluno.telefone}" th:disabled="${modo == 'visualizar'}" />
+        <input id="telefoneAluno" name="telefone" type="text" th:value="${aluno.telefone}" disabled />
       </div>
 
       <div class="form-group">
         <label for="generoAluno">Gênero</label>
-        <input id="generoAluno" name="genero" type="text" th:value="${aluno.genero}" th:disabled="${modo == 'visualizar'}" />
+        <input id="generoAluno" name="genero" type="text" th:value="${aluno.genero}" disabled />
       </div>
 
       <div class="form-group">
         <label for="cepAluno">CEP</label>
-        <input id="cepAluno" name="cep" type="text" th:value="${aluno.cep}" th:disabled="${modo == 'visualizar'}" />
+        <input id="cepAluno" name="cep" type="text" th:value="${aluno.cep}" disabled />
       </div>
 
       <div class="form-group">
         <label for="bairroAluno">Bairro</label>
-        <input id="bairroAluno" name="bairro" type="text" th:value="${aluno.bairro}" th:disabled="${modo == 'visualizar'}" />
+        <input id="bairroAluno" name="bairro" type="text" th:value="${aluno.bairro}" disabled />
       </div>
 
       <div class="form-group">
         <label for="enderecoAluno">Endereço</label>
-        <input id="enderecoAluno" name="endereco" type="text" th:value="${aluno.endereco}" th:disabled="${modo == 'visualizar'}" />
+        <input id="enderecoAluno" name="endereco" type="text" th:value="${aluno.endereco}" disabled />
       </div>
 
       <div class="form-group">
         <label for="nrCasaAluno">Número</label>
-        <input id="nrCasaAluno" name="nrCasa" type="text" th:value="${aluno.nrCasa}" th:disabled="${modo == 'visualizar'}" />
+        <input id="nrCasaAluno" name="nrCasa" type="text" th:value="${aluno.nrCasa}" disabled />
       </div>
 
       <div class="form-group" style="grid-column: 1 / -1;">
@@ -79,7 +79,7 @@
 
       <div class="form-group">
         <label for="statusAluno">Status</label>
-        <input id="statusAluno" name="status" type="text" th:value="${aluno.status}" th:disabled="${modo == 'visualizar'}" />
+        <input id="statusAluno" name="status" type="text" th:value="${aluno.status}" disabled />
       </div>
 
     </div>
