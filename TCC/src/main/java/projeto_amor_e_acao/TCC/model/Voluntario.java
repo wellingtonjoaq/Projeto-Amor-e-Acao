@@ -3,7 +3,6 @@ package projeto_amor_e_acao.TCC.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import org.hibernate.validator.constraints.br.CPF;
 
@@ -61,5 +60,16 @@ public class Voluntario {
 
     @Column(nullable = false, length = 20)
     @NotBlank(message = "O campo status é obrigatório")
-    private String status;
+    private String status = "ATIVO";
+
+    @PrePersist
+    @PreUpdate
+    private void normalize() {
+        if (cpf != null) {
+            cpf = cpf.replaceAll("\\D", "");
+        }
+        if (email != null) {
+            email = email.trim().toLowerCase();
+        }
+    }
 }
