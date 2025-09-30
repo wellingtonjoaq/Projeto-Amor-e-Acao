@@ -24,21 +24,22 @@ public class EmpresaParceiraController {
     public String listarEmpresasParceiras(Model model) {
         List<EmpresaParceira> empresasParceiras = empresaParceiraService.findAll();
         model.addAttribute("empresasParceiras", empresasParceiras);
-        return "empresasParceiras/listar";
+        return "empresaParceira/listar";
     }
 
     @GetMapping("/novo")
     public String novoEmpresaParceira(Model model) {
         model.addAttribute("empresaParceira", new EmpresaParceira());
-        return "empresasParceiras/formulario";
+        return "empresaParceira/formulario";
     }
 
     @GetMapping("/visualizar/{id}")
     public String visualizarEmpresaParceira(@PathVariable Long id, Model model) {
         Optional<EmpresaParceira> empresaParceira = empresaParceiraService.findById(id);
+
         if (empresaParceira.isPresent()) {
             model.addAttribute("empresa", empresaParceira.get());
-            return "empresasParceiras/visualizar";
+            return "empresaParceira/visualizar";
         } else {
             model.addAttribute("errorMessage",
                     "Empresa parceira não encontrada.");
@@ -52,7 +53,7 @@ public class EmpresaParceiraController {
 
         if (empresaParceira.isPresent()) {
             model.addAttribute("empresaParceira", empresaParceira.get());
-            return "empresasParceiras/formulario";
+            return "empresaParceira/formulario";
         } else {
             model.addAttribute("errorMessage",
                     "Empresa parceira não encontrada.");
@@ -63,10 +64,10 @@ public class EmpresaParceiraController {
     @PostMapping
     public String salvarEmpresaParceira(
             @Valid @ModelAttribute("empresaParceira") EmpresaParceira empresaParceira,
-            BindingResult result, Model model, RedirectAttributes redirectAttributes) {
-
+            BindingResult result, Model model, RedirectAttributes redirectAttributes)
+    {
         if (result.hasErrors()) {
-            return "empresasParceiras/formulario";
+            return "empresaParceira/formulario";
         }
 
         try {
@@ -77,20 +78,25 @@ public class EmpresaParceiraController {
             return "redirect:/empresasParceiras";
         } catch (IllegalArgumentException e) {
             if (e.getMessage().contains("CNPJ")) {
-                result.rejectValue("cnpj", "error.cnpj", e.getMessage());
+                result.rejectValue(
+                        "cnpj", "error.cnpj", e.getMessage());
             } else if (e.getMessage().contains("data de fim")) {
-                result.rejectValue("data_fim", "error.data_fim", e.getMessage());
+                result.rejectValue(
+                        "data_fim", "error.data_fim", e.getMessage());
             } else if (e.getMessage().contains("E-mail")) {
-                result.rejectValue("email", "error.email", e.getMessage());
+                result.rejectValue(
+                        "email", "error.email", e.getMessage());
             } else if (e.getMessage().contains("data de início")) {
-                result.rejectValue("data_inicio", "error.data_inicio", e.getMessage());
+                result.rejectValue(
+                        "data_inicio", "error.data_inicio", e.getMessage());
             } else {
                 model.addAttribute("errorMessage", e.getMessage());
             }
-            return "empresasParceiras/formulario";
+
+            return "empresaParceira/formulario";
         } catch (IllegalStateException e) {
             model.addAttribute("errorMessage", e.getMessage());
-            return "empresasParceiras/formulario";
+            return "empresaParceira/formulario";
         }
     }
 
@@ -102,8 +108,10 @@ public class EmpresaParceiraController {
             redirectAttributes.addFlashAttribute("successMessage",
                     "Empresa parceira excluída com sucesso!");
         } catch (IllegalArgumentException | IllegalStateException e) {
-            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            redirectAttributes.addFlashAttribute(
+                    "errorMessage", e.getMessage());
         }
+
         return "redirect:/empresasParceiras";
     }
 }

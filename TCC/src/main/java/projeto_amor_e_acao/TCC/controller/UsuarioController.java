@@ -24,7 +24,7 @@ public class UsuarioController {
     public String listarUsuarios(Model model) {
         List<Usuario> usuarios = usuarioService.findAll();
         model.addAttribute("usuarios", usuarios);
-        return "usuarios/listar";
+        return "usuario/listar";
     }
 
     @GetMapping("/visualizar/{id}")
@@ -32,7 +32,7 @@ public class UsuarioController {
         Optional<Usuario> usuarioOptional = usuarioService.findById(id);
         if (usuarioOptional.isPresent()) {
             model.addAttribute("usuario", usuarioOptional.get());
-            return "usuarios/visualizar";
+            return "usuario/visualizar";
         } else {
             return "redirect:/usuarios";
         }
@@ -42,7 +42,7 @@ public class UsuarioController {
     public String exibirFormulario(Model model) {
         model.addAttribute("usuario", new Usuario());
         model.addAttribute("acao", "criar");
-        return "usuarios/formulario";
+        return "usuario/formulario";
     }
 
     @PostMapping
@@ -51,7 +51,7 @@ public class UsuarioController {
         if (result.hasErrors()) {
             model.addAttribute("usuario", usuario);
             model.addAttribute("acao", "criar");
-            return "usuarios/formulario";
+            return "usuario/formulario";
         }
 
         try {
@@ -65,7 +65,7 @@ public class UsuarioController {
             }
             model.addAttribute("usuario", usuario);
             model.addAttribute("acao", "criar");
-            return "usuarios/formulario";
+            return "usuario/formulario";
         }
     }
 
@@ -78,17 +78,18 @@ public class UsuarioController {
 
         model.addAttribute("usuario", usuario);
         model.addAttribute("acao", "editar");
-        return "usuarios/formulario";
+        return "usuario/formulario";
     }
 
     @PostMapping("/atualizar/{id}")
     public String atualizarUsuario(@PathVariable Long id,
                                    @Valid Usuario usuario,
-                                   BindingResult result, Model model) {
+                                   BindingResult result, Model model)
+    {
         if (result.hasFieldErrors("nome") || result.hasFieldErrors("email")) {
             model.addAttribute("usuario", usuario);
             model.addAttribute("acao", "editar");
-            return "usuarios/formulario";
+            return "usuario/formulario";
         }
 
         try {
@@ -96,18 +97,21 @@ public class UsuarioController {
             return "redirect:/usuarios";
         } catch (IllegalArgumentException e) {
             if (e.getMessage().contains("senha")) {
-                result.rejectValue("senha", "error.usuario", e.getMessage());
+                result.rejectValue(
+                        "senha", "error.usuario", e.getMessage());
             } else {
-                result.rejectValue("email", "error.usuario", e.getMessage());
+                result.rejectValue(
+                        "email", "error.usuario", e.getMessage());
             }
+
             model.addAttribute("usuario", usuario);
             model.addAttribute("acao", "editar");
-            return "usuarios/formulario";
+            return "usuario/formulario";
         } catch (Exception e) {
             model.addAttribute("usuario", usuario);
             model.addAttribute("acao", "editar");
             model.addAttribute("erro", e.getMessage());
-            return "usuarios/formulario";
+            return "usuario/formulario";
         }
     }
 
