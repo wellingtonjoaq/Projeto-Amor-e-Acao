@@ -3,6 +3,7 @@ package projeto_amor_e_acao.TCC.model;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -25,16 +26,18 @@ public class Curso {
 
     @Column(nullable = false, length = 100)
     @NotBlank(message = "O campo nome é obrigatório")
-    @Size(min = 3, max = 100, message = "Deve conter no minimo 3 e no maximo 100 caracteres")
+    @Size(min = 3, max = 100, message = "Deve conter entre 3 a 100 caracteres")
     private String nome;
 
     @Column
+    @NotBlank(message = "Professor é obrigatorio")
     private String professor;
 
     @Column
+    @NotBlank(message = "Formação é obrigatorio")
     private String formacao;
 
-    @Column
+    @Column(length = 8)
     private String cep;
 
     @Column
@@ -43,11 +46,12 @@ public class Curso {
     @Column
     private String endereco;
 
-    @Column(name = "nr_local")
+    @Column(name = "nr_local", length = 4)
     private String nrLocal;
 
     @Column(name = "carga_horaria")
-    private int cargaHoraria;
+    @NotBlank(message = "Carga Horaria é obrigatorio")
+    private String cargaHoraria;
 
     @Column(name = "data_inicio")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -70,4 +74,12 @@ public class Curso {
     @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Matricula> matriculas;
+
+    @PrePersist
+    @PreUpdate
+    private void normalizar(){
+        if (cep != null){
+            cep = cep.replaceAll("\\D", "");
+        }
+    }
 }

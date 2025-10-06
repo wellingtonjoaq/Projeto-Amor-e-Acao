@@ -18,7 +18,6 @@
         <p th:text="${erro}"></p>
     </div>
 
-    <!-- Binding do objeto curso -->
     <form th:action="@{/curso/salvar}" th:object="${curso}" method="post" class="form-adm">
         <input type="hidden" th:field="*{id}" />
 
@@ -77,7 +76,7 @@
                 <label for="cargaHorariaCurso">Carga Horária
                     <span th:if="${#fields.hasErrors('cargaHoraria')}" th:errors="*{cargaHoraria}" class="error"></span>
                 </label>
-                <input id="cargaHorariaCurso" type="number" th:field="*{cargaHoraria}" />
+                <input id="cargaHorariaCurso" type="text" th:field="*{cargaHoraria}" />
             </div>
 
             <div class="form-group">
@@ -112,6 +111,7 @@
                 <div class="form-group">
                     <label for="statusCurso">Status</label>
                     <select id="statusCurso" th:field="*{status}" required>
+                        <option value=" ">Selecionar</option>
                         <option value="ATIVO">ATIVO</option>
                         <option value="INATIVO">INATIVO</option>
                     </select>
