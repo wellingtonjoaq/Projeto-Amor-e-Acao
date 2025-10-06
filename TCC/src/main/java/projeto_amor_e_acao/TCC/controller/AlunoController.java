@@ -58,6 +58,7 @@ public class AlunoController {
         }
         catch (IllegalStateException e){
             model.addAttribute("erro", e.getMessage());
+            model.addAttribute("cursos", cursoService.listarTodos());
             return "aluno/formulario";
         }
         catch (Exception e) {

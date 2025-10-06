@@ -18,7 +18,6 @@
         <p th:text="${erro}"></p>
     </div>
 
-    <!-- Binding do objeto voluntario -->
     <form th:action="@{/voluntario/salvar}" th:object="${voluntario}" method="post" class="form-adm">
         <input type="hidden" th:field="*{id}" />
 
@@ -42,21 +41,39 @@
                 <label for="emailVoluntario">Email
                     <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></span>
                 </label>
-                <input id="emailVoluntario" type="email" th:field="*{email}" />
+                <input id="emailVoluntario" type="email" th:field="*{email}" required/>
             </div>
 
             <div class="form-group">
                 <label for="telefoneVoluntario">Telefone
                     <span th:if="${#fields.hasErrors('telefone')}" th:errors="*{telefone}" class="error"></span>
                 </label>
-                <input id="telefoneVoluntario" type="text" th:field="*{telefone}" />
+                <input id="telefoneVoluntario" type="text" th:field="*{telefone}" required/>
+            </div>
+
+            <div class="form-group">
+                <label for="generoVoluntario">Genero
+                    <span th:if="${#fields.hasErrors('genero')}" th:errors="*{genero}" class="error"></span>
+                </label>
+                <select id="generoVoluntario" th:field="*{genero}" required>
+                    <option value=" ">Selecionar</option>
+                    <option value="MASCULINO">MASCULINO</option>
+                    <option value="FEMININO">FEMININO</option>
+                    <option value="OUTRO">OUTRO</option>
+                </select>
             </div>
 
             <div class="form-group">
                 <label for="funcaoVoluntario">Função
                     <span th:if="${#fields.hasErrors('funcao')}" th:errors="*{funcao}" class="error"></span>
                 </label>
-                <input id="funcaoVoluntario" type="text" th:field="*{funcao}" />
+                <select id="funcaoVoluntario" th:field="*{funcao}" required>
+                    <option value=" ">Selecionar</option>
+                    <option value="Exemplo1">Exemplo1</option>
+                    <option value="Exemplo2">Exemplo2</option>
+                    <option value="Exemplo3">Exemplo3</option>
+                    <option value="Exemplo4">Exemplo4</option>
+                </select>
             </div>
 
             <div class="form-group">
@@ -98,20 +115,21 @@
                 <label for="cidadeVoluntario">Cidade
                     <span th:if="${#fields.hasErrors('cidade')}" th:errors="*{cidade}" class="error"></span>
                 </label>
-                <input id="cidadeVoluntario" type="text" th:field="*{cidade}" />
+                <input id="cidadeVoluntario" type="text" th:field="*{cidade}" required/>
             </div>
 
             <div class="form-group">
                 <label for="estadoVoluntario">Estado
                     <span th:if="${#fields.hasErrors('estado')}" th:errors="*{estado}" class="error"></span>
                 </label>
-                <input id="estadoVoluntario" type="text" th:field="*{estado}" />
+                <input id="estadoVoluntario" type="text" th:field="*{estado}" required/>
             </div>
 
             <div th:if="${voluntario.id != null}">
                 <div class="form-group">
                     <label for="statusVoluntario">Status</label>
                     <select id="statusVoluntario" th:field="*{status}" required>
+                        <option value=" ">Selecionar</option>
                         <option value="ATIVO">ATIVO</option>
                         <option value="INATIVO">INATIVO</option>
                     </select>
