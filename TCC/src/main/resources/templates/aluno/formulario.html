@@ -24,59 +24,88 @@
     <div class="form-grid">
 
       <div class="form-group">
-        <label for="nomeAluno">Nome<span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error"></span>
+        <label for="nomeAluno">
+          Nome
+          <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error"></span>
         </label>
-        <input id="nomeAluno" type="text" th:field="*{nome}" required />
+        <input id="nomeAluno"
+               type="text"
+               th:field="*{nome}"
+               th:classappend="${#fields.hasErrors('nome')} ? ' field-error' : ''"
+               required />
       </div>
 
       <div class="form-group">
-        <label for="cpfAluno">CPF<span th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}" class="error"></span>
+        <label for="cpfAluno">
+          CPF
+          <span th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}" class="error"></span>
         </label>
-        <input id="cpfAluno" type="text" th:field="*{cpf}" required />
+        <input id="cpfAluno"
+               type="text"
+               th:field="*{cpf}"
+               th:classappend="${#fields.hasErrors('cpf')} ? ' field-error' : ''"
+               required />
       </div>
 
       <div class="form-group">
-        <label for="emailAluno">Email<span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></span>
+        <label for="emailAluno">
+          Email
+          <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></span>
         </label>
-        <input id="emailAluno" type="email" th:field="*{email}" required/>
+        <input id="emailAluno"
+               type="email"
+               th:field="*{email}"
+               th:classappend="${#fields.hasErrors('email')} ? ' field-error' : ''"
+               required />
       </div>
 
       <div class="form-group">
-        <label for="telefoneAluno">Telefone<span th:if="${#fields.hasErrors('telefone')}" th:errors="*{telefone}" class="error"></span>
+        <label for="telefoneAluno">
+          Telefone
+          <span th:if="${#fields.hasErrors('telefone')}" th:errors="*{telefone}" class="error"></span>
         </label>
-        <input id="telefoneAluno" type="text" th:field="*{telefone}" required/>
+        <input id="telefoneAluno"
+               type="text"
+               th:field="*{telefone}"
+               th:classappend="${#fields.hasErrors('telefone')} ? ' field-error' : ''"
+               required />
       </div>
 
       <div class="form-group">
-        <label for="generoAluno">Gênero<span th:if="${#fields.hasErrors('genero')}" th:errors="*{genero}" class="error"></span>
+        <label for="generoAluno">
+          Gênero
+          <span th:if="${#fields.hasErrors('genero')}" th:errors="*{genero}" class="error"></span>
         </label>
-        <select id="generoAluno" th:field="*{genero}" required>
-          <option value=" ">Selecionar</option>
-          <option value="MASCULINO">MASCULIINO</option>
+        <select id="generoAluno"
+                th:field="*{genero}"
+                th:classappend="${#fields.hasErrors('genero')} ? ' field-error' : ''"
+                required>
+          <option value="" hidden="hidden">Selecionar</option>
+          <option value="MASCULINO">MASCULINO</option>
           <option value="FEMININO">FEMININO</option>
         </select>
       </div>
 
       <div class="form-group">
-        <label for="cepAluno">CEP<span th:if="${#fields.hasErrors('cep')}" th:errors="*{cep}" class="error"></span>
+        <label for="cepAluno">CEP
         </label>
         <input id="cepAluno" type="text" th:field="*{cep}" />
       </div>
 
       <div class="form-group">
-        <label for="bairroAluno">Bairro<span th:if="${#fields.hasErrors('bairro')}" th:errors="*{bairro}" class="error"></span>
+        <label for="bairroAluno">Bairro
         </label>
         <input id="bairroAluno" type="text" th:field="*{bairro}" />
       </div>
 
       <div class="form-group">
-        <label for="enderecoAluno">Endereço<span th:if="${#fields.hasErrors('endereco')}" th:errors="*{endereco}" class="error"></span>
+        <label for="enderecoAluno">Endereço
         </label>
         <input id="enderecoAluno" type="text" th:field="*{endereco}" />
       </div>
 
       <div class="form-group">
-        <label for="nrCasaAluno">Número<span th:if="${#fields.hasErrors('nrCasa')}" th:errors="*{nrCasa}" class="error"></span>
+        <label for="nrCasaAluno">Número
         </label>
         <input id="nrCasaAluno" type="text" th:field="*{nrCasa}" />
       </div>
@@ -84,7 +113,8 @@
       <div class="form-group">
         <label for="matriculasAluno">Cursos<span th:if="${#fields.hasErrors('matriculas')}" th:errors="*{matriculas}" class="error"></span>
         </label>
-        <select id="matriculasAluno" name="cursosSelecionados" multiple required>
+        <select id="matriculasAluno" name="cursosSelecionados" required>
+          <option value=" " hidden="hidden">Selecionar</option>
           <option th:each="curso : ${cursos}"
                   th:value="${curso.id}"
                   th:text="${curso.nome}"
@@ -107,6 +137,7 @@
     </div>
 
     <button type="submit" class="button-sav">Salvar Aluno</button>
+    <a type="button" class="button-vol" th:href="@{/aluno/listar}">Voltar</a>
   </form>
 </div>
 
