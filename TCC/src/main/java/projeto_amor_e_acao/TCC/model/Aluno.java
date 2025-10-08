@@ -24,28 +24,28 @@ public class Aluno {
     private Long id;
 
     @Column(nullable = false, length = 100)
-    @NotBlank(message = "O campo nome é obrigatório")
-    @Size(min = 3, max = 100, message = "O nome deve conter no minimo 3 e no maximo 100 caracteres")
+    @NotBlank(message = "( Campo Obrigatório )")
+    @Size(min = 3, max = 100, message = "( Deve conter entre 3 a 100 caracteres )")
     private String nome;
 
     @Column(nullable = false, length = 14, unique = true)
-    @NotBlank(message = "O campo cpf é obrigatório")
-    @CPF(message = "CPF Invalido")
+    @NotBlank(message = "( Campo Obrigatório )")
+    @CPF(message = "( Campo Invalido )")
     private String cpf;
 
     @Column(unique = true)
-    @NotBlank(message = "Email é obrigatorio")
-    @Email(message = "Email Invalido")
+    @NotBlank(message = "( Campo Obrigatorio )")
+    @Email(message = "( Campo Invalido )")
     @Size(max = 255)
     private String email;
 
     @Column(length = 11)
-    @NotBlank(message = "Telefone é obrigatorio")
-    @Size(min = 11, max = 15, message = "Telefone Invalido")
+    @NotBlank(message = "( Campo Obrigatorio )")
+    @Size(min = 11, max = 15, message = "( Campo Invalido )")
     private String telefone;
 
     @Column(length = 9)
-    @NotBlank(message = "Genero é obrigatorio")
+    @NotBlank(message = "( Campo Obrigatorio )")
     private String genero;
 
     @Column(length = 8)
@@ -61,7 +61,7 @@ public class Aluno {
     private String nrCasa;
 
     @Column(nullable = false, length = 20)
-    @NotBlank(message = "O campo status é obrigatório")
+    @NotBlank(message = "( Campo Obrigatorio )")
     private String status = "ATIVO";
 
     @OneToMany(mappedBy = "aluno", cascade = CascadeType.ALL, orphanRemoval = true)

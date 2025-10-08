@@ -270,6 +270,19 @@ select {
   background-color: #004080;
 }
 
+.button-vol{
+      background-color: rgba(255, 0, 0, 0.9);
+      color: white;
+      border: none;
+      padding: 12px;
+      font-size: 16px;
+      font-family: Arial;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+}
+
 /* Modal base */
 .modal {
   display: none;
@@ -335,12 +348,22 @@ select {
   to {opacity: 1;}
 }
 
+label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
 .error {
-    color: red;
-    font-size: 0.9em;
-    margin-left: 5px;
-    display: inline;
-    vertical-align: middle;
+  color: red;
+  font-size: 16px;
+  padding-bottom: 3px;
+}
+
+.field-error {
+  border: 2px solid #ff4d4d !important;
+  outline: none;
 }
 
 .erroGlobal{
