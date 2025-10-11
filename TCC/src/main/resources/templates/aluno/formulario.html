@@ -28,11 +28,8 @@
           Nome
           <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error"></span>
         </label>
-        <input id="nomeAluno"
-               type="text"
-               th:field="*{nome}"
-               th:classappend="${#fields.hasErrors('nome')} ? ' field-error' : ''"
-               required />
+        <input id="nomeAluno" type="text" th:field="*{nome}"
+               th:classappend="${#fields.hasErrors('nome')} ? ' field-error' : ''" required />
       </div>
 
       <div class="form-group">
@@ -40,11 +37,8 @@
           CPF
           <span th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}" class="error"></span>
         </label>
-        <input id="cpfAluno"
-               type="text"
-               th:field="*{cpf}"
-               th:classappend="${#fields.hasErrors('cpf')} ? ' field-error' : ''"
-               required />
+        <input id="cpfAluno" type="text" th:field="*{cpf}"
+               th:classappend="${#fields.hasErrors('cpf')} ? ' field-error' : ''" required />
       </div>
 
       <div class="form-group">
@@ -52,11 +46,8 @@
           Email
           <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></span>
         </label>
-        <input id="emailAluno"
-               type="email"
-               th:field="*{email}"
-               th:classappend="${#fields.hasErrors('email')} ? ' field-error' : ''"
-               required />
+        <input id="emailAluno" type="email" th:field="*{email}"
+               th:classappend="${#fields.hasErrors('email')} ? ' field-error' : ''" required />
       </div>
 
       <div class="form-group">
@@ -64,11 +55,8 @@
           Telefone
           <span th:if="${#fields.hasErrors('telefone')}" th:errors="*{telefone}" class="error"></span>
         </label>
-        <input id="telefoneAluno"
-               type="text"
-               th:field="*{telefone}"
-               th:classappend="${#fields.hasErrors('telefone')} ? ' field-error' : ''"
-               required />
+        <input id="telefoneAluno" type="text" th:field="*{telefone}"
+               th:classappend="${#fields.hasErrors('telefone')} ? ' field-error' : ''" required />
       </div>
 
       <div class="form-group">
@@ -76,10 +64,8 @@
           Gênero
           <span th:if="${#fields.hasErrors('genero')}" th:errors="*{genero}" class="error"></span>
         </label>
-        <select id="generoAluno"
-                th:field="*{genero}"
-                th:classappend="${#fields.hasErrors('genero')} ? ' field-error' : ''"
-                required>
+        <select id="generoAluno" th:field="*{genero}"
+                th:classappend="${#fields.hasErrors('genero')} ? ' field-error' : ''" required>
           <option value="" hidden="hidden">Selecionar</option>
           <option value="MASCULINO">MASCULINO</option>
           <option value="FEMININO">FEMININO</option>
@@ -87,31 +73,28 @@
       </div>
 
       <div class="form-group">
-        <label for="cepAluno">CEP
-        </label>
-        <input id="cepAluno" type="text" th:field="*{cep}" />
+        <label for="cepAluno">CEP</label>
+        <input id="cepAluno" type="text" th:field="*{cep}" maxlength="9" placeholder="Ex: 01001-000" />
       </div>
 
       <div class="form-group">
-        <label for="bairroAluno">Bairro
-        </label>
+        <label for="bairroAluno">Bairro</label>
         <input id="bairroAluno" type="text" th:field="*{bairro}" />
       </div>
 
       <div class="form-group">
-        <label for="enderecoAluno">Endereço
-        </label>
+        <label for="enderecoAluno">Endereço</label>
         <input id="enderecoAluno" type="text" th:field="*{endereco}" />
       </div>
 
       <div class="form-group">
-        <label for="nrCasaAluno">Número
-        </label>
+        <label for="nrCasaAluno">Número</label>
         <input id="nrCasaAluno" type="text" th:field="*{nrCasa}" />
       </div>
 
       <div class="form-group">
-        <label for="matriculasAluno">Cursos<span th:if="${#fields.hasErrors('matriculas')}" th:errors="*{matriculas}" class="error"></span>
+        <label for="matriculasAluno">Cursos
+          <span th:if="${#fields.hasErrors('matriculas')}" th:errors="*{matriculas}" class="error"></span>
         </label>
         <select id="matriculasAluno" name="cursosSelecionados" required>
           <option value=" " hidden="hidden">Selecionar</option>
@@ -140,6 +123,28 @@
     <a type="button" class="button-vol" th:href="@{/aluno/listar}">Voltar</a>
   </form>
 </div>
+
+<script>
+  document.getElementById('cepAluno').addEventListener('blur', function() {
+    let cep = this.value.replace(/\D/g, '');
+
+    if (cep.length === 8) {
+      fetch(`https://viacep.com.br/ws/${cep}/json/`)
+        .then(response => response.json())
+        .then(data => {
+          if (!data.erro) {
+            document.getElementById('enderecoAluno').value = data.logradouro || '';
+            document.getElementById('bairroAluno').value = data.bairro || '';
+          } else {
+            alert('CEP não encontrado!');
+          }
+        })
+        .catch(() => alert('Erro ao buscar o CEP!'));
+    } else if (cep.length > 0) {
+      alert('CEP inválido! Digite 8 números.');
+    }
+  });
+</script>
 
 </body>
 </html>
