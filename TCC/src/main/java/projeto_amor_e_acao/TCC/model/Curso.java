@@ -3,14 +3,16 @@ package projeto_amor_e_acao.TCC.model;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import projeto_amor_e_acao.TCC.validation.DataInicioAntesDeDataFim;
 
 import java.time.LocalDate;
 import java.util.List;
 
+
+@DataInicioAntesDeDataFim
 @Entity
 @Getter
 @Setter
@@ -25,16 +27,16 @@ public class Curso {
     private Long id;
 
     @Column(nullable = false, length = 100)
-    @NotBlank(message = "O campo nome é obrigatório")
-    @Size(min = 3, max = 100, message = "Deve conter entre 3 a 100 caracteres")
+    @NotBlank(message = "( Campo Obrigatório )")
+    @Size(min = 3, max = 100, message = "( Deve conter entre 3 a 100 caracteres )")
     private String nome;
 
     @Column
-    @NotBlank(message = "Professor é obrigatorio")
+    @NotBlank(message = "( Campo Obrigatório )")
     private String professor;
 
     @Column
-    @NotBlank(message = "Formação é obrigatorio")
+    @NotBlank(message = "( Campo Obrigatório )")
     private String formacao;
 
     @Column(length = 8)
@@ -50,7 +52,7 @@ public class Curso {
     private String nrLocal;
 
     @Column(name = "carga_horaria")
-    @NotBlank(message = "Carga Horaria é obrigatorio")
+    @NotBlank(message = "( Campo Obrigatório )")
     private String cargaHoraria;
 
     @Column(name = "data_inicio")
@@ -68,7 +70,7 @@ public class Curso {
     private String descricao;
 
     @Column(nullable = false, length = 20)
-    @NotBlank(message = "O campo status é obrigatório")
+    @NotBlank(message = "( Campo Obrigatório )")
     private String status = "ATIVO";
 
     @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true)

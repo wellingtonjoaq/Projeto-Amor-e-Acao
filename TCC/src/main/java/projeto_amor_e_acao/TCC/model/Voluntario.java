@@ -21,57 +21,74 @@ public class Voluntario {
     @EqualsAndHashCode.Include
     private Long id;
 
-    @Column
+    @Column(nullable = false, length = 100)
+    @NotBlank(message = "( Campo Obrigatório )")
+    @Size(min = 3, max = 100, message = "( Deve conter entre 3 a 100 caracteres )")
     private String nome;
 
-    @Column(unique = true)
-    @NotBlank(message = "CPF é obrigatório")
-    @CPF(message = "CPF Invalido")
+    @Column(nullable = false, length = 14, unique = true)
+    @NotBlank(message = "( Campo Obrigatório )")
+    @CPF(message = "( Campo Invalido )")
     private String cpf;
 
-    @Column(unique = true)
-    @NotBlank(message = "Email é obrigatório")
-    @Email(message = "Email invalido")
+    @Column(nullable = false, unique = true)
+    @NotBlank(message = "( Campo Obrigatório )")
+    @Email(message = "( Campo Invalido )")
+    @Size(max = 255, message = "( Tamanho Excedido )")
     private String email;
 
-    @Column(length = 11)
-    @NotBlank(message = "Telefone é obrigatorio")
-    @Size(min = 11, max = 15, message = "Telefone Invalido")
+    @Column(nullable = false, length = 11)
+    @NotBlank(message = "( Campo Obrigatório )")
+    @Size(min = 11, max = 15, message = "( Campo Invalido )")
     private String telefone;
 
-    @Column(length = 9)
-    @NotBlank(message = "Genero é obrigatorio")
+    @Column(nullable = false, length = 9)
+    @NotBlank(message = "( Campo Obrigatório )")
+    @Size(min = 5, max = 9, message = "( Campo Invalido )")
     private String genero;
 
-    @Column
-    @NotBlank(message = "Função é obrigatorio")
+    @Column(nullable = false)
+    @NotBlank(message = "( Campo Obrigatório )")
     private String funcao;
 
-    @Column
+    @Column(nullable = false)
+    @NotBlank(message = "( Campo Obrigatório )")
+    @Size(max = 255, message = "( Tamanho Excedido )")
     private String motivacao;
 
-    @Column(length = 8)
+    @Column(nullable = false, length = 8)
+    @NotBlank(message = "( Campo Obrigatório )")
+    @Size(min = 8, max = 8, message = "( Campo Invalido )")
     private String cep;
 
-    @Column
+    @Column(nullable = false)
+    @NotBlank(message = "( Campo Obrigatório )")
+    @Size(max = 255, message = "( Tamanho Excedido )")
     private String bairro;
 
-    @Column
+    @Column(nullable = false)
+    @NotBlank(message = "( Campo Obrigatório )")
+    @Size(max = 255, message = "( Tamanho Excedido )")
     private String endereco;
 
-    @Column(name = "nr_casa", length = 4)
+    @Column(nullable = false, name = "nr_casa", length = 4)
+    @NotBlank(message = "( Campo Obrigatório )")
+    @Size(min = 4, max = 4, message = "( Campo Invalido )")
     private String nrCasa;
 
-    @Column
-    @NotBlank(message = "Cidade é obrigatorio")
+    @Column(nullable = false)
+    @NotBlank(message = "( Campo Obrigatório )")
+    @Size(max = 255, message = "( Tamanho Excedido )")
     private String cidade;
 
-    @Column
-    @NotBlank(message = "Estado é obrigatorio")
+    @Column(nullable = false)
+    @NotBlank(message = "( Campo Obrigatório )")
+    @Size(max = 255, message = "( Tamanho Excedido )")
     private String estado;
 
-    @Column(nullable = false, length = 20)
-    @NotBlank(message = "Status é obrigatorio")
+    @Column(nullable = false, length = 7)
+    @NotBlank(message = "( Campo Obrigatório )")
+    @Size(min = 5, max = 7, message = "( Campo Invalido )")
     private String status = "ATIVO";
 
     @PrePersist

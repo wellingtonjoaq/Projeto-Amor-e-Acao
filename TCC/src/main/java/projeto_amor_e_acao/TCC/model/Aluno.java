@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
-import org.hibernate.annotations.Parent;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.util.ArrayList;
@@ -36,7 +35,7 @@ public class Aluno {
     @Column(unique = true)
     @NotBlank(message = "( Campo Obrigatorio )")
     @Email(message = "( Campo Invalido )")
-    @Size(max = 255)
+    @Size(max = 255, message = "( Tamanho Excedido )")
     private String email;
 
     @Column(length = 11)
@@ -46,6 +45,7 @@ public class Aluno {
 
     @Column(length = 9)
     @NotBlank(message = "( Campo Obrigatorio )")
+    @Size(min = 8, max = 9, message = "( Campo Invalido )")
     private String genero;
 
     @Column(length = 8)
@@ -66,6 +66,7 @@ public class Aluno {
 
     @OneToMany(mappedBy = "aluno", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
+//    @NotEmpty(message = "( Escolha pelo menos um curso )")
     private List<Matricula> matriculas = new ArrayList<>();
 
     @PrePersist
