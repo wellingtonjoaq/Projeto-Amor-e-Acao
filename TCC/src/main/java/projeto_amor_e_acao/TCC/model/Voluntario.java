@@ -7,6 +7,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.validator.constraints.br.CPF;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -90,6 +93,10 @@ public class Voluntario {
     @NotBlank(message = "( Campo Obrigatório )")
     @Size(min = 5, max = 7, message = "( Campo Invalido )")
     private String status = "ATIVO";
+
+    @Column(name = "data_alteracao")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dataAlteracaoStatus;
 
     @PrePersist
     @PreUpdate

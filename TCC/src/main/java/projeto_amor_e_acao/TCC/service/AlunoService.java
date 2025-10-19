@@ -5,6 +5,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import projeto_amor_e_acao.TCC.model.Aluno;
+import projeto_amor_e_acao.TCC.model.EmpresaParceira;
 import projeto_amor_e_acao.TCC.repository.AlunoRepository;
 
 import java.util.List;
@@ -32,6 +33,10 @@ public class AlunoService {
     public List<Aluno> listarTodos() {
         var result = repository.findAll();
         return result;
+    }
+
+    public List<Aluno> listarInativos() {
+        return repository.findByStatusIgnoreCase("INATIVO");
     }
 
     public Aluno buscarPorId(Long id) {
