@@ -19,14 +19,11 @@ public class VoluntarioService {
 
     @Transactional
     public void salvar(Voluntario voluntario) {
-        try {
-            repository.save(voluntario);
-        } catch (
-        DataIntegrityViolationException e) {
-            throw new IllegalStateException("Já existe um voluntario cadastrado com este CPF ou E-mail.");
-        } catch (Exception e) {
-            throw new RuntimeException("Erro inesperado ao salvar voluntario.", e);
+        if (voluntario.getFuncao() != null && voluntario.getFuncao().getId() != null &&
+                voluntario.getFuncao().getId() == 0) {
+            voluntario.setFuncao(null);
         }
+        repository.save(voluntario);
     }
 
     public List<Voluntario> listarTodos() {

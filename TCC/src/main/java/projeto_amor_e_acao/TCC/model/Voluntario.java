@@ -50,9 +50,9 @@ public class Voluntario {
     @Size(min = 5, max = 9, message = "( Campo Invalido )")
     private String genero;
 
-    @Column(nullable = false)
-    @NotBlank(message = "( Campo Obrigatório )")
-    private String funcao;
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "funcao_voluntario_id", nullable = true)
+    private FuncaoVoluntario funcao;
 
     @Column(nullable = false)
     @NotBlank(message = "( Campo Obrigatório )")

@@ -16,7 +16,6 @@
   <div class="header-bar">
     <h1>Visualizar Voluntário</h1>
     <a th:href="@{/voluntario}" class="btn-back">
-      <i class="fas fa-arrow-left"></i> Voltar
     </a>
   </div>
 
@@ -47,8 +46,10 @@
 
       <div class="form-group">
         <label for="funcaoVoluntario">Função</label>
-        <input id="funcaoVoluntario" name="funcao" type="text" th:value="${voluntario.funcao}" disabled />
+        <input id="funcaoVoluntario" name="funcao" type="text"
+               th:value="${voluntario.funcao != null ? voluntario.funcao.nome : 'Sem função'}" disabled />
       </div>
+
 
       <div class="form-group">
         <label for="motivacaoVoluntario">Motivação</label>
@@ -92,7 +93,7 @@
 
     </div>
 
-    <a type="button" class="button-vol" th:href="@{/aluno/listar}">Voltar</a>
+    <a type="button" class="button-vol" th:href="@{/voluntario/listar}">Voltar</a>
   </form>
 </div>
 
