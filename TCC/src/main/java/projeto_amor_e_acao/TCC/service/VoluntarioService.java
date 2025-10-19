@@ -19,7 +19,6 @@ public class VoluntarioService {
 
     @Transactional
     public void salvar(Voluntario voluntario) {
-
         try {
             repository.save(voluntario);
         } catch (
