@@ -24,7 +24,7 @@ public class UsuarioService {
     }
 
     public List<Usuario> listarInativos() {
-        return usuarioRepository.findByStatusIgnoreCase("INATIVO");
+        return usuarioRepository.findByStatus(Usuario.Status.INATIVO);
     }
 
     public Optional<Usuario> findById(Long id) {
