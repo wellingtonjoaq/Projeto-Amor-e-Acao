@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Visualizar Aluno</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<div th:replace="/navbar/dashboard :: menu"></div>
+
+<div class="container">
+
+  <div class="header-bar">
+    <h1>Visualizar Aluno</h1>
+    <a th:href="@{/aluno/listar}" class="btn-back">
+      <i class="fas fa-arrow-left"></i> Voltar
+    </a>
+  </div>
+
+  <form class="form-adm">
+    <input type="hidden" name="id" th:value="${aluno.id}" disabled />
+
+    <div class="form-grid">
+
+      <div class="form-group">
+        <label for="nomeAluno">Nome</label>
+        <input id="nomeAluno" name="nome" type="text" th:value="${aluno.nome}" disabled />
+      </div>
+
+      <div class="form-group">
+        <label for="cpfAluno">CPF</label>
+        <input id="cpfAluno" name="cpf" type="text" th:value="${aluno.cpf}" disabled />
+      </div>
+
+      <div class="form-group">
+        <label for="emailAluno">Email</label>
+        <input id="emailAluno" name="email" type="email" th:value="${aluno.email}" disabled />
+      </div>
+
+      <div class="form-group">
+        <label for="telefoneAluno">Telefone</label>
+        <input id="telefoneAluno" name="telefone" type="text" th:value="${aluno.telefone}" disabled />
+      </div>
+
+      <div class="form-group">
+        <label for="generoAluno">Gênero</label>
+        <input id="generoAluno" name="genero" type="text" th:value="${aluno.genero}" disabled />
+      </div>
+
+      <div class="form-group">
+        <label for="cepAluno">CEP</label>
+        <input id="cepAluno" name="cep" type="text" th:value="${aluno.cep}" disabled />
+      </div>
+
+      <div class="form-group">
+        <label for="bairroAluno">Bairro</label>
+        <input id="bairroAluno" name="bairro" type="text" th:value="${aluno.bairro}" disabled />
+      </div>
+
+      <div class="form-group">
+        <label for="enderecoAluno">Endereço</label>
+        <input id="enderecoAluno" name="endereco" type="text" th:value="${aluno.endereco}" disabled />
+      </div>
+
+      <div class="form-group">
+        <label for="nrCasaAluno">Número</label>
+        <input id="nrCasaAluno" name="nrCasa" type="text" th:value="${aluno.nrCasa}" disabled />
+      </div>
+
+      <div class="form-group" style="grid-column: 1 / -1;">
+        <label>Cursos Matriculados:</label>
+        <div th:each="m : ${aluno.matriculas}" style="margin-bottom: 5px;">
+          <span class="badge" th:text="${m.curso.nome}"></span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="statusAluno">Status</label>
+        <input id="statusAluno" name="status" type="text" th:value="${aluno.status}" disabled />
+      </div>
+    </div>
+
+    <a type="button" class="button-vol" th:href="@{/aluno/listar}">Voltar</a>
+
+  </form>
+</div>
+
+</body>
+</html>

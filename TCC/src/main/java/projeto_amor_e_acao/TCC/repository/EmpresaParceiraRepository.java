@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface EmpresaParceiraRepository extends JpaRepository<EmpresaParceira, Long> {
     Optional<EmpresaParceira> findByCnpj(String cnpj);
 
-    List<EmpresaParceira> findByStatusIgnoreCase(String status);
+    List<EmpresaParceira> findByStatus(EmpresaParceira.Status status);
 }
