@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import org.hibernate.validator.constraints.br.CPF;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,6 +65,10 @@ public class Aluno {
     @Column(nullable = false, length = 20)
     @NotBlank(message = "( Campo Obrigatorio )")
     private String status = "ATIVO";
+
+    @Column(name = "data_alteracao")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dataAlteracaoStatus;
 
     @OneToMany(mappedBy = "aluno", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
