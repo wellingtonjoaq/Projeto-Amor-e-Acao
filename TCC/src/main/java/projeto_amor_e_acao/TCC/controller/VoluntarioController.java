@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import projeto_amor_e_acao.TCC.model.Voluntario;
+import projeto_amor_e_acao.TCC.service.FuncaoVoluntarioService;
 import projeto_amor_e_acao.TCC.service.VoluntarioService;
 
 @Controller
@@ -19,30 +20,33 @@ public class VoluntarioController {
     @Autowired
     private VoluntarioService service;
 
+    @Autowired
+    private FuncaoVoluntarioService funcaoVoluntarioService;
+
     @GetMapping()
     public String formulario(Voluntario voluntario, Model model) {
+        model.addAttribute("funcoesVoluntario", funcaoVoluntarioService.listarTodos());
         return "voluntario/formulario";
     }
 
     @PostMapping("salvar")
     public String salvar(@Valid Voluntario voluntario, BindingResult result, Model model) {
+        if (voluntario.getFuncao() != null && voluntario.getFuncao().getId() != null &&
+                voluntario.getFuncao().getId() == 0) {
+            voluntario.setFuncao(null);
+        }
 
         if (result.hasErrors()) {
-            model.addAttribute("voluntario", voluntario);
+            model.addAttribute("funcoesVoluntario", funcaoVoluntarioService.listarTodos());
             return "voluntario/formulario";
         }
 
         try {
             service.salvar(voluntario);
             return "redirect:/voluntario/listar";
-        }
-        catch (IllegalStateException e){
+        } catch (Exception e) {
             model.addAttribute("erro", e.getMessage());
-            return "voluntario/formulario";
-        }
-        catch (Exception e) {
-            model.addAttribute("erro", e.getMessage());
-            model.addAttribute("voluntario", voluntario);
+            model.addAttribute("funcoesVoluntario", funcaoVoluntarioService.listarTodos());
             return "voluntario/formulario";
         }
     }
@@ -61,6 +65,7 @@ public class VoluntarioController {
 
     @GetMapping("editar/{id}")
     public String editar(@PathVariable Long id, Model model) {
+        model.addAttribute("funcoesVoluntario", funcaoVoluntarioService.listarTodos());
         model.addAttribute("voluntario", service.buscarPorId(id));
         return "voluntario/formulario";
     }

@@ -37,7 +37,7 @@
             <td th:text="${voluntario.id}">1</td>
             <td th:text="${voluntario.nome}">Nome</td>
             <td th:text="${voluntario.cpf}">CPF</td>
-            <td th:text="${voluntario.funcao}">Função</td>
+            <td th:text="${voluntario.funcao != null ? voluntario.funcao.nome : 'Sem função'}">Função</td>
             <td th:text="${voluntario.status}">Status</td>
             <td class="actions">
                 <a th:href="@{'/voluntario/visualiza/' + ${voluntario.id}}" class="btn-visualizar">Visualizar</a>
