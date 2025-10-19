@@ -3,6 +3,7 @@ package projeto_amor_e_acao.TCC.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import projeto_amor_e_acao.TCC.model.EmpresaParceira;
 import projeto_amor_e_acao.TCC.model.Usuario;
 import projeto_amor_e_acao.TCC.repository.UsuarioRepository;
 
@@ -20,6 +21,10 @@ public class UsuarioService {
 
     public List<Usuario> findAll() {
         return usuarioRepository.findAll();
+    }
+
+    public List<Usuario> listarInativos() {
+        return usuarioRepository.findByStatus(Usuario.Status.INATIVO);
     }
 
     public Optional<Usuario> findById(Long id) {

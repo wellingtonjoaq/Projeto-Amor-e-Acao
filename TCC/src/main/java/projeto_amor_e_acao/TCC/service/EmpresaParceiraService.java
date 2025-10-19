@@ -2,6 +2,7 @@ package projeto_amor_e_acao.TCC.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import projeto_amor_e_acao.TCC.model.Aluno;
 import projeto_amor_e_acao.TCC.model.EmpresaParceira;
 import projeto_amor_e_acao.TCC.repository.EmpresaParceiraRepository;
 
@@ -20,6 +21,10 @@ public class EmpresaParceiraService {
 
     public List<EmpresaParceira> findAll() {
         return repository.findAll();
+    }
+
+    public List<EmpresaParceira> listarInativos() {
+        return repository.findByStatus(EmpresaParceira.Status.INATIVO);
     }
 
     public Optional<EmpresaParceira> findById(Long id) {

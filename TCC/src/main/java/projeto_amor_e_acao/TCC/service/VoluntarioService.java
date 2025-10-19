@@ -34,6 +34,10 @@ public class VoluntarioService {
         return result;
     }
 
+    public List<Voluntario> listarInativos() {
+        return repository.findByStatusIgnoreCase("INATIVO");
+    }
+
     public Voluntario buscarPorId(Long id) {
         return repository.findById(id).orElseThrow();
     }

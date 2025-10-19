@@ -81,6 +81,10 @@ public class EmpresaParceira {
     @jakarta.validation.constraints.NotNull(message = "O status é obrigatório")
     private Status status;
 
+    @Column(name = "data_alteracao")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dataAlteracaoStatus;
+
     public enum Status{
         ATIVO,
         INATIVO
