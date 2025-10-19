@@ -2,10 +2,12 @@ package projeto_amor_e_acao.TCC.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -44,6 +46,10 @@ public class Usuario implements UserDetails {
     @Column(nullable = false)
     @jakarta.validation.constraints.NotNull(message = "O status é obrigatório")
     private Status status;
+
+    @Column(name = "data_alteracao")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dataAlteracaoStatus;
 
     @Column(name = "foto_perfil")
     private String fotoPerfil;
