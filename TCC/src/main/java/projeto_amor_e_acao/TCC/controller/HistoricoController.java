@@ -10,7 +10,7 @@ import projeto_amor_e_acao.TCC.model.Usuario;
 import projeto_amor_e_acao.TCC.model.Voluntario;
 import projeto_amor_e_acao.TCC.service.*;
 
-import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("historico")
@@ -40,52 +40,72 @@ public class HistoricoController {
     @GetMapping("visualizaAluno/{id}")
     public String visualizarAluno(@PathVariable Long id, Model model) {
         model.addAttribute("aluno", alunoService.buscarPorId(id));
-        return "historico/visualizar";
+        return "historico/visualizarAluno";
     }
 
     @GetMapping("visualizaVoluntario/{id}")
     public String visualizarVoluntario(@PathVariable Long id, Model model) {
         model.addAttribute("voluntario", voluntarioService.buscarPorId(id));
-        return "historico/visualizar";
+        return "historico/visualizarVoluntario";
     }
 
     @GetMapping("visualizaEmpresaParceira/{id}")
     public String visualizarEmpresaParceira(@PathVariable Long id, Model model) {
-        model.addAttribute("empresaParceira", empresaParceiraService.findById(id));
-        return "historico/visualizar";
+        Optional<EmpresaParceira> empresaParceira = empresaParceiraService.findById(id);
+
+            model.addAttribute("empresa", empresaParceira.get());
+            return "historico/visualizarEmpresaParceira";
     }
 
     @GetMapping("visualizaUsuario/{id}")
     public String visualizarUsuario(@PathVariable Long id, Model model) {
-        model.addAttribute("usuario", usuarioService.findById(id));
-        return "historico/visualizar";
+        Optional<Usuario> usuarioOptional = usuarioService.findById(id);
+
+            model.addAttribute("usuario", usuarioOptional.get());
+            return "usuario/visualizar";
     }
 
-    @PostMapping("ativarAluno")
-    public String ativarAluno(Aluno aluno, Model model) {
+    @PostMapping("/ativarAluno/{id}")
+    public String ativarAluno(@PathVariable Long id) {
+        Aluno aluno = alunoService.buscarPorId(id);
+
         aluno.setStatus("ATIVO");
         alunoService.salvar(aluno);
+
         return "redirect:/historico/listar";
     }
 
     @PostMapping("ativarVoluntario/{id}")
-    public String ativarVoluntario(Voluntario voluntario, Model model) {
+    public String ativarVoluntario(@PathVariable Long id) {
+        Voluntario voluntario = voluntarioService.buscarPorId(id);
+
         voluntario.setStatus("ATIVO");
         voluntarioService.salvar(voluntario);
+
         return "redirect:/historico/listar";
     }
 
-    @PostMapping("ativarEmpresaParceira/{id}")
-    public String ativarEmpresaParceira(EmpresaParceira empresaParceira, Model model) {
-        empresaParceira.setStatus(EmpresaParceira.Status.ATIVO);
-        empresaParceiraService.save(empresaParceira);
+    @PostMapping("/ativarEmpresaParceira/{id}")
+    public String ativarEmpresaParceira(@PathVariable Long id) {
+        Optional<EmpresaParceira> empresaParceira = empresaParceiraService.findById(id);
+
+        if (empresaParceira.isPresent()) {
+            EmpresaParceira ep = empresaParceira.get();
+            ep.setStatus("ATIVO");
+            empresaParceiraService.save(ep);
+        }
+
         return "redirect:/historico/listar";
     }
+
 
     @PostMapping("ativarUsuario/{id}")
-    public String ativarUsuario(Usuario usuario, Model model) {
-        usuario.setStatus(Usuario.Status.ATIVO);
-        usuarioService.save(usuario);
+    public String ativarUsuario(@PathVariable Long id) {
+        Optional<Usuario> usuario = usuarioService.findById(id);
+
+        usuario.get().setStatus("ATIVO");
+        usuarioService.save(usuario.orElse(null));
+
         return "redirect:/historico/listar";
     }
 }

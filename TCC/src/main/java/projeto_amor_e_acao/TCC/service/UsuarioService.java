@@ -24,7 +24,7 @@ public class UsuarioService {
     }
 
     public List<Usuario> listarInativos() {
-        return usuarioRepository.findByStatus(Usuario.Status.INATIVO);
+        return usuarioRepository.findByStatusIgnoreCase("INATIVO");
     }
 
     public Optional<Usuario> findById(Long id) {
@@ -89,11 +89,11 @@ public class UsuarioService {
 
         //Não permitir excluir o último administrador ativo
         if (usuario.getCargo() == Usuario.Cargo.USUARIO_ADMINISTRADOR
-                && usuario.getStatus() == Usuario.Status.ATIVO)
+                && usuario.getStatus().equals("INATIVO"))
         {
             long adminsAtivos = usuarioRepository.findAll().stream().filter(
                     u -> u.getCargo() == Usuario.Cargo.USUARIO_ADMINISTRADOR
-                            && u.getStatus() == Usuario.Status.ATIVO).count();
+                            && u.getStatus().equals("INATIVO")).count();
 
             if (adminsAtivos <= 1) {
                 throw new IllegalStateException(

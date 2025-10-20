@@ -1,6 +1,7 @@
 package projeto_amor_e_acao.TCC.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -29,7 +30,7 @@ public class EmpresaParceira {
     @jakarta.validation.constraints.Size(
             min = 3, max = 150,
             message = "O nome da empresa deve ter entre 3 e 150 caracteres")
-    private String nome_empresa;
+    private String nome;
 
     @Column(nullable = false, unique = true)
     @jakarta.validation.constraints.NotNull(message = "O CNPJ é obrigatório")
@@ -76,17 +77,11 @@ public class EmpresaParceira {
 
     private String termos;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    @jakarta.validation.constraints.NotNull(message = "O status é obrigatório")
-    private Status status;
+    @Column(nullable = false, length = 20)
+    @NotBlank(message = "( Campo Obrigatorio )")
+    private String status = "ATIVO";
 
     @Column(name = "data_alteracao")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataAlteracaoStatus;
-
-    public enum Status{
-        ATIVO,
-        INATIVO
-    }
 }
