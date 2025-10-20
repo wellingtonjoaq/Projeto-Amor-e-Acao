@@ -26,8 +26,8 @@ public class VoluntarioService {
         repository.save(voluntario);
     }
 
-    public List<Voluntario> listarTodos() {
-        var result = repository.findAll();
+    public List<Voluntario> listarAtivos() {
+        var result = repository.findByStatusIgnoreCase("ATIVO");
         return result;
     }
 

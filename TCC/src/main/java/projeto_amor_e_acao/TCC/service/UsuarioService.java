@@ -20,7 +20,7 @@ public class UsuarioService {
     private PasswordEncoder passwordEncoder;
 
     public List<Usuario> findAll() {
-        return usuarioRepository.findAll();
+        return usuarioRepository.findByStatusIgnoreCase("ATIVO");
     }
 
     public List<Usuario> listarInativos() {
