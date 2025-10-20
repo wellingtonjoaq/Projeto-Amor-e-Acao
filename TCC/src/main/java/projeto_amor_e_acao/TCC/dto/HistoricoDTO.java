@@ -13,12 +13,14 @@ public class HistoricoDTO {
     private String email;
     private String status;
     private LocalDate dataAlteracaoStatus;
+    private String tipo;
 
-    public HistoricoDTO(Long id, String nome, String email, String status, LocalDate dataAlteracaoStatus) {
+    public HistoricoDTO(Long id, String nome, String email, String status, LocalDate dataAlteracaoStatus, String tipo) {
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.status = status;
         this.dataAlteracaoStatus = dataAlteracaoStatus;
+        this.tipo = tipo;
     }
 }

@@ -24,7 +24,7 @@ public class EmpresaParceiraService {
     }
 
     public List<EmpresaParceira> listarInativos() {
-        return repository.findByStatus(EmpresaParceira.Status.INATIVO);
+        return repository.findByStatusIgnoreCase("INATIVO");
     }
 
     public Optional<EmpresaParceira> findById(Long id) {

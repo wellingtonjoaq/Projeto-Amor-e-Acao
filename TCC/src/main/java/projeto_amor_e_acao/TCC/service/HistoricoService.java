@@ -2,10 +2,8 @@ package projeto_amor_e_acao.TCC.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import projeto_amor_e_acao.TCC.model.Curso;
-import projeto_amor_e_acao.TCC.repository.AlunoRepository;
-import projeto_amor_e_acao.TCC.repository.CursoRepository;
-import projeto_amor_e_acao.TCC.repository.EmpresaParceiraRepository;
+import projeto_amor_e_acao.TCC.dto.HistoricoDTO;
+import projeto_amor_e_acao.TCC.model.*;
 
 import java.util.*;
 
@@ -24,29 +22,62 @@ public class HistoricoService {
     @Autowired
     private UsuarioService usuarioService;
 
-    public List<Object> listarHistorico() {
-        List<Object> lista = new ArrayList<>();
+    public List<HistoricoDTO> listarHistorico() {
+        List<HistoricoDTO> lista = new ArrayList<>();
 
-        lista.addAll(alunoService.listarInativos());
-        lista.addAll(voluntarioService.listarInativos());
-        lista.addAll(empresaParceiraService.listarInativos());
-        lista.addAll(usuarioService.listarInativos());
+        alunoService.listarInativos().forEach(aluno -> lista.add(mapAlunoToDTO(aluno)));
+        voluntarioService.listarInativos().forEach(voluntario -> lista.add(mapVoluntarioToDTO(voluntario)));
+        empresaParceiraService.listarInativos().forEach(empresa -> lista.add(mapEmpresaToDTO(empresa)));
+        usuarioService.listarInativos().forEach(usuario -> lista.add(mapUsuarioToDTO(usuario)));
 
-        lista.sort((o1, o2) -> {
-            try {
-                var data1 = (Date) o1.getClass().getMethod("getDataAlteracaoStatus").invoke(o1);
-                var data2 = (Date) o2.getClass().getMethod("getDataAlteracaoStatus").invoke(o2);
-
-                if (data1 == null && data2 == null) return 0;
-                if (data1 == null) return 1;
-                if (data2 == null) return -1;
-
-                return data2.compareTo(data1); // Mais recente primeiro
-            } catch (Exception e) {
-                throw new RuntimeException("Erro ao comparar datas de alteração", e);
-            }
-        });
+        // Ordena por data mais recente
+        lista.sort(Comparator.comparing(HistoricoDTO::getDataAlteracaoStatus,
+                Comparator.nullsLast(Comparator.reverseOrder())));
 
         return lista;
+    }
+
+    private HistoricoDTO mapAlunoToDTO(Aluno a) {
+        return new HistoricoDTO(
+                a.getId(),
+                a.getNome(),
+                a.getEmail(),
+                a.getStatus(),
+                a.getDataAlteracaoStatus(),
+                "Aluno"
+        );
+    }
+
+    private HistoricoDTO mapVoluntarioToDTO(Voluntario v) {
+        return new HistoricoDTO(
+                v.getId(),
+                v.getNome(),
+                v.getEmail(),
+                v.getStatus(),
+                v.getDataAlteracaoStatus(),
+                "Voluntario"
+        );
+    }
+
+    private HistoricoDTO mapEmpresaToDTO(EmpresaParceira e) {
+        return new HistoricoDTO(
+                e.getId(),
+                e.getNome(),
+                e.getEmail(),
+                e.getStatus(),
+                e.getDataAlteracaoStatus(),
+                "EmpresaParceira"
+        );
+    }
+
+    private HistoricoDTO mapUsuarioToDTO(Usuario u) {
+        return new HistoricoDTO(
+                u.getId(),
+                u.getNome(),
+                u.getEmail(),
+                u.getStatus(),
+                u.getDataAlteracaoStatus(),
+                "Usuario"
+        );
     }
 }

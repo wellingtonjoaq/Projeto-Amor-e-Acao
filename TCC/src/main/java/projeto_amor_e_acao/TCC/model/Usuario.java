@@ -1,6 +1,7 @@
 package projeto_amor_e_acao.TCC.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
@@ -42,10 +43,9 @@ public class Usuario implements UserDetails {
     @jakarta.validation.constraints.NotNull(message = "O cargo é obrigatório")
     private Cargo cargo;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    @jakarta.validation.constraints.NotNull(message = "O status é obrigatório")
-    private Status status;
+    @Column(nullable = false, length = 20)
+    @NotBlank(message = "( Campo Obrigatorio )")
+    private String status = "ATIVO";
 
     @Column(name = "data_alteracao")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -57,11 +57,6 @@ public class Usuario implements UserDetails {
     public enum Cargo {
         USUARIO_SIMPLES,
         USUARIO_ADMINISTRADOR
-    }
-
-    public enum Status {
-        ATIVO,
-        INATIVO
     }
 
     @Override
@@ -92,7 +87,7 @@ public class Usuario implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return this.status == Status.ATIVO;
+        return this.status.equals("ATIVO");
     }
 
     @Override
@@ -102,6 +97,6 @@ public class Usuario implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return this.status == Status.ATIVO; // O usuário está habilitado se estiver ativo
+        return this.status.equals("ATIVO"); // O usuário está habilitado se estiver ativo
     }
 }
