@@ -53,7 +53,7 @@ public class VoluntarioController {
 
     @GetMapping("listar")
     public String listar(Model model) {
-        model.addAttribute("voluntarios", service.listarTodos());
+        model.addAttribute("voluntarios", service.listarAtivos());
         return "voluntario/lista";
     }
 

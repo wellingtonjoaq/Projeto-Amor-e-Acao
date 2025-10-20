@@ -20,7 +20,7 @@ public class EmpresaParceiraService {
     }
 
     public List<EmpresaParceira> findAll() {
-        return repository.findAll();
+        return repository.findByStatusIgnoreCase("ATIVO");
     }
 
     public List<EmpresaParceira> listarInativos() {

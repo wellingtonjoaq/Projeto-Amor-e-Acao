@@ -30,8 +30,8 @@ public class AlunoService {
     }
 
 
-    public List<Aluno> listarTodos() {
-        var result = repository.findAll();
+    public List<Aluno> listarAtivos() {
+        var result = repository.findByStatusIgnoreCase("ATIVO");
         return result;
     }
 

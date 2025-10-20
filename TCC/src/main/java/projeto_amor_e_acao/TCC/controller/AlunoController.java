@@ -72,7 +72,7 @@ public class AlunoController {
 
     @GetMapping("listar")
     public String listar(Model model) {
-        model.addAttribute("alunos", service.listarTodos());
+        model.addAttribute("alunos", service.listarAtivos());
         return "aluno/lista";
     }
 
