@@ -89,7 +89,7 @@ public class AlunoController {
         return "aluno/formulario";
     }
 
-    @GetMapping("remover/{id}")
+    @PostMapping("remover/{id}")
     public String remover(@PathVariable Long id) {
         service.deletarPorId(id);
         return "redirect:/aluno/listar";

@@ -1,12 +1,9 @@
 package projeto_amor_e_acao.TCC.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import projeto_amor_e_acao.TCC.model.Aluno;
 import projeto_amor_e_acao.TCC.model.Voluntario;
-import projeto_amor_e_acao.TCC.repository.AlunoRepository;
 import projeto_amor_e_acao.TCC.repository.VoluntarioRepository;
 
 import java.util.List;
@@ -26,14 +23,16 @@ public class VoluntarioService {
         repository.save(voluntario);
     }
 
-    public List<Voluntario> listarAtivos() {
-        var result = repository.findByStatusIgnoreCase("ATIVO");
-        return result;
-    }
+    public List<Voluntario> listarAtivos() {return repository.findByStatusIgnoreCase("ATIVO");}
 
     public List<Voluntario> listarInativos() {
         return repository.findByStatusIgnoreCase("INATIVO");
     }
+
+    public List<Voluntario> listarPendentes() {
+        return repository.findByStatusIgnoreCase("PENDENTE");
+    }
+
 
     public Voluntario buscarPorId(Long id) {
         return repository.findById(id).orElseThrow();
