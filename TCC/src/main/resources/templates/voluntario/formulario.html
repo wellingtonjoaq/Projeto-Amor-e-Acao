@@ -24,7 +24,7 @@
         <div class="form-grid">
 
             <div class="form-group">
-                <label for="nomeVoluntario">Nome
+                <label for="nomeVoluntario">Nome Completo
                     <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error"></span>
                 </label>
                 <input id="nomeVoluntario" type="text" th:field="*{nome}"
@@ -40,7 +40,7 @@
             </div>
 
             <div class="form-group">
-                <label for="emailVoluntario">Email
+                <label for="emailVoluntario">E-mail
                     <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></span>
                 </label>
                 <input id="emailVoluntario" type="email" th:field="*{email}"
@@ -112,7 +112,7 @@
             </div>
 
             <div class="form-group">
-                <label for="nrCasaVoluntario">Número
+                <label for="nrCasaVoluntario">Número da Casa
                     <span th:if="${#fields.hasErrors('nrCasa')}" th:errors="*{nrCasa}" class="error"></span>
                 </label>
                 <input id="nrCasaVoluntario" type="text" th:field="*{nrCasa}"
