@@ -102,19 +102,6 @@ li a:hover {
   color: black;
 }
 
-.bottom-image {
-  text-align: center;
-  padding: 10px;
-}
-
-.bottom-image img {
-  width: 120px;
-  margin-bottom: 10px;
-  position: absolute;
-  left: 0px;
-  top: 73%;
-}
-
 .container {
   margin-left: 130px;
   padding: 120px 20px 40px 20px;
