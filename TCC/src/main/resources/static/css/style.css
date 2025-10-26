@@ -428,6 +428,11 @@ label {
   box-sizing: border-box;
 }
 
+.header-bar div {
+    display: flow;
+    margin-right: 10px;
+}
+
 .header-bar h1 {
   font-size: 28px;
   color: #001F3F;
@@ -435,13 +440,15 @@ label {
 }
 
 .btn-create {
-  background-color: #28a745;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 8px;
-  text-decoration: none;
-  transition: background-color 0.3s;
-  font-size: 16px;
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    font-size: 16px;
+    height: fit-content;
+    margin-left: 10px;
 }
 
 .btn-create:hover {
@@ -774,4 +781,16 @@ ul#listaFuncoes li {
     padding: 3px 3px 3px 9px;
     margin-bottom: 0.5px;
     background-color: rgba(239, 239, 239, 0.5);
+}
+.btn-filtrar {
+    background-color: #001F3F;
+    color: white;
+    border: none;
+    padding: 11px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.btn-filtrar i {
+    margin-right: 6px;
 }

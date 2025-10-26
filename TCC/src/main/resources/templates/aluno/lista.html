@@ -16,7 +16,12 @@
         <div class="header-title">
             <h1>Lista de Alunos</h1>
         </div>
+
         <div class="header-action">
+            <button id="btnMostrarFiltros" class="btn-filtrar">
+                <i class="fa-solid fa-filter"></i> Filtrar
+            </button>
+
             <a  class="btn-create" th:href="@{/aluno}">Cadastrar Aluno</a>
         </div>
     </div>
@@ -50,6 +55,5 @@
         </tbody>
     </table>
 </div>
-
 </body>
 </html>
