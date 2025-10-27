@@ -13,14 +13,8 @@
 
 <div class="container" th:fragment="visualizaAluno">
 
-  <div class="header-bar">
-    <h1>Visualizar Aluno</h1>
-    <a th:href="@{/aluno/listar}" class="btn-back">
-      <i class="fas fa-arrow-left"></i> Voltar
-    </a>
-  </div>
-
   <form class="form-adm">
+    <h1>Visualizar Aluno</h1>
     <input type="hidden" name="id" th:value="${aluno.id}" disabled />
 
     <div class="form-grid">

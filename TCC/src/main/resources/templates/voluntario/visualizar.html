@@ -13,13 +13,9 @@
 
 <div class="container" th:fragment="visualizaVoluntario">
 
-  <div class="header-bar">
-    <h1>Visualizar Voluntário</h1>
-    <a th:href="@{/voluntario}" class="btn-back">
-    </a>
-  </div>
-
   <form class="form-adm">
+    <h1>Visualizar Voluntário</h1>
+
     <input type="hidden" name="id" th:value="${voluntario.id}" disabled />
 
     <div class="form-grid">
