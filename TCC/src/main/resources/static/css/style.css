@@ -202,16 +202,23 @@ tbody tr:hover {
 
 .form-adm {
   background-color: white;
-  padding: 30px;
+  padding: 15px;
   border-radius: 10px;
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 8px rgba(0,0,0,1.05);
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
+
+.form-adm h1 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 1.8rem;
+}
+
 
 .form-grid {
   display: grid;
@@ -302,19 +309,24 @@ select {
 }
 
 .button-vol{
-      background-color: rgba(255, 0, 0, 0.9);
-      color: white;
-      border: none;
-      padding: 12px;
-      font-size: 16px;
-      font-family: Arial;
-      border-radius: 8px;
-      cursor: pointer;
-      text-align: center;
-      text-decoration: none;
+   background: #2c2787;
+   background: linear-gradient(90deg, rgba(44, 39, 135, 1) 0%, rgba(69, 69, 143, 1) 38%, rgba(66, 75, 99, 1) 100%);
+   color: white;
+   border: none;
+   padding: 12px;
+   font-size: 16px;
+   font-family: Arial;
+   border-radius: 8px;
+   cursor: pointer;
+   text-align: center;
+   text-decoration: none;
 }
 
-/* Modal base */
+.button-vol:hover{
+    background: #2C2787;
+    transition: 0.5s ease;
+}
+
 .modal {
   display: none;
   position: fixed;
@@ -421,9 +433,39 @@ label {
 }
 
 .header-bar h1 {
-  font-size: 28px;
+  font-size: 26px;
   color: #001F3F;
   margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.header-bar .button-vol {
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 15px;
+  font-family: 'Segoe UI', sans-serif;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.header-bar .button-vol i {
+  font-size: 15px;
+}
+
+.header-bar .button-vol:hover {
+  background-color: #b02a37;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
 }
 
 .btn-create {
@@ -624,6 +666,48 @@ label {
   color: #004080;
 }
 
+.add-voltar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 250px;
+    justify-content: space-around;
+    align-items: center;
+}
+
+
+ul#listaFuncoes {
+    position: unset;
+    background-color: white;
+    width: 196px;
+    border-radius: 5px;
+    margin-top: 2px;
+    min-height: 25px;
+    max-height: 90px;
+    overflow-y: auto;
+}
+
+ul#listaFuncoes li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 18px;
+    border: rgba(118, 118, 118, 0.3) solid 1px;
+    border-radius: 5px;
+    padding: 3px 3px 3px 9px;
+    margin-bottom: 0.5px;
+    background-color: rgba(239, 239, 239, 0.5);
+}
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 26px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
 @media screen and (max-width: 768px) {
   .header-bar {
     flex-direction: column;
@@ -695,6 +779,43 @@ label {
   .card-body p {
       font-size: 13px;
   }
+
+    .menu-toggle {
+      display: block;
+    }
+
+    ul.sidebar {
+      position: fixed;
+      top: 80px;
+      left: -220px;
+      width: 180px;
+      height: 100%;
+      background-color: #001F3F;
+      transition: left 0.3s ease;
+      z-index: 999;
+      border-right: 3px solid #004080;
+    }
+
+    ul.sidebar.active {
+      left: 0;
+    }
+
+    ul.sidebar li a {
+      flex-direction: row;
+      justify-content: flex-start;
+      gap: 10px;
+      padding: 15px;
+      border-radius: 0;
+    }
+
+    .container {
+      margin-left: 0;
+      padding-top: 100px;
+    }
+
+    .topbar {
+      justify-content: space-between;
+    }
 }
 
 @media screen and (max-width: 480px) {
@@ -747,37 +868,3 @@ label {
   }
 }
 
-ul#listaFuncoes {
-    position: unset;
-    background-color: white;
-    width: 196px;
-    border-radius: 5px;
-    margin-top: 2px;
-    min-height: 25px;
-    max-height: 90px;
-    overflow-y: auto;
-}
-
-ul#listaFuncoes li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 18px;
-    border: rgba(118, 118, 118, 0.3) solid 1px;
-    border-radius: 5px;
-    padding: 3px 3px 3px 9px;
-    margin-bottom: 0.5px;
-    background-color: rgba(239, 239, 239, 0.5);
-}
-.btn-filtrar {
-    background-color: #001F3F;
-    color: white;
-    border: none;
-    padding: 11px 16px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-}
-.btn-filtrar i {
-    margin-right: 6px;
-}
