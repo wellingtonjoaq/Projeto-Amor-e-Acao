@@ -428,7 +428,7 @@ label {
 }
 
 .header-bar div {
-    display: flow;
+    display: flex;
     margin-right: 10px;
 }
 
@@ -868,3 +868,153 @@ ul#listaFuncoes li {
   }
 }
 
+
+
+   /* ======== BOTÃO DE FILTRO ======== */
+   .filter-btn {
+     background-color: #001F3F;
+     color: white;
+     border: none;
+     padding: 10px 18px;
+     border-radius: 8px;
+     cursor: pointer;
+     font-size: 15px;
+     display: flex;
+     align-items: center;
+     gap: 8px;
+     transition: background-color 0.3s ease;
+     position: relative;
+     z-index: 1001;
+   }
+
+   .filter-btn:hover {
+     background-color: #004080;
+   }
+
+   /* ======== PAINEL DE FILTRO ======== */
+   .filter-panel {
+     display: none;
+     position: absolute;
+     top: 160px; /* Ajuste conforme a altura do seu header */
+     right: 25px; /* Distância da lateral direita */
+     width: 50%;
+     background: white;
+     padding: 25px;
+     border-radius: 10px;
+     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+     z-index: 1000;
+     grid-template-columns: repeat(3, 1fr);
+     gap: 20px;
+     animation: fadeIn 0.3s ease forwards;
+   }
+
+   /* Animação suave ao aparecer */
+   @keyframes fadeIn {
+     from {
+       opacity: 0;
+       transform: translateY(-10px);
+     }
+     to {
+       opacity: 1;
+       transform: translateY(0);
+     }
+   }
+
+   /* ======== SEÇÕES DO FILTRO ======== */
+   .filter-section {
+     border: 1px solid #ddd;
+     border-radius: 10px;
+     overflow: hidden;
+     background: #f9f9f9;
+   }
+
+   .filter-header {
+     background: #001F3F;
+     color: white;
+     padding: 10px;
+     cursor: pointer;
+     font-weight: 600;
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+   }
+
+   .filter-options {
+     display: flex;
+     flex-direction: column;
+     padding: 10px;
+   }
+
+   .filter-options label {
+     font-size: 14px;
+     color: #333;
+     margin: 4px 0;
+   }
+
+   .filter-options input[type="checkbox"] {
+     margin-right: 8px;
+   }
+
+   .pesquisa-box {
+       display: flex;
+       align-items: center;
+       background: #fff;
+       border-radius: 8px;
+       border: 1px solid #ccc;
+       overflow: hidden;
+   }
+
+   .campo-pesquisa {
+       border: none;
+       padding: 8px 10px;
+       outline: none;
+       width: 220px;
+   }
+
+   input.campo-pesquisa{
+   border-radius: 0px;
+   }
+
+   .btn-pesquisar {
+       background-color: #001f3f;
+       color: white;
+       border: none;
+       padding: 11px 12px;
+       cursor: pointer;
+       transition: 0.3s;
+   }
+
+   .btn-pesquisar:hover {
+       background-color: #003366;
+   }
+
+   .btn-buscar-filtro {
+       background-color: #001f3f;
+       color: #fff;
+       border: none;
+       padding: 8px 12px;
+       border-radius: 6px;
+       margin-top: 97px;
+       width: 100%;
+       cursor: pointer;
+       height: 30%;
+   }
+
+
+   /* ======== RESPONSIVIDADE ======== */
+   @media screen and (max-width: 1024px) {
+     .filter-panel {
+       width: 70%;
+       grid-template-columns: repeat(2, 1fr);
+       right: 15px;
+     }
+   }
+
+   @media screen and (max-width: 700px) {
+     .filter-panel {
+       width: 90%;
+       grid-template-columns: 1fr;
+       top: 100px;
+       right: 5%;
+     }
+   }
