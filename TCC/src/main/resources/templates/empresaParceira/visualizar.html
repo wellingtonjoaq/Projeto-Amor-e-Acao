@@ -13,14 +13,8 @@
 
 <div class="container" th:fragment="visualizaEmpresaParceira">
 
-  <div class="header-bar">
-    <h1>Visualizar Empresa Parceira</h1>
-    <a th:href="@{/empresasParceiras}" class="btn-back">
-      <i class="fas fa-arrow-left"></i> Voltar
-    </a>
-  </div>
-
   <form class="form-adm">
+    <h1>Visualizar Empresa Parceira</h1>
     <input type="hidden" name="id" th:value="${empresa.id}" disabled />
 
     <div class="form-grid">
@@ -86,6 +80,9 @@
       </div>
 
     </div>
+    <a type="button" class="button-vol" th:href="@{/empresasParceiras}">
+      <i class="fa-solid fa-arrow-left"></i> Voltar
+    </a>
   </form>
 </div>
 

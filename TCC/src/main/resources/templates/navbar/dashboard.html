@@ -13,6 +13,11 @@
         <h1>Painel Administrativo</h1>
     </div>
 
+    <button class="menu-toggle" onclick="toggleSidebar()">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+
     <div class="topbar-right">
         <button class="icon-button">
             <i class="fa-solid fa-bell"></i>
@@ -28,5 +33,12 @@
     <li><a href="/empresasParceiras"><i class="fa-solid fa-building"></i> Parcerias</a></li>
     <li><a href="/historico/listar"><i class="fa-solid fa-history"></i> Historico</a></li>
 </ul>
+
+<script>
+    function toggleSidebar() {
+      const sidebar = document.querySelector('.sidebar');
+      sidebar.classList.toggle('active');
+    }
+</script>
 </body>
 </html>

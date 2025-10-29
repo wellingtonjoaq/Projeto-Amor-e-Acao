@@ -12,7 +12,6 @@
 <div th:replace="/navbar/dashboard :: menu"></div>
 
 <div class="container">
-  <h1 th:text="${aluno.id == null ? 'Novo Aluno' : 'Editar Aluno'}"></h1>
 
   <div th:if="${erro}" class="erroGlobal">
     <p th:text="${erro}"></p>
@@ -20,6 +19,14 @@
 
   <form th:action="@{/aluno/salvar}" th:object="${aluno}" method="post" class="form-adm">
     <input type="hidden" th:field="*{id}" />
+
+    <div class="add-voltar">
+      <h1 th:text="${aluno.id == null ? 'Novo Aluno' : 'Editar Aluno'}"></h1>
+
+      <a type="button" class="button-vol" th:href="@{/aluno/listar}">
+        <i class="fa-solid fa-arrow-left"></i> Voltar
+      </a>
+    </div>
 
     <div class="form-grid">
 
@@ -121,7 +128,6 @@
     </div>
 
     <button type="submit" class="button-sav">Salvar Aluno</button>
-    <a type="button" class="button-vol" th:href="@{/aluno/listar}">Voltar</a>
   </form>
 </div>
 

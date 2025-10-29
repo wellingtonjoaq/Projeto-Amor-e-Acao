@@ -12,10 +12,16 @@
 <div th:replace="/navbar/dashboard :: menu"></div>
 
 <div class="container">
-    <h1>Adicionar Usuário</h1>
-
     <form th:action="${acao == 'editar'} ? @{/usuarios/atualizar/{id}(id=${usuario.id})} : @{/usuarios}"
           th:object="${usuario}" method="post" class="form-adm">
+
+        <div class="add-voltar">
+            <h1 th:text="${usuario.id == null ? 'Novo Usuário' : 'Editar Usuário'}"></h1>
+
+            <a type="button" class="button-vol" th:href="@{/usuarios}">
+                <i class="fa-solid fa-arrow-left"></i> Voltar
+            </a>
+        </div>
 
         <input type="hidden" th:field="*{id}" />
 
