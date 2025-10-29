@@ -25,10 +25,10 @@ public class HistoricoService {
     public List<HistoricoDTO> listarHistorico() {
         List<HistoricoDTO> lista = new ArrayList<>();
 
-        alunoService.listarInativos().forEach(aluno -> lista.add(mapAlunoToDTO(aluno)));
-        voluntarioService.listarInativos().forEach(voluntario -> lista.add(mapVoluntarioToDTO(voluntario)));
-        empresaParceiraService.listarInativos().forEach(empresa -> lista.add(mapEmpresaToDTO(empresa)));
-        usuarioService.listarInativos().forEach(usuario -> lista.add(mapUsuarioToDTO(usuario)));
+        alunoService.listarTodosInativos().forEach(aluno -> lista.add(mapAlunoToDTO(aluno)));
+        voluntarioService.listarTodosInativos().forEach(voluntario -> lista.add(mapVoluntarioToDTO(voluntario)));
+        empresaParceiraService.listarTodosInativos().forEach(empresa -> lista.add(mapEmpresaToDTO(empresa)));
+        usuarioService.listarTodosInativos().forEach(usuario -> lista.add(mapUsuarioToDTO(usuario)));
 
         // Ordena por data mais recente
         lista.sort(Comparator.comparing(HistoricoDTO::getDataAlteracaoStatus,

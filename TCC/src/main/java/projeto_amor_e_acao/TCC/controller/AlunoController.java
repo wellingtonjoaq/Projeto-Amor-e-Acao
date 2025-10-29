@@ -2,6 +2,7 @@ package projeto_amor_e_acao.TCC.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -71,8 +72,14 @@ public class AlunoController {
 
 
     @GetMapping("listar")
-    public String listar(Model model) {
-        model.addAttribute("alunos", service.listarAtivos());
+    public String listar(@RequestParam(defaultValue = "0") int page,
+                         @RequestParam(defaultValue = "20") int size,
+                         Model model) {
+
+        Page<Aluno> alunos = service.listarAtivos(page, size);
+
+        model.addAttribute("alunos", alunos);
+        model.addAttribute("paginaAtual", page);
         return "aluno/lista";
     }
 

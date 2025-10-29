@@ -1,8 +1,12 @@
 package projeto_amor_e_acao.TCC.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import projeto_amor_e_acao.TCC.model.Aluno;
 import projeto_amor_e_acao.TCC.model.Voluntario;
 import projeto_amor_e_acao.TCC.repository.VoluntarioRepository;
 
@@ -23,14 +27,23 @@ public class VoluntarioService {
         repository.save(voluntario);
     }
 
-    public List<Voluntario> listarAtivos() {return repository.findByStatusIgnoreCase("ATIVO");}
+    public Page<Voluntario> listarAtivos(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return repository.findByStatusIgnoreCase("ATIVO", pageable);
+    }
 
-    public List<Voluntario> listarInativos() {
+    public List<Voluntario> listarTodosInativos() {
         return repository.findByStatusIgnoreCase("INATIVO");
     }
 
-    public List<Voluntario> listarPendentes() {
-        return repository.findByStatusIgnoreCase("PENDENTE");
+    public Page<Voluntario> listarInativos(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return repository.findByStatusIgnoreCase("INATIVO", pageable);
+    }
+
+    public Page<Voluntario> listarPendentes(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return repository.findByStatusIgnoreCase("PENDENTE", pageable);
     }
 
 

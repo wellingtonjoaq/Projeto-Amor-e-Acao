@@ -2,15 +2,14 @@ package projeto_amor_e_acao.TCC.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import projeto_amor_e_acao.TCC.model.Usuario;
 import projeto_amor_e_acao.TCC.service.UsuarioService;
 
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -18,18 +17,23 @@ import java.util.Optional;
 public class UsuarioController {
 
     @Autowired
-    private UsuarioService usuarioService;
+    private UsuarioService service;
 
     @GetMapping
-    public String listarUsuarios(Model model) {
-        List<Usuario> usuarios = usuarioService.findAll();
+    public String listarUsuarios(@RequestParam(defaultValue = "0") int page,
+                                 @RequestParam(defaultValue = "20") int size,
+                                 Model model) {
+
+        Page<Usuario> usuarios = service.listarAtivos(page, size);
+
         model.addAttribute("usuarios", usuarios);
+        model.addAttribute("paginaAtual", page);
         return "usuario/listar";
     }
 
     @GetMapping("/visualizar/{id}")
     public String visualizarUsuario(@PathVariable Long id, Model model) {
-        Optional<Usuario> usuarioOptional = usuarioService.findById(id);
+        Optional<Usuario> usuarioOptional = service.findById(id);
         if (usuarioOptional.isPresent()) {
             model.addAttribute("usuario", usuarioOptional.get());
             return "usuario/visualizar";
@@ -55,7 +59,7 @@ public class UsuarioController {
         }
 
         try {
-            usuarioService.save(usuario);
+            service.save(usuario);
             return "redirect:/usuarios";
         } catch (IllegalArgumentException e) {
             if (e.getMessage().contains("senha")) {
@@ -71,7 +75,7 @@ public class UsuarioController {
 
     @GetMapping("/editar/{id}")
     public String editarUsuario(@PathVariable Long id, Model model) {
-        Usuario usuario = usuarioService.findById(id).orElse(null);
+        Usuario usuario = service.findById(id).orElse(null);
         if (usuario == null) {
             return "redirect:/usuarios";
         }
@@ -93,7 +97,7 @@ public class UsuarioController {
         }
 
         try {
-            usuarioService.atualizarUsuario(id, usuario);
+            service.atualizarUsuario(id, usuario);
             return "redirect:/usuarios";
         } catch (IllegalArgumentException e) {
             if (e.getMessage().contains("senha")) {
@@ -117,7 +121,7 @@ public class UsuarioController {
 
     @PostMapping("/deletar/{id}")
     public String deletarUsuario(@PathVariable Long id) {
-        usuarioService.deleteById(id);
+        service.deleteById(id);
         return "redirect:/usuarios";
     }
 }

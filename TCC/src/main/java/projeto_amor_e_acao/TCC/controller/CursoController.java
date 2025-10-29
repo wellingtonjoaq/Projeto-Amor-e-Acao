@@ -2,13 +2,12 @@ package projeto_amor_e_acao.TCC.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import projeto_amor_e_acao.TCC.model.Aluno;
 import projeto_amor_e_acao.TCC.model.Curso;
 import projeto_amor_e_acao.TCC.service.CursoService;
 
@@ -48,8 +47,15 @@ public class CursoController {
     }
 
     @GetMapping("listar")
-    public String listar(Model model) {
-        model.addAttribute("cursos", service.listarTodos());
+    public String listar(@RequestParam(defaultValue = "0") int page,
+                         @RequestParam(defaultValue = "20") int size,
+                         Model model) {
+
+        Page<Curso> cursos = service.listarPaginados(page, size);
+
+        model.addAttribute("cursos", cursos);
+        model.addAttribute("paginaAtual", page);
+
         return "curso/lista";
     }
 

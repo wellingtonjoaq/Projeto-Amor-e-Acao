@@ -314,6 +314,55 @@ select {
       text-decoration: none;
 }
 
+.action-botton-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 40px;
+    padding: 10px 0;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.action-botton-page h1 {
+    font-size: 18px;
+    color: #333;
+    margin-right: 10px;
+    font-weight: 600;
+}
+
+.action-botton-page button {
+    min-width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 8px;
+    background-color: #001F3F;
+    color: #fff;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.action-botton-page button:hover {
+    background-color: #004080;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.action-botton-page button.active {
+    background-color: #007bff;
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4);
+    transform: scale(1.05);
+}
+
+.action-botton-page button:active {
+    transform: scale(0.95);
+}
+
+
 /* Modal base */
 .modal {
   display: none;

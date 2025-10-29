@@ -2,11 +2,13 @@ package projeto_amor_e_acao.TCC.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import projeto_amor_e_acao.TCC.model.Aluno;
 import projeto_amor_e_acao.TCC.model.EmpresaParceira;
 import projeto_amor_e_acao.TCC.service.EmpresaParceiraService;
 
@@ -21,9 +23,14 @@ public class EmpresaParceiraController {
     private EmpresaParceiraService empresaParceiraService;
 
     @GetMapping
-    public String listarEmpresasParceiras(Model model) {
-        List<EmpresaParceira> empresasParceiras = empresaParceiraService.findAll();
+    public String listarEmpresasParceiras(@RequestParam(defaultValue = "0") int page,
+                                          @RequestParam(defaultValue = "20") int size,
+                                          Model model) {
+
+        Page<EmpresaParceira> empresasParceiras = empresaParceiraService.listarAtivos(page, size);
         model.addAttribute("empresasParceiras", empresasParceiras);
+        model.addAttribute("paginaAtual", page);
+
         return "empresaParceira/listar";
     }
 
