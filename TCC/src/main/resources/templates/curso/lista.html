@@ -14,14 +14,69 @@
 <div class="container">
     <div class="header-bar">
         <div class="header-title">
-            <h1>Listagem de Cursos</h1>
+            <h1>Lista de Cursos</h1>
         </div>
-        <div class="header-action">
-            <a class="btn-create" th:href="@{/curso}">Cadastrar Curso</a>
+
+        <div class="header-actions">
+            <div class="pesquisa-box">
+                <input type="text" class="campo-pesquisa" placeholder="Pesquisar...">
+                <button class="btn-pesquisar"><i class="fa fa-search"></i></button>
+            </div>
+
+            <button class="filter-btn" id="toggleFilter">
+                <i class="fas fa-filter"></i> Filtrar <i class="fas fa-chevron-down"></i>
+            </button>
+
+            <a th:href="@{/curso}" class="btn-create">
+                <i class="fas fa-user-plus"></i> Novo Curso
+            </a>
         </div>
     </div>
 
-    <!-- Grid de cards -->
+    <div class="filter-panel" id="filterPanel">
+        <div class="filter-section">
+            <div class="filter-header"><i class="fas fa-id-card"></i> Identidade <i class="fas fa-chevron-down"></i></div>
+            <div class="filter-options">
+                <label><input type="checkbox"> Nome</label>
+                <label><input type="checkbox"> CPF</label>
+                <label><input type="checkbox"> E-mail</label>
+                <label><input type="checkbox"> Telefone</label>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <div class="filter-header"><i class="fas fa-venus-mars"></i> Gênero <i class="fas fa-chevron-down"></i></div>
+            <div class="filter-options">
+                <label><input type="checkbox"> Homem</label>
+                <label><input type="checkbox"> Mulher</label>
+                <label><input type="checkbox"> Todos</label>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <div class="filter-header"><i class="fas fa-map-marker-alt"></i> Localização <i class="fas fa-chevron-down"></i></div>
+            <div class="filter-options">
+                <label><input type="checkbox"> CEP</label>
+                <label><input type="checkbox"> Bairro</label>
+                <label><input type="checkbox"> Cidade</label>
+                <label><input type="checkbox"> Estado</label>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <div class="filter-header"><i class="fas fa-book"></i> Cursos <i class="fas fa-chevron-down"></i></div>
+            <div class="filter-options">
+                <label><input type="checkbox"> Informática</label>
+                <label><input type="checkbox"> Administração</label>
+                <label><input type="checkbox"> Enfermagem</label>
+            </div>
+        </div>
+
+        <button class="btn-buscar-filtro">
+            <i class="fa fa-search"></i> Buscar
+        </button>
+    </div>
+
     <div class="card-grid">
         <div class="card" th:each="curso : ${cursos}">
             <div class="card-header">
@@ -42,10 +97,10 @@
 
             <div class="card-footer">
                 <div class="card-actions">
-                    <a th:href="@{'/curso/editar/' + ${curso.id}}" class="btn-edit"><i class="fa-solid fa-pen"></i></a>
+                    <a th:href="@{'/curso/editar/' + ${curso.id}}" class="btn-edit"><i class="fas fa-edit"></i></a>
                     <form th:action="@{'/curso/remover/' + ${curso.id}}" style="display:inline;">
-                        <button type="submit" class="btn-delete" onclick="return confirm('Deseja excluir este curso?');">
-                            <i class="fa-solid fa-trash"></i>
+                        <button type="submit" class="delete-btn" onclick="return confirm('Tem certeza que deseja remover este aluno?');">
+                            <i class="fas fa-trash-alt"></i>
                         </button>
                     </form>
                 </div>
@@ -56,7 +111,17 @@
         </div>
     </div>
 </div>
+<script>
+    const toggleButton = document.getElementById('toggleFilter');
+    const filterPanel = document.getElementById('filterPanel');
+    let open = false;
 
+    toggleButton.addEventListener('click', () => {
+      open = !open;
+      filterPanel.style.display = open ? 'grid' : 'none';
+      toggleButton.querySelector('.fa-chevron-down').style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
+    });
+</script>
 <form class="action-botton-page" th:action="@{/curso/listar}" method="get">
     <h1>Página</h1>
 

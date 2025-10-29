@@ -12,7 +12,6 @@
 <div th:replace="/navbar/dashboard :: menu"></div>
 
 <div class="container">
-        <h1 th:text="${empresaParceira.id == null ? 'Nova Empresa Parceira' : 'Editar Empresa Parceira'}"></h1>
 
     <div th:if="${successMessage}" class="alert alert-success" role="alert">
         <p th:text="${successMessage}"></p>
@@ -24,6 +23,14 @@
 
     <form th:action="@{/empresasParceiras}" th:object="${empresaParceira}" method="post" class="form-adm">
         <input type="hidden" th:field="*{id}" />
+
+        <div class="add-voltar">
+            <h1 th:text="${empresaParceira.id == null ? 'Nova Empresa Parceira' : 'Editar Empresa Parceira'}"></h1>
+
+            <a type="button" class="button-vol" th:href="@{/empresasParceiras}">
+                <i class="fa-solid fa-arrow-left"></i> Voltar
+            </a>
+        </div>
 
         <div class="form-grid">
 
