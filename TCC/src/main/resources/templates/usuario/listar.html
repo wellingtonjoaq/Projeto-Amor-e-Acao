@@ -47,6 +47,16 @@
         </tr>
         </tbody>
     </table>
+
+    <form class="action-botton-page" th:action="@{/usuario/listar}" method="get">
+        <h1>Página</h1>
+
+        <button th:if="${usuarios.hasPrevious()}" type="submit" name="page" th:value="${usuarios.number - 1}" th:text="${usuarios.number}"></button>
+
+        <button class="active" type="submit" name="page" th:value="${usuarios.number}" th:text="${usuarios.number + 1}"></button>
+
+        <button th:if="${usuarios.hasNext()}" type="submit" name="page" th:value="${usuarios.number + 1}" th:text="${usuarios.number + 2}"></button>
+    </form>
 </div>
 </body>
 </html>

@@ -47,6 +47,7 @@
                         <button type="submit" class="btn-delete" onclick="return confirm('Deseja excluir este curso?');">
                             <i class="fa-solid fa-trash"></i>
                         </button>
+                    </form>
                 </div>
                 <div class="card-tag">
                     <i class="fa-solid fa-tags"></i> Exemplo - Exemplo - Exemplo
@@ -55,6 +56,16 @@
         </div>
     </div>
 </div>
+
+<form class="action-botton-page" th:action="@{/curso/listar}" method="get">
+    <h1>Página</h1>
+
+    <button th:if="${cursos.hasPrevious()}" type="submit" name="page" th:value="${cursos.number - 1}" th:text="${cursos.number}"></button>
+
+    <button class="active" type="submit" name="page" th:value="${cursos.number}" th:text="${cursos.number + 1}"></button>
+
+    <button th:if="${cursos.hasNext()}" type="submit" name="page" th:value="${cursos.number + 1}" th:text="${cursos.number + 2}"></button>
+</form>
 
 </body>
 </html>
