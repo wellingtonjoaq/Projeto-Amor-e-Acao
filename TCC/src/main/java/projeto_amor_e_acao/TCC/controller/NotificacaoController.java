@@ -3,10 +3,7 @@ package projeto_amor_e_acao.TCC.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import projeto_amor_e_acao.TCC.model.Aluno;
 import projeto_amor_e_acao.TCC.model.EmpresaParceira;
 import projeto_amor_e_acao.TCC.model.Voluntario;
@@ -31,8 +28,10 @@ public class NotificacaoController {
     private EmpresaParceiraService empresaParceiraService;
 
     @GetMapping("listar")
-    public String listar(Model model) {
-        model.addAttribute("notificacoes", service.listarNotificacao());
+    public String listar(@RequestParam(defaultValue = "0") int page,
+                         @RequestParam(defaultValue = "20") int size, Model model) {
+        model.addAttribute("notificacoes", service.listarNotificacao(page, size));
+        model.addAttribute("paginaAtual", page);
         return "notificacao/lista";
     }
 

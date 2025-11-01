@@ -2,6 +2,9 @@ package projeto_amor_e_acao.TCC.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import projeto_amor_e_acao.TCC.model.Aluno;
@@ -28,13 +31,25 @@ public class AlunoService {
         }
     }
 
-    public List<Aluno> listarAtivos() { return repository.findByStatusIgnoreCase("ATIVO"); }
+    public Page<Aluno> listarAtivos(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return repository.findByStatusIgnoreCase("ATIVO", pageable);
+    }
 
-    public List<Aluno> listarInativos() {
+    public List<Aluno> listarTodosInativos() {
         return repository.findByStatusIgnoreCase("INATIVO");
     }
 
-    public List<Aluno> listarPendentes() { return repository.findByStatusIgnoreCase("PENDENTE"); }
+    public Page<Aluno> listarInativos(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return repository.findByStatusIgnoreCase("INATIVO", pageable);
+    }
+
+    public Page<Aluno> listarPendentes(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return repository.findByStatusIgnoreCase("PENDENTE", pageable);
+    }
+
 
     public Aluno buscarPorId(Long id) {
         return repository.findById(id).orElseThrow();
