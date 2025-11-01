@@ -108,6 +108,16 @@
         </tr>
         </tbody>
     </table>
+
+    <form class="action-botton-page" th:action="@{/voluntario/listar}" method="get">
+        <h1>Página</h1>
+
+        <button th:if="${voluntarios.hasPrevious()}" type="submit" name="page" th:value="${voluntarios.number - 1}" th:text="${voluntarios.number}"></button>
+
+        <button class="active" type="submit" name="page" th:value="${voluntarios.number}" th:text="${voluntarios.number + 1}"></button>
+
+        <button th:if="${voluntarios.hasNext()}" type="submit" name="page" th:value="${voluntarios.number + 1}" th:text="${voluntarios.number + 2}"></button>
+    </form>
 </div>
 <script>
     const toggleButton = document.getElementById('toggleFilter');

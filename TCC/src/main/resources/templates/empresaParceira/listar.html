@@ -107,6 +107,17 @@
         </tr>
         </tbody>
     </table>
+
+    <form class="action-botton-page" th:action="@{/empresasParceiras/listar}" method="get">
+        <h1>Página</h1>
+
+        <button th:if="${empresasParceiras.hasPrevious()}" type="submit" name="page" th:value="${empresasParceiras.number - 1}" th:text="${empresasParceiras.number}"></button>
+
+        <button class="active" type="submit" name="page" th:value="${empresasParceiras.number}" th:text="${empresasParceiras.number + 1}"></button>
+
+        <button th:if="${empresasParceiras.hasNext()}" type="submit" name="page" th:value="${empresasParceiras.number + 1}" th:text="${empresasParceiras.number + 2}"></button>
+    </form>
+
 </div>
 <script>
     const toggleButton = document.getElementById('toggleFilter');
