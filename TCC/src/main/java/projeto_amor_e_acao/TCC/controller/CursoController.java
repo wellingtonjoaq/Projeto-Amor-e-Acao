@@ -16,6 +16,9 @@ import projeto_amor_e_acao.TCC.service.FirebaseStorageService;
 
 import java.io.IOException;
 
+import java.util.Collections;
+import java.util.List;
+
 @Controller
 @RequestMapping("curso")
 public class CursoController {
@@ -69,7 +72,7 @@ public class CursoController {
 
     @GetMapping("listar")
     public String listar(@RequestParam(defaultValue = "0") int page,
-                         @RequestParam(defaultValue = "20") int size,
+                         @RequestParam(defaultValue = "12") int size,
                          Model model) {
 
         Page<Curso> cursos = service.listarPaginados(page, size);
@@ -79,6 +82,53 @@ public class CursoController {
 
         return "curso/lista";
     }
+
+    @GetMapping("filtrarPesquisa")
+    public String filtrarPesquisa(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(required = false) String pesquisa,
+            Model model) {
+
+        Page<Curso> cursos = service.filtrarPesquisa(pesquisa, page, size);
+
+        model.addAttribute("pesquisa", pesquisa);
+        model.addAttribute("cursos", cursos);
+        model.addAttribute("paginaAtual", page);
+        model.addAttribute("vazio", cursos.isEmpty());
+
+        return "curso/pesquisaFiltro/lista";
+    }
+
+//    @GetMapping("filtrar")
+//    public String filtrar(
+//            @RequestParam(defaultValue = "0") int page,
+//            @RequestParam(defaultValue = "20") int size,
+//            @RequestParam(required = false) String status,
+//            @RequestParam(required = false, name = "categoriasSelecionadas") List<String> categoria,
+//            Model model) {
+//
+//        boolean temCategoria = (categoria != null && !categoria.isEmpty());
+//        boolean temStatus = (status != null && !status.isBlank() && !status.equalsIgnoreCase("TODOS"));
+//
+//        Page<Curso> cursos = service.filtrar(docentes, status, page, size);
+//
+//        model.addAttribute("cursos", cursos);
+//        model.addAttribute("paginaAtual", page);
+//        model.addAttribute("docentes", docentes);
+//        model.addAttribute("status", status);
+//        model.addAttribute("vazio", false);
+//
+//        if (!temdocente && !temStatus) {
+//            model.addAttribute("vazio", true);
+//        }
+//
+//        if (cursos.isEmpty()){
+//            model.addAttribute("vazio", cursos.isEmpty());
+//        }
+//
+//        return "curso/filtro/lista";
+//    }
 
     @GetMapping("visualiza/{id}")
     public String visualizar(@PathVariable Long id, Model model) {

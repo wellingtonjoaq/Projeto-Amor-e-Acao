@@ -30,17 +30,72 @@ public class CursoService {
     }
 
     public List<Curso> listarTodos() {
-        var result = repository.findAll();
-        return result;
+        return repository.findAll();
     }
 
     public Page<Curso> listarPaginados(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return repository.findAll(pageable);
+        return repository.findByStatusIgnoreCase("ATIVO", pageable);
     }
+
+    public Page<Curso> filtrarPesquisa(String pesquisa, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        if (pesquisa == null || pesquisa.isBlank()) {
+            return Page.empty(pageable);
+        }
+
+        pesquisa = pesquisa.trim();
+        Page<Curso> resultados = repository.findByStatusIgnoreCaseAndNomeContainingIgnoreCase("ATIVO", pesquisa, pageable);
+
+        if (resultados.isEmpty()) {
+            resultados = repository.findByStatusIgnoreCaseAndProfessorContainingIgnoreCase("ATIVO", pesquisa, pageable);
+        }
+
+        if (resultados.isEmpty()) {
+            resultados = repository.findByStatusIgnoreCaseAndCepContainingIgnoreCase("ATIVO", pesquisa, pageable);
+        }
+
+        if (resultados.isEmpty()) {
+            resultados = repository.findByStatusIgnoreCaseAndEnderecoContainingIgnoreCase("ATIVO", pesquisa, pageable);
+        }
+
+        if (resultados.isEmpty()) {
+            resultados = repository.findByStatusIgnoreCaseAndBairroContainingIgnoreCase("ATIVO", pesquisa, pageable);
+        }
+
+        return resultados;
+    }
+
+
+//    public Page<Curso> filtrar(List<String> docentes, String status, int page, int size) {
+//        Pageable pageable = PageRequest.of(page, size);
+//
+//        boolean temProfessor = (docentes != null && !docentes.isEmpty());
+//        boolean temStatus = (status != null && !status.isBlank() && !status.equalsIgnoreCase("TODOS"));
+//
+//        if (temProfessor && temStatus) {
+//            return repository.findByStatusIgnoreCaseAndProfessorIgnoreCase(status, docentes, pageable
+//            );
+//        } else if (temProfessor) {
+//            return repository.findByStatusIgnoreCaseAndProfessorIgnoreCase(
+//                    "ATIVO", docentes, pageable
+//            );
+//        } else if (temStatus) {
+//            return repository.findByStatusIgnoreCase(
+//                    status, pageable
+//            );
+//        }
+//
+//        return repository.findByStatusIgnoreCase("ATIVO", pageable);
+//    }
 
     public Curso buscarPorId(Long id) {
         return repository.findById(id).orElseThrow();
+    }
+
+    public List<Curso> buscarPorIds(List<Long> ids) {
+        return repository.findAllById(ids);
     }
 
     public void deletarPorId(Long id) {

@@ -12,6 +12,8 @@ import projeto_amor_e_acao.TCC.model.Curso;
 import projeto_amor_e_acao.TCC.model.Matricula;
 import projeto_amor_e_acao.TCC.service.AlunoService;
 import projeto_amor_e_acao.TCC.service.CursoService;
+
+import java.util.Collections;
 import java.util.List;
 
 
@@ -80,8 +82,81 @@ public class AlunoController {
 
         model.addAttribute("alunos", alunos);
         model.addAttribute("paginaAtual", page);
+        model.addAttribute("cursos", cursoService.listarTodos());
         return "aluno/lista";
     }
+
+    @GetMapping("filtrarPesquisa")
+    public String filtrarPesquisa(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(required = false) String pesquisa,
+            Model model) {
+
+        Page<Aluno> alunos = service.filtrarPesquisa(pesquisa, page, size);
+
+        model.addAttribute("pesquisa", pesquisa);
+        model.addAttribute("alunos", alunos);
+        model.addAttribute("paginaAtual", page);
+        model.addAttribute("cursos", cursoService.listarTodos());
+        model.addAttribute("vazio", alunos.isEmpty());
+
+        return "aluno/pesquisaFiltro/lista";
+    }
+
+
+    @GetMapping("filtrar")
+    public String filtrar(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(required = false) String genero,
+            @RequestParam(required = false, name = "cursos") List<Long> cursosIds,
+            @RequestParam(required = false) Boolean nome,
+            @RequestParam(required = false) Boolean cpf,
+            @RequestParam(required = false) Boolean email,
+            @RequestParam(required = false) Boolean telefone,
+            @RequestParam(required = false) Boolean cep,
+            @RequestParam(required = false) Boolean bairro,
+            @RequestParam(required = false) Boolean endereco,
+            Model model) {
+
+        List<Curso> cursos = (cursosIds != null && !cursosIds.isEmpty())
+                ? cursoService.buscarPorIds(cursosIds)
+                : Collections.emptyList();
+
+        boolean temCursos = !cursos.isEmpty();
+        boolean temGenero = (genero != null && !genero.isBlank() && !genero.equalsIgnoreCase("TODOS"));
+
+        Page<Aluno> alunos = service.filtrar(cursos, genero, page, size);
+
+        model.addAttribute("alunos", alunos);
+        model.addAttribute("paginaAtual", page);
+        model.addAttribute("cursos", cursoService.listarTodos());
+        model.addAttribute("cursosIds", cursosIds);
+        model.addAttribute("genero", genero);
+        model.addAttribute("nome", nome);
+        model.addAttribute("cpf", cpf);
+        model.addAttribute("email", email);
+        model.addAttribute("telefone", telefone);
+        model.addAttribute("cep", cep);
+        model.addAttribute("bairro", bairro);
+        model.addAttribute("endereco", endereco);
+        model.addAttribute("vazio", false);
+
+        if (!temCursos && !temGenero && nome == null && cpf == null && email == null && telefone == null && cep == null && bairro == null && endereco == null) {
+            model.addAttribute("vazio", true);
+        }
+
+        if (alunos.isEmpty()){
+            model.addAttribute("vazio", alunos.isEmpty());
+        }
+
+        return "aluno/filtro/lista";
+    }
+
+
+
+
 
     @GetMapping("visualiza/{id}")
     public String visualizar(@PathVariable Long id, Model model) {

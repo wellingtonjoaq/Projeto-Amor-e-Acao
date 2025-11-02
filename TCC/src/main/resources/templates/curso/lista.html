@@ -18,10 +18,12 @@
         </div>
 
         <div class="header-actions">
-            <div class="pesquisa-box">
-                <input type="text" class="campo-pesquisa" placeholder="Pesquisar...">
-                <button class="btn-pesquisar"><i class="fa fa-search"></i></button>
-            </div>
+            <form method="get" th:action="@{/curso/filtrarPesquisa}" class="pesquisa-box">
+                <input type="text" name="pesquisa" class="campo-pesquisa" placeholder="Pesquisar..." th:value="${pesquisa}">
+                <button class="btn-pesquisar" type="submit">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
 
             <button class="filter-btn" id="toggleFilter">
                 <i class="fas fa-filter"></i> Filtrar <i class="fas fa-chevron-down"></i>
@@ -33,49 +35,20 @@
         </div>
     </div>
 
-    <div class="filter-panel" id="filterPanel">
+    <form th:action="@{/curso/filtrar}" method="get" class="filter-panel" id="filterPanel">
         <div class="filter-section">
-            <div class="filter-header"><i class="fas fa-id-card"></i> Identidade <i class="fas fa-chevron-down"></i></div>
+            <div class="filter-header"><i class="fas fa-book"></i>Status<i class="fas fa-chevron-down"></i></div>
             <div class="filter-options">
-                <label><input type="checkbox"> Nome</label>
-                <label><input type="checkbox"> CPF</label>
-                <label><input type="checkbox"> E-mail</label>
-                <label><input type="checkbox"> Telefone</label>
-            </div>
-        </div>
-
-        <div class="filter-section">
-            <div class="filter-header"><i class="fas fa-venus-mars"></i> Gênero <i class="fas fa-chevron-down"></i></div>
-            <div class="filter-options">
-                <label><input type="checkbox"> Homem</label>
-                <label><input type="checkbox"> Mulher</label>
-                <label><input type="checkbox"> Todos</label>
-            </div>
-        </div>
-
-        <div class="filter-section">
-            <div class="filter-header"><i class="fas fa-map-marker-alt"></i> Localização <i class="fas fa-chevron-down"></i></div>
-            <div class="filter-options">
-                <label><input type="checkbox"> CEP</label>
-                <label><input type="checkbox"> Bairro</label>
-                <label><input type="checkbox"> Cidade</label>
-                <label><input type="checkbox"> Estado</label>
-            </div>
-        </div>
-
-        <div class="filter-section">
-            <div class="filter-header"><i class="fas fa-book"></i> Cursos <i class="fas fa-chevron-down"></i></div>
-            <div class="filter-options">
-                <label><input type="checkbox"> Informática</label>
-                <label><input type="checkbox"> Administração</label>
-                <label><input type="checkbox"> Enfermagem</label>
+                <label><input type="radio" name="status" value="ATIVO"> ATIVO </label>
+                <label><input type="radio" name="status" value="INATIVO"> INATIVO </label>
+                <label><input type="radio" name="status" value="TODOS"> TODOS </label>
             </div>
         </div>
 
         <button class="btn-buscar-filtro">
             <i class="fa fa-search"></i> Buscar
         </button>
-    </div>
+    </form>
 
     <div class="card-grid">
         <div class="card" th:each="curso : ${cursos}">
@@ -111,6 +84,19 @@
         </div>
     </div>
 </div>
+
+<form class="action-botton-page" th:action="@{/curso/listar}" method="get">
+
+    <h1>Página</h1>
+
+    <button th:if="${cursos.hasPrevious()}" type="submit" name="page" th:value="${cursos.number - 1}" th:text="${cursos.number}"></button>
+
+    <button class="active" type="submit" name="page" th:value="${cursos.number}" th:text="${cursos.number + 1}"></button>
+
+    <button th:if="${cursos.hasNext()}" type="submit" name="page" th:value="${cursos.number + 1}" th:text="${cursos.number + 2}"></button>
+</form>
+
+
 <script>
     const toggleButton = document.getElementById('toggleFilter');
     const filterPanel = document.getElementById('filterPanel');
@@ -122,15 +108,5 @@
       toggleButton.querySelector('.fa-chevron-down').style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
     });
 </script>
-<form class="action-botton-page" th:action="@{/curso/listar}" method="get">
-    <h1>Página</h1>
-
-    <button th:if="${cursos.hasPrevious()}" type="submit" name="page" th:value="${cursos.number - 1}" th:text="${cursos.number}"></button>
-
-    <button class="active" type="submit" name="page" th:value="${cursos.number}" th:text="${cursos.number + 1}"></button>
-
-    <button th:if="${cursos.hasNext()}" type="submit" name="page" th:value="${cursos.number + 1}" th:text="${cursos.number + 2}"></button>
-</form>
-
 </body>
 </html>

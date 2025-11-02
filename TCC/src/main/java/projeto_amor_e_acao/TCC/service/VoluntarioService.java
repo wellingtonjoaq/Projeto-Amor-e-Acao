@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import projeto_amor_e_acao.TCC.model.Aluno;
+import projeto_amor_e_acao.TCC.model.Curso;
+import projeto_amor_e_acao.TCC.model.FuncaoVoluntario;
 import projeto_amor_e_acao.TCC.model.Voluntario;
 import projeto_amor_e_acao.TCC.repository.VoluntarioRepository;
 
@@ -46,6 +48,73 @@ public class VoluntarioService {
         return repository.findByStatusIgnoreCase("PENDENTE", pageable);
     }
 
+    public Page<Voluntario> filtrarPesquisa(String pesquisa, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        if (pesquisa == null || pesquisa.isBlank()) {
+            return Page.empty(pageable);
+        }
+
+        pesquisa = pesquisa.trim();
+        Page<Voluntario> resultados = repository.findByStatusIgnoreCaseAndNomeContainingIgnoreCase("ATIVO", pesquisa, pageable);
+
+        if (resultados.isEmpty()) {
+            resultados = repository.findByStatusIgnoreCaseAndEmailContainingIgnoreCase("ATIVO", pesquisa, pageable);
+        }
+
+        if (resultados.isEmpty()) {
+            resultados = repository.findByStatusIgnoreCaseAndCpfContainingIgnoreCase("ATIVO", pesquisa, pageable);
+        }
+
+        if (resultados.isEmpty()) {
+            resultados = repository.findByStatusIgnoreCaseAndTelefoneContainingIgnoreCase("ATIVO", pesquisa, pageable);
+        }
+
+        if (resultados.isEmpty()) {
+            resultados = repository.findByStatusIgnoreCaseAndCepContainingIgnoreCase("ATIVO", pesquisa, pageable);
+        }
+
+        if (resultados.isEmpty()) {
+            resultados = repository.findByStatusIgnoreCaseAndEnderecoContainingIgnoreCase("ATIVO", pesquisa, pageable);
+        }
+
+        if (resultados.isEmpty()) {
+            resultados = repository.findByStatusIgnoreCaseAndBairroContainingIgnoreCase("ATIVO", pesquisa, pageable);
+        }
+
+        if (resultados.isEmpty()) {
+            resultados = repository.findByStatusIgnoreCaseAndCidadeContainingIgnoreCase("ATIVO", pesquisa, pageable);
+        }
+
+        if (resultados.isEmpty()) {
+            resultados = repository.findByStatusIgnoreCaseAndEstadoContainingIgnoreCase("ATIVO", pesquisa, pageable);
+        }
+
+        return resultados;
+    }
+
+    public Page<Voluntario> filtrar(List<FuncaoVoluntario> funcaoVoluntarios, String genero, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        boolean temFuncao = (funcaoVoluntarios != null && !funcaoVoluntarios.isEmpty());
+        boolean temGenero = (genero != null && !genero.isBlank() && !genero.equalsIgnoreCase("TODOS"));
+
+        if (temFuncao && temGenero) {
+            return repository.findByStatusIgnoreCaseAndFuncaoInAndGeneroIgnoreCase(
+                    "ATIVO", funcaoVoluntarios, genero, pageable
+            );
+        } else if (temFuncao) {
+            return repository.findByStatusIgnoreCaseAndFuncaoIn(
+                    "ATIVO", funcaoVoluntarios, pageable
+            );
+        } else if (temGenero) {
+            return repository.findByStatusIgnoreCaseAndGeneroIgnoreCase(
+                    "ATIVO", genero, pageable
+            );
+        }
+
+        return repository.findByStatusIgnoreCase("ATIVO", pageable);
+    }
 
     public Voluntario buscarPorId(Long id) {
         return repository.findById(id).orElseThrow();

@@ -8,9 +8,14 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import projeto_amor_e_acao.TCC.model.Aluno;
+import projeto_amor_e_acao.TCC.model.Curso;
+import projeto_amor_e_acao.TCC.model.FuncaoVoluntario;
 import projeto_amor_e_acao.TCC.model.Voluntario;
 import projeto_amor_e_acao.TCC.service.FuncaoVoluntarioService;
 import projeto_amor_e_acao.TCC.service.VoluntarioService;
+
+import java.util.Collections;
+import java.util.List;
 
 @Controller
 @RequestMapping("voluntario")
@@ -58,8 +63,78 @@ public class VoluntarioController {
         Page<Voluntario> voluntarios = service.listarAtivos(page, size);
 
         model.addAttribute("voluntarios", voluntarios);
+        model.addAttribute("funcoesVoluntario", funcaoVoluntarioService.listarTodos());
         model.addAttribute("paginaAtual", page);
         return "voluntario/lista";
+    }
+
+    @GetMapping("filtrarPesquisa")
+    public String filtrarPesquisa(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(required = false) String pesquisa,
+            Model model) {
+
+        Page<Voluntario> voluntarios = service.filtrarPesquisa(pesquisa, page, size);
+
+        model.addAttribute("pesquisa", pesquisa);
+        model.addAttribute("voluntarios", voluntarios);
+        model.addAttribute("funcoesVoluntario", funcaoVoluntarioService.listarTodos());
+        model.addAttribute("paginaAtual", page);
+        model.addAttribute("vazio", voluntarios.isEmpty());
+
+        return "voluntario/pesquisaFiltro/lista";
+    }
+
+    @GetMapping("filtrar")
+    public String filtrar(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(required = false) String genero,
+            @RequestParam(required = false, name = "funcoes") List<Long> funcoesIds,
+            @RequestParam(required = false) Boolean nome,
+            @RequestParam(required = false) Boolean cpf,
+            @RequestParam(required = false) Boolean email,
+            @RequestParam(required = false) Boolean telefone,
+            @RequestParam(required = false) Boolean cep,
+            @RequestParam(required = false) Boolean bairro,
+            @RequestParam(required = false) Boolean endereco,
+            @RequestParam(required = false) Boolean cidade,
+            @RequestParam(required = false) Boolean estado,
+            Model model) {
+
+        List<FuncaoVoluntario> funcoes = (funcoesIds != null && !funcoesIds.isEmpty())
+                ? funcaoVoluntarioService.buscarPorIds(funcoesIds)
+                : Collections.emptyList();
+
+        boolean temFuncao = !funcoes.isEmpty();
+        boolean temGenero = (genero != null && !genero.isBlank() && !genero.equalsIgnoreCase("TODOS"));
+
+        Page<Voluntario> voluntarios = service.filtrar(funcoes, genero, page, size);
+
+        model.addAttribute("voluntarios", voluntarios);
+        model.addAttribute("paginaAtual", page);
+        model.addAttribute("funcoesVoluntario", funcaoVoluntarioService.listarTodos());
+        model.addAttribute("funcoesIds", funcoesIds);
+        model.addAttribute("genero", genero);
+        model.addAttribute("nome", nome);
+        model.addAttribute("cpf", cpf);
+        model.addAttribute("email", email);
+        model.addAttribute("telefone", telefone);
+        model.addAttribute("cep", cep);
+        model.addAttribute("bairro", bairro);
+        model.addAttribute("endereco", endereco);
+        model.addAttribute("vazio", false);
+
+        if (!temFuncao && !temGenero && nome == null && cpf == null && email == null && telefone == null && cep == null && bairro == null && endereco == null && cidade == null && estado == null) {
+            model.addAttribute("vazio", true);
+        }
+
+        if (voluntarios.isEmpty()){
+            model.addAttribute("vazio", voluntarios.isEmpty());
+        }
+
+        return "voluntario/filtro/lista";
     }
 
     @GetMapping("visualiza/{id}")
