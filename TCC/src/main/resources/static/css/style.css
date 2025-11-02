@@ -781,8 +781,8 @@ ul#listaFuncoes li {
 .filter-panel {
    display: none;
    position: absolute;
-   top: 160px;
-   right: 25px;
+   top: 153px;
+   right: 267px;
    width: 50%;
    background: white;
    padding: 25px;
@@ -827,6 +827,8 @@ ul#listaFuncoes li {
    display: flex;
    flex-direction: column;
    padding: 10px;
+   max-height: 125px;
+   overflow-y: auto;
 }
 
 .filter-options label {
@@ -940,6 +942,22 @@ input[type="file"]#fotoPerfil {
    z-index: -1;
    pointer-events: none;
 }
+
+.vazio {
+   margin-top: 26px;
+   border: #001F3F solid 5px;
+   border-radius: 10px;
+   width: 990px;
+   justify-items: anchor-center;
+}
+
+.vazio h2 {
+   color: #001F3F;
+   font-size: 30px;
+   margin-top: 0px;
+}
+
+
 
 @media screen and (min-width: 1024px) {
   ul.sidebar li a {
