@@ -70,12 +70,40 @@
 
             <div class="form-group">
                 <label for="fotoPerfil">Foto de Perfil</label>
-                <input type="text" th:field="*{fotoPerfil}" id="fotoPerfil" />
+                <div class="upload-area">
+                    <label for="fotoPerfil" class="upload-btn">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Escolher imagem
+                    </label>
+                    <span id="file-name" class="file-name">Nenhum arquivo selecionado</span>
+                    <input id="fotoPerfil" type="file" name="file" accept="image/*" />
+                </div>
             </div>
+
+            <div class="form-group" style="grid-column: 1 / -1;">
+                <label>Pré Visualização</label>
+                <div style="margin-top: 10px;">
+                    <img th:if="${usuario.fotoPerfil != null}" th:src="${usuario.fotoPerfil}"
+                         alt="Foto de Perfil"
+                         style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 2px solid #ccc;" />
+                    <span th:if="${usuario.fotoPerfil == null}">N/A</span>
+                </div>
+            </div>
+
         </div>
 
         <button type="submit" th:text="${acao == 'editar'} ? 'Atualizar Usuário' : 'Salvar Usuário'" class="button-sav"></button>
     </form>
 </div>
+
+<script>
+    const fileInput = document.getElementById('fotoPerfil');
+    const fileName = document.getElementById('file-name');
+
+    fileInput.addEventListener('change', function () {
+      fileName.textContent = this.files.length > 0
+        ? this.files[0].name
+        : 'Nenhum arquivo selecionado';
+    });
+</script>
 </body>
 </html>
