@@ -7,15 +7,15 @@ body {
   justify-content: space-between;
   align-items: center;
   background: #020024;
-  background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(0, 212, 255, 1) 100%);
-  padding: 10px 20px;
+  background: linear-gradient(90deg, rgba(2, 0, 36, 1) 15%, rgba(9, 9, 121, 1) 35%, rgba(0, 212, 255, 1) 100%);
+  padding: 1px 20px;
   height: 80px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.1);
   position: fixed;
   top: 0;
   left: 0%;
   right: 0;
-  z-index: 1000;
+  z-index: 1002;
 }
 
 .topbar-left h1 {
@@ -70,11 +70,11 @@ ul {
   margin: 0;
   padding: 0;
   width: 130px;
-  background-color: #001F3F;
+  background: linear-gradient(180deg, rgba(2, 0, 36, 1) 10%, rgba(9, 9, 121, 1) 50%, rgba(0, 212, 255, 1) 100%);
   position: fixed;
   height: 100%;
   overflow: auto;
-  top: 100px;
+  top: 82px;
 }
 
 li a {
@@ -104,7 +104,7 @@ li a:hover {
 
 .container {
   margin-left: 130px;
-  padding: 120px 20px 40px 20px;
+  padding: 110px 20px 40px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -759,181 +759,240 @@ ul#listaFuncoes li {
 }
 
 .filter-btn {
-     background-color: #001F3F;
-     color: white;
-     border: none;
-     padding: 10px 18px;
-     border-radius: 8px;
-     cursor: pointer;
-     font-size: 15px;
-     display: flex;
-     align-items: center;
-     gap: 8px;
-     transition: background-color 0.3s ease;
-     position: relative;
-     z-index: 1001;
-   }
+  background-color: #001F3F;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.3s ease;
+  position: relative;
+  z-index: 1001;
+}
 
-   .filter-btn:hover {
-     background-color: #004080;
-   }
+.filter-btn:hover {
+   background-color: #004080;
+}
 
-   .filter-panel {
-     display: none;
-     position: absolute;
-     top: 160px;
-     right: 25px;
-     width: 50%;
-     background: white;
-     padding: 25px;
-     border-radius: 10px;
-     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-     z-index: 1000;
-     grid-template-columns: repeat(3, 1fr);
-     gap: 20px;
-     animation: fadeIn 0.3s ease forwards;
-   }
+.filter-panel {
+   display: none;
+   position: absolute;
+   top: 160px;
+   right: 25px;
+   width: 50%;
+   background: white;
+   padding: 25px;
+   border-radius: 10px;
+   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+   z-index: 1000;
+   grid-template-columns: repeat(3, 1fr);
+   gap: 20px;
+   animation: fadeIn 0.3s ease forwards;
+}
 
-   @keyframes fadeIn {
-     from {
-       opacity: 0;
-       transform: translateY(-10px);
-     }
-     to {
-       opacity: 1;
-       transform: translateY(0);
-     }
-   }
-
-   .filter-section {
-     border: 1px solid #ddd;
-     border-radius: 10px;
-     overflow: hidden;
-     background: #f9f9f9;
-   }
-
-   .filter-header {
-     background: #001F3F;
-     color: white;
-     padding: 10px;
-     cursor: pointer;
-     font-weight: 600;
-     display: flex;
-     justify-content: space-between;
-     align-items: center;
-   }
-
-   .filter-options {
-     display: flex;
-     flex-direction: column;
-     padding: 10px;
-   }
-
-   .filter-options label {
-     font-size: 14px;
-     color: #333;
-     margin: 4px 0;
-   }
-
-   .filter-options input[type="checkbox"] {
-     margin-right: 8px;
-   }
-
-   .pesquisa-box {
-       display: flex;
-       align-items: center;
-       background: #fff;
-       border-radius: 8px;
-       border: 1px solid #ccc;
-       overflow: hidden;
-   }
-
-   .campo-pesquisa {
-       border: none;
-       padding: 8px 10px;
-       outline: none;
-       width: 220px;
-   }
-
-   input.campo-pesquisa{
-   border-radius: 0px;
-   }
-
-   .btn-pesquisar {
-       background-color: #001f3f;
-       color: white;
-       border: none;
-       padding: 11px 12px;
-       cursor: pointer;
-       transition: 0.3s;
-   }
-
-   .btn-pesquisar:hover {
-       background-color: #003366;
-   }
-
-   .btn-buscar-filtro {
-       background-color: #001f3f;
-       color: #fff;
-       border: none;
-       padding: 8px 12px;
-       border-radius: 6px;
-       margin-top: 97px;
-       width: 100%;
-       cursor: pointer;
-       height: 30%;
-   }
-
-   #fotoCurso {
-     display: none;
-   }
-
-   .upload-area {
-     display: flex;
-     align-items: center;
-     gap: 15px;
-   }
-
-   .upload-btn {
-     background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%);
-     color: white;
-     padding: 10px 18px;
-     border-radius: 8px;
-     cursor: pointer;
-     font-family: 'Segoe UI', sans-serif;
-     font-size: 15px;
-     display: flex;
-     align-items: center;
-     gap: 8px;
-     transition: all 0.3s ease;
-     box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-     width: 40%;
-   }
-
-   .upload-btn i {
-     font-size: 18px;
-   }
-
-   .upload-btn:hover {
-     background: linear-gradient(90deg, rgba(9,9,121,1) 0%, rgba(0,212,255,1) 70%);
-     transform: translateY(-2px);
-     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-   }
-
-   .file-name {
-     font-size: 14px;
-     color: #333;
-     font-style: italic;
-   }
-
-   input[type="file"]#fotoCurso {
+@keyframes fadeIn {
+   from {
      opacity: 0;
-     position: absolute;
-     z-index: -1;
-     pointer-events: none;
+     transform: translateY(-10px);
    }
+   to {
+        opacity: 1;
+        transform: translateY(0);
+   }
+}
+
+.filter-section {
+   border: 1px solid #ddd;
+   border-radius: 10px;
+   overflow: hidden;
+   background: #f9f9f9;
+}
+
+.filter-header {
+   background: #001F3F;
+   color: white;
+   padding: 10px;
+   cursor: pointer;
+   font-weight: 600;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
+
+.filter-options {
+   display: flex;
+   flex-direction: column;
+   padding: 10px;
+}
+
+.filter-options label {
+   font-size: 14px;
+   color: #333;
+   margin: 4px 0;
+}
+
+.filter-options input[type="checkbox"] {
+   margin-right: 8px;
+}
+
+.pesquisa-box {
+   display: flex;
+   align-items: center;
+   background: #fff;
+   border-radius: 8px;
+   border: 1px solid #ccc;
+   overflow: hidden;
+}
+
+.campo-pesquisa {
+   border: none;
+   padding: 8px 10px;
+   outline: none;
+   width: 220px;
+}
+
+input.campo-pesquisa{
+   border-radius: 0px;
+}
+
+.btn-pesquisar {
+   background-color: #001f3f;
+   color: white;
+   border: none;
+   padding: 11px 12px;
+   cursor: pointer;
+   transition: 0.3s;
+   height: 38px;
+}
+
+.btn-pesquisar:hover {
+   background-color: #003366;
+}
+
+.btn-buscar-filtro {
+   background-color: #001f3f;
+   color: #fff;
+   border: none;
+   padding: 8px 12px;
+   border-radius: 6px;
+   margin-top: 97px;
+   width: 100%;
+   cursor: pointer;
+   height: 30%;
+}
+
+#fotoCurso {
+   display: none;
+}
+
+.upload-area {
+   display: flex;
+   align-items: center;
+   gap: 15px;
+}
+
+.upload-btn {
+   background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%);
+   color: white;
+   padding: 10px 18px;
+   border-radius: 8px;
+   cursor: pointer;
+   font-family: 'Segoe UI', sans-serif;
+   font-size: 15px;
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   transition: all 0.3s ease;
+   box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+   width: 40%;
+}
+
+.upload-btn i {
+   font-size: 18px;
+}
+
+.upload-btn:hover {
+   background: linear-gradient(90deg, rgba(9,9,121,1) 0%, rgba(0,212,255,1) 70%);
+   transform: translateY(-2px);
+   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.file-name {
+   font-size: 14px;
+   color: #333;
+   font-style: italic;
+}
+
+input[type="file"]#fotoCurso {
+   opacity: 0;
+   position: absolute;
+   z-index: -1;
+   pointer-events: none;
+}
+
+input[type="file"]#fotoPerfil {
+   opacity: 0;
+   position: absolute;
+   z-index: -1;
+   pointer-events: none;
+}
+
+@media screen and (min-width: 1024px) {
+  ul.sidebar li a {
+    font-size: 17px;
+  }
+
+  ul.sidebar li a i {
+    font-size: 20px;
+  }
+}
 
 @media screen and (max-width: 768px) {
+
+   .topbar {
+     justify-content: space-between;
+     height: 60px;
+     background: linear-gradient(90deg, rgba(2, 0, 36, 1) 19%, rgba(9, 9, 121, 1) 50%, rgba(0, 212, 255, 1) 105%);
+     z-index: 1002;
+   }
+
+   .topbar-left h1 {
+     display: none;
+   }
+
+   ul.sidebar {
+     position: fixed;
+     background: linear-gradient(180deg, rgba(2, 0, 36, 1) 19%, rgba(9, 9, 121, 1) 60%, rgba(0, 212, 255, 1) 105%);
+     top: 62px;
+     left: -220px;
+     width: 130px;
+     height: 100%;
+     z-index: 999;
+
+   }
+
+   ul.sidebar.active {
+     left: 0;
+   }
+
+   ul.sidebar li a {
+    padding: 20px 0px;
+    font-size: 15px;
+    display: grid;
+    justify-content: center;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+    transition: 0.5s;
+   }
+
+   .menu-toggle {
+     display: block;
+   }
+
   .header-bar {
     flex-direction: column;
     align-items: center;
@@ -995,68 +1054,48 @@ ul#listaFuncoes li {
   }
 
   .form-grid {
-      grid-template-columns: 1fr;
-    }
+     grid-template-columns: 1fr;
+  }
 
   .card-body h2 {
-      font-size: 16px;
+     font-size: 16px;
   }
   .card-body p {
-      font-size: 13px;
+     font-size: 13px;
   }
 
-    .menu-toggle {
-      display: block;
-    }
+   .menu-toggle {
+     display: block;
+   }
 
-    ul.sidebar {
-      position: fixed;
-      top: 80px;
-      left: -220px;
-      width: 180px;
-      height: 100%;
-      background-color: #001F3F;
-      transition: left 0.3s ease;
-      z-index: 999;
-      border-right: 3px solid #004080;
-    }
+   .container {
+     margin-left: 0;
+     padding-top: 100px;
+   }
 
-    ul.sidebar.active {
-      left: 0;
-    }
-
-    ul.sidebar li a {
-      flex-direction: row;
-      justify-content: flex-start;
-      gap: 10px;
-      padding: 15px;
-      border-radius: 0;
-    }
-
-    .container {
-      margin-left: 0;
-      padding-top: 100px;
-    }
-
-    .topbar {
-      justify-content: space-between;
-    }
-
-    .filter-panel {
-       width: 90%;
-       grid-template-columns: 1fr;
-       top: 100px;
-       right: 5%;
-    }
+   .filter-panel {
+      width: 90%;
+      grid-template-columns: 1fr;
+      top: 100px;
+      right: 5%;
+   }
 }
 
 @media screen and (max-width: 480px) {
 
   .topbar {
-    flex-direction: column;
-    align-items: flex-start;
-    height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(80deg, rgba(2, 0, 36, 1) 24%, rgba(9, 9, 121, 1) 50%, rgba(0, 212, 255, 1) 105%);
+    height: 65px;
+    position: fixed;
+    top: 0px;
+    left: 0%;
+    right: 0px;
     gap: 10px;
+    z-index: 1002;
   }
 
   .topbar-right {
@@ -1065,7 +1104,7 @@ ul#listaFuncoes li {
   }
 
   .topbar-left h1 {
-    font-size: 16px;
+    display: none;
   }
 
   .icon-button {
@@ -1078,11 +1117,24 @@ ul#listaFuncoes li {
   }
 
   ul.sidebar {
-    width: 50px;
+    width: 135px;
+    top: 65px;
+    background: linear-gradient(180deg, rgba(2, 0, 36, 1) 10%, rgba(9, 9, 121, 1) 65%, rgba(0, 212, 255, 1) 100%);
   }
 
   ul.sidebar li a {
-    padding: 18px 0;
+    padding: 30px 0px;
+    font-size: 25px;
+    display: grid;
+    justify-content: center;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+    transition: 0.5s;
+  }
+
+  ul.sidebar li a:hover {
+      background-color: #f7f9fc;
+      color: black;
   }
 
   ul.sidebar li a i {
@@ -1090,14 +1142,3 @@ ul#listaFuncoes li {
   }
 }
 
-@media screen and (min-width: 1024px) {
-  ul.sidebar li a {
-    font-size: 17px;
-  }
-
-  ul.sidebar li a i {
-    font-size: 20px;
-  }
-}
-
-}
