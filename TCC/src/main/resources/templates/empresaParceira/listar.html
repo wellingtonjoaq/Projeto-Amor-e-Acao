@@ -18,64 +18,46 @@
         </div>
 
         <div class="header-actions">
-            <div class="pesquisa-box">
-                <input type="text" class="campo-pesquisa" placeholder="Pesquisar...">
-                <button class="btn-pesquisar"><i class="fa fa-search"></i></button>
-            </div>
+            <form method="get" th:action="@{/empresaParceira/filtrarPesquisa}" class="pesquisa-box">
+                <input type="text" name="pesquisa" class="campo-pesquisa" placeholder="Pesquisar..." th:value="${pesquisa}">
+                <button class="btn-pesquisar" type="submit">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
 
             <button class="filter-btn" id="toggleFilter">
                 <i class="fas fa-filter"></i> Filtrar <i class="fas fa-chevron-down"></i>
             </button>
 
-            <a th:href="@{/empresasParceiras/novo}" class="btn-create">
+            <a th:href="@{/empresaParceira}" class="btn-create">
                 <i class="fas fa-user-plus"></i> Nova Empresa
             </a>
         </div>
     </div>
 
-    <div class="filter-panel" id="filterPanel">
+    <form th:action="@{/empresaParceira/filtrar}" method="get" class="filter-panel" id="filterPanel">
         <div class="filter-section">
-            <div class="filter-header"><i class="fas fa-id-card"></i> Identidade <i class="fas fa-chevron-down"></i></div>
+            <div class="filter-header"><i class="fas fa-id-card"></i> Empresa <i class="fas fa-chevron-down"></i></div>
             <div class="filter-options">
-                <label><input type="checkbox"> Nome</label>
-                <label><input type="checkbox"> CPF</label>
-                <label><input type="checkbox"> E-mail</label>
-                <label><input type="checkbox"> Telefone</label>
+                <label><input type="checkbox" name="nome" value="true"> Nome da Empresa</label>
+                <label><input type="checkbox" name="cnpj" value="true"> CNPJ</label>
+                <label><input type="checkbox" name="email" value="true"> E-mail da Empresa</label>
+                <label><input type="checkbox" name="telefone" value="true"> Telefone</label>
             </div>
         </div>
 
         <div class="filter-section">
-            <div class="filter-header"><i class="fas fa-venus-mars"></i> Gênero <i class="fas fa-chevron-down"></i></div>
+            <div class="filter-header"><i class="fas fa-id-card"></i> Representante <i class="fas fa-chevron-down"></i></div>
             <div class="filter-options">
-                <label><input type="checkbox"> Homem</label>
-                <label><input type="checkbox"> Mulher</label>
-                <label><input type="checkbox"> Todos</label>
-            </div>
-        </div>
-
-        <div class="filter-section">
-            <div class="filter-header"><i class="fas fa-map-marker-alt"></i> Localização <i class="fas fa-chevron-down"></i></div>
-            <div class="filter-options">
-                <label><input type="checkbox"> CEP</label>
-                <label><input type="checkbox"> Bairro</label>
-                <label><input type="checkbox"> Cidade</label>
-                <label><input type="checkbox"> Estado</label>
-            </div>
-        </div>
-
-        <div class="filter-section">
-            <div class="filter-header"><i class="fas fa-book"></i> Cursos <i class="fas fa-chevron-down"></i></div>
-            <div class="filter-options">
-                <label><input type="checkbox"> Informática</label>
-                <label><input type="checkbox"> Administração</label>
-                <label><input type="checkbox"> Enfermagem</label>
+                <label><input type="checkbox" name="nomeRepresentante" value="true"> Nome do Representante</label>
+                <label><input type="checkbox" name="cpf" value="true"> CPF</label>
             </div>
         </div>
 
         <button class="btn-buscar-filtro">
             <i class="fa fa-search"></i> Buscar
         </button>
-    </div>
+    </form>
 
     <table>
         <thead>
@@ -93,13 +75,13 @@
             <td th:text="${empresa.id}"></td>
             <td th:text="${empresa.nome}"></td>
             <td th:text="${empresa.cnpj}"></td>
-            <td th:text="${empresa.nome_representante}"></td>
+            <td th:text="${empresa.nomeRepresentante}"></td>
             <td th:text="${empresa.status}"></td>
             <td class="actions">
-                <a th:href="@{'/empresasParceiras/visualizar/' + ${empresa.id}}" class="btn-visualizar"><i class="fas fa-eye"></i></a>
-                <a th:href="@{/empresasParceiras/editar/{id}(id=${empresa.id})}"><i class="fas fa-edit"></i></a>
-                <form th:action="@{/empresasParceiras/{id}(id=${empresa.id})}" method="post" style="display:inline;">
-                    <button type="submit" class="delete-btn" onclick="return confirm('Tem certeza que deseja remover este aluno?');">
+                <a th:href="@{'/empresaParceira/visualizar/' + ${empresa.id}}" class="btn-visualizar"><i class="fas fa-eye"></i></a>
+                <a th:href="@{/empresaParceira/editar/{id}(id=${empresa.id})}"><i class="fas fa-edit"></i></a>
+                <form th:action="@{/empresaParceira/remover/{id}(id=${empresa.id})}" method="post" style="display:inline;">
+                    <button type="submit" class="delete-btn" onclick="return confirm('Tem certeza que deseja remover esta empresa parceira?');">
                         <i class="fas fa-trash-alt"></i>
                     </button>
                 </form>
@@ -108,13 +90,11 @@
         </tbody>
     </table>
 
-    <form class="action-botton-page" th:action="@{/empresasParceiras/listar}" method="get">
+    <form class="action-botton-page" th:action="@{/empresaParceira/listar}" method="get">
+
         <h1>Página</h1>
-
         <button th:if="${empresasParceiras.hasPrevious()}" type="submit" name="page" th:value="${empresasParceiras.number - 1}" th:text="${empresasParceiras.number}"></button>
-
         <button class="active" type="submit" name="page" th:value="${empresasParceiras.number}" th:text="${empresasParceiras.number + 1}"></button>
-
         <button th:if="${empresasParceiras.hasNext()}" type="submit" name="page" th:value="${empresasParceiras.number + 1}" th:text="${empresasParceiras.number + 2}"></button>
     </form>
 
