@@ -50,7 +50,7 @@
       <div class="filter-header"><i class="fas fa-id-card"></i> Representante <i class="fas fa-chevron-down"></i></div>
       <div class="filter-options">
         <label><input type="checkbox" name="nomeRepresentante" value="true"> Nome do Representante</label>
-        <label><input type="checkbox" name="cpf" value="true"> CPF</label>
+        <label><input type="checkbox" name="cpfRepresentante" value="true"> CPF</label>
       </div>
     </div>
 
@@ -84,7 +84,7 @@
       <td class="actions">
         <a th:href="@{'/empresaParceira/visualizar/' + ${empresa.id}}" class="btn-visualizar"><i class="fas fa-eye"></i></a>
         <a th:href="@{/empresaParceira/editar/{id}(id=${empresa.id})}"><i class="fas fa-edit"></i></a>
-        <form th:action="@{/empresaParceira/{id}(id=${empresa.id})}" method="post" style="display:inline;">
+        <form th:action="@{/empresaParceira/remover/{id}(id=${empresa.id})}" method="post" style="display:inline;">
           <button type="submit" class="delete-btn" onclick="return confirm('Tem certeza que deseja remover esta empresa parceira?');">
             <i class="fas fa-trash-alt"></i>
           </button>
