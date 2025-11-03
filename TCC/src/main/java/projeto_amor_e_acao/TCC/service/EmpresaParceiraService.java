@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import projeto_amor_e_acao.TCC.model.Aluno;
+import projeto_amor_e_acao.TCC.model.Curso;
 import projeto_amor_e_acao.TCC.model.EmpresaParceira;
 import projeto_amor_e_acao.TCC.repository.EmpresaParceiraRepository;
 
@@ -41,6 +42,42 @@ public class EmpresaParceiraService {
         return repository.findByStatusIgnoreCase("PENDENTE", pageable);
     }
 
+    public Page<EmpresaParceira> filtrarPesquisa(String pesquisa, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        if (pesquisa == null || pesquisa.isBlank()) {
+            return Page.empty(pageable);
+        }
+
+        pesquisa = pesquisa.trim();
+        Page<EmpresaParceira> resultados = repository.findByStatusIgnoreCaseAndNomeContainingIgnoreCase("ATIVO", pesquisa, pageable);
+
+        if (resultados.isEmpty()) {
+            resultados = repository.findByStatusIgnoreCaseAndCnpjContainingIgnoreCase("ATIVO", pesquisa, pageable);
+        }
+
+        if (resultados.isEmpty()) {
+            resultados = repository.findByStatusIgnoreCaseAndEnderecoContainingIgnoreCase("ATIVO", pesquisa, pageable);
+        }
+
+        if (resultados.isEmpty()) {
+            resultados = repository.findByStatusIgnoreCaseAndNomeRepresentanteContainingIgnoreCase("ATIVO", pesquisa, pageable);
+        }
+
+        if (resultados.isEmpty()) {
+            resultados = repository.findByStatusIgnoreCaseAndCpfRepresentanteContainingIgnoreCase("ATIVO", pesquisa, pageable);
+        }
+
+        if (resultados.isEmpty()) {
+            resultados = repository.findByStatusIgnoreCaseAndEmailContainingIgnoreCase("ATIVO", pesquisa, pageable);
+        }
+
+        if (resultados.isEmpty()) {
+            resultados = repository.findByStatusIgnoreCaseAndTelefoneContainingIgnoreCase("ATIVO", pesquisa, pageable);
+        }
+
+        return resultados;
+    }
 
     public Optional<EmpresaParceira> findById(Long id) {
         return repository.findById(id);

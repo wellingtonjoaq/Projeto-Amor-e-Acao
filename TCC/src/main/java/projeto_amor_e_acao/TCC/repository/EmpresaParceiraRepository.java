@@ -14,6 +14,21 @@ import java.util.Optional;
 public interface EmpresaParceiraRepository extends JpaRepository<EmpresaParceira, Long> {
     Optional<EmpresaParceira> findByCnpj(String cnpj);
 
-    Page<EmpresaParceira> findByStatusIgnoreCase(String status, Pageable pageable);
     List<EmpresaParceira> findByStatusIgnoreCase(String status);
+
+    Page<EmpresaParceira> findByStatusIgnoreCase(String status, Pageable pageable);
+
+    Page<EmpresaParceira> findByStatusIgnoreCaseAndNomeContainingIgnoreCase(String status, String nome, Pageable pageable);
+
+    Page<EmpresaParceira> findByStatusIgnoreCaseAndCnpjContainingIgnoreCase(String status, String cnpj, Pageable pageable);
+
+    Page<EmpresaParceira> findByStatusIgnoreCaseAndEnderecoContainingIgnoreCase(String status, String endereco, Pageable pageable);
+
+    Page<EmpresaParceira> findByStatusIgnoreCaseAndNomeRepresentanteContainingIgnoreCase(String status, String nome, Pageable pageable);
+
+    Page<EmpresaParceira> findByStatusIgnoreCaseAndCpfRepresentanteContainingIgnoreCase(String status, String cpf, Pageable pageable);
+
+    Page<EmpresaParceira> findByStatusIgnoreCaseAndEmailContainingIgnoreCase(String status, String email, Pageable pageable);
+
+    Page<EmpresaParceira> findByStatusIgnoreCaseAndTelefoneContainingIgnoreCase(String status, String telefone, Pageable pageable);
 }

@@ -42,17 +42,18 @@ public class EmpresaParceira {
             max = 255, message = "O endereço pode ter no máximo 255 caracteres")
     private String endereco;
 
-    @Column(nullable = false, length = 150)
+    @Column(nullable = false, length = 150, name = "nome_representante")
     @jakarta.validation.constraints.NotBlank(
             message = "O nome do representante é obrigatório")
     @jakarta.validation.constraints.Size(
             max = 100,
             message = "O nome do representante pode ter no máximo 100 caracteres")
-    private String nome_representante;
+    private String nomeRepresentante;
 
+    @Column(name = "cpf_representante")
     @Pattern(regexp = "^\\d{11}$",
             message = "O CPF deve conter exatamente 11 dígitos numéricos")
-    private String cpf_representante;
+    private String cpfRepresentante;
 
     @jakarta.validation.constraints.Email(message = "E-mail inválido")
     @jakarta.validation.constraints.NotNull(message = "O e-mail é obrigatório")
