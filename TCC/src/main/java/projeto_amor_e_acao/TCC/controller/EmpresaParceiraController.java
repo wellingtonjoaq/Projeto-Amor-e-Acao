@@ -107,7 +107,7 @@ public class EmpresaParceiraController {
             @RequestParam(required = false) Boolean email,
             @RequestParam(required = false) Boolean telefone,
             @RequestParam(required = false) Boolean nomeRepresentante,
-            @RequestParam(required = false) Boolean cpf,
+            @RequestParam(required = false) Boolean cpfRepresentante,
             Model model) {
 
         Page<EmpresaParceira> empresasParceiras = service.listarAtivos(page, size);
@@ -119,10 +119,10 @@ public class EmpresaParceiraController {
         model.addAttribute("email", email);
         model.addAttribute("telefone", telefone);
         model.addAttribute("nomeRepresentante", nomeRepresentante);
-        model.addAttribute("cpf", cpf);
+        model.addAttribute("cpfRepresentante", cpfRepresentante);
         model.addAttribute("vazio", false);
 
-        if (nome == null && cnpj == null && email == null && telefone == null && nomeRepresentante == null && cpf == null) {
+        if (nome == null && cnpj == null && email == null && telefone == null && nomeRepresentante == null && cpfRepresentante == null) {
             model.addAttribute("vazio", true);
         }
 
