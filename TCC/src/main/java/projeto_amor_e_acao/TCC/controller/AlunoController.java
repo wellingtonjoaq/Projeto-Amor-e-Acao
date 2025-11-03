@@ -154,10 +154,6 @@ public class AlunoController {
         return "aluno/filtro/lista";
     }
 
-
-
-
-
     @GetMapping("visualiza/{id}")
     public String visualizar(@PathVariable Long id, Model model) {
         model.addAttribute("aluno", service.buscarPorId(id));

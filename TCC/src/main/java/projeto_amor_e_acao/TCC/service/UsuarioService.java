@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import projeto_amor_e_acao.TCC.model.Aluno;
+import projeto_amor_e_acao.TCC.model.Curso;
 import projeto_amor_e_acao.TCC.model.EmpresaParceira;
 import projeto_amor_e_acao.TCC.model.Usuario;
 import projeto_amor_e_acao.TCC.repository.UsuarioRepository;
@@ -36,6 +37,49 @@ public class UsuarioService {
         Pageable pageable = PageRequest.of(page, size);
         return repository.findByStatusIgnoreCase("INATIVO", pageable);
     }
+
+    public Page<Usuario> filtrarPesquisa(String pesquisa, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        if (pesquisa == null || pesquisa.isBlank()) {
+            return Page.empty(pageable);
+        }
+
+        pesquisa = pesquisa.trim();
+        Page<Usuario> resultados = repository.findByStatusIgnoreCaseAndNomeContainingIgnoreCase("ATIVO", pesquisa, pageable);
+
+        if (resultados.isEmpty()) {
+            resultados = repository.findByStatusIgnoreCaseAndEmailContainingIgnoreCase("ATIVO", pesquisa, pageable);
+        }
+
+        return resultados;
+    }
+
+
+    public Page<Usuario> filtrar(String cargo, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        boolean temCargo = (cargo != null && !cargo.isBlank() && !cargo.equalsIgnoreCase("TODOS"));
+
+        if (temCargo) {
+            Usuario.Cargo cargoEnum;
+
+            try {
+                cargoEnum = Usuario.Cargo.valueOf(cargo.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                return Page.empty();
+            }
+
+            return repository.findByStatusIgnoreCaseAndCargo(
+                    "ATIVO",
+                    cargoEnum,
+                    pageable
+            );
+        }
+
+        return repository.findByStatusIgnoreCase("ATIVO", pageable);
+    }
+
 
     public Optional<Usuario> findById(Long id) {
         return repository.findById(id);
