@@ -20,7 +20,6 @@ public class FuncaoVoluntario {
 
     @Column(nullable = false, length = 100)
     @NotBlank(message = "( Campo Obrigatório )")
-    @Size(min = 3, max = 100,
-            message = "( Deve conter entre 3 a 100 caracteres )")
+    @Size(min = 3, max = 100, message = "( Deve conter entre 3 a 100 caracteres )")
     private String nome;
 }

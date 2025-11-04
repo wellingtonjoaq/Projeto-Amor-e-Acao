@@ -13,13 +13,9 @@
 
 <div class="container" th:fragment="visualizaVoluntario">
 
-  <div class="header-bar">
-    <h1>Visualizar Voluntário</h1>
-    <a th:href="@{/voluntario}" class="btn-back">
-    </a>
-  </div>
-
   <form class="form-adm">
+    <h1>Visualizar Voluntário</h1>
+
     <input type="hidden" name="id" th:value="${voluntario.id}" disabled />
 
     <div class="form-grid">
@@ -93,8 +89,12 @@
 
     </div>
 
-    <a type="button" class="button-vol" th:if="${voluntario.status == 'ATIVO'}" th:href="@{/voluntario/listar}">Voltar</a>
-    <a type="button" class="button-vol" th:if="${voluntario.status == 'INATIVO'}" th:href="@{/historico/listar}">Voltar</a>
+    <a type="button" class="button-vol" th:if="${voluntario.status == 'ATIVO'}" th:href="@{/voluntario/listar}">
+      <i class="fa-solid fa-arrow-left"></i> Voltar
+    </a>
+    <a type="button" class="button-vol" th:if="${voluntario.status == 'INATIVO'}" th:href="@{/historico/listar}">
+      <i class="fa-solid fa-arrow-left"></i> Voltar
+    </a>
 
   </form>
 </div>

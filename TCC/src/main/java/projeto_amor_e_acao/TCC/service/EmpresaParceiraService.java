@@ -1,7 +1,12 @@
 package projeto_amor_e_acao.TCC.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import projeto_amor_e_acao.TCC.model.Aluno;
+import projeto_amor_e_acao.TCC.model.Curso;
 import projeto_amor_e_acao.TCC.model.EmpresaParceira;
 import projeto_amor_e_acao.TCC.repository.EmpresaParceiraRepository;
 
@@ -18,18 +23,61 @@ public class EmpresaParceiraService {
         return repository.findByCnpj(cnpj);
     }
 
-    public List<EmpresaParceira> findAll() {
-        return repository.findByStatusIgnoreCase("ATIVO");
+    public Page<EmpresaParceira> listarAtivos(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return repository.findByStatusIgnoreCase("ATIVO", pageable);
     }
 
-    public List<EmpresaParceira> listarInativos() {
+    public List<EmpresaParceira> listarTodosInativos() {
         return repository.findByStatusIgnoreCase("INATIVO");
     }
 
-    public List<EmpresaParceira> listarPendentes() {
-        return repository.findByStatusIgnoreCase("PENDENTE");
+    public Page<EmpresaParceira> listarInativos(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return repository.findByStatusIgnoreCase("INATIVO", pageable);
     }
 
+    public Page<EmpresaParceira> listarPendentes(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return repository.findByStatusIgnoreCase("PENDENTE", pageable);
+    }
+
+    public Page<EmpresaParceira> filtrarPesquisa(String pesquisa, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        if (pesquisa == null || pesquisa.isBlank()) {
+            return Page.empty(pageable);
+        }
+
+        pesquisa = pesquisa.trim();
+        Page<EmpresaParceira> resultados = repository.findByStatusIgnoreCaseAndNomeContainingIgnoreCase("ATIVO", pesquisa, pageable);
+
+        if (resultados.isEmpty()) {
+            resultados = repository.findByStatusIgnoreCaseAndCnpjContainingIgnoreCase("ATIVO", pesquisa, pageable);
+        }
+
+        if (resultados.isEmpty()) {
+            resultados = repository.findByStatusIgnoreCaseAndEnderecoContainingIgnoreCase("ATIVO", pesquisa, pageable);
+        }
+
+        if (resultados.isEmpty()) {
+            resultados = repository.findByStatusIgnoreCaseAndNomeRepresentanteContainingIgnoreCase("ATIVO", pesquisa, pageable);
+        }
+
+        if (resultados.isEmpty()) {
+            resultados = repository.findByStatusIgnoreCaseAndCpfRepresentanteContainingIgnoreCase("ATIVO", pesquisa, pageable);
+        }
+
+        if (resultados.isEmpty()) {
+            resultados = repository.findByStatusIgnoreCaseAndEmailContainingIgnoreCase("ATIVO", pesquisa, pageable);
+        }
+
+        if (resultados.isEmpty()) {
+            resultados = repository.findByStatusIgnoreCaseAndTelefoneContainingIgnoreCase("ATIVO", pesquisa, pageable);
+        }
+
+        return resultados;
+    }
 
     public Optional<EmpresaParceira> findById(Long id) {
         return repository.findById(id);

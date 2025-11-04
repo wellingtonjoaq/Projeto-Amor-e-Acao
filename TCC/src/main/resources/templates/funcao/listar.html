@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Função Voluntário</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<div th:replace="/navbar/dashboard :: menu"></div>
+
+<div class="container">
+
+    <div class="header-bar">
+        <h1>Formulario de Voluntário</h1>
+    </div>
+
+    <form th:action="@{/funcao/salvar}" method="post" class="form-adm">
+        <input type="hidden" disabled />
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label>Nome Completo</label>
+                <input disabled/>
+            </div>
+
+            <div class="form-group">
+                <label>CPF</label>
+                <input disabled />
+            </div>
+
+            <div class="form-group">
+                <label>E-mail</label>
+                <input disabled />
+            </div>
+
+            <div class="form-group">
+                <label>Telefone</label>
+                <input disabled />
+            </div>
+
+            <div class="form-group">
+                <label>Motivação</label>
+                <input disabled />
+            </div>
+
+            <div class="form-group">
+                <label>CEP</label>
+                <input disabled />
+            </div>
+
+            <div class="form-group">
+                <label>Bairro</label>
+                <input disabled />
+            </div>
+
+            <div class="form-group">
+                <label>Endereço</label>
+                <input disabled />
+            </div>
+
+            <div class="form-group">
+                <label>Número da Casa</label>
+                <input disabled />
+            </div>
+
+            <div class="form-group">
+                <label>Cidade</label>
+                <input disabled />
+            </div>
+
+            <div class="form-group">
+                <label for="nomeFuncao">Função</label>
+
+                <div>
+                    <input id="nomeFuncao" type="text" placeholder="Digite a função" class="form-control">
+                    <button type="button" id="btnAddFuncao" class="btn btn-primary btn-round">+</button>
+                </div>
+
+                <ul id="listaFuncoes">
+                    <li th:each="funcao : ${funcoes}">
+                        <span th:text="${funcao.nome}"></span>
+                        <button
+                                type="button"
+                                class="btn btn-sm btn-danger btn-round btn-remover-existente"
+                                th:attr="data-id=${funcao.id}">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </li>
+                </ul>
+
+                <input type="hidden" name="funcoesSelecionadas" id="funcoesSelecionadas">
+
+                <button type="submit" class="button-sav-lista">Adicionar</button>
+            </div>
+
+            <div class="form-group">
+                <label>Estado</label>
+                <input disabled />
+            </div>
+
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const funcoesExistentes = []; // vindas do backend
+        const novasFuncoes = [];      // criadas no frontend
+
+        const input = document.getElementById('nomeFuncao');
+        const lista = document.getElementById('listaFuncoes');
+        const hidden = document.getElementById('funcoesSelecionadas');
+        const botao = document.getElementById('btnAddFuncao');
+
+        // Carrega funções existentes (para evitar duplicatas, mas sem enviá-las no form)
+        document.querySelectorAll('#listaFuncoes li span').forEach(span => {
+            funcoesExistentes.push(span.textContent.trim());
+        });
+
+        // Evento para adicionar nova função
+        botao.addEventListener('click', () => {
+            const nome = input.value.trim();
+            if (!nome) return;
+
+            // Evita duplicadas (tanto novas quanto já existentes)
+            if (funcoesExistentes.includes(nome) || novasFuncoes.includes(nome)) {
+                alert('Essa função já foi adicionada.');
+                input.value = '';
+                input.focus();
+                return;
+            }
+
+            // Adiciona apenas à lista local de novas funções
+            novasFuncoes.push(nome);
+            hidden.value = novasFuncoes.join(',');
+
+            // Cria o item visualmente
+            const li = document.createElement('li');
+            li.style.display = 'flex';
+            li.style.justifyContent = 'space-between';
+            li.style.alignItems = 'center';
+            li.style.marginBottom = '4px';
+
+            const span = document.createElement('span');
+            span.textContent = nome;
+
+            const btnRemover = document.createElement('button');
+            btnRemover.innerHTML = '<i class="fa-solid fa-minus"></i>'; // ícone de "-"
+            btnRemover.classList.add('btn', 'btn-sm', 'btn-danger', 'btn-round');
+            btnRemover.addEventListener('click', () => {
+                lista.removeChild(li);
+                const index = novasFuncoes.indexOf(nome);
+                if (index > -1) novasFuncoes.splice(index, 1);
+                hidden.value = novasFuncoes.join(',');
+            });
+
+            li.appendChild(span);
+            li.appendChild(btnRemover);
+            lista.appendChild(li);
+
+            input.value = '';
+            input.focus();
+        });
+
+        // Evento para remover funções existentes (vindas do backend)
+        lista.addEventListener('click', (e) => {
+            const btn = e.target.closest('.btn-remover-existente');
+            if (btn) {
+                const id = btn.getAttribute('data-id');
+                if (confirm('Deseja realmente remover esta função?')) {
+                    window.location.href = `/funcao/remover/${id}`;
+                }
+            }
+        });
+    });
+</script>
+
+
+
+</body>
+</html>
