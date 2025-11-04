@@ -10,6 +10,7 @@ import projeto_amor_e_acao.TCC.model.Voluntario;
 import java.util.List;
 
 public interface AlunoRepository extends JpaRepository<Aluno, Long> {
+
     List<Aluno> findByStatusIgnoreCase(String status);
 
     Page<Aluno> findByStatusIgnoreCase(String status, Pageable pageable);
