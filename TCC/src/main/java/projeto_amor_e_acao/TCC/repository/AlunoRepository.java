@@ -16,18 +16,12 @@ import java.util.List;
 public interface AlunoRepository extends JpaRepository<Aluno, Long> {
     Long countByStatus(String status);
 
-    @Query("SELECT COUNT(a) FROM Aluno a JOIN a.matriculas m " +
-            "WHERE m.curso.id = :cursoId")
+    @Query("SELECT COUNT(a) FROM Aluno a JOIN a.matriculas m WHERE m.curso.id = :cursoId")
     Long countAlunosMatriculadosByCursoId(@Param("cursoId") Long cursoId);
 
-    @Query("SELECT COUNT(a) FROM Aluno a JOIN a.matriculas m WHERE m.curso.id " +
-            "= :cursoId AND a.status = :status")
+    @Query("SELECT COUNT(a) FROM Aluno a JOIN a.matriculas m WHERE m.curso.id = " +
+            ":cursoId AND a.status = :status")
     Long countAlunosEvasivosByCursoIdAndStatus(
-            @Param("cursoId") Long cursoId, @Param("status") String status);
-
-    @Query("SELECT a FROM Aluno a JOIN a.matriculas m WHERE m.curso.id " +
-            "= :cursoId AND a.status = :status")
-    List<Aluno> findAlunosEvasivosByCursoIdAndStatus(
             @Param("cursoId") Long cursoId, @Param("status") String status);
 
     List<Aluno> findByStatusIgnoreCase(String status);

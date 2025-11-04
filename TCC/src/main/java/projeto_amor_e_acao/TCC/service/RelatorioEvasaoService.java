@@ -2,7 +2,6 @@ package projeto_amor_e_acao.TCC.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import projeto_amor_e_acao.TCC.model.Aluno;
 import projeto_amor_e_acao.TCC.model.Curso;
 import projeto_amor_e_acao.TCC.model.RelatorioEvasaoDTO;
 import projeto_amor_e_acao.TCC.repository.AlunoRepository;
@@ -45,9 +44,5 @@ public class RelatorioEvasaoService {
         }
 
         return resultados;
-    }
-
-    public List<Aluno> listarAlunosEvasivosPorCurso(Long cursoId) {
-        return alunoRepository.findAlunosEvasivosByCursoIdAndStatus(cursoId, "INATIVO");
     }
 }
