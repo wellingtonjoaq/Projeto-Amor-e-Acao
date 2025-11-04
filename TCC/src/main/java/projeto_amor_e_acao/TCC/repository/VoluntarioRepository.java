@@ -3,6 +3,7 @@ package projeto_amor_e_acao.TCC.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import projeto_amor_e_acao.TCC.model.Aluno;
 import projeto_amor_e_acao.TCC.model.Curso;
 import projeto_amor_e_acao.TCC.model.FuncaoVoluntario;
@@ -11,6 +12,16 @@ import projeto_amor_e_acao.TCC.model.Voluntario;
 import java.util.List;
 
 public interface VoluntarioRepository extends JpaRepository<Voluntario, Long> {
+    @Query("SELECT v.funcao.nome, COUNT(v) FROM Voluntario v WHERE v.status = " +
+            "'ATIVO' GROUP BY v.funcao.nome")
+    List<Object[]> countActiveVolunteersByFunction();
+
+    @Query("SELECT v.genero, COUNT(v) FROM Voluntario v GROUP BY v.genero")
+    List<Object[]> countByGender();
+
+    @Query("SELECT v.motivacao, COUNT(v) FROM Voluntario v GROUP BY v.motivacao")
+    List<Object[]> countByMotivation();
+
     List<Voluntario> findByStatusIgnoreCase(String status);
 
     Page<Voluntario> findByStatusIgnoreCase(String status, Pageable pageable);
