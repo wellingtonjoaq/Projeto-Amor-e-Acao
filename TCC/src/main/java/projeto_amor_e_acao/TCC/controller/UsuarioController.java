@@ -164,8 +164,10 @@ public class UsuarioController {
     }
 
     @PostMapping("/remover/{id}")
-    public String remover(@PathVariable Long id) {
+    public String removerUsuario(@PathVariable Long id) {
         service.deleteById(id);
         return "redirect:/usuario/listar";
     }
+
+
 }

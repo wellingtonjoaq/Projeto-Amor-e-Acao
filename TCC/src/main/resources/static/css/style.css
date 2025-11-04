@@ -1,5 +1,6 @@
 body {
   margin: 0;
+  background-color: #f7f9fc;
 }
 
 .topbar {
@@ -108,7 +109,6 @@ li a:hover {
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 100vh;
   background-color: #f7f9fc;
 }
 
@@ -194,6 +194,14 @@ tbody tr:hover {
 .delete-btn {
   background-color: #FF4136;
   color: white;
+  border: none;
+  padding: 12px;
+  font-size: 16px;
+  font-family: Arial;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
 }
 
 .delete-btn:hover {
@@ -244,8 +252,6 @@ input[type="number"],
 input[type="date"],
 select {
   padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
   font-size: 14px;
 }
 
@@ -332,7 +338,7 @@ select {
     align-items: center;
     justify-content: center;
     gap: 8px;
-    margin-top: 40px;
+    margin-top: 14%;
     padding: 10px 0;
     font-family: 'Segoe UI', sans-serif;
 }
@@ -771,7 +777,6 @@ ul#listaFuncoes li {
   gap: 8px;
   transition: background-color 0.3s ease;
   position: relative;
-  z-index: 1001;
 }
 
 .filter-btn:hover {
@@ -792,6 +797,100 @@ ul#listaFuncoes li {
    grid-template-columns: repeat(3, 1fr);
    gap: 20px;
    animation: fadeIn 0.3s ease forwards;
+}
+
+.filter-panel-usuario {
+    display: none;
+    position: absolute;
+    top: 153px;
+    right: 267px;
+    width: 17%;
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    animation: fadeIn 0.3s ease forwards;
+}
+
+.filter-panel-aluno {
+    display: none;
+    position: absolute;
+    top: 153px;
+    right: 257px;
+    width: 35%;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 6px 20px;
+    z-index: 1000;
+    grid-template-columns: repeat(2, 1fr);
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    gap: 20px;
+    animation: 0.3s ease 0s 1 normal forwards running fadeIn;
+}
+
+.filter-panel-curso {
+    display: none;
+    position: absolute;
+    top: 153px;
+    right: 257px;
+    width: 35%;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 6px 20px;
+    z-index: 1000;
+    grid-template-columns: repeat(2, 1fr);
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    gap: 20px;
+    animation: 0.3s ease 0s 1 normal forwards running fadeIn;
+}
+
+.filter-panel-voluntario {
+    display: none;
+    position: absolute;
+    top: 153px;
+    right: 283px;
+    width: 35%;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 6px 20px;
+    z-index: 1000;
+    grid-template-columns: repeat(2, 1fr);
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    gap: 20px;
+    animation: 0.3s ease 0s 1 normal forwards running fadeIn;
+}
+
+.filter-panel-parceria {
+    display: none;
+    position: absolute;
+    top: 153px;
+    right: 271px;
+    width: 35%;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 6px 20px;
+    z-index: 1000;
+    grid-template-columns: repeat(2, 1fr);
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    gap: 20px;
+    animation: 0.3s ease 0s 1 normal forwards running fadeIn;
+}
+
+.filter-panel-historico {
+    display: none;
+    position: absolute;
+    top: 153px;
+    right: 104px;
+    width: 35%;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 6px 20px;
+    z-index: 1000;
+    grid-template-columns: repeat(2, 1fr);
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    gap: 20px;
+    animation: 0.3s ease 0s 1 normal forwards running fadeIn;
 }
 
 @keyframes fadeIn {
@@ -819,8 +918,24 @@ ul#listaFuncoes li {
    cursor: pointer;
    font-weight: 600;
    display: flex;
-   justify-content: space-between;
+   justify-content: center;
    align-items: center;
+}
+
+#filtro-icones {
+    margin-right: 10px;
+}
+
+#filtro-icones1 {
+    margin-right: 10px;
+}
+
+#filtro-icones2 {
+    margin-right: 10px;
+}
+
+#filtro-icones3 {
+    margin-right: 10px;
 }
 
 .filter-options {
@@ -885,6 +1000,83 @@ input.campo-pesquisa{
    width: 100%;
    cursor: pointer;
    height: 30%;
+}
+
+.btn-buscar-filtro-usuario {
+    background-color: #001f3f;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-top: 17px;
+    width: 100%;
+    cursor: pointer;
+    height: 76%;
+}
+
+.btn-buscar-filtro-aluno {
+    background-color: #001f3f;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-top: 17px;
+    margin-top: 5px;
+    width: 100%;
+    cursor: pointer;
+    height: 100%;
+}
+
+.btn-buscar-filtro-curso {
+    background-color: #001f3f;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-top: 17px;
+    margin-top: 5px;
+    width: 100%;
+    cursor: pointer;
+    height: 100%;
+}
+
+.btn-buscar-filtro-voluntario {
+    background-color: #001f3f;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-top: 17px;
+    margin-top: 5px;
+    width: 100%;
+    cursor: pointer;
+    height: 100%;
+}
+
+.btn-buscar-filtro-parceria {
+    background-color: #001f3f;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-top: 17px;
+    margin-top: 5px;
+    width: 100%;
+    cursor: pointer;
+    height: 100%;
+}
+
+.btn-buscar-filtro-historico {
+    background-color: #001f3f;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-top: 17px;
+    margin-top: 5px;
+    width: 100%;
+    cursor: pointer;
+    height: 100%;
 }
 
 #fotoCurso {
@@ -1159,4 +1351,28 @@ input[type="file"]#fotoPerfil {
     font-size: 20px;
   }
 }
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 400px;
+  text-align: center;
+  display: grid;
+}
+
 
