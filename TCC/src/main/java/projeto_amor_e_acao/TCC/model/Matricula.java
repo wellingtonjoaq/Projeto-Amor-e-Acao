@@ -34,4 +34,7 @@ public class Matricula {
     @Column
     @DateTimeFormat(pattern = "yyyy/MM/dd")
     private LocalDate data = LocalDate.now();
+
+    @Column(nullable = false, length = 20)
+    private String statusMatricula = "EM_ANDAMENTO";
 }

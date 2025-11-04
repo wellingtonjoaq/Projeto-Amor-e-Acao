@@ -30,6 +30,10 @@ public class FuncaoVoluntarioService {
         return repository.findAll();
     }
 
+    public List<FuncaoVoluntario> buscarPorIds(List<Long> ids){
+        return repository.findAllById(ids);
+    }
+
     public void deletarPorId(Long id) {
         repository.deleteById(id);
     }

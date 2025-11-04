@@ -5,60 +5,53 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import projeto_amor_e_acao.TCC.model.Aluno;
 import projeto_amor_e_acao.TCC.model.FuncaoVoluntario;
 import projeto_amor_e_acao.TCC.model.Voluntario;
 import projeto_amor_e_acao.TCC.service.FuncaoVoluntarioService;
 
+import java.util.List;
+
 @Controller
-@RequestMapping("funcaoVoluntario")
+@RequestMapping("funcao")
 public class FuncaoVoluntarioController {
 
     @Autowired
     private FuncaoVoluntarioService service;
 
-    @GetMapping("/cadastrar")
-    public String exibirFormularioCadastro(Model model) {
-        model.addAttribute("funcaoVoluntario", new FuncaoVoluntario());
-        return "funcaoVoluntario/formulario";
+    @GetMapping("listar")
+    public String listar(Model model) {
+        model.addAttribute("funcoes", service.listarTodos());
+        return "funcao/listar";
     }
 
     @PostMapping("salvar")
-    public String salvar(@Valid FuncaoVoluntario funcaoVoluntario,
-                         BindingResult result, Model model) {
-
-        if (result.hasErrors()) {
-            model.addAttribute("funcaoVoluntario", funcaoVoluntario);
-            return "funcaoVoluntario/formulario";
-        }
+    public String salvar(@RequestParam("funcoesSelecionadas") String funcoesSelecionadas, Model model) {
 
         try {
-            service.salvar(funcaoVoluntario);
-            return "redirect:/funcaoVoluntario/listar";
-        }
-        catch (IllegalStateException e){
+            List<String> funcoes = List.of(funcoesSelecionadas.split(","));
+
+            for (String nome : funcoes) {
+                if (nome == null || nome.isBlank()) continue;
+                FuncaoVoluntario funcao = new FuncaoVoluntario(null, nome.trim());
+                service.salvar(funcao);
+            }
+
+            return "redirect:/funcao/listar";
+
+        } catch (Exception e) {
             model.addAttribute("erro", e.getMessage());
-            return "funcaoVoluntario/formulario";
-        }
-        catch (Exception e) {
-            model.addAttribute("erro", e.getMessage());
-            model.addAttribute("funcaoVoluntario", funcaoVoluntario);
-            return "funcaoVoluntario/formulario";
+            return "funcao/listar";
         }
     }
 
-    @GetMapping("listar")
-    public String listar(Model model) {
-        model.addAttribute("funcoesVoluntario", service.listarTodos());
-        return "funcaoVoluntario/listar";
-    }
+
 
     @GetMapping("remover/{id}")
-    public String remover(@PathVariable Long id, Model model) {
+    public String remover(@PathVariable Long id) {
+
         service.deletarPorId(id);
-        return "redirect:/funcaoVoluntario/listar";
+        return "redirect:/funcao/listar";
     }
 }

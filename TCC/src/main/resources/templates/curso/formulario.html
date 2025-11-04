@@ -12,33 +12,39 @@
 <div th:replace="/navbar/dashboard :: menu"></div>
 
 <div class="container">
-    <h1 th:text="${curso.id == null ? 'Novo Curso' : 'Editar Curso'}"></h1>
 
     <div th:if="${erro}" class="erroGlobal">
         <p th:text="${erro}"></p>
     </div>
 
-    <form th:action="@{/curso/salvar}" th:object="${curso}" method="post" class="form-adm">
+    <form th:action="@{/curso/salvar}" th:object="${curso}" method="post" class="form-adm" enctype="multipart/form-data">
         <input type="hidden" th:field="*{id}" />
+        <div class="add-voltar">
+            <h1 th:text="${curso.id == null ? 'Novo Curso' : 'Editar Curso'}"></h1>
+
+            <a type="button" class="button-vol" th:href="@{/curso/listar}">
+                <i class="fa-solid fa-arrow-left"></i> Voltar
+            </a>
+        </div>
 
         <div class="form-grid">
 
             <div class="form-group">
-                <label for="nomeCurso">Nome
+                <label for="nomeCurso">Nome do Curso
                     <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error"></span>
                 </label>
                 <input id="nomeCurso" type="text" th:field="*{nome}" required />
             </div>
 
             <div class="form-group">
-                <label for="professorCurso">Professor
+                <label for="professorCurso">Nome do Professor(a)
                     <span th:if="${#fields.hasErrors('professor')}" th:errors="*{professor}" class="error"></span>
                 </label>
                 <input id="professorCurso" type="text" th:field="*{professor}" />
             </div>
 
             <div class="form-group">
-                <label for="formacaoCurso">Formação
+                <label for="formacaoCurso">Formação do Professor(a)
                     <span th:if="${#fields.hasErrors('formacao')}" th:errors="*{formacao}" class="error"></span>
                 </label>
                 <input id="formacaoCurso" type="text" th:field="*{formacao}" />
@@ -66,7 +72,7 @@
             </div>
 
             <div class="form-group">
-                <label for="nrLocalCurso">Número
+                <label for="nrLocalCurso">Número Da Propriedade
                     <span th:if="${#fields.hasErrors('nrLocal')}" th:errors="*{nrLocal}" class="error"></span>
                 </label>
                 <input id="nrLocalCurso" type="text" th:field="*{nrLocal}" />
@@ -94,14 +100,24 @@
             </div>
 
             <div class="form-group">
-                <label for="fotoCurso">Foto (URL)
-                    <span th:if="${#fields.hasErrors('foto')}" th:errors="*{foto}" class="error"></span>
-                </label>
-                <input id="fotoCurso" type="text" th:field="*{foto}" />
+                <label for="fotoCurso">Foto do Curso</label>
+                <div class="upload-area">
+                    <label for="fotoCurso" class="upload-btn">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Escolher imagem
+                    </label>
+                    <span id="file-name" class="file-name">Nenhum arquivo selecionado</span>
+                    <input id="fotoCurso" type="file" name="file" accept="image/*" />
+                </div>
+            </div>
+
+
+            <div class="form-group" th:if="${curso.foto}">
+                <label>Pré-visualização</label>
+                <img th:src="${curso.foto}" alt="Imagem atual" style="max-width: 150px; border-radius: 10px;">
             </div>
 
             <div class="form-group">
-                <label for="descricaoCurso">Descrição
+                <label for="descricaoCurso">Descrição do Curso
                     <span th:if="${#fields.hasErrors('descricao')}" th:errors="*{descricao}" class="error"></span>
                 </label>
                 <input id="descricaoCurso" type="text" th:field="*{descricao}" />
@@ -145,6 +161,18 @@
       }
     });
 </script>
+
+<script>
+    const fileInput = document.getElementById('fotoCurso');
+    const fileName = document.getElementById('file-name');
+
+    fileInput.addEventListener('change', function () {
+      fileName.textContent = this.files.length > 0
+        ? this.files[0].name
+        : 'Nenhum arquivo selecionado';
+    });
+</script>
+
 
 </body>
 </html>

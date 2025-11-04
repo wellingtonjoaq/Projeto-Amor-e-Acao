@@ -27,9 +27,9 @@ public class NotificacaoService {
     public List<NotificacaoDTO> listarNotificacaoLimitado() {
         List<NotificacaoDTO> lista = new ArrayList<>();
 
-        alunoService.listarPendentes().forEach(aluno -> lista.add(mapAlunoToDTO(aluno)));
-        voluntarioService.listarPendentes().forEach(voluntario -> lista.add(mapVoluntarioToDTO(voluntario)));
-        empresaParceiraService.listarPendentes().forEach(empresa -> lista.add(mapEmpresaToDTO(empresa)));
+        alunoService.listarPendentes(0, 20).forEach(aluno -> lista.add(mapAlunoToDTO(aluno)));
+        voluntarioService.listarPendentes(0,20).forEach(voluntario -> lista.add(mapVoluntarioToDTO(voluntario)));
+        empresaParceiraService.listarPendentes(0,20).forEach(empresa -> lista.add(mapEmpresaToDTO(empresa)));
 
         lista.sort(Comparator.comparing(NotificacaoDTO::getDataAlteracaoStatus,
                 Comparator.nullsLast(Comparator.reverseOrder())));
@@ -37,12 +37,12 @@ public class NotificacaoService {
         return lista.stream().limit(10).collect(Collectors.toList());
     }
 
-    public List<NotificacaoDTO> listarNotificacao() {
+    public List<NotificacaoDTO> listarNotificacao(int page, int size) {
         List<NotificacaoDTO> lista = new ArrayList<>();
 
-        alunoService.listarInativos().forEach(aluno -> lista.add(mapAlunoToDTO(aluno)));
-        voluntarioService.listarInativos().forEach(voluntario -> lista.add(mapVoluntarioToDTO(voluntario)));
-        empresaParceiraService.listarInativos().forEach(empresa -> lista.add(mapEmpresaToDTO(empresa)));
+        alunoService.listarPendentes(page, size).forEach(aluno -> lista.add(mapAlunoToDTO(aluno)));
+        voluntarioService.listarPendentes(page, size).forEach(voluntario -> lista.add(mapVoluntarioToDTO(voluntario)));
+        empresaParceiraService.listarPendentes(page, size).forEach(empresa -> lista.add(mapEmpresaToDTO(empresa)));
 
         lista.sort(Comparator.comparing(NotificacaoDTO::getDataAlteracaoStatus,
                 Comparator.nullsLast(Comparator.reverseOrder())));

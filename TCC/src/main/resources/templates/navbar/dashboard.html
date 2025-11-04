@@ -9,9 +9,16 @@
 </head>
 <body th:fragment="menu">
 <div class="topbar">
+
+    <button class="menu-toggle" onclick="toggleSidebar()">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
     <div class="topbar-left">
         <h1>Painel Administrativo</h1>
     </div>
+
+
 
     <div class="topbar-right">
         <button class="icon-button">
@@ -21,15 +28,19 @@
     </div>
 </div>
 <ul class="sidebar">
-    <li><a href="/usuarios"><i class="fa-solid fa-user"></i> Usuários</a></li>
+    <li><a href="/usuario/listar"><i class="fa-solid fa-user"></i> Usuários</a></li>
     <li><a href="/curso/listar"><i class="fa-solid fa-table"></i> Formulários</a></li>
     <li><a href="/aluno/listar"><i class="fa-solid fa-user-graduate"></i> Alunos</a></li>
     <li><a href="/voluntario/listar"><i class="fa-solid fa-handshake-angle"></i> Voluntários</a></li>
-    <li><a href="/empresasParceiras"><i class="fa-solid fa-building"></i> Parcerias</a></li>
-
-    <li class="bottom-image">
-        <img th:src="@{/imagens/logo.png}" alt="Logo Ong"/>
-    </li>
+    <li><a href="/empresaParceira/listar"><i class="fa-solid fa-building"></i> Parcerias</a></li>
+    <li><a href="/historico/listar"><i class="fa-solid fa-history"></i> Historico</a></li>
 </ul>
+
+<script>
+    function toggleSidebar() {
+      const sidebar = document.querySelector('.sidebar');
+      sidebar.classList.toggle('active');
+    }
+</script>
 </body>
 </html>

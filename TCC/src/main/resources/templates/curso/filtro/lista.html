@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Lista de Cursos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<div th:replace="/navbar/dashboard :: menu"></div>
+
+<div class="container">
+  <div class="header-bar">
+    <div class="header-title">
+      <h1>Lista de Cursos</h1>
+    </div>
+
+    <div class="header-actions">
+      <form method="get" th:action="@{/curso/filtrarPesquisa}" class="pesquisa-box">
+        <input type="text" name="pesquisa" class="campo-pesquisa" placeholder="Pesquisar..." th:value="${pesquisa}">
+        <button class="btn-pesquisar" type="submit">
+          <i class="fa fa-search"></i>
+        </button>
+      </form>
+
+      <button class="filter-btn" id="toggleFilter">
+        <i class="fas fa-filter"></i> Filtrar <i class="fas fa-chevron-down"></i>
+      </button>
+
+      <a th:href="@{/curso}" class="btn-create">
+        <i class="fas fa-user-plus"></i> Novo Curso
+      </a>
+    </div>
+  </div>
+
+  <form th:action="@{/curso/filtrar}" method="get" class="filter-panel" id="filterPanel">
+    <div class="filter-section">
+      <div class="filter-header"><i class="fas fa-book"></i>Status<i class="fas fa-chevron-down"></i></div>
+      <div class="filter-options">
+        <label><input type="radio" name="status" value="ATIVO"> ATIVO </label>
+        <label><input type="radio" name="status" value="INATIVO"> INATIVO </label>
+        <label><input type="radio" name="status" value="TODOS"> TODOS </label>
+      </div>
+    </div>
+
+    <button class="btn-buscar-filtro">
+      <i class="fa fa-search"></i> Buscar
+    </button>
+  </form>
+
+  <div th:if="${vazio}" class="vazio">
+    <h1>Nenhum curso encontrado com os filtros aplicados :\</h1>
+  </div>
+
+  <div class="card-grid" th:if="${!vazio}">
+    <div class="card" th:each="curso : ${cursos}">
+      <div class="card-header">
+        <span class="card-id">ID <strong th:text="${curso.id}">01</strong></span>
+        <img th:src="${curso.foto}" alt="Imagem do curso" class="card-img" >
+      </div>
+
+      <div class="card-body">
+        <h2 th:text="${curso.nome}">Curso profissionalizante de Manicure</h2>
+        <p><i class="fa-solid fa-user"></i> <span th:text="${curso.professor}">Maria Rocha</span>, <span th:text="${curso.formacao}">Ensino Superior</span></p>
+        <p><i class="fa-solid fa-location-dot"></i>
+          <span th:text="${curso.endereco} + ', ' + ${curso.nrLocal} + ' - ' + ${curso.bairro} + ', ' + ${curso.cep}">Endereço completo</span>
+        </p>
+        <p><i class="fa-solid fa-clock"></i> Carga horária: <span th:text="${curso.cargaHoraria}">60h</span></p>
+        <p><i class="fa-solid fa-calendar"></i> Início: <span th:text="${curso.dataInicio}">20/08/2025</span> - Fim: <span th:text="${curso.dataFim}">20/11/2025</span></p>
+        <p><i class="fa-solid fa-check-circle"></i> Status: <span th:text="${curso.status}" class="status ativo">Ativo</span></p>
+      </div>
+
+      <div class="card-footer">
+        <div class="card-actions">
+          <a th:href="@{'/curso/editar/' + ${curso.id}}" class="btn-edit"><i class="fas fa-edit"></i></a>
+          <form th:action="@{'/curso/remover/' + ${curso.id}}" style="display:inline;">
+            <button type="submit" class="delete-btn" onclick="return confirm('Tem certeza que deseja remover este aluno?');">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </form>
+        </div>
+        <div class="card-tag">
+          <i class="fa-solid fa-tags"></i> Exemplo - Exemplo - Exemplo
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<form th:if="${!vazio}" class="action-botton-page" th:action="@{/curso/filtrar}" method="get">
+  <input type="hidden" name="status" th:value="${status}">
+
+  <button th:if="${cursos.hasPrevious()}" type="submit" name="page" th:value="${cursos.number - 1}" th:text="${cursos.number}"></button>
+
+  <button class="active" type="submit" name="page" th:value="${cursos.number}" th:text="${cursos.number + 1}"></button>
+
+  <button th:if="${cursos.hasNext()}" type="submit" name="page" th:value="${cursos.number + 1}" th:text="${cursos.number + 2}"></button>
+</form>
+
+<script>
+  const toggleButton = document.getElementById('toggleFilter');
+  const filterPanel = document.getElementById('filterPanel');
+  let open = false;
+
+  toggleButton.addEventListener('click', () => {
+    open = !open;
+    filterPanel.style.display = open ? 'grid' : 'none';
+    toggleButton.querySelector('.fa-chevron-down').style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
+  });
+</script>
+</body>
+</html>

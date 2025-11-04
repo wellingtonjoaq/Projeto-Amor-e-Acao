@@ -50,8 +50,8 @@ public class Voluntario {
     @Size(min = 5, max = 9, message = "( Campo Invalido )")
     private String genero;
 
-    @ManyToOne(optional = true)
-    @JoinColumn(name = "funcao_voluntario_id", nullable = true)
+    @ManyToOne()
+    @JoinColumn(name = "funcao_voluntario_id")
     private FuncaoVoluntario funcao;
 
     @Column(nullable = false)

@@ -1,8 +1,13 @@
 package projeto_amor_e_acao.TCC.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import projeto_amor_e_acao.TCC.model.Aluno;
+import projeto_amor_e_acao.TCC.model.Curso;
 import projeto_amor_e_acao.TCC.model.EmpresaParceira;
 import projeto_amor_e_acao.TCC.model.Usuario;
 import projeto_amor_e_acao.TCC.repository.UsuarioRepository;
@@ -14,28 +19,77 @@ import java.util.Optional;
 public class UsuarioService {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UsuarioRepository repository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public List<Usuario> findAll() {
-        return usuarioRepository.findByStatusIgnoreCase("ATIVO");
+    public Page<Usuario> listarAtivos(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return repository.findByStatusIgnoreCase("ATIVO", pageable);
     }
 
-    public List<Usuario> listarInativos() {
-        return usuarioRepository.findByStatusIgnoreCase("INATIVO");
+    public List<Usuario> listarTodosInativos() {
+        return repository.findByStatusIgnoreCase("INATIVO");
     }
+
+    public Page<Usuario> listarInativos(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return repository.findByStatusIgnoreCase("INATIVO", pageable);
+    }
+
+    public Page<Usuario> filtrarPesquisa(String pesquisa, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        if (pesquisa == null || pesquisa.isBlank()) {
+            return Page.empty(pageable);
+        }
+
+        pesquisa = pesquisa.trim();
+        Page<Usuario> resultados = repository.findByStatusIgnoreCaseAndNomeContainingIgnoreCase("ATIVO", pesquisa, pageable);
+
+        if (resultados.isEmpty()) {
+            resultados = repository.findByStatusIgnoreCaseAndEmailContainingIgnoreCase("ATIVO", pesquisa, pageable);
+        }
+
+        return resultados;
+    }
+
+
+    public Page<Usuario> filtrar(String cargo, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        boolean temCargo = (cargo != null && !cargo.isBlank() && !cargo.equalsIgnoreCase("TODOS"));
+
+        if (temCargo) {
+            Usuario.Cargo cargoEnum;
+
+            try {
+                cargoEnum = Usuario.Cargo.valueOf(cargo.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                return Page.empty();
+            }
+
+            return repository.findByStatusIgnoreCaseAndCargo(
+                    "ATIVO",
+                    cargoEnum,
+                    pageable
+            );
+        }
+
+        return repository.findByStatusIgnoreCase("ATIVO", pageable);
+    }
+
 
     public Optional<Usuario> findById(Long id) {
-        return usuarioRepository.findById(id);
+        return repository.findById(id);
     }
 
     public Usuario atualizarUsuario(Long id, Usuario usuarioAtualizado) {
-        Usuario usuarioExistente = usuarioRepository.findById(id)
+        Usuario usuarioExistente = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
-        Optional<Usuario> existingUserWithEmail = usuarioRepository.findByEmail(usuarioAtualizado.getEmail());
+        Optional<Usuario> existingUserWithEmail = repository.findByEmail(usuarioAtualizado.getEmail());
         if (existingUserWithEmail.isPresent() && !existingUserWithEmail.get().getId().equals(id)) {
             throw new IllegalArgumentException("E-mail já está em uso");
         }
@@ -54,7 +108,7 @@ public class UsuarioService {
             usuarioExistente.setSenha(passwordEncoder.encode(usuarioAtualizado.getSenha()));
         }
 
-        return usuarioRepository.save(usuarioExistente);
+        return repository.save(usuarioExistente);
     }
 
     public Usuario save(Usuario usuario) {
@@ -68,7 +122,7 @@ public class UsuarioService {
             }
         }
 
-        usuarioRepository.findByEmail(usuario.getEmail())
+        repository.findByEmail(usuario.getEmail())
                 .ifPresent(existing -> {
                     if (usuario.getId() == null || !existing.getId().equals(usuario.getId())) {
                         throw new IllegalArgumentException("E-mail já está em uso");
@@ -80,18 +134,18 @@ public class UsuarioService {
             usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         }
 
-        return usuarioRepository.save(usuario);
+        return repository.save(usuario);
     }
 
     public void deleteById(Long id) {
-        Usuario usuario = usuarioRepository.findById(id)
+        Usuario usuario = repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
 
         //Não permitir excluir o último administrador ativo
         if (usuario.getCargo() == Usuario.Cargo.USUARIO_ADMINISTRADOR
                 && usuario.getStatus().equals("INATIVO"))
         {
-            long adminsAtivos = usuarioRepository.findAll().stream().filter(
+            long adminsAtivos = repository.findAll().stream().filter(
                     u -> u.getCargo() == Usuario.Cargo.USUARIO_ADMINISTRADOR
                             && u.getStatus().equals("INATIVO")).count();
 
@@ -101,6 +155,6 @@ public class UsuarioService {
             }
         }
 
-        usuarioRepository.deleteById(id);
+        repository.deleteById(id);
     }
 }

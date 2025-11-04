@@ -1,71 +1,67 @@
-<!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualizar Usuário</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-</head>
-<body>
+    <!DOCTYPE html>
+    <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Visualizar Usuário</title>
+        <link rel="stylesheet" th:href="@{/css/style.css}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    </head>
+    <body>
 
-<div th:replace="/navbar/dashboard :: menu"></div>
+    <div th:replace="/navbar/dashboard :: menu"></div>
 
-<div class="container" th:fragment="visualizaUsuario">
+    <div class="container" th:fragment="visualizaUsuario">
+        <form class="form-adm">
+            <h1>Visualizar Usuário</h1>
+            <div class="form-grid">
 
-    <div class="header-bar">
-        <h1>Visualizar Usuário</h1>
-        <a th:href="@{/usuarios}" class="button-sav">
-            <i class="fas fa-arrow-left"></i> Voltar
-        </a>
+                <div class="form-group">
+                    <label for="id">ID:</label>
+                    <input type="text" id="id" th:value="${usuario.id}" disabled />
+                </div>
+
+                <div class="form-group">
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome" th:value="${usuario.nome}" disabled />
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="text" id="email" th:value="${usuario.email}" disabled />
+                </div>
+
+                <div class="form-group">
+                    <label for="cargo">Cargo:</label>
+                    <input type="text" id="cargo" th:value="${usuario.cargo}" disabled />
+                </div>
+
+                <div class="form-group">
+                    <label for="status">Status:</label>
+                    <input type="text" id="status" th:value="${usuario.status}" disabled />
+                </div>
+
+                <div class="form-group">
+                    <label for="fotoPerfil">URL da Foto de Perfil:</label>
+                    <input type="text" id="fotoPerfil" th:value="${usuario.fotoPerfil}" disabled />
+                </div>
+
+                <div class="form-group" style="grid-column: 1 / -1;">
+                    <label>Foto de Perfil:</label>
+                    <div style="margin-top: 10px;">
+                        <img th:if="${usuario.fotoPerfil != null}" th:src="${usuario.fotoPerfil}"
+                             alt="Foto de Perfil"
+                             style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 2px solid #ccc;" />
+                        <span th:if="${usuario.fotoPerfil == null}">N/A</span>
+                    </div>
+                </div>
+
+            </div>
+            <a type="button" class="button-vol" th:href="@{/usuario/listar}">
+                <i class="fa-solid fa-arrow-left"></i> Voltar
+            </a>
+        </form>
     </div>
 
-    <form class="form-adm">
-        <div class="form-grid">
-
-            <div class="form-group">
-                <label for="id">ID:</label>
-                <input type="text" id="id" th:value="${usuario.id}" disabled />
-            </div>
-
-            <div class="form-group">
-                <label for="nome">Nome:</label>
-                <input type="text" id="nome" th:value="${usuario.nome}" disabled />
-            </div>
-
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="text" id="email" th:value="${usuario.email}" disabled />
-            </div>
-
-            <div class="form-group">
-                <label for="cargo">Cargo:</label>
-                <input type="text" id="cargo" th:value="${usuario.cargo}" disabled />
-            </div>
-
-            <div class="form-group">
-                <label for="status">Status:</label>
-                <input type="text" id="status" th:value="${usuario.status}" disabled />
-            </div>
-
-            <div class="form-group">
-                <label for="fotoPerfil">URL da Foto de Perfil:</label>
-                <input type="text" id="fotoPerfil" th:value="${usuario.fotoPerfil}" disabled />
-            </div>
-
-            <div class="form-group" style="grid-column: 1 / -1;">
-                <label>Foto de Perfil:</label>
-                <div style="margin-top: 10px;">
-                    <img th:if="${usuario.fotoPerfil != null}" th:src="${usuario.fotoPerfil}"
-                         alt="Foto de Perfil"
-                         style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 2px solid #ccc;" />
-                    <span th:if="${usuario.fotoPerfil == null}">N/A</span>
-                </div>
-            </div>
-
-        </div>
-    </form>
-</div>
-
-</body>
-</html>
+    </body>
+    </html>
