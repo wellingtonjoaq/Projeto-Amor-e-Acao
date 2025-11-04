@@ -18,12 +18,14 @@
         </div>
 
         <div class="header-actions">
-            <form method="get" th:action="@{/usuario/filtrarPesquisa}" class="pesquisa-box">
-                <input type="text" name="pesquisa" class="campo-pesquisa" placeholder="Pesquisar..." th:value="${pesquisa}">
-                <button class="btn-pesquisar" type="submit">
-                    <i class="fa fa-search"></i>
-                </button>
-            </form>
+            <div class="pesquisa-box">
+                <form method="get" th:action="@{/usuario/filtrarPesquisa}">
+                    <input type="text" name="pesquisa" class="campo-pesquisa" placeholder="Pesquisar..." th:value="${pesquisa}">
+                    <button class="btn-pesquisar" type="submit">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </form>
+            </div>
 
             <button class="filter-btn" id="toggleFilter">
                 <i class="fas fa-filter"></i> Filtrar <i class="fas fa-chevron-down"></i>
@@ -35,9 +37,9 @@
         </div>
     </div>
 
-    <form th:action="@{/usuario/filtrar}" method="get" class="filter-panel" id="filterPanel">
+    <form th:action="@{/usuario/filtrar}" method="get" class="filter-panel-usuario" id="filterPanel">
         <div class="filter-section">
-            <div class="filter-header"><i class="fas fa-id-card"></i> Identidade <i class="fas fa-chevron-down"></i></div>
+            <div class="filter-header"><i class="fas fa-id-badge" id="filtro-icones"></i> Cargos   </div>
             <div class="filter-options">
                 <label><input type="radio" name="cargo" value="USUARIO_ADMINISTRADOR"> Administrador</label>
                 <label><input type="radio" name="cargo" value="USUARIO_SIMPLES"> Usuario Simples</label>
@@ -45,7 +47,7 @@
             </div>
         </div>
 
-        <button class="btn-buscar-filtro">
+        <button class="btn-buscar-filtro-usuario">
             <i class="fa fa-search"></i> Buscar
         </button>
     </form>
@@ -71,11 +73,9 @@
             <td data-label="Ações" class="actions">
                 <a th:href="@{/usuario/visualizar/{id}(id=${user.id})}" class="btn-visualizar"><i class="fas fa-eye"></i></a>
                 <a th:href="@{/usuario/editar/{id}(id=${user.id})}"><i class="fas fa-edit"></i></a>
-                <form th:action="@{/usuario/remover/{id}(id=${user.id})}" method="post">
-                    <button type="submit" class="delete-btn" onclick="return confirm('Tem certeza que deseja remover este usuario?');">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                </form>
+                <a href="#" class="delete-btn" th:attr="data-id=${user.id}, data-nome=${user.nome}">
+                    <i class="fas fa-trash-alt"></i>
+                </a>
             </td>
         </tr>
         </tbody>
@@ -89,6 +89,42 @@
         <button th:if="${usuarios.hasNext()}" type="submit" name="page" th:value="${usuarios.number + 1}" th:text="${usuarios.number + 2}"></button>
     </form>
 </div>
+
+<div id="modal-overlay" class="modal-overlay" style="display:none;">
+    <div class="modal-content">
+        <h2>Confirmação de Exclusão</h2>
+        <p>Tem certeza que deseja excluir o usuário: <span id="modal-nome"></span>?</p>
+
+        <div class="card-actions" style="justify-content:center;">
+            <form th:action="@{/usuario/remover/{id}}" id="form-delete" method="post">
+                <button type="submit" class="delete-btn" style="width: 100px;">Confirmar</button>
+            </form>
+            <button id="cancelar-modal" class="button-vol" style="width: 100px;">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.preventDefault();
+            const userId = btn.getAttribute('data-id');
+            const userName = btn.getAttribute('data-nome');
+
+            document.querySelector('#modal-nome').textContent = userName;
+            document.querySelector('#form-delete').setAttribute('action', `/usuario/remover/${userId}`);
+
+            document.querySelector('#modal-overlay').style.display = 'flex';
+        });
+    });
+
+    document.querySelector('#cancelar-modal').addEventListener('click', () => {
+        document.querySelector('#modal-overlay').style.display = 'none';
+    });
+</script>
+
+
 <script>
     const toggleButton = document.getElementById('toggleFilter');
     const filterPanel = document.getElementById('filterPanel');
