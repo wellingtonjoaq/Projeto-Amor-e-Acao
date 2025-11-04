@@ -51,9 +51,6 @@ public class PdfExportVoluntarioService {
             document.add(tabelaFuncao);
             document.add(new Paragraph("\n"));
 
-            document.add(new Paragraph("Tempo Médio de Permanência (dias): " +
-                    df.format(relatorio.getTempoMedioPermanenciaDias()) + "\n", fontSubTitulo));
-
             document.add(new Paragraph("Distribuição por Gênero", fontSubTitulo));
             PdfPTable tabelaGenero = new PdfPTable(2);
             tabelaGenero.setWidthPercentage(60);

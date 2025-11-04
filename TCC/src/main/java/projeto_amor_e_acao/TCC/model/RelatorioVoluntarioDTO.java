@@ -7,7 +7,6 @@ import java.util.Map;
 public class RelatorioVoluntarioDTO {
 
     private Map<String, Long> voluntariosAtivosPorFuncao;
-    private Double tempoMedioPermanenciaDias;
     private Map<String, Long> distribuicaoPorGenero;
     private Map<String, Long> distribuicaoPorMotivacao;
 }
