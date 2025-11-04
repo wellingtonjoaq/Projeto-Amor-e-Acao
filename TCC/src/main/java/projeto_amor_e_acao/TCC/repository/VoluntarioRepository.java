@@ -38,4 +38,5 @@ public interface VoluntarioRepository extends JpaRepository<Voluntario, Long> {
     Page<Voluntario> findByStatusIgnoreCaseAndCidadeContainingIgnoreCase(String status, String cidade, Pageable pageable);
 
     Page<Voluntario> findByStatusIgnoreCaseAndEstadoContainingIgnoreCase(String status, String estado, Pageable pageable);
+
 }
