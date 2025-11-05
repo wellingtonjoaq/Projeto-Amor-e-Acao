@@ -26,25 +26,25 @@ public class FuncaoVoluntarioController {
         return "funcao/listar";
     }
 
-    @PostMapping("salvar")
-    public String salvar(@RequestParam("funcoesSelecionadas") String funcoesSelecionadas, Model model) {
-
-        try {
-            List<String> funcoes = List.of(funcoesSelecionadas.split(","));
-
-            for (String nome : funcoes) {
-                if (nome == null || nome.isBlank()) continue;
-                FuncaoVoluntario funcao = new FuncaoVoluntario(null, nome.trim());
-                service.salvar(funcao);
-            }
-
-            return "redirect:/funcao/listar";
-
-        } catch (Exception e) {
-            model.addAttribute("erro", e.getMessage());
-            return "funcao/listar";
-        }
-    }
+//    @PostMapping("salvar")
+//    public String salvar(@RequestParam("funcoesSelecionadas") String funcoesSelecionadas, Model model) {
+//
+//        try {
+//            List<String> funcoes = List.of(funcoesSelecionadas.split(","));
+//
+//            for (String nome : funcoes) {
+//                if (nome == null || nome.isBlank()) continue;
+//                FuncaoVoluntario funcao = new FuncaoVoluntario(null, nome.trim(),);
+//                service.salvar(funcao);
+//            }
+//
+//            return "redirect:/funcao/listar";
+//
+//        } catch (Exception e) {
+//            model.addAttribute("erro", e.getMessage());
+//            return "funcao/listar";
+//        }
+//    }
 
 
 

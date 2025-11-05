@@ -75,15 +75,21 @@ public class VoluntarioController {
             @RequestParam(required = false) String pesquisa,
             Model model) {
 
-        Page<Voluntario> voluntarios = service.filtrarPesquisa(pesquisa, page, size);
+        if (!pesquisa.isEmpty()){
+            Page<Voluntario> voluntarios = service.filtrarPesquisa(pesquisa, page, size);
 
-        model.addAttribute("pesquisa", pesquisa);
-        model.addAttribute("voluntarios", voluntarios);
-        model.addAttribute("funcoesVoluntario", funcaoVoluntarioService.listarTodos());
-        model.addAttribute("paginaAtual", page);
-        model.addAttribute("vazio", voluntarios.isEmpty());
+            model.addAttribute("pesquisa", pesquisa);
+            model.addAttribute("voluntarios", voluntarios);
+            model.addAttribute("funcoesVoluntario", funcaoVoluntarioService.listarTodos());
+            model.addAttribute("paginaAtual", page);
+            model.addAttribute("vazio", voluntarios.isEmpty());
 
-        return "voluntario/pesquisaFiltro/lista";
+            return "voluntario/pesquisaFiltro/lista";
+        }
+        else {
+            return "redirect:/voluntario/listar";
+        }
+
     }
 
     @GetMapping("filtrar")
@@ -108,7 +114,7 @@ public class VoluntarioController {
                 : Collections.emptyList();
 
         boolean temFuncao = !funcoes.isEmpty();
-        boolean temGenero = (genero != null && !genero.isBlank() && !genero.equalsIgnoreCase("TODOS"));
+        boolean temGenero = (genero != null && !genero.isBlank());
 
         Page<Voluntario> voluntarios = service.filtrar(funcoes, genero, page, size);
 
@@ -124,10 +130,12 @@ public class VoluntarioController {
         model.addAttribute("cep", cep);
         model.addAttribute("bairro", bairro);
         model.addAttribute("endereco", endereco);
+        model.addAttribute("cidade", cidade);
+        model.addAttribute("estado", estado);
         model.addAttribute("vazio", false);
 
         if (!temFuncao && !temGenero && nome == null && cpf == null && email == null && telefone == null && cep == null && bairro == null && endereco == null && cidade == null && estado == null) {
-            model.addAttribute("vazio", true);
+            return "redirect:/voluntario/listar";
         }
 
         if (voluntarios.isEmpty()){

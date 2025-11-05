@@ -69,6 +69,10 @@ public class Curso {
     @Column
     private String descricao;
 
+    @Column(nullable = false)
+    @NotBlank(message = "( Campo Obrigatório )")
+    private String categorias;
+
     @Column(nullable = false, length = 20)
     @NotBlank(message = "( Campo Obrigatório )")
     private String status = "ATIVO";

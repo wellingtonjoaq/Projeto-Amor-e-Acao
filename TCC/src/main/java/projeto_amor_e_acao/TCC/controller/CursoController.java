@@ -90,14 +90,19 @@ public class CursoController {
             @RequestParam(required = false) String pesquisa,
             Model model) {
 
-        Page<Curso> cursos = service.filtrarPesquisa(pesquisa, page, size);
+        if (!pesquisa.isEmpty()){
+            Page<Curso> cursos = service.filtrarPesquisa(pesquisa, page, size);
 
-        model.addAttribute("pesquisa", pesquisa);
-        model.addAttribute("cursos", cursos);
-        model.addAttribute("paginaAtual", page);
-        model.addAttribute("vazio", cursos.isEmpty());
+            model.addAttribute("pesquisa", pesquisa);
+            model.addAttribute("cursos", cursos);
+            model.addAttribute("paginaAtual", page);
+            model.addAttribute("vazio", cursos.isEmpty());
 
-        return "curso/pesquisaFiltro/lista";
+            return "curso/pesquisaFiltro/lista";
+        }
+        else {
+            return "redirect:/curso/listar";
+        }
     }
 
 //    @GetMapping("filtrar")

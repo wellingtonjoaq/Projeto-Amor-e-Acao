@@ -68,14 +68,20 @@ public class UsuarioController {
             @RequestParam(required = false) String pesquisa,
             Model model) {
 
-        Page<Usuario> usuarios = service.filtrarPesquisa(pesquisa, page, size);
+        if (!pesquisa.isEmpty()){
+            Page<Usuario> usuarios = service.filtrarPesquisa(pesquisa, page, size);
 
-        model.addAttribute("pesquisa", pesquisa);
-        model.addAttribute("usuarios", usuarios);
-        model.addAttribute("paginaAtual", page);
-        model.addAttribute("vazio", usuarios.isEmpty());
+            model.addAttribute("pesquisa", pesquisa);
+            model.addAttribute("usuarios", usuarios);
+            model.addAttribute("paginaAtual", page);
+            model.addAttribute("vazio", usuarios.isEmpty());
 
-        return "usuario/pesquisaFiltro/lista";
+            return "usuario/pesquisaFiltro/lista";
+        }
+        else {
+            return "redirect:/usuario/listar";
+        }
+
     }
 
 
@@ -96,7 +102,7 @@ public class UsuarioController {
         model.addAttribute("cargo", cargo);
 
         if (!temCargo) {
-            model.addAttribute("vazio", true);
+            return "redirect:/usuario/listar";
         }
 
         if (usuarios.isEmpty()){
