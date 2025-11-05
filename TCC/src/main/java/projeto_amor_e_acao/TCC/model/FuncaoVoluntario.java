@@ -22,4 +22,9 @@ public class FuncaoVoluntario {
     @NotBlank(message = "( Campo Obrigatório )")
     @Size(min = 3, max = 100, message = "( Deve conter entre 3 a 100 caracteres )")
     private String nome;
+
+    @Column(nullable = false)
+    @NotBlank(message = "( Campo Obrigatório )")
+    @Size(max = 100, message = "( Limite Excedido! )")
+    private String descricao;
 }

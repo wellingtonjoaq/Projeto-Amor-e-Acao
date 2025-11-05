@@ -88,14 +88,19 @@ public class EmpresaParceiraController {
             @RequestParam(required = false) String pesquisa,
             Model model) {
 
-        Page<EmpresaParceira> empresasParceiras = service.filtrarPesquisa(pesquisa, page, size);
+        if (!pesquisa.isEmpty()){
+            Page<EmpresaParceira> empresasParceiras = service.filtrarPesquisa(pesquisa, page, size);
 
-        model.addAttribute("pesquisa", pesquisa);
-        model.addAttribute("empresasParceiras", empresasParceiras);
-        model.addAttribute("paginaAtual", page);
-        model.addAttribute("vazio", empresasParceiras.isEmpty());
+            model.addAttribute("pesquisa", pesquisa);
+            model.addAttribute("empresasParceiras", empresasParceiras);
+            model.addAttribute("paginaAtual", page);
+            model.addAttribute("vazio", empresasParceiras.isEmpty());
 
-        return "empresaParceira/pesquisaFiltro/lista";
+            return "empresaParceira/pesquisaFiltro/lista";
+        }
+        else {
+            return "redirect:/empresaParceira/listar";
+        }
     }
 
     @GetMapping("filtrar")
@@ -123,7 +128,7 @@ public class EmpresaParceiraController {
         model.addAttribute("vazio", false);
 
         if (nome == null && cnpj == null && email == null && telefone == null && nomeRepresentante == null && cpfRepresentante == null) {
-            model.addAttribute("vazio", true);
+            return "redirect:/empresaParceira/listar";
         }
 
         if (empresasParceiras.isEmpty()){
