@@ -38,12 +38,33 @@
     </div>
 
     <form th:action="@{/curso/filtrar}" method="get" class="filter-panel-curso" id="filterPanel">
+
         <div class="filter-section">
-            <div class="filter-header"><i class="fas fa-book" id="filtro-icones"></i>Status </div>
+            <div class="filter-header">
+                <i class="fas fa-id-card" id="filtro-icones"></i> Identidade
+            </div>
+
             <div class="filter-options">
-                <label><input type="radio" name="status" value="ATIVO"> ATIVO </label>
-                <label><input type="radio" name="status" value="INATIVO"> INATIVO </label>
-                <label><input type="radio" name="status" value="TODOS"> TODOS </label>
+                <label><input type="radio" name="categoria" value="Educação"> Educação</label>
+                <label><input type="radio" name="categoria" value="Saúde"> Saúde</label>
+                <label><input type="radio" name="categoria" value="Tecnologia"> Tecnologia</label>
+                <label><input type="radio" name="categoria" value="Esporte"> Esporte</label>
+                <label><input type="radio" name="categoria" value="Arte"> Arte</label>
+                <label><input type="radio" name="categoria" value="Moda"> Moda</label>
+                <label><input type="radio" name="categoria" value="Engenharia"> Engenharia</label>
+                <label><input type="radio" name="categoria" value="Agricultura"> Agricultura</label>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <div class="filter-header">
+                <i class="fas fa-venus-mars" id="filtro-icones1"></i> Status
+            </div>
+
+            <div class="filter-options">
+                <label><input type="radio" name="status" value="ATIVO"> Ativo</label>
+                <label><input type="radio" name="status" value="INATIVO"> Inativo</label>
+                <label><input type="radio" name="status" value="TODOS"> Todos</label>
             </div>
         </div>
 

@@ -39,10 +39,17 @@ public class CursoController {
     public String salvar(@Valid Curso curso,
                          BindingResult result,
                          @RequestParam(value = "file", required = false) MultipartFile file,
+                         @RequestParam(value = "categoriasSelecionadas", required = false) List<String> categoriasSelecionadas,
                          Model model) {
 
         if (result.hasErrors()) {
             model.addAttribute("curso", curso);
+            return "curso/formulario";
+        }
+
+        if (categoriasSelecionadas == null || categoriasSelecionadas.isEmpty()) {
+            model.addAttribute("curso", curso);
+            model.addAttribute("erro", "Selecione pelo menos uma categoria.");
             return "curso/formulario";
         }
 
@@ -52,18 +59,15 @@ public class CursoController {
                 curso.setFoto(url);
             }
 
+            if (categoriasSelecionadas.size() > 3) {
+                categoriasSelecionadas = categoriasSelecionadas.subList(0, 3);
+            }
+
+            curso.setCategorias(String.join(",", categoriasSelecionadas));
+
             service.salvar(curso);
             return "redirect:/curso/listar";
-        }
-        catch (IllegalStateException e) {
-            model.addAttribute("erro", e.getMessage());
-            return "curso/formulario";
-        }
-        catch (IOException e) {
-            model.addAttribute("erro", "Erro ao enviar imagem: " + e.getMessage());
-            return "curso/formulario";
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             model.addAttribute("erro", e.getMessage());
             model.addAttribute("curso", curso);
             return "curso/formulario";
@@ -105,35 +109,35 @@ public class CursoController {
         }
     }
 
-//    @GetMapping("filtrar")
-//    public String filtrar(
-//            @RequestParam(defaultValue = "0") int page,
-//            @RequestParam(defaultValue = "20") int size,
-//            @RequestParam(required = false) String status,
-//            @RequestParam(required = false, name = "categoriasSelecionadas") List<String> categoria,
-//            Model model) {
-//
-//        boolean temCategoria = (categoria != null && !categoria.isEmpty());
-//        boolean temStatus = (status != null && !status.isBlank() && !status.equalsIgnoreCase("TODOS"));
-//
-//        Page<Curso> cursos = service.filtrar(docentes, status, page, size);
-//
-//        model.addAttribute("cursos", cursos);
-//        model.addAttribute("paginaAtual", page);
-//        model.addAttribute("docentes", docentes);
-//        model.addAttribute("status", status);
-//        model.addAttribute("vazio", false);
-//
-//        if (!temdocente && !temStatus) {
-//            model.addAttribute("vazio", true);
-//        }
-//
-//        if (cursos.isEmpty()){
-//            model.addAttribute("vazio", cursos.isEmpty());
-//        }
-//
-//        return "curso/filtro/lista";
-//    }
+    @GetMapping("filtrar")
+    public String filtrar(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String categoria,
+            Model model) {
+
+        boolean temCategoria = (categoria != null && !categoria.isEmpty());
+        boolean temStatus = (status != null && !status.isBlank());
+
+        Page<Curso> cursos = service.filtrar(categoria, status, page, size);
+
+        model.addAttribute("cursos", cursos);
+        model.addAttribute("paginaAtual", page);
+        model.addAttribute("categoria", categoria);
+        model.addAttribute("status", status);
+        model.addAttribute("vazio", false);
+
+        if (!temCategoria && !temStatus) {
+            return "redirect:/curso/listar";
+        }
+
+        if (cursos.isEmpty()){
+            model.addAttribute("vazio", cursos.isEmpty());
+        }
+
+        return "curso/filtro/lista";
+    }
 
     @GetMapping("visualiza/{id}")
     public String visualizar(@PathVariable Long id, Model model) {

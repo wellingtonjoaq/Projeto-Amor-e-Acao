@@ -38,12 +38,33 @@
   </div>
 
   <form th:action="@{/curso/filtrar}" method="get" class="filter-panel-curso" id="filterPanel">
+
     <div class="filter-section">
-      <div class="filter-header"><i class="fas fa-book" id="filtro-icones"></i>Status </div>
+      <div class="filter-header">
+        <i class="fas fa-id-card" id="filtro-icones"></i> Identidade
+      </div>
+
       <div class="filter-options">
-        <label><input type="radio" name="status" value="ATIVO"> ATIVO </label>
-        <label><input type="radio" name="status" value="INATIVO"> INATIVO </label>
-        <label><input type="radio" name="status" value="TODOS"> TODOS </label>
+        <label><input type="radio" name="categoria" value="Educação" th:checked="${categoria} == 'Educação'"> Educação</label>
+        <label><input type="radio" name="categoria" value="Saúde" th:checked="${categoria} == 'Saúde'"> Saúde</label>
+        <label><input type="radio" name="categoria" value="Tecnologia" th:checked="${categoria} == 'Tecnologia'"> Tecnologia</label>
+        <label><input type="radio" name="categoria" value="Esporte" th:checked="${categoria} == 'Esporte'"> Esporte</label>
+        <label><input type="radio" name="categoria" value="Arte" th:checked="${categoria} == 'Arte'"> Arte</label>
+        <label><input type="radio" name="categoria" value="Moda" th:checked="${categoria} == 'Moda'"> Moda</label>
+        <label><input type="radio" name="categoria" value="Engenharia" th:checked="${categoria} == 'Engenharia'"> Engenharia</label>
+        <label><input type="radio" name="categoria" value="Agricultura" th:checked="${categoria} == 'Agricultura'"> Agricultura</label>
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <div class="filter-header">
+        <i class="fas fa-venus-mars" id="filtro-icones1"></i> Status
+      </div>
+
+      <div class="filter-options">
+        <label><input type="radio" name="status" value="ATIVO" th:checked="${status} == 'ATIVO'"> Ativo</label>
+        <label><input type="radio" name="status" value="INATIVO" th:checked="${status} == 'INATIVO'"> Inativo</label>
+        <label><input type="radio" name="status" value="TODOS" th:checked="${status} == 'TODOS'"> Todos</label>
       </div>
     </div>
 
@@ -84,7 +105,8 @@
           </form>
         </div>
         <div class="card-tag">
-          <i class="fa-solid fa-tags"></i> Exemplo - Exemplo - Exemplo
+          <i class="fa-solid fa-tags"></i>
+          <span th:text="${#strings.replace(curso.categorias, ',', ' - ')}"></span>
         </div>
       </div>
     </div>

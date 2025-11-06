@@ -64,31 +64,35 @@ public class CursoService {
             resultados = repository.findByStatusIgnoreCaseAndBairroContainingIgnoreCase("ATIVO", pesquisa, pageable);
         }
 
+        if (resultados.isEmpty()) {
+            resultados = repository.findByStatusIgnoreCaseAndCategoriasContainingIgnoreCase("ATIVO", pesquisa, pageable);
+        }
+
         return resultados;
     }
 
 
-//    public Page<Curso> filtrar(List<String> docentes, String status, int page, int size) {
-//        Pageable pageable = PageRequest.of(page, size);
-//
-//        boolean temProfessor = (docentes != null && !docentes.isEmpty());
-//        boolean temStatus = (status != null && !status.isBlank() && !status.equalsIgnoreCase("TODOS"));
-//
-//        if (temProfessor && temStatus) {
-//            return repository.findByStatusIgnoreCaseAndProfessorIgnoreCase(status, docentes, pageable
-//            );
-//        } else if (temProfessor) {
-//            return repository.findByStatusIgnoreCaseAndProfessorIgnoreCase(
-//                    "ATIVO", docentes, pageable
-//            );
-//        } else if (temStatus) {
-//            return repository.findByStatusIgnoreCase(
-//                    status, pageable
-//            );
-//        }
-//
-//        return repository.findByStatusIgnoreCase("ATIVO", pageable);
-//    }
+    public Page<Curso> filtrar(String categoria, String status, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        boolean temCategoria = (categoria != null && !categoria.isEmpty());
+        boolean temStatus = (status != null && !status.isBlank() && !status.equalsIgnoreCase("TODOS"));
+
+        if (temCategoria && temStatus) {
+            return repository.findByStatusIgnoreCaseAndCategoriasContainingIgnoreCase(status, categoria, pageable
+            );
+        } else if (temCategoria) {
+            return repository.findByStatusIgnoreCaseAndCategoriasContainingIgnoreCase(
+                    "ATIVO", categoria, pageable
+            );
+        } else if (temStatus) {
+            return repository.findByStatusIgnoreCase(
+                    status, pageable
+            );
+        }
+
+        return repository.findAll(pageable);
+    }
 
     public Curso buscarPorId(Long id) {
         return repository.findById(id).orElseThrow();
