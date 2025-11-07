@@ -77,7 +77,8 @@
         <div class="card" th:each="curso : ${cursos}">
             <div class="card-header">
                 <span class="card-id">ID <strong th:text="${curso.id}">01</strong></span>
-                <img th:src="${curso.foto}" alt="Imagem do curso" class="card-img" >
+                <img th:if="${curso.foto}" th:src="${curso.foto}" alt="Imagem do curso" class="card-img">
+                <img th:if="${curso.foto == null}" src="/imagens/default.png" alt="Sem imagem" class="card-img">
             </div>
 
             <div class="card-body">
@@ -101,7 +102,8 @@
                     </form>
                 </div>
                 <div class="card-tag">
-                    <i class="fa-solid fa-tags"></i> Exemplo - Exemplo - Exemplo
+                    <i class="fa-solid fa-tags"></i>
+                    <span th:text="${#strings.replace(curso.categorias, ',', ' - ')}"></span>
                 </div>
             </div>
         </div>
