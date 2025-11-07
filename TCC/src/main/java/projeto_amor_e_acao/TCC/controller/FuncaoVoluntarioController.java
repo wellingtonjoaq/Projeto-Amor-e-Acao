@@ -38,14 +38,14 @@ public class FuncaoVoluntarioController {
 
         } catch (Exception e) {
             model.addAttribute("erro", e.getMessage());
-            return "funcao/listar";
+            return "funcao/lista";
         }
     }
 
     @GetMapping("listar")
     public String listar(Model model) {
         model.addAttribute("funcoes", service.listarTodos());
-        return "funcao/listar";
+        return "funcao/lista";
     }
 
     @GetMapping("filtrarPesquisa")

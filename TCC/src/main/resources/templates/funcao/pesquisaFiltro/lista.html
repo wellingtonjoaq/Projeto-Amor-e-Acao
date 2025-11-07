@@ -34,7 +34,11 @@
     </div>
   </div>
 
-  <table>
+  <div th:if="${vazio}" class="vazio">
+    <h1>Nenhuma Função Encontrada :\</h1>
+  </div>
+
+  <table th:if="${!vazio}">
     <thead>
     <tr>
       <th>#</th>
