@@ -63,7 +63,7 @@ public class Curso {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataFim;
 
-    @Column
+    @Column(length = 500)
     private String foto;
 
     @Column

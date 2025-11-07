@@ -1,15 +1,13 @@
 package projeto_amor_e_acao.TCC.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import projeto_amor_e_acao.TCC.model.FuncaoVoluntario;
-import projeto_amor_e_acao.TCC.model.Voluntario;
 import projeto_amor_e_acao.TCC.repository.FuncaoVoluntarioRepository;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class FuncaoVoluntarioService {
@@ -28,6 +26,27 @@ public class FuncaoVoluntarioService {
 
     public List<FuncaoVoluntario> listarTodos() {
         return repository.findAll();
+    }
+
+    public List<FuncaoVoluntario> filtrarPesquisa(String pesquisa) {
+        if (pesquisa == null || pesquisa.isBlank()) {
+            return new ArrayList<>();
+        }
+
+        pesquisa = pesquisa.trim();
+        List<FuncaoVoluntario> resultados = repository.findByNomeContainingIgnoreCase(pesquisa);
+
+        if (resultados == null || resultados.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        return resultados;
+    }
+
+
+
+    public FuncaoVoluntario buscarPorId(Long id){
+        return repository.findById(id).orElseThrow();
     }
 
     public List<FuncaoVoluntario> buscarPorIds(List<Long> ids){

@@ -67,6 +67,10 @@ public class CursoController {
 
             service.salvar(curso);
             return "redirect:/curso/listar";
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao fazer upload da imagem", e);
+
         } catch (Exception e) {
             model.addAttribute("erro", e.getMessage());
             model.addAttribute("curso", curso);
