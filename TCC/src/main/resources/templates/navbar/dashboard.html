@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="pt-BR" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Dashboard</title>
@@ -8,17 +8,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body th:fragment="menu">
+
 <div class="topbar">
-
-    <button class="menu-toggle" onclick="toggleSidebar()">
-        <i class="fa-solid fa-bars"></i>
-    </button>
-
     <div class="topbar-left">
-        <h1>Painel Administrativo</h1>
+        <button class="menu-toggle" id="menuToggleBtn">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <h1 id="painel-title">Painel Administrativo</h1>
     </div>
-
-
 
     <div class="topbar-right">
         <button class="icon-button">
@@ -27,20 +24,58 @@
         <img class="img-user" th:src="@{/imagens/usuario.jpg}" alt="usuario Ong" height="50px"/>
     </div>
 </div>
-<ul class="sidebar">
-    <li><a href="/usuario/listar"><i class="fa-solid fa-user"></i> Usuários</a></li>
-    <li><a href="/curso/listar"><i class="fa-solid fa-table"></i> Formulários</a></li>
-    <li><a href="/aluno/listar"><i class="fa-solid fa-user-graduate"></i> Alunos</a></li>
-    <li><a href="/voluntario/listar"><i class="fa-solid fa-handshake-angle"></i> Voluntários</a></li>
-    <li><a href="/empresaParceira/listar"><i class="fa-solid fa-building"></i> Parcerias</a></li>
-    <li><a href="/historico/listar"><i class="fa-solid fa-history"></i> Historico</a></li>
+
+<ul class="sidebar collapsed" id="sidebar">
+    <li><a href="/usuario/listar"><i class="fa-solid fa-user"></i><span>Usuários</span></a></li>
+    <li><a href="/curso/listar"><i class="fa-solid fa-table"></i><span>Formulários</span></a></li>
+    <li><a href="/aluno/listar"><i class="fa-solid fa-user-graduate"></i><span>Alunos</span></a></li>
+    <li><a href="/voluntario/listar"><i class="fa-solid fa-handshake-angle"></i><span>Voluntários</span></a></li>
+    <li><a href="/funcao/listar"><i class="fa-solid fa-address-book"></i><span>Funções</span></a></li>
+    <li><a href="/empresaParceira/listar"><i class="fa-solid fa-building"></i><span>Parcerias</span></a></li>
+    <li><a href="/empresaParceira/listar"><i class="fa-solid fa-file-excel"></i><span>Relatórios</span></a></li>
+    <li><a href="/historico/listar"><i class="fa-solid fa-history"></i><span>Histórico</span></a></li>
+
+    <div class="sidebar-logo">
+        <a href="/usuario/listar">
+            <img th:src="@{/imagens/logo.png}" alt="Logo ONG"/>
+        </a>
+    </div>
 </ul>
 
 <script>
-    function toggleSidebar() {
-      const sidebar = document.querySelector('.sidebar');
-      sidebar.classList.toggle('active');
-    }
+    const sidebar = document.getElementById('sidebar');
+    const menuToggleBtn = document.getElementById('menuToggleBtn');
+    const sidebarLinks = document.querySelectorAll('.sidebar li a');
+
+    // Toggle manual (desktop e mobile)
+    menuToggleBtn.addEventListener('click', () => {
+      if (window.innerWidth <= 768) {
+        sidebar.classList.toggle('active');
+      } else {
+        sidebar.classList.toggle('collapsed');
+      }
+    });
+
+    // Fecha sidebar ao clicar em link
+    sidebarLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+          sidebar.classList.remove('active');
+        } else {
+          sidebar.classList.add('collapsed');
+        }
+      });
+    });
+
+    // Fecha se clicar fora (mobile)
+    document.addEventListener('click', (e) => {
+      if (window.innerWidth <= 768 && !sidebar.contains(e.target) && !menuToggleBtn.contains(e.target)) {
+        sidebar.classList.remove('active');
+      }
+    });
 </script>
+
+
+
 </body>
 </html>
