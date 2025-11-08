@@ -89,7 +89,7 @@ public class EmpresaParceiraController {
             Model model) {
 
         if (!pesquisa.isEmpty()){
-            Page<EmpresaParceira> empresasParceiras = service.filtrarPesquisa(pesquisa, page, size);
+            Page<EmpresaParceira> empresasParceiras = service.filtrarPesquisa("ATIVO", pesquisa, page, size);
 
             model.addAttribute("pesquisa", pesquisa);
             model.addAttribute("empresasParceiras", empresasParceiras);

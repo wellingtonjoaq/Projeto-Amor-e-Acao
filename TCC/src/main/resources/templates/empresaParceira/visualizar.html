@@ -80,7 +80,11 @@
       </div>
 
     </div>
-    <a type="button" class="button-vol" th:href="@{/empresaParceira/listar}">
+    <a type="button" class="button-vol" th:if="${empresa.status == 'ATIVO'}" th:href="@{/empresaParceira/listar}">
+      <i class="fa-solid fa-arrow-left"></i> Voltar
+    </a>
+
+    <a type="button" class="button-vol" th:if="${empresa.status == 'INATIVO'}" th:href="@{/historico/listar}">
       <i class="fa-solid fa-arrow-left"></i> Voltar
     </a>
   </form>

@@ -38,7 +38,7 @@ public class UsuarioService {
         return repository.findByStatusIgnoreCase("INATIVO", pageable);
     }
 
-    public Page<Usuario> filtrarPesquisa(String pesquisa, int page, int size) {
+    public Page<Usuario> filtrarPesquisa(String status, String pesquisa, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
 
         if (pesquisa == null || pesquisa.isBlank()) {
@@ -46,10 +46,10 @@ public class UsuarioService {
         }
 
         pesquisa = pesquisa.trim();
-        Page<Usuario> resultados = repository.findByStatusIgnoreCaseAndNomeContainingIgnoreCase("ATIVO", pesquisa, pageable);
+        Page<Usuario> resultados = repository.findByStatusIgnoreCaseAndNomeContainingIgnoreCase(status, pesquisa, pageable);
 
         if (resultados.isEmpty()) {
-            resultados = repository.findByStatusIgnoreCaseAndEmailContainingIgnoreCase("ATIVO", pesquisa, pageable);
+            resultados = repository.findByStatusIgnoreCaseAndEmailContainingIgnoreCase(status, pesquisa, pageable);
         }
 
         return resultados;

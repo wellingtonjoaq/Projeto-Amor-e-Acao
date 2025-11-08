@@ -76,7 +76,7 @@ public class VoluntarioController {
             Model model) {
 
         if (!pesquisa.isEmpty()){
-            Page<Voluntario> voluntarios = service.filtrarPesquisa(pesquisa, page, size);
+            Page<Voluntario> voluntarios = service.filtrarPesquisa("ATIVO", pesquisa, page, size);
 
             model.addAttribute("pesquisa", pesquisa);
             model.addAttribute("voluntarios", voluntarios);
