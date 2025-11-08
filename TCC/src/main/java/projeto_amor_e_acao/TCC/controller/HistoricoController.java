@@ -1,9 +1,11 @@
 package projeto_amor_e_acao.TCC.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import projeto_amor_e_acao.TCC.dto.HistoricoDTO;
 import projeto_amor_e_acao.TCC.model.Aluno;
 import projeto_amor_e_acao.TCC.model.EmpresaParceira;
 import projeto_amor_e_acao.TCC.model.Usuario;
@@ -32,9 +34,33 @@ public class HistoricoController {
     private UsuarioService usuarioService;
 
     @GetMapping("listar")
-    public String listar(Model model) {
-        model.addAttribute("historicos", service.listarHistorico());
+    public String listar(@RequestParam(defaultValue = "0") int page,
+                         @RequestParam(defaultValue = "20") int size,
+                         Model model) {
+
+        Page<HistoricoDTO> historicos = service.listarHistorico(page, size);
+        model.addAttribute("historicos", historicos);
         return "historico/lista";
+    }
+
+    @GetMapping("filtrarPesquisa")
+    public String filtrarPesquisa(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(required = false) String pesquisa,
+            Model model) {
+
+        if (pesquisa != null && !pesquisa.isEmpty()){
+            Page<HistoricoDTO> historicos = service.filtrarPesquisaHistorico(pesquisa,page, size);
+            model.addAttribute("historicos", historicos);
+            model.addAttribute("pesquisa", pesquisa);
+            model.addAttribute("vazio", historicos.isEmpty());
+
+            return "historico/pesquisaFiltro/lista";
+        }
+        else {
+            return "redirect:/historico/listar";
+        }
     }
 
     @GetMapping("visualizaAluno/{id}")

@@ -94,7 +94,7 @@ public class AlunoController {
             Model model) {
 
         if (!pesquisa.isEmpty()){
-            Page<Aluno> alunos = service.filtrarPesquisa(pesquisa, page, size);
+            Page<Aluno> alunos = service.filtrarPesquisa("ATIVO", pesquisa, page, size);
 
             model.addAttribute("pesquisa", pesquisa);
             model.addAttribute("alunos", alunos);

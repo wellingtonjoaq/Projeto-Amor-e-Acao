@@ -17,63 +17,23 @@
       <h1>Historico</h1>
     </div>
 
-    <div class="header-actions">
-      <div class="pesquisa-box">
-        <input type="text" class="campo-pesquisa" placeholder="Pesquisar...">
-        <button class="btn-pesquisar"><i class="fa fa-search"></i></button>
+      <div class="header-actions">
+        <div class="pesquisa-box">
+          <form method="get" th:action="@{/historico/filtrarPesquisa}">
+            <input type="text" name="pesquisa" class="campo-pesquisa" placeholder="Pesquisar..." th:value="${pesquisa}">
+            <button class="btn-pesquisar" type="submit">
+              <i class="fa fa-search"></i>
+            </button>
+          </form>
+        </div>
       </div>
-
-      <button class="filter-btn" id="toggleFilter">
-        <i class="fas fa-filter"></i> Filtrar <i class="fas fa-chevron-down"></i>
-      </button>
     </div>
+
+  <div th:if="${vazio}" class="vazio">
+    <h1>Nenhum Registro Encontrado :\</h1>
   </div>
 
-  <div class="filter-panel-historico" id="filterPanel">
-    <div class="filter-section">
-      <div class="filter-header"><i class="fas fa-id-card" id="filtro-icones"></i> Identidade </div>
-      <div class="filter-options">
-        <label><input type="checkbox"> Nome</label>
-        <label><input type="checkbox"> CPF</label>
-        <label><input type="checkbox"> E-mail</label>
-        <label><input type="checkbox"> Telefone</label>
-      </div>
-    </div>
-
-    <div class="filter-section">
-      <div class="filter-header"><i class="fas fa-venus-mars" id="filtro-icones1"></i> Gênero </div>
-      <div class="filter-options">
-        <label><input type="checkbox"> Homem</label>
-        <label><input type="checkbox"> Mulher</label>
-        <label><input type="checkbox"> Todos</label>
-      </div>
-    </div>
-
-    <div class="filter-section">
-      <div class="filter-header"><i class="fas fa-map-marker-alt" id="filtro-icones2"></i> Localização </div>
-      <div class="filter-options">
-        <label><input type="checkbox"> CEP</label>
-        <label><input type="checkbox"> Bairro</label>
-        <label><input type="checkbox"> Cidade</label>
-        <label><input type="checkbox"> Estado</label>
-      </div>
-    </div>
-
-    <div class="filter-section">
-      <div class="filter-header"><i class="fas fa-book" id="filtro-icones3"></i> Cursos </div>
-      <div class="filter-options">
-        <label><input type="checkbox"> Informática</label>
-        <label><input type="checkbox"> Administração</label>
-        <label><input type="checkbox"> Enfermagem</label>
-      </div>
-    </div>
-
-    <button class="btn-buscar-filtro-historico">
-      <i class="fa fa-search"></i> Buscar
-    </button>
-  </div>
-
-  <table>
+  <table th:if="${!vazio}">
     <thead>
     <tr>
       <th>#</th>
@@ -117,9 +77,17 @@
 
       </td>
     </tr>
-
     </tbody>
   </table>
+
+  <form th:if="${!vazio}" class="action-botton-page" th:action="@{/historico/filtrarPesquisa}" method="get">
+    <input type="hidden" name="pesquisa" th:value="${pesquisa}">
+
+    <h1>Página</h1>
+    <button th:if="${historicos.hasPrevious()}" type="submit" name="page" th:value="${historicos.number - 1}" th:text="${historicos.number}"></button>
+    <button class="active" type="submit" name="page" th:value="${historicos.number}" th:text="${historicos.number + 1}"></button>
+    <button th:if="${historicos.hasNext()}" type="submit" name="page" th:value="${historicos.number + 1}" th:text="${historicos.number + 2}"></button>
+  </form>
 </div>
 <script>
   const toggleButton = document.getElementById('toggleFilter');

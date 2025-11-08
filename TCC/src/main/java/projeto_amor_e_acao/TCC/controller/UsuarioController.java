@@ -69,7 +69,7 @@ public class UsuarioController {
             Model model) {
 
         if (!pesquisa.isEmpty()){
-            Page<Usuario> usuarios = service.filtrarPesquisa(pesquisa, page, size);
+            Page<Usuario> usuarios = service.filtrarPesquisa("ATIVO",pesquisa, page, size);
 
             model.addAttribute("pesquisa", pesquisa);
             model.addAttribute("usuarios", usuarios);
