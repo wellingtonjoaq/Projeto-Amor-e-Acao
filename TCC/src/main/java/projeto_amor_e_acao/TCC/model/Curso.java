@@ -63,11 +63,14 @@ public class Curso {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataFim;
 
-    @Column
+    @Column(length = 500)
     private String foto;
 
     @Column
     private String descricao;
+
+    @Column(nullable = false)
+    private String categorias;
 
     @Column(nullable = false, length = 20)
     @NotBlank(message = "( Campo Obrigatório )")

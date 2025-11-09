@@ -123,6 +123,23 @@
                 <input id="descricaoCurso" type="text" th:field="*{descricao}" />
             </div>
 
+            <div class="form-group">
+                <label for="categoriasCurso">Categorias
+                    <span th:if="${#fields.hasErrors('categorias')}" th:errors="*{categorias}" class="error"></span>
+                </label>
+                <select id="categoriasCurso" name="categoriasSelecionadas"
+                        th:classappend="${#fields.hasErrors('categorias')} ? ' field-error' : ''" multiple required>
+                    <option value="Educação" th:selected="${categoriasSelecionadas != null and categoriasSelecionadas.contains('Educação')}">Educação</option>
+                    <option value="Saúde" th:selected="${categoriasSelecionadas != null and categoriasSelecionadas.contains('Saúde')}">Saúde</option>
+                    <option value="Tecnologia" th:selected="${categoriasSelecionadas != null and categoriasSelecionadas.contains('Tecnologia')}">Tecnologia</option>
+                    <option value="Esporte" th:selected="${categoriasSelecionadas != null and categoriasSelecionadas.contains('Esporte')}">Esporte</option>
+                    <option value="Arte" th:selected="${categoriasSelecionadas != null and categoriasSelecionadas.contains('Arte')}">Arte</option>
+                    <option value="Moda" th:selected="${categoriasSelecionadas != null and categoriasSelecionadas.contains('Moda')}">Moda</option>
+                    <option value="Engenharia" th:selected="${categoriasSelecionadas != null and categoriasSelecionadas.contains('Engenharia')}">Engenharia</option>
+                    <option value="Agricultura" th:selected="${categoriasSelecionadas != null and categoriasSelecionadas.contains('Agricultura')}">Agricultura</option>
+                </select>
+            </div>
+
             <div th:if="${curso.id != null}">
                 <div class="form-group">
                     <label for="statusCurso">Status</label>
@@ -160,9 +177,14 @@
         alert('CEP inválido! Digite 8 números.');
       }
     });
-</script>
 
-<script>
+    document.getElementById("categoriasCurso").addEventListener("change", function() {
+      if (this.selectedOptions.length > 3) {
+        alert("Você só pode selecionar até 3 categorias.");
+        this.options[this.selectedIndex].selected = false;
+      }
+    });
+
     const fileInput = document.getElementById('fotoCurso');
     const fileName = document.getElementById('file-name');
 
@@ -172,7 +194,6 @@
         : 'Nenhum arquivo selecionado';
     });
 </script>
-
 
 </body>
 </html>

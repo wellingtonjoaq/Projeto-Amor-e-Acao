@@ -18,12 +18,14 @@
         </div>
 
         <div class="header-actions">
-            <form method="get" th:action="@{/empresaParceira/filtrarPesquisa}" class="pesquisa-box">
-                <input type="text" name="pesquisa" class="campo-pesquisa" placeholder="Pesquisar..." th:value="${pesquisa}">
-                <button class="btn-pesquisar" type="submit">
-                    <i class="fa fa-search"></i>
-                </button>
-            </form>
+            <div class="pesquisa-box">
+                <form method="get" th:action="@{/empresaParceira/filtrarPesquisa}">
+                    <input type="text" name="pesquisa" class="campo-pesquisa" placeholder="Pesquisar..." th:value="${pesquisa}">
+                    <button class="btn-pesquisar" type="submit">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </form>
+            </div>
 
             <button class="filter-btn" id="toggleFilter">
                 <i class="fas fa-filter"></i> Filtrar <i class="fas fa-chevron-down"></i>
@@ -35,9 +37,9 @@
         </div>
     </div>
 
-    <form th:action="@{/empresaParceira/filtrar}" method="get" class="filter-panel" id="filterPanel">
+    <form th:action="@{/empresaParceira/filtrar}" method="get" class="filter-panel-parceria" id="filterPanel">
         <div class="filter-section">
-            <div class="filter-header"><i class="fas fa-id-card"></i> Empresa <i class="fas fa-chevron-down"></i></div>
+            <div class="filter-header"><i class="fas fa-id-card" id="filtro-icones"></i> Empresa </div>
             <div class="filter-options">
                 <label><input type="checkbox" name="nome" value="true"> Nome da Empresa</label>
                 <label><input type="checkbox" name="cnpj" value="true"> CNPJ</label>
@@ -47,14 +49,14 @@
         </div>
 
         <div class="filter-section">
-            <div class="filter-header"><i class="fas fa-id-card"></i> Representante <i class="fas fa-chevron-down"></i></div>
+            <div class="filter-header"><i class="fas fa-id-card" id="filtro-icones1"></i> Representante </div>
             <div class="filter-options">
                 <label><input type="checkbox" name="nomeRepresentante" value="true"> Nome do Representante</label>
                 <label><input type="checkbox" name="cpfRepresentante" value="true"> CPF</label>
             </div>
         </div>
 
-        <button class="btn-buscar-filtro">
+        <button class="btn-buscar-filtro-parceria">
             <i class="fa fa-search"></i> Buscar
         </button>
     </form>

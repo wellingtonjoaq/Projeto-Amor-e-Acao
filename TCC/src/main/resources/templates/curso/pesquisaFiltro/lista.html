@@ -18,12 +18,14 @@
     </div>
 
     <div class="header-actions">
-      <form method="get" th:action="@{/curso/filtrarPesquisa}" class="pesquisa-box">
-        <input type="text" name="pesquisa" class="campo-pesquisa" placeholder="Pesquisar..." th:value="${pesquisa}">
-        <button class="btn-pesquisar" type="submit">
-          <i class="fa fa-search"></i>
-        </button>
-      </form>
+      <div class="pesquisa-box">
+        <form method="get" th:action="@{/curso/filtrarPesquisa}" class="pesquisa-box">
+          <input type="text" name="pesquisa" class="campo-pesquisa" placeholder="Pesquisar..." th:value="${pesquisa}">
+          <button class="btn-pesquisar" type="submit">
+            <i class="fa fa-search"></i>
+          </button>
+        </form>
+      </div>
 
       <button class="filter-btn" id="toggleFilter">
         <i class="fas fa-filter"></i> Filtrar <i class="fas fa-chevron-down"></i>
@@ -35,17 +37,38 @@
     </div>
   </div>
 
-  <form th:action="@{/curso/filtrar}" method="get" class="filter-panel" id="filterPanel">
+  <form th:action="@{/curso/filtrar}" method="get" class="filter-panel-curso" id="filterPanel">
+
     <div class="filter-section">
-      <div class="filter-header"><i class="fas fa-book"></i>Status<i class="fas fa-chevron-down"></i></div>
+      <div class="filter-header">
+        <i class="fas fa-id-card" id="filtro-icones"></i> Identidade
+      </div>
+
       <div class="filter-options">
-        <label><input type="radio" name="status" value="ATIVO"> ATIVO </label>
-        <label><input type="radio" name="status" value="INATIVO"> INATIVO </label>
-        <label><input type="radio" name="status" value="TODOS"> TODOS </label>
+        <label><input type="radio" name="categoria" value="Educação"> Educação</label>
+        <label><input type="radio" name="categoria" value="Saúde"> Saúde</label>
+        <label><input type="radio" name="categoria" value="Tecnologia"> Tecnologia</label>
+        <label><input type="radio" name="categoria" value="Esporte"> Esporte</label>
+        <label><input type="radio" name="categoria" value="Arte"> Arte</label>
+        <label><input type="radio" name="categoria" value="Moda"> Moda</label>
+        <label><input type="radio" name="categoria" value="Engenharia"> Engenharia</label>
+        <label><input type="radio" name="categoria" value="Agricultura"> Agricultura</label>
       </div>
     </div>
 
-    <button class="btn-buscar-filtro">
+    <div class="filter-section">
+      <div class="filter-header">
+        <i class="fas fa-venus-mars" id="filtro-icones1"></i> Status
+      </div>
+
+      <div class="filter-options">
+        <label><input type="radio" name="status" value="ATIVO"> Ativo</label>
+        <label><input type="radio" name="status" value="INATIVO"> Inativo</label>
+        <label><input type="radio" name="status" value="TODOS"> Todos</label>
+      </div>
+    </div>
+
+    <button class="btn-buscar-filtro-curso">
       <i class="fa fa-search"></i> Buscar
     </button>
   </form>
@@ -82,7 +105,8 @@
           </form>
         </div>
         <div class="card-tag">
-          <i class="fa-solid fa-tags"></i> Exemplo - Exemplo - Exemplo
+          <i class="fa-solid fa-tags"></i>
+          <span th:text="${#strings.replace(curso.categorias, ',', ' - ')}"></span>
         </div>
       </div>
     </div>

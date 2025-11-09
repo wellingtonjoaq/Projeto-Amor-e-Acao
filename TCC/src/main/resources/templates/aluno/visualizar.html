@@ -80,7 +80,10 @@
     <a type="button" class="button-vol" th:if="${aluno.status == 'ATIVO'}" th:href="@{/aluno/listar}">
       <i class="fa-solid fa-arrow-left"></i> Voltar
     </a>
-    <a type="button" class="button-vol" th:if="${aluno.status == 'INATIVO'}" th:href="@{/historico/listar}">Voltar</a>
+
+    <a type="button" class="button-vol" th:if="${aluno.status == 'INATIVO'}" th:href="@{/historico/listar}">
+      <i class="fa-solid fa-arrow-left"></i> Voltar
+    </a>
 
   </form>
 </div>
