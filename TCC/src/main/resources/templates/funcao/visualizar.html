@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Visualizar Função</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<div th:replace="/navbar/dashboard :: menu"></div>
+
+<div class="container" th:fragment="visualizaAluno">
+
+  <form class="form-adm">
+    <h1>Visualizar Função</h1>
+    <input type="hidden" name="id" th:value="${funcao.id}" disabled />
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="nomeFuncao">Nome</label>
+        <input id="nomeFuncao" name="nome" type="text" th:value="${funcao.nome}" disabled />
+      </div>
+
+      <div class="form-group">
+        <label for="descricaoFuncao">Descrição</label>
+        <input id="descricaoFuncao" name="descricao" type="text" th:value="${funcao.descricao}" disabled />
+      </div>
+      </div>
+
+    <a type="button" class="button-vol" th:href="@{/funcao/listar}">
+      <i class="fa-solid fa-arrow-left"></i> Voltar
+    </a>
+
+  </form>
+</div>
+
+</body>
+</html>

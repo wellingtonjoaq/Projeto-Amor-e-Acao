@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Funções</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<div th:replace="/navbar/dashboard :: menu"></div>
+
+<div class="container">
+
+    <div class="header-bar">
+        <div class="header-title">
+            <h1>Lista de Funções</h1>
+        </div>
+
+        <div class="header-actions">
+            <div class="pesquisa-box">
+                <form method="get" th:action="@{/funcao/filtrarPesquisa}">
+                    <input type="text" name="pesquisa" class="campo-pesquisa" placeholder="Pesquisar..." th:value="${pesquisa}">
+                    <button class="btn-pesquisar" type="submit">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </form>
+            </div>
+
+            <a th:href="@{/funcao}" class="btn-create">
+                <i class="fas fa-user-plus"></i> Nova Função
+            </a>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Nome</th>
+            <th>Descrição</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="funcao : ${funcoes}">
+            <td th:text="${funcao.id}">1</td>
+            <td th:text="${funcao.nome}">Nome</td>
+            <td th:text="${funcao.descricao}">Descrição</td>
+            <td class="actions">
+                <a th:href="@{'/funcao/visualiza/' + ${funcao.id}}" class="btn-visualizar"><i class="fas fa-eye"></i></a>
+                <a th:href="@{'/funcao/editar/' + ${funcao.id}}"><i class="fas fa-edit"></i></a>
+                <form th:action="@{'/funcao/remover/' + ${funcao.id}}" style="display:inline;" method="post">
+                    <button type="submit" class="delete-btn" onclick="return confirm('Tem certeza que deseja remover esta funcão?');">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

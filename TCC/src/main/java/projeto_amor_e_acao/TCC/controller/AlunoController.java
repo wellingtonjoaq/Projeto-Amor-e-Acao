@@ -93,15 +93,21 @@ public class AlunoController {
             @RequestParam(required = false) String pesquisa,
             Model model) {
 
-        Page<Aluno> alunos = service.filtrarPesquisa(pesquisa, page, size);
+        if (!pesquisa.isEmpty()){
+            Page<Aluno> alunos = service.filtrarPesquisa("ATIVO", pesquisa, page, size);
 
-        model.addAttribute("pesquisa", pesquisa);
-        model.addAttribute("alunos", alunos);
-        model.addAttribute("paginaAtual", page);
-        model.addAttribute("cursos", cursoService.listarTodos());
-        model.addAttribute("vazio", alunos.isEmpty());
+            model.addAttribute("pesquisa", pesquisa);
+            model.addAttribute("alunos", alunos);
+            model.addAttribute("paginaAtual", page);
+            model.addAttribute("cursos", cursoService.listarTodos());
+            model.addAttribute("vazio", alunos.isEmpty());
 
-        return "aluno/pesquisaFiltro/lista";
+            return "aluno/pesquisaFiltro/lista";
+        }
+        else {
+
+            return "redirect:/aluno/listar";
+        }
     }
 
 
@@ -125,7 +131,7 @@ public class AlunoController {
                 : Collections.emptyList();
 
         boolean temCursos = !cursos.isEmpty();
-        boolean temGenero = (genero != null && !genero.isBlank() && !genero.equalsIgnoreCase("TODOS"));
+        boolean temGenero = (genero != null && !genero.isBlank());
 
         Page<Aluno> alunos = service.filtrar(cursos, genero, page, size);
 
@@ -144,7 +150,7 @@ public class AlunoController {
         model.addAttribute("vazio", false);
 
         if (!temCursos && !temGenero && nome == null && cpf == null && email == null && telefone == null && cep == null && bairro == null && endereco == null) {
-            model.addAttribute("vazio", true);
+            return "redirect:/aluno/listar";
         }
 
         if (alunos.isEmpty()){

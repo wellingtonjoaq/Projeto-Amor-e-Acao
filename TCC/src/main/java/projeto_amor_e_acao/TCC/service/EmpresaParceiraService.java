@@ -42,7 +42,7 @@ public class EmpresaParceiraService {
         return repository.findByStatusIgnoreCase("PENDENTE", pageable);
     }
 
-    public Page<EmpresaParceira> filtrarPesquisa(String pesquisa, int page, int size) {
+    public Page<EmpresaParceira> filtrarPesquisa(String status, String pesquisa, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
 
         if (pesquisa == null || pesquisa.isBlank()) {
@@ -50,30 +50,30 @@ public class EmpresaParceiraService {
         }
 
         pesquisa = pesquisa.trim();
-        Page<EmpresaParceira> resultados = repository.findByStatusIgnoreCaseAndNomeContainingIgnoreCase("ATIVO", pesquisa, pageable);
+        Page<EmpresaParceira> resultados = repository.findByStatusIgnoreCaseAndNomeContainingIgnoreCase(status, pesquisa, pageable);
 
         if (resultados.isEmpty()) {
-            resultados = repository.findByStatusIgnoreCaseAndCnpjContainingIgnoreCase("ATIVO", pesquisa, pageable);
+            resultados = repository.findByStatusIgnoreCaseAndCnpjContainingIgnoreCase(status, pesquisa, pageable);
         }
 
         if (resultados.isEmpty()) {
-            resultados = repository.findByStatusIgnoreCaseAndEnderecoContainingIgnoreCase("ATIVO", pesquisa, pageable);
+            resultados = repository.findByStatusIgnoreCaseAndEnderecoContainingIgnoreCase(status, pesquisa, pageable);
         }
 
         if (resultados.isEmpty()) {
-            resultados = repository.findByStatusIgnoreCaseAndNomeRepresentanteContainingIgnoreCase("ATIVO", pesquisa, pageable);
+            resultados = repository.findByStatusIgnoreCaseAndNomeRepresentanteContainingIgnoreCase(status, pesquisa, pageable);
         }
 
         if (resultados.isEmpty()) {
-            resultados = repository.findByStatusIgnoreCaseAndCpfRepresentanteContainingIgnoreCase("ATIVO", pesquisa, pageable);
+            resultados = repository.findByStatusIgnoreCaseAndCpfRepresentanteContainingIgnoreCase(status, pesquisa, pageable);
         }
 
         if (resultados.isEmpty()) {
-            resultados = repository.findByStatusIgnoreCaseAndEmailContainingIgnoreCase("ATIVO", pesquisa, pageable);
+            resultados = repository.findByStatusIgnoreCaseAndEmailContainingIgnoreCase(status, pesquisa, pageable);
         }
 
         if (resultados.isEmpty()) {
-            resultados = repository.findByStatusIgnoreCaseAndTelefoneContainingIgnoreCase("ATIVO", pesquisa, pageable);
+            resultados = repository.findByStatusIgnoreCaseAndTelefoneContainingIgnoreCase(status, pesquisa, pageable);
         }
 
         return resultados;

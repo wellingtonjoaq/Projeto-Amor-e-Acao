@@ -1,6 +1,10 @@
 package projeto_amor_e_acao.TCC.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import projeto_amor_e_acao.TCC.dto.HistoricoDTO;
 import projeto_amor_e_acao.TCC.model.*;
@@ -22,20 +26,64 @@ public class HistoricoService {
     @Autowired
     private UsuarioService usuarioService;
 
-    public List<HistoricoDTO> listarHistorico() {
+    public Page<HistoricoDTO> listarHistorico(int page, int size) {
         List<HistoricoDTO> lista = new ArrayList<>();
 
-        alunoService.listarTodosInativos().forEach(aluno -> lista.add(mapAlunoToDTO(aluno)));
-        voluntarioService.listarTodosInativos().forEach(voluntario -> lista.add(mapVoluntarioToDTO(voluntario)));
-        empresaParceiraService.listarTodosInativos().forEach(empresa -> lista.add(mapEmpresaToDTO(empresa)));
-        usuarioService.listarTodosInativos().forEach(usuario -> lista.add(mapUsuarioToDTO(usuario)));
+        alunoService.listarInativos(0, Integer.MAX_VALUE)
+                .forEach(aluno -> lista.add(mapAlunoToDTO(aluno)));
 
-        // Ordena por data mais recente
-        lista.sort(Comparator.comparing(HistoricoDTO::getDataAlteracaoStatus,
-                Comparator.nullsLast(Comparator.reverseOrder())));
+        voluntarioService.listarInativos(0, Integer.MAX_VALUE)
+                .forEach(voluntario -> lista.add(mapVoluntarioToDTO(voluntario)));
 
-        return lista;
+        empresaParceiraService.listarInativos(0, Integer.MAX_VALUE)
+                .forEach(empresa -> lista.add(mapEmpresaToDTO(empresa)));
+
+        usuarioService.listarInativos(0, Integer.MAX_VALUE)
+                .forEach(usuario -> lista.add(mapUsuarioToDTO(usuario)));
+
+        lista.sort(Comparator.comparing(
+                HistoricoDTO::getDataAlteracaoStatus,
+                Comparator.nullsLast(Comparator.reverseOrder())
+        ));
+
+        Pageable pageable = PageRequest.of(page, size);
+        int start = (int) pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(), lista.size());
+
+        List<HistoricoDTO> pagina = (start > lista.size()) ? Collections.emptyList() : lista.subList(start, end);
+
+        return new PageImpl<>(pagina, pageable, lista.size());
     }
+
+    public Page<HistoricoDTO> filtrarPesquisaHistorico(String pesquisa, int page, int size) {
+        List<HistoricoDTO> lista = new ArrayList<>();
+
+        alunoService.filtrarPesquisa("INATIVO", pesquisa,0, Integer.MAX_VALUE)
+                .forEach(aluno -> lista.add(mapAlunoToDTO(aluno)));
+
+        voluntarioService.filtrarPesquisa("INATIVO", pesquisa,0, Integer.MAX_VALUE)
+                .forEach(voluntario -> lista.add(mapVoluntarioToDTO(voluntario)));
+
+        empresaParceiraService.filtrarPesquisa("INATIVO", pesquisa, 0, Integer.MAX_VALUE)
+                .forEach(empresa -> lista.add(mapEmpresaToDTO(empresa)));
+
+        usuarioService.filtrarPesquisa("INATIVO", pesquisa,0, Integer.MAX_VALUE)
+                .forEach(usuario -> lista.add(mapUsuarioToDTO(usuario)));
+
+        lista.sort(Comparator.comparing(
+                HistoricoDTO::getDataAlteracaoStatus,
+                Comparator.nullsLast(Comparator.reverseOrder())
+        ));
+
+        Pageable pageable = PageRequest.of(page, size);
+        int start = (int) pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(), lista.size());
+
+        List<HistoricoDTO> pagina = (start > lista.size()) ? Collections.emptyList() : lista.subList(start, end);
+
+        return new PageImpl<>(pagina, pageable, lista.size());
+    }
+
 
     private HistoricoDTO mapAlunoToDTO(Aluno a) {
         return new HistoricoDTO(

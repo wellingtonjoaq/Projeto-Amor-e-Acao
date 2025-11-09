@@ -18,12 +18,14 @@
     </div>
 
     <div class="header-actions">
-      <form method="get" th:action="@{/voluntario/filtrarPesquisa}" class="pesquisa-box">
-        <input type="text" name="pesquisa" class="campo-pesquisa" placeholder="Pesquisar..." th:value="${pesquisa}">
-        <button class="btn-pesquisar" type="submit">
-          <i class="fa fa-search"></i>
-        </button>
-      </form>
+      <div class="pesquisa-box">
+        <form method="get" th:action="@{/voluntario/filtrarPesquisa}">
+          <input type="text" name="pesquisa" class="campo-pesquisa" placeholder="Pesquisar..." th:value="${pesquisa}">
+          <button class="btn-pesquisar" type="submit">
+            <i class="fa fa-search"></i>
+          </button>
+        </form>
+      </div>
 
       <button class="filter-btn" id="toggleFilter">
         <i class="fas fa-filter"></i> Filtrar <i class="fas fa-chevron-down"></i>
@@ -35,39 +37,39 @@
     </div>
   </div>
 
-  <form th:action="@{/voluntario/filtrar}" method="get" class="filter-panel" id="filterPanel">
+  <form th:action="@{/voluntario/filtrar}" method="get" class="filter-panel-voluntario" id="filterPanel">
     <div class="filter-section">
-      <div class="filter-header"><i class="fas fa-id-card"></i> Identidade <i class="fas fa-chevron-down"></i></div>
+      <div class="filter-header"><i class="fas fa-id-card" id="filtro-icones"></i> Identidade </div>
       <div class="filter-options">
-        <label><input type="checkbox" name="nome" value="true" th:checked="${nome}"> Nome</label>
-        <label><input type="checkbox" name="cpf" value="true" th:checked="${cpf}"> CPF</label>
-        <label><input type="checkbox" name="email" value="true" th:checked="${email}"> E-mail</label>
-        <label><input type="checkbox" name="telefone" value="true" th:checked="${telefone}"> Telefone</label>
+        <label><input type="checkbox" name="nome" value="true"> Nome</label>
+        <label><input type="checkbox" name="cpf" value="true"> CPF</label>
+        <label><input type="checkbox" name="email" value="true"> E-mail</label>
+        <label><input type="checkbox" name="telefone" value="true"> Telefone</label>
       </div>
     </div>
 
     <div class="filter-section">
-      <div class="filter-header"><i class="fas fa-venus-mars"></i> Gênero <i class="fas fa-chevron-down"></i></div>
+      <div class="filter-header"><i class="fas fa-venus-mars" id="filtro-icones1"></i> Gênero </div>
       <div class="filter-options">
-        <label><input type="radio" name="genero" value="MASCULINO" th:checked="${genero} == 'MASCULINO'"> Masculino</label>
-        <label><input type="radio" name="genero" value="FEMININO" th:checked="${genero} == 'FEMININO'"> Feminino</label>
-        <label><input type="radio" name="genero" value="TODOS" th:checked="${genero} == 'TODOS'"> Todos</label>
+        <label><input type="radio" name="genero" value="MASCULINO"> Masculino</label>
+        <label><input type="radio" name="genero" value="FEMININO"> Feminino</label>
+        <label><input type="radio" name="genero" value="TODOS"> Todos</label>
       </div>
     </div>
 
     <div class="filter-section">
-      <div class="filter-header"><i class="fas fa-map-marker-alt"></i> Localização <i class="fas fa-chevron-down"></i></div>
+      <div class="filter-header"><i class="fas fa-map-marker-alt" id="filtro-icones2"></i> Localização </div>
       <div class="filter-options">
-        <label><input type="checkbox" name="cep" value="true" th:checked="${cep}"> CEP</label>
-        <label><input type="checkbox" name="bairro" value="true" th:checked="${bairro}"> Bairro</label>
-        <label><input type="checkbox" name="endereco" value="true" th:checked="${endereco}"> Endereco</label>
-        <label><input type="checkbox" name="cidade" value="true" th:checked="${cidade}"> Cidade</label>
-        <label><input type="checkbox" name="estado" value="true" th:checked="${estado}"> Estado</label>
+        <label><input type="checkbox" name="cep" value="true"> CEP</label>
+        <label><input type="checkbox" name="bairro" value="true"> Bairro</label>
+        <label><input type="checkbox" name="endereco" value="true"> Endereco</label>
+        <label><input type="checkbox" name="cidade" value="true"> Cidade</label>
+        <label><input type="checkbox" name="estado" value="true"> Estado</label>
       </div>
     </div>
 
     <div class="filter-section">
-      <div class="filter-header"><i class="fas fa-book"></i> Funções <i class="fas fa-chevron-down"></i></div>
+      <div class="filter-header"><i class="fas fa-address-book" id="filtro-icones3"></i> Funções </div>
       <div class="filter-options">
         <label th:each="funcao : ${funcoesVoluntario}">
           <input type="checkbox" name="funcoes" th:value="${funcao.id}"
@@ -77,7 +79,8 @@
       </div>
     </div>
 
-    <button class="btn-buscar-filtro" type="submit">
+
+    <button class="btn-buscar-filtro-voluntario" type="submit">
       <i class="fa fa-search"></i> Buscar
     </button>
   </form>
