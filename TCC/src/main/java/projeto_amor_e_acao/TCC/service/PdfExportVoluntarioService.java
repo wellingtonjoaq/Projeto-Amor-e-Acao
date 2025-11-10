@@ -1,16 +1,16 @@
 package projeto_amor_e_acao.TCC.service;
 
-import org.openpdf.text.Document;
-import org.openpdf.text.DocumentException;
+import org.openpdf.text.*;
 import org.openpdf.text.Font;
-import org.openpdf.text.FontFactory;
-import org.openpdf.text.Paragraph;
-import org.openpdf.text.Phrase;
+import org.openpdf.text.Image;
+import org.openpdf.text.pdf.PdfPCell;
 import org.openpdf.text.pdf.PdfPTable;
 import org.openpdf.text.pdf.PdfWriter;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import projeto_amor_e_acao.TCC.model.RelatorioVoluntarioDTO;
 
+import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -28,57 +28,172 @@ public class PdfExportVoluntarioService {
             PdfWriter.getInstance(document, out);
             document.open();
 
+            Image logo = Image.getInstance(
+                    new ClassPathResource("static/imagens/logo.png").getURL());
+            logo.scaleToFit(120, 60);
+            logo.setAlignment(Image.ALIGN_CENTER);
+            document.add(logo);
+
+            Font fontTituloProjeto = FontFactory.getFont(
+                    FontFactory.HELVETICA_BOLD, 20, new Color(0, 70, 140));
+
+            Paragraph tituloProjeto = new Paragraph(
+                    "Projeto Amor e Ação", fontTituloProjeto);
+
+            tituloProjeto.setAlignment(Paragraph.ALIGN_CENTER);
+            tituloProjeto.setSpacingBefore(10);
+            tituloProjeto.setSpacingAfter(20);
+            document.add(tituloProjeto);
+
             Font fontTitulo = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18);
+
+            Paragraph tituloRelatorio = new Paragraph(
+                    "Relatório de Voluntariado", fontTitulo);
+            tituloRelatorio.setAlignment(Paragraph.ALIGN_CENTER);
+            tituloRelatorio.setSpacingAfter(10);
+            document.add(tituloRelatorio);
+
+            Font fontData = FontFactory.getFont(
+                    FontFactory.HELVETICA, 12, Color.GRAY);
+
+            Paragraph dataGeracao = new Paragraph(
+                    "Data de Geração: " + LocalDate.now(), fontData);
+            dataGeracao.setAlignment(Paragraph.ALIGN_CENTER);
+            dataGeracao.setSpacingAfter(20);
+            document.add(dataGeracao);
+
             Font fontSubTitulo = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14);
             Font fontConteudo = FontFactory.getFont(FontFactory.HELVETICA, 12);
             DecimalFormat df = new DecimalFormat("#.##");
 
-            document.add(new Paragraph("Relatório de Voluntariado", fontTitulo));
-            document.add(new Paragraph("Data de Geração: " + LocalDate.now() + "\n\n"));
+            Paragraph subtituloFuncao = new Paragraph(
+                    "Voluntários Ativos por Função", fontSubTitulo);
+            subtituloFuncao.setSpacingAfter(10);
+            document.add(subtituloFuncao);
 
-            document.add(new Paragraph("Voluntários Ativos por Função", fontSubTitulo));
             PdfPTable tabelaFuncao = new PdfPTable(2);
-
             tabelaFuncao.setWidthPercentage(60);
-            tabelaFuncao.addCell(new Phrase("Função", fontSubTitulo));
-            tabelaFuncao.addCell(new Phrase("Quantidade", fontSubTitulo));
 
-            for (Map.Entry<String, Long> entry : relatorio.getVoluntariosAtivosPorFuncao().entrySet()) {
-                tabelaFuncao.addCell(new Phrase(entry.getKey(), fontConteudo));
-                tabelaFuncao.addCell(new Phrase(String.valueOf(entry.getValue()), fontConteudo));
+            PdfPCell cabecalhoFuncao1 = new PdfPCell(
+                    new Phrase("Função", fontSubTitulo));
+            cabecalhoFuncao1.setBackgroundColor(new Color(0, 121, 182));
+            cabecalhoFuncao1.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+            cabecalhoFuncao1.setPadding(8);
+
+            PdfPCell cabecalhoFuncao2 = new PdfPCell(
+                    new Phrase("Quantidade", fontSubTitulo));
+            cabecalhoFuncao2.setBackgroundColor(new Color(0, 121, 182));
+            cabecalhoFuncao2.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+            cabecalhoFuncao2.setPadding(8);
+
+            tabelaFuncao.addCell(cabecalhoFuncao1);
+            tabelaFuncao.addCell(cabecalhoFuncao2);
+
+            for (Map.Entry<String, Long> entry :
+                    relatorio.getVoluntariosAtivosPorFuncao().entrySet())
+            {
+                PdfPCell cellFuncao = new PdfPCell(
+                        new Phrase(entry.getKey(), fontConteudo));
+
+                PdfPCell cellQuantidade = new PdfPCell(
+                        new Phrase(String.valueOf(entry.getValue()), fontConteudo));
+
+                cellFuncao.setPadding(6);
+                cellQuantidade.setPadding(6);
+                cellQuantidade.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+                tabelaFuncao.addCell(cellFuncao);
+                tabelaFuncao.addCell(cellQuantidade);
             }
 
             document.add(tabelaFuncao);
+
             document.add(new Paragraph("\n"));
 
-            document.add(new Paragraph("Distribuição por Gênero", fontSubTitulo));
+            Paragraph subtituloGenero = new Paragraph(
+                    "Distribuição por Gênero", fontSubTitulo);
+            subtituloGenero.setSpacingAfter(10);
+            document.add(subtituloGenero);
+
             PdfPTable tabelaGenero = new PdfPTable(2);
             tabelaGenero.setWidthPercentage(60);
-            tabelaGenero.addCell(new Phrase("Gênero", fontSubTitulo));
-            tabelaGenero.addCell(new Phrase("Quantidade", fontSubTitulo));
-            for (Map.Entry<String, Long> entry : relatorio.getDistribuicaoPorGenero().entrySet()) {
-                tabelaGenero.addCell(new Phrase(entry.getKey(), fontConteudo));
-                tabelaGenero.addCell(new Phrase(String.valueOf(entry.getValue()), fontConteudo));
+
+            PdfPCell cabecalhoGenero1 = new PdfPCell(
+                    new Phrase("Gênero", fontSubTitulo));
+            cabecalhoGenero1.setBackgroundColor(new Color(0, 121, 182));
+            cabecalhoGenero1.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+            cabecalhoGenero1.setPadding(8);
+
+            PdfPCell cabecalhoGenero2 = new PdfPCell(
+                    new Phrase("Quantidade", fontSubTitulo));
+            cabecalhoGenero2.setBackgroundColor(new Color(0, 121, 182));
+            cabecalhoGenero2.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+            cabecalhoGenero2.setPadding(8);
+
+            tabelaGenero.addCell(cabecalhoGenero1);
+            tabelaGenero.addCell(cabecalhoGenero2);
+
+            for (Map.Entry<String, Long> entry :
+                    relatorio.getDistribuicaoPorGenero().entrySet())
+            {
+                PdfPCell cellGenero = new PdfPCell(
+                        new Phrase(entry.getKey(), fontConteudo));
+
+                PdfPCell cellQuantidade = new PdfPCell(
+                        new Phrase(String.valueOf(entry.getValue()), fontConteudo));
+
+                cellGenero.setPadding(6);
+                cellQuantidade.setPadding(6);
+                cellQuantidade.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+                tabelaGenero.addCell(cellGenero);
+                tabelaGenero.addCell(cellQuantidade);
             }
+
             document.add(tabelaGenero);
+
             document.add(new Paragraph("\n"));
 
-            document.add(new Paragraph("Distribuição por Motivação", fontSubTitulo));
+            Paragraph subtituloMotivacao = new Paragraph(
+                    "Distribuição por Motivação", fontSubTitulo);
+            subtituloMotivacao.setSpacingAfter(10);
+            document.add(subtituloMotivacao);
+
             PdfPTable tabelaMotivacao = new PdfPTable(2);
-
             tabelaMotivacao.setWidthPercentage(60);
-            tabelaMotivacao.addCell(new Phrase("Motivação", fontSubTitulo));
-            tabelaMotivacao.addCell(new Phrase("Quantidade", fontSubTitulo));
 
-            for (Map.Entry<String, Long> entry : relatorio.getDistribuicaoPorMotivacao().entrySet()) {
-                tabelaMotivacao.addCell(new Phrase(entry.getKey(), fontConteudo));
-                tabelaMotivacao.addCell(new Phrase(String.valueOf(entry.getValue()), fontConteudo));
+            PdfPCell cabecalhoMotivacao1 = new PdfPCell(
+                    new Phrase("Motivação", fontSubTitulo));
+            cabecalhoMotivacao1.setBackgroundColor(new Color(0, 121, 182));
+            cabecalhoMotivacao1.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+            cabecalhoMotivacao1.setPadding(8);
+
+            PdfPCell cabecalhoMotivacao2 = new PdfPCell(
+                    new Phrase("Quantidade", fontSubTitulo));
+            cabecalhoMotivacao2.setBackgroundColor(new Color(0, 121, 182));
+            cabecalhoMotivacao2.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+            cabecalhoMotivacao2.setPadding(8);
+
+            tabelaMotivacao.addCell(cabecalhoMotivacao1);
+            tabelaMotivacao.addCell(cabecalhoMotivacao2);
+
+            for (Map.Entry<String, Long> entry :
+                    relatorio.getDistribuicaoPorMotivacao().entrySet())
+            {
+                PdfPCell cellMotivacao = new PdfPCell(
+                        new Phrase(entry.getKey(), fontConteudo));
+
+                PdfPCell cellQuantidade = new PdfPCell(
+                        new Phrase(String.valueOf(entry.getValue()), fontConteudo));
+
+                cellMotivacao.setPadding(6);
+                cellQuantidade.setPadding(6);
+                cellQuantidade.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
+                tabelaMotivacao.addCell(cellMotivacao);
+                tabelaMotivacao.addCell(cellQuantidade);
             }
 
             document.add(tabelaMotivacao);
 
             document.close();
-
             return out.toByteArray();
         }
     }
