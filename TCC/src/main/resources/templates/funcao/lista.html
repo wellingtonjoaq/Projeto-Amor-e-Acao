@@ -51,15 +51,47 @@
             <td class="actions">
                 <a th:href="@{'/funcao/visualiza/' + ${funcao.id}}" class="btn-visualizar"><i class="fas fa-eye"></i></a>
                 <a th:href="@{'/funcao/editar/' + ${funcao.id}}"><i class="fas fa-edit"></i></a>
-                <form th:action="@{'/funcao/remover/' + ${funcao.id}}" style="display:inline;" method="post">
-                    <button type="submit" class="delete-btn" onclick="return confirm('Tem certeza que deseja remover esta funcão?');">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                </form>
+                <a href="#" class="delete-btn" th:attr="data-id=${funcao.id}, data-nome=${funcao.nome}">
+                    <i class="fas fa-trash-alt"></i>
+                </a>
             </td>
         </tr>
         </tbody>
     </table>
 </div>
+
+<div id="modal-overlay" class="modal-overlay" style="display:none;">
+    <div class="modal-content">
+        <h2>Confirmação de Exclusão</h2>
+        <p>Tem certeza que deseja excluir a funcão: <span id="modal-nome"></span>?</p>
+
+        <div class="card-actions" style="justify-content:center;">
+            <form th:action="@{/funcao/remover/{id}}" id="form-delete" method="post">
+                <button type="submit" class="delete-confirm" style="width: 100px;">Confirmar</button>
+            </form>
+            <button id="cancelar-modal" class="button-vol" style="width: 100px;">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.preventDefault();
+            const funcaoId = btn.getAttribute('data-id');
+            const funcaoName = btn.getAttribute('data-nome');
+
+            document.querySelector('#modal-nome').textContent = funcaoName;
+            document.querySelector('#form-delete').setAttribute('action', `/funcao/remover/${funcaoId}`);
+
+            document.querySelector('#modal-overlay').style.display = 'flex';
+        });
+    });
+
+    document.querySelector('#cancelar-modal').addEventListener('click', () => {
+        document.querySelector('#modal-overlay').style.display = 'none';
+    });
+
+</script>
 </body>
 </html>

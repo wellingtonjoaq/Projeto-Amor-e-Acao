@@ -1,7 +1,10 @@
 package projeto_amor_e_acao.TCC.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,7 +16,6 @@ import java.util.Collection;
 import java.util.Collections;
 
 @Entity
-@Table(name = "usuario")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -26,21 +28,21 @@ public class Usuario implements UserDetails {
     private Long id;
 
     @Column(nullable = false)
-    @jakarta.validation.constraints.NotBlank(message = "O nome é obrigatório")
-    @jakarta.validation.constraints.Size(
-            min = 3, max = 100, message = "O nome deve ter entre 3 e 100 caracteres")
+    @NotBlank(message = "( Campo Obrigatorio )")
+    @Size(min = 3, max = 100, message = "( Deve conter entre 3 a 100 caracteres )")
     private String nome;
 
     @Column(unique = true, nullable = false)
-    @jakarta.validation.constraints.NotBlank(message = "O e-mail é obrigatório")
-    @jakarta.validation.constraints.Email(message = "E-mail inválido")
+    @NotBlank(message = "( Campo Obrigatorio )")
+    @Email(message = "( Campo Invalido )")
+    @Size(max = 255, message = "( Tamanho Excedido )")
     private String email;
 
     private String senha;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    @jakarta.validation.constraints.NotNull(message = "O cargo é obrigatório")
+    @NotNull(message = "( Campo Obrigatório )")
     private Cargo cargo;
 
     @Column(nullable = false, length = 20)

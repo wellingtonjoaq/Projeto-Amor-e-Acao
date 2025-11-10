@@ -41,30 +41,30 @@
     <div class="filter-section">
       <div class="filter-header"><i class="fas fa-id-card" id="filtro-icones"></i> Identidade </div>
       <div class="filter-options">
-        <label><input type="checkbox" name="nome" value="true"> Nome</label>
-        <label><input type="checkbox" name="cpf" value="true"> CPF</label>
-        <label><input type="checkbox" name="email" value="true"> E-mail</label>
-        <label><input type="checkbox" name="telefone" value="true"> Telefone</label>
+        <label><input type="checkbox" name="nome" value="true" th:checked="${nome}"> Nome</label>
+        <label><input type="checkbox" name="cpf" value="true" th:checked="${cpf}"> CPF</label>
+        <label><input type="checkbox" name="email" value="true" th:checked="${email}"> E-mail</label>
+        <label><input type="checkbox" name="telefone" value="true" th:checked="${telefone}"> Telefone</label>
       </div>
     </div>
 
     <div class="filter-section">
       <div class="filter-header"><i class="fas fa-venus-mars" id="filtro-icones1"></i> Gênero </div>
       <div class="filter-options">
-        <label><input type="radio" name="genero" value="MASCULINO"> Masculino</label>
-        <label><input type="radio" name="genero" value="FEMININO"> Feminino</label>
-        <label><input type="radio" name="genero" value="TODOS"> Todos</label>
+        <label><input type="radio" name="genero" value="MASCULINO" th:checked="${genero} == 'MASCULINO'"> Masculino</label>
+        <label><input type="radio" name="genero" value="FEMININO" th:checked="${genero} == 'FEMININO'"> Feminino</label>
+        <label><input type="radio" name="genero" value="TODOS" th:checked="${genero} == 'TODOS'"> Todos</label>
       </div>
     </div>
 
     <div class="filter-section">
       <div class="filter-header"><i class="fas fa-map-marker-alt" id="filtro-icones2"></i> Localização </div>
       <div class="filter-options">
-        <label><input type="checkbox" name="cep" value="true"> CEP</label>
-        <label><input type="checkbox" name="bairro" value="true"> Bairro</label>
-        <label><input type="checkbox" name="endereco" value="true"> Endereco</label>
-        <label><input type="checkbox" name="cidade" value="true"> Cidade</label>
-        <label><input type="checkbox" name="estado" value="true"> Estado</label>
+        <label><input type="checkbox" name="cep" value="true" th:checked="${cep}"> CEP</label>
+        <label><input type="checkbox" name="bairro" value="true" th:checked="${bairro}"> Bairro</label>
+        <label><input type="checkbox" name="endereco" value="true" th:checked="${endereco}"> Endereco</label>
+        <label><input type="checkbox" name="cidade" value="true" th:checked="${cidade}"> Cidade</label>
+        <label><input type="checkbox" name="estado" value="true" th:checked="${estado}"> Estado</label>
       </div>
     </div>
 
@@ -78,7 +78,6 @@
         </label>
       </div>
     </div>
-
 
     <button class="btn-buscar-filtro-voluntario" type="submit">
       <i class="fa fa-search"></i> Buscar
@@ -130,11 +129,9 @@
       <td class="actions">
         <a th:href="@{'/voluntario/visualiza/' + ${voluntario.id}}" class="btn-visualizar"><i class="fas fa-eye"></i></a>
         <a th:href="@{'/voluntario/editar/' + ${voluntario.id}}"><i class="fas fa-edit"></i></a>
-        <form th:action="@{'/voluntario/remover/' + ${voluntario.id}}" style="display:inline;">
-          <button type="submit" class="delete-btn" onclick="return confirm('Tem certeza que deseja remover este voluntario?');">
-            <i class="fas fa-trash-alt"></i>
-          </button>
-        </form>
+        <a href="#" class="delete-btn" th:attr="data-id=${voluntario.id}, data-nome=${voluntario.nome}">
+          <i class="fas fa-trash-alt"></i>
+        </a>
       </td>
     </tr>
     </tbody>
@@ -159,7 +156,39 @@
     <button th:if="${voluntarios.hasNext()}" type="submit" name="page" th:value="${voluntarios.number + 1}" th:text="${voluntarios.number + 2}"></button>
   </form>
 </div>
+
+<div id="modal-overlay" class="modal-overlay" style="display:none;">
+  <div class="modal-content">
+    <h2>Confirmação de Exclusão</h2>
+    <p>Tem certeza que deseja excluir o voluntario: <span id="modal-nome"></span>?</p>
+
+    <div class="card-actions" style="justify-content:center;">
+      <form th:action="@{/voluntario/remover/{id}}" id="form-delete" method="post">
+        <button type="submit" class="delete-confirm" style="width: 100px;">Confirmar</button>
+      </form>
+      <button id="cancelar-modal" class="button-vol" style="width: 100px;">Cancelar</button>
+    </div>
+  </div>
+</div>
+
 <script>
+  document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.preventDefault();
+            const voluntarioId = btn.getAttribute('data-id');
+            const voluntarioName = btn.getAttribute('data-nome');
+
+            document.querySelector('#modal-nome').textContent = voluntarioName;
+            document.querySelector('#form-delete').setAttribute('action', `/voluntario/remover/${voluntarioId}`);
+
+            document.querySelector('#modal-overlay').style.display = 'flex';
+        });
+    });
+
+    document.querySelector('#cancelar-modal').addEventListener('click', () => {
+        document.querySelector('#modal-overlay').style.display = 'none';
+    });
+
   const toggleButton = document.getElementById('toggleFilter');
   const filterPanel = document.getElementById('filterPanel');
   let open = false;

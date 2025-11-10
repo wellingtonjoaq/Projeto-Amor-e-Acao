@@ -20,13 +20,19 @@ public interface EmpresaParceiraRepository extends JpaRepository<EmpresaParceira
 
     Page<EmpresaParceira> findByStatusIgnoreCaseAndNomeContainingIgnoreCase(String status, String nome, Pageable pageable);
 
+    Optional<EmpresaParceira> findByCnpjIgnoreCase(String cnpj);
+
     Page<EmpresaParceira> findByStatusIgnoreCaseAndCnpjContainingIgnoreCase(String status, String cnpj, Pageable pageable);
 
     Page<EmpresaParceira> findByStatusIgnoreCaseAndEnderecoContainingIgnoreCase(String status, String endereco, Pageable pageable);
 
     Page<EmpresaParceira> findByStatusIgnoreCaseAndNomeRepresentanteContainingIgnoreCase(String status, String nome, Pageable pageable);
 
+    Optional<EmpresaParceira> findByCpfRepresentanteIgnoreCase(String cpfRepresentante);
+
     Page<EmpresaParceira> findByStatusIgnoreCaseAndCpfRepresentanteContainingIgnoreCase(String status, String cpf, Pageable pageable);
+
+    Optional<EmpresaParceira> findByEmailIgnoreCase(String email);
 
     Page<EmpresaParceira> findByStatusIgnoreCaseAndEmailContainingIgnoreCase(String status, String email, Pageable pageable);
 

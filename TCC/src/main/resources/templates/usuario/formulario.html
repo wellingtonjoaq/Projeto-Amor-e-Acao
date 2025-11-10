@@ -12,8 +12,12 @@
 <div th:replace="/navbar/dashboard :: menu"></div>
 
 <div class="container">
+    <div th:if="${erro}" class="erroGlobal">
+        <p th:text="${erro}"></p>
+    </div>
+
     <form th:action="${acao == 'editar'} ? @{/usuario/atualizar/{id}(id=${usuario.id})} : @{/usuario/salvar}"
-          th:object="${usuario}" method="post" class="form-adm">
+          th:object="${usuario}" method="post" class="form-adm" enctype="multipart/form-data">
 
         <div class="add-voltar">
             <h1 th:text="${usuario.id == null ? 'Novo Usuário' : 'Editar Usuário'}"></h1>
@@ -30,21 +34,21 @@
                 <label for="nome">Nome de Usuário
                     <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error"></span>
                 </label>
-                <input type="text" th:field="*{nome}" id="nome" required />
+                <input type="text" th:field="*{nome}" id="nome" th:classappend="${#fields.hasErrors('nome')} ? ' field-error' : ''" minlength="3" maxlength="100" placeholder="Digite o nome de usuario" required />
             </div>
 
             <div class="form-group">
                 <label for="email">E-mail
                     <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></span>
                 </label>
-                <input type="text" th:field="*{email}" id="email" required />
+                <input type="text" th:field="*{email}" id="email" th:classappend="${#fields.hasErrors('email')} ? ' field-error' : ''" maxlength="255" placeholder="Ex: exemplo@gmail.com" required />
             </div>
 
             <div class="form-group">
                 <label for="senha">Senha
                     <span th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}" class="error"></span>
                 </label>
-                <input type="password" th:field="*{senha}" id="senha" th:attr="required=${acao == 'criar'}" />
+                <input type="password" th:field="*{senha}" id="senha" th:classappend="${#fields.hasErrors('senha')} ? ' field-error' : ''" th:attr="required=${acao == 'criar'}" placeholder="Ex: a12!pQ"/>
                 <small th:if="${acao == 'editar'}">(Deixe em branco para manter a senha atual)</small>
             </div>
 
@@ -52,19 +56,10 @@
                 <label for="cargo">Cargo do Usuário
                     <span th:if="${#fields.hasErrors('cargo')}" th:errors="*{cargo}" class="error"></span>
                 </label>
-                <select th:field="*{cargo}" id="cargo" required>
+                <select th:field="*{cargo}" id="cargo" th:classappend="${#fields.hasErrors('cargo')} ? ' field-error' : ''" required>
+                    <option value=" " hidden="hidden">Selecionar</option>
                     <option th:value="USUARIO_SIMPLES">Usuário Simples</option>
                     <option th:value="USUARIO_ADMINISTRADOR">Administrador</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="status">Status
-                    <span th:if="${#fields.hasErrors('status')}" th:errors="*{status}" class="error"></span>
-                </label>
-                <select th:field="*{status}" id="status" required>
-                    <option th:value="ATIVO">Ativo</option>
-                    <option th:value="INATIVO">Inativo</option>
                 </select>
             </div>
 
@@ -75,8 +70,20 @@
                         <i class="fa-solid fa-cloud-arrow-up"></i> Escolher imagem
                     </label>
                     <span id="file-name" class="file-name">Nenhum arquivo selecionado</span>
-                    <input id="fotoPerfil" type="file" name="file" accept="image/*" />
+                    <input id="fotoPerfil" type="file" name="file"/>
                 </div>
+            </div>
+
+            <input type="hidden" th:field="*{fotoPerfil}" />
+
+            <div class="form-group" th:if="${id != null}">
+                <label for="status">Status
+                    <span th:if="${#fields.hasErrors('status')}" th:errors="*{status}" class="error"></span>
+                </label>
+                <select th:field="*{status}" id="status" required>
+                    <option th:value="ATIVO">Ativo</option>
+                    <option th:value="INATIVO">Inativo</option>
+                </select>
             </div>
 
             <div class="form-group" style="grid-column: 1 / -1;">

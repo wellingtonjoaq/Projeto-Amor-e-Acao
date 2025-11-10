@@ -5,11 +5,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import projeto_amor_e_acao.TCC.model.Aluno;
 import projeto_amor_e_acao.TCC.model.Curso;
 import projeto_amor_e_acao.TCC.model.EmpresaParceira;
 import projeto_amor_e_acao.TCC.repository.EmpresaParceiraRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,17 +21,35 @@ public class EmpresaParceiraService {
     @Autowired
     private EmpresaParceiraRepository repository;
 
-    public Optional<EmpresaParceira> findByCnpj(String cnpj) {
-        return repository.findByCnpj(cnpj);
+    @Transactional
+    public EmpresaParceira salvar(EmpresaParceira empresaParceira) {
+        empresaParceira.setDataAlteracaoStatus(LocalDate.now());
+
+        var existenteCnpj = repository.findByCnpjIgnoreCase(empresaParceira.getCnpj());
+        if (existenteCnpj.isPresent() && !existenteCnpj.get().getId().equals(empresaParceira.getId())) {
+            throw new IllegalStateException("( Esse CNPJ já existe! )");
+        }
+
+        var existenteCpf = repository.findByCpfRepresentanteIgnoreCase(empresaParceira.getCpfRepresentante());
+        if (existenteCpf.isPresent() && !existenteCpf.get().getId().equals(empresaParceira.getId())) {
+            throw new IllegalStateException("( Esse CPF já existe! )");
+        }
+
+        var existenteEmail = repository.findByEmailIgnoreCase(empresaParceira.getEmail());
+        if (existenteEmail.isPresent() && !existenteEmail.get().getId().equals(empresaParceira.getId())) {
+            throw new IllegalStateException("( Esse E-mail já existe! )");
+        }
+
+        try {
+            return repository.save(empresaParceira);
+        } catch (Exception e) {
+            throw new RuntimeException("Erro inesperado ao salvar empresa parceira.", e);
+        }
     }
 
     public Page<EmpresaParceira> listarAtivos(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return repository.findByStatusIgnoreCase("ATIVO", pageable);
-    }
-
-    public List<EmpresaParceira> listarTodosInativos() {
-        return repository.findByStatusIgnoreCase("INATIVO");
     }
 
     public Page<EmpresaParceira> listarInativos(int page, int size) {
@@ -79,33 +99,11 @@ public class EmpresaParceiraService {
         return resultados;
     }
 
-    public Optional<EmpresaParceira> findById(Long id) {
+    public Optional<EmpresaParceira> buscarPorId(Long id) {
         return repository.findById(id);
     }
 
-    public EmpresaParceira save(EmpresaParceira empresaParceira) {
-        repository.findByCnpj(empresaParceira.getCnpj()).ifPresent(existingEmpresa -> {
-            if (empresaParceira.getId() == null ||
-                    !existingEmpresa.getId().equals(empresaParceira.getId()))
-            {
-                throw new IllegalArgumentException(
-                        "Já existe uma empresa cadastrada com este CNPJ.");
-            }
-        });
-
-        if (empresaParceira.getData_fim() != null &&
-                empresaParceira.getData_inicio() != null &&
-                empresaParceira.getData_fim().isBefore(
-                empresaParceira.getData_inicio().toLocalDate()))
-        {
-            throw new IllegalArgumentException(
-                    "A data de fim não pode ser anterior à data de início.");
-        }
-
-        return repository.save(empresaParceira);
-    }
-
-    public void deleteById(Long id) {
+    public void deletarPorId(Long id) {
         EmpresaParceira empresa = repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Empresa não encontrada"));
 

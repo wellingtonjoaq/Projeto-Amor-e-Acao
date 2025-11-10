@@ -158,7 +158,7 @@ public class VoluntarioController {
         return "voluntario/formulario";
     }
 
-    @GetMapping("remover/{id}")
+    @PostMapping("remover/{id}")
     public String remover(@PathVariable Long id, Model model) {
         service.deletarPorId(id);
         return "redirect:/voluntario/listar";

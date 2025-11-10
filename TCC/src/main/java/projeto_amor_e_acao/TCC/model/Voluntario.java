@@ -50,7 +50,7 @@ public class Voluntario {
     @Size(min = 5, max = 9, message = "( Campo Invalido )")
     private String genero;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "funcao_voluntario_id")
     private FuncaoVoluntario funcao;
 
@@ -61,7 +61,7 @@ public class Voluntario {
 
     @Column(nullable = false, length = 8)
     @NotBlank(message = "( Campo Obrigatório )")
-    @Size(min = 8, max = 8, message = "( Campo Invalido )")
+    @Size(min = 8, max = 9, message = "( Campo Invalido )")
     private String cep;
 
     @Column(nullable = false)
@@ -76,17 +76,17 @@ public class Voluntario {
 
     @Column(nullable = false, name = "nr_casa", length = 4)
     @NotBlank(message = "( Campo Obrigatório )")
-    @Size(min = 4, max = 4, message = "( Campo Invalido )")
+    @Size(max = 4, message = "( Campo Invalido )")
     private String nrCasa;
 
     @Column(nullable = false)
     @NotBlank(message = "( Campo Obrigatório )")
-    @Size(max = 255, message = "( Tamanho Excedido )")
+    @Size(max = 100, message = "( Tamanho Excedido )")
     private String cidade;
 
     @Column(nullable = false)
     @NotBlank(message = "( Campo Obrigatório )")
-    @Size(max = 255, message = "( Tamanho Excedido )")
+    @Size(max = 100, message = "( Tamanho Excedido )")
     private String estado;
 
     @Column(nullable = false, length = 7)

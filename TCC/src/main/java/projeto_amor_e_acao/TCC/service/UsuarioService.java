@@ -12,6 +12,7 @@ import projeto_amor_e_acao.TCC.model.EmpresaParceira;
 import projeto_amor_e_acao.TCC.model.Usuario;
 import projeto_amor_e_acao.TCC.repository.UsuarioRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,13 +25,68 @@ public class UsuarioService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    public Usuario salvar(Usuario usuario) {
+        usuario.setDataAlteracaoStatus(LocalDate.now());
+
+        var existenteEmail = repository.findByEmailIgnoreCase(usuario.getEmail());
+        if (existenteEmail.isPresent() && !existenteEmail.get().getId().equals(usuario.getId())) {
+            throw new IllegalStateException("( Esse E-mail já existe! )");
+        }
+
+        if (usuario.getId() == null) {
+            if (usuario.getSenha() == null || usuario.getSenha().isBlank()) {
+                throw new IllegalArgumentException("( Senha é Obrigatoria )");
+            }
+            if (usuario.getSenha().length() < 6) {
+                throw new IllegalArgumentException("( Senha deve ter no mínimo 6 caracteres )");
+            }
+        }
+
+        if (usuario.getSenha() != null && !usuario.getSenha().isBlank()) {
+            usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
+        }
+
+        try {
+            return repository.save(usuario);
+        } catch (Exception e) {
+            throw new RuntimeException("Erro inesperado ao salvar usuario.", e);
+        }
+    }
+
+    public Usuario atualizar(Long id, Usuario usuario) {
+
+        Usuario usuarioExistente = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("( Usuário não encontrado )"));
+
+        var existenteEmail = repository.findByEmailIgnoreCase(usuario.getEmail());
+        if (existenteEmail.isPresent() && !existenteEmail.get().getId().equals(id)) {
+            throw new IllegalStateException("( Esse E-mail já existe! )");
+        }
+
+        usuarioExistente.setNome(usuario.getNome());
+        usuarioExistente.setEmail(usuario.getEmail());
+        usuarioExistente.setCargo(usuario.getCargo());
+        usuarioExistente.setStatus(usuario.getStatus());
+        usuarioExistente.setFotoPerfil(usuario.getFotoPerfil());
+        usuarioExistente.setDataAlteracaoStatus(LocalDate.now());
+
+        if (usuario.getSenha() != null && !usuario.getSenha().isBlank()) {
+            if (usuario.getSenha().length() < 6) {
+                throw new IllegalArgumentException("( Senha deve ter no mínimo 6 caracteres )");
+            }
+            usuarioExistente.setSenha(passwordEncoder.encode(usuario.getSenha()));
+        }
+
+        try {
+            return repository.save(usuarioExistente);
+        } catch (Exception e) {
+            throw new RuntimeException("Erro inesperado ao atualizar usuário.", e);
+        }
+    }
+
     public Page<Usuario> listarAtivos(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return repository.findByStatusIgnoreCase("ATIVO", pageable);
-    }
-
-    public List<Usuario> listarTodosInativos() {
-        return repository.findByStatusIgnoreCase("INATIVO");
     }
 
     public Page<Usuario> listarInativos(int page, int size) {
@@ -81,63 +137,11 @@ public class UsuarioService {
     }
 
 
-    public Optional<Usuario> findById(Long id) {
+    public Optional<Usuario> buscarPorId(Long id) {
         return repository.findById(id);
     }
 
-    public Usuario atualizarUsuario(Long id, Usuario usuarioAtualizado) {
-        Usuario usuarioExistente = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-
-        Optional<Usuario> existingUserWithEmail = repository.findByEmail(usuarioAtualizado.getEmail());
-        if (existingUserWithEmail.isPresent() && !existingUserWithEmail.get().getId().equals(id)) {
-            throw new IllegalArgumentException("E-mail já está em uso");
-        }
-
-        usuarioExistente.setNome(usuarioAtualizado.getNome());
-        usuarioExistente.setEmail(usuarioAtualizado.getEmail());
-        usuarioExistente.setCargo(usuarioAtualizado.getCargo());
-        usuarioExistente.setStatus(usuarioAtualizado.getStatus());
-        usuarioExistente.setFotoPerfil(usuarioAtualizado.getFotoPerfil());
-
-        // Lógica de atualização da senha:
-        if (usuarioAtualizado.getSenha() != null && !usuarioAtualizado.getSenha().isBlank()) {
-            if (usuarioAtualizado.getSenha().length() < 6) {
-                throw new IllegalArgumentException("A senha deve ter no mínimo 6 caracteres.");
-            }
-            usuarioExistente.setSenha(passwordEncoder.encode(usuarioAtualizado.getSenha()));
-        }
-
-        return repository.save(usuarioExistente);
-    }
-
-    public Usuario save(Usuario usuario) {
-        // Validação para novos usuários
-        if (usuario.getId() == null) {
-            if (usuario.getSenha() == null || usuario.getSenha().isBlank()) {
-                throw new IllegalArgumentException("A senha é obrigatória para novos usuários.");
-            }
-            if (usuario.getSenha().length() < 6) {
-                throw new IllegalArgumentException("A senha deve ter no mínimo 6 caracteres.");
-            }
-        }
-
-        repository.findByEmail(usuario.getEmail())
-                .ifPresent(existing -> {
-                    if (usuario.getId() == null || !existing.getId().equals(usuario.getId())) {
-                        throw new IllegalArgumentException("E-mail já está em uso");
-                    }
-                });
-
-        // Criptografa a senha somente se ela existir e não estiver em branco.
-        if (usuario.getSenha() != null && !usuario.getSenha().isBlank()) {
-            usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
-        }
-
-        return repository.save(usuario);
-    }
-
-    public void deleteById(Long id) {
+    public void deletarPorID(Long id) {
         Usuario usuario = repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
 

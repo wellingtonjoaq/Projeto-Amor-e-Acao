@@ -49,7 +49,7 @@ public class NotificacaoController {
 
     @GetMapping("visualizaEmpresaParceira/{id}")
     public String visualizarEmpresaParceira(@PathVariable Long id, Model model) {
-        Optional<EmpresaParceira> empresaParceira = empresaParceiraService.findById(id);
+        Optional<EmpresaParceira> empresaParceira = empresaParceiraService.buscarPorId(id);
 
         model.addAttribute("empresa", empresaParceira.get());
         return "notificacao/visualizarEmpresaParceira";
@@ -77,12 +77,12 @@ public class NotificacaoController {
 
     @PostMapping("/ativarEmpresaParceira/{id}")
     public String ativarEmpresaParceira(@PathVariable Long id) {
-        Optional<EmpresaParceira> empresaParceira = empresaParceiraService.findById(id);
+        Optional<EmpresaParceira> empresaParceira = empresaParceiraService.buscarPorId(id);
 
         if (empresaParceira.isPresent()) {
             EmpresaParceira ep = empresaParceira.get();
             ep.setStatus("ATIVO");
-            empresaParceiraService.save(ep);
+            empresaParceiraService.salvar(ep);
         }
 
         return "redirect:/notificacao/listar";
@@ -102,7 +102,7 @@ public class NotificacaoController {
 
     @PostMapping("/recusarEmpresaParceira/{id}")
     public String recusarEmpresaParceira(@PathVariable Long id) {
-        empresaParceiraService.deleteById(id);
+        empresaParceiraService.deletarPorId(id);
         return "redirect:/notificacao/listar";
     }
 }

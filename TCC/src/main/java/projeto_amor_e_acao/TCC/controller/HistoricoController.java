@@ -77,7 +77,7 @@ public class HistoricoController {
 
     @GetMapping("visualizaEmpresaParceira/{id}")
     public String visualizarEmpresaParceira(@PathVariable Long id, Model model) {
-        Optional<EmpresaParceira> empresaParceira = empresaParceiraService.findById(id);
+        Optional<EmpresaParceira> empresaParceira = empresaParceiraService.buscarPorId(id);
 
             model.addAttribute("empresa", empresaParceira.get());
             return "historico/visualizarEmpresaParceira";
@@ -85,7 +85,7 @@ public class HistoricoController {
 
     @GetMapping("visualizaUsuario/{id}")
     public String visualizarUsuario(@PathVariable Long id, Model model) {
-        Optional<Usuario> usuarioOptional = usuarioService.findById(id);
+        Optional<Usuario> usuarioOptional = usuarioService.buscarPorId(id);
 
             model.addAttribute("usuario", usuarioOptional.get());
             return "usuario/visualizar";
@@ -113,12 +113,12 @@ public class HistoricoController {
 
     @PostMapping("/ativarEmpresaParceira/{id}")
     public String ativarEmpresaParceira(@PathVariable Long id) {
-        Optional<EmpresaParceira> empresaParceira = empresaParceiraService.findById(id);
+        Optional<EmpresaParceira> empresaParceira = empresaParceiraService.buscarPorId(id);
 
         if (empresaParceira.isPresent()) {
             EmpresaParceira ep = empresaParceira.get();
             ep.setStatus("ATIVO");
-            empresaParceiraService.save(ep);
+            empresaParceiraService.salvar(ep);
         }
 
         return "redirect:/historico/listar";
@@ -127,10 +127,10 @@ public class HistoricoController {
 
     @PostMapping("ativarUsuario/{id}")
     public String ativarUsuario(@PathVariable Long id) {
-        Optional<Usuario> usuario = usuarioService.findById(id);
+        Optional<Usuario> usuario = usuarioService.buscarPorId(id);
 
         usuario.get().setStatus("ATIVO");
-        usuarioService.save(usuario.orElse(null));
+        usuarioService.salvar(usuario.orElse(null));
 
         return "redirect:/historico/listar";
     }

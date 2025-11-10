@@ -7,9 +7,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import projeto_amor_e_acao.TCC.model.Aluno;
 import projeto_amor_e_acao.TCC.model.Curso;
+import projeto_amor_e_acao.TCC.model.EmpresaParceira;
 import projeto_amor_e_acao.TCC.model.Voluntario;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AlunoRepository extends JpaRepository<Aluno, Long> {
     Long countByStatus(String status);
@@ -34,7 +36,11 @@ public interface AlunoRepository extends JpaRepository<Aluno, Long> {
 
     Page<Aluno> findByStatusIgnoreCaseAndNomeContainingIgnoreCase(String status, String nome, Pageable pageable);
 
+    Optional<Aluno> findByCpfIgnoreCase(String cpf);
+
     Page<Aluno> findByStatusIgnoreCaseAndCpfContainingIgnoreCase(String status, String cpf, Pageable pageable);
+
+    Optional<Aluno> findByEmailIgnoreCase(String email);
 
     Page<Aluno> findByStatusIgnoreCaseAndEmailContainingIgnoreCase(String status, String email, Pageable pageable);
 

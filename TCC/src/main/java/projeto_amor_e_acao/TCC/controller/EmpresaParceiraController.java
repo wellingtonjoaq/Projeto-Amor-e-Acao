@@ -40,31 +40,24 @@ public class EmpresaParceiraController {
         }
 
         try {
-            service.save(empresaParceira);
+            service.salvar(empresaParceira);
             redirectAttributes.addFlashAttribute("successMessage",
                     "Empresa parceira salva com sucesso!");
 
             return "redirect:/empresaParceira/listar";
-        } catch (IllegalArgumentException e) {
-            if (e.getMessage().contains("CNPJ")) {
-                result.rejectValue(
-                        "cnpj", "error.cnpj", e.getMessage());
-            } else if (e.getMessage().contains("data de fim")) {
-                result.rejectValue(
-                        "data_fim", "error.data_fim", e.getMessage());
+        } catch (IllegalStateException e) {
+            if (e.getMessage().contains("CPF")) {
+                result.rejectValue("cpfRepresentante", "error.empresaParceira", e.getMessage());
+            } else if (e.getMessage().contains("CNPJ")) {
+                result.rejectValue("cnpj", "error.empresaParceira", e.getMessage());
             } else if (e.getMessage().contains("E-mail")) {
-                result.rejectValue(
-                        "email", "error.email", e.getMessage());
-            } else if (e.getMessage().contains("data de início")) {
-                result.rejectValue(
-                        "data_inicio", "error.data_inicio", e.getMessage());
-            } else {
-                model.addAttribute("errorMessage", e.getMessage());
+                result.rejectValue("email", "error.empresaParceira", e.getMessage());
             }
 
             return "empresaParceira/formulario";
-        } catch (IllegalStateException e) {
-            model.addAttribute("errorMessage", e.getMessage());
+        } catch (Exception e) {
+            model.addAttribute("erro", e.getMessage());
+            model.addAttribute("empresaParceira", empresaParceira);
             return "empresaParceira/formulario";
         }
     }
@@ -78,7 +71,7 @@ public class EmpresaParceiraController {
         model.addAttribute("empresasParceiras", empresasParceiras);
         model.addAttribute("paginaAtual", page);
 
-        return "empresaParceira/listar";
+        return "empresaParceira/lista";
     }
 
     @GetMapping("filtrarPesquisa")
@@ -140,7 +133,7 @@ public class EmpresaParceiraController {
 
     @GetMapping("/visualizar/{id}")
     public String visualizar(@PathVariable Long id, Model model) {
-        Optional<EmpresaParceira> empresaParceira = service.findById(id);
+        Optional<EmpresaParceira> empresaParceira = service.buscarPorId(id);
 
         if (empresaParceira.isPresent()) {
             model.addAttribute("empresa", empresaParceira.get());
@@ -154,7 +147,7 @@ public class EmpresaParceiraController {
 
     @GetMapping("/editar/{id}")
     public String editar(@PathVariable Long id, Model model) {
-        Optional<EmpresaParceira> empresaParceira = service.findById(id);
+        Optional<EmpresaParceira> empresaParceira = service.buscarPorId(id);
 
         if (empresaParceira.isPresent()) {
             model.addAttribute("empresaParceira", empresaParceira.get());
@@ -170,7 +163,7 @@ public class EmpresaParceiraController {
     public String remover(@PathVariable Long id,
                                          RedirectAttributes redirectAttributes) {
         try {
-            service.deleteById(id);
+            service.deletarPorId(id);
             redirectAttributes.addFlashAttribute("successMessage",
                     "Empresa parceira excluída com sucesso!");
         } catch (IllegalArgumentException | IllegalStateException e) {

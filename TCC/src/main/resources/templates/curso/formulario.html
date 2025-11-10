@@ -33,48 +33,43 @@
                 <label for="nomeCurso">Nome do Curso
                     <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error"></span>
                 </label>
-                <input id="nomeCurso" type="text" th:field="*{nome}" required />
+                <input id="nomeCurso" type="text" th:field="*{nome}"
+                       th:classappend="${#fields.hasErrors('nome')} ? ' field-error' : ''" required />
             </div>
 
             <div class="form-group">
                 <label for="professorCurso">Nome do Professor(a)
                     <span th:if="${#fields.hasErrors('professor')}" th:errors="*{professor}" class="error"></span>
                 </label>
-                <input id="professorCurso" type="text" th:field="*{professor}" />
+                <input id="professorCurso" type="text" th:field="*{professor}"
+                       th:classappend="${#fields.hasErrors('professor')} ? ' field-error' : ''" required/>
             </div>
 
             <div class="form-group">
                 <label for="formacaoCurso">Formação do Professor(a)
                     <span th:if="${#fields.hasErrors('formacao')}" th:errors="*{formacao}" class="error"></span>
                 </label>
-                <input id="formacaoCurso" type="text" th:field="*{formacao}" />
+                <input id="formacaoCurso" type="text" th:field="*{formacao}"
+                       th:classappend="${#fields.hasErrors('formacao')} ? ' field-error' : ''" required/>
             </div>
 
             <div class="form-group">
-                <label for="cepCurso">CEP
-                    <span th:if="${#fields.hasErrors('cep')}" th:errors="*{cep}" class="error"></span>
-                </label>
+                <label for="cepCurso">CEP</label>
                 <input id="cepCurso" type="text" th:field="*{cep}" maxlength="9" placeholder="Ex: 01001-000"/>
             </div>
 
             <div class="form-group">
-                <label for="bairroCurso">Bairro
-                    <span th:if="${#fields.hasErrors('bairro')}" th:errors="*{bairro}" class="error"></span>
-                </label>
+                <label for="bairroCurso">Bairro</label>
                 <input id="bairroCurso" type="text" th:field="*{bairro}" />
             </div>
 
             <div class="form-group">
-                <label for="enderecoCurso">Endereço
-                    <span th:if="${#fields.hasErrors('endereco')}" th:errors="*{endereco}" class="error"></span>
-                </label>
+                <label for="enderecoCurso">Endereço</label>
                 <input id="enderecoCurso" type="text" th:field="*{endereco}" />
             </div>
 
             <div class="form-group">
-                <label for="nrLocalCurso">Número Da Propriedade
-                    <span th:if="${#fields.hasErrors('nrLocal')}" th:errors="*{nrLocal}" class="error"></span>
-                </label>
+                <label for="nrLocalCurso">Número Da Propriedade</label>
                 <input id="nrLocalCurso" type="text" th:field="*{nrLocal}" />
             </div>
 
@@ -82,21 +77,24 @@
                 <label for="cargaHorariaCurso">Carga Horária
                     <span th:if="${#fields.hasErrors('cargaHoraria')}" th:errors="*{cargaHoraria}" class="error"></span>
                 </label>
-                <input id="cargaHorariaCurso" type="text" th:field="*{cargaHoraria}" />
+                <input id="cargaHorariaCurso" type="text" th:field="*{cargaHoraria}"
+                       th:classappend="${#fields.hasErrors('cargaHoraria')} ? ' field-error' : ''" required/>
             </div>
 
             <div class="form-group">
                 <label for="dataInicioCurso">Data de Início
                     <span th:if="${#fields.hasErrors('dataInicio')}" th:errors="*{dataInicio}" class="error"></span>
                 </label>
-                <input id="dataInicioCurso" type="date" th:field="*{dataInicio}" maxlength="10" required />
+                <input id="dataInicioCurso" type="date" th:field="*{dataInicio}" maxlength="10"
+                       th:classappend="${#fields.hasErrors('dataInicio')} ? ' field-error' : ''" required/>
             </div>
 
             <div class="form-group">
                 <label for="dataFimCurso">Data de Fim
                     <span th:if="${#fields.hasErrors('dataFim')}" th:errors="*{dataFim}" class="error"></span>
                 </label>
-                <input id="dataFimCurso" type="date" th:field="*{dataFim}" maxlength="10" required/>
+                <input id="dataFimCurso" type="date" th:field="*{dataFim}" maxlength="10"
+                       th:classappend="${#fields.hasErrors('dataFim')} ? ' field-error' : ''" required/>
             </div>
 
             <div class="form-group">
@@ -106,7 +104,7 @@
                         <i class="fa-solid fa-cloud-arrow-up"></i> Escolher imagem
                     </label>
                     <span id="file-name" class="file-name">Nenhum arquivo selecionado</span>
-                    <input id="fotoCurso" type="file" name="file" accept="image/*" />
+                    <input id="fotoCurso" type="file" name="file"/>
                 </div>
             </div>
 
@@ -117,9 +115,7 @@
             </div>
 
             <div class="form-group">
-                <label for="descricaoCurso">Descrição do Curso
-                    <span th:if="${#fields.hasErrors('descricao')}" th:errors="*{descricao}" class="error"></span>
-                </label>
+                <label for="descricaoCurso">Descrição do Curso</label>
                 <input id="descricaoCurso" type="text" th:field="*{descricao}" />
             </div>
 

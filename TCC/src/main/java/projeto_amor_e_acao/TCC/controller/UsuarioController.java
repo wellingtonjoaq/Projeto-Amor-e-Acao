@@ -7,7 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import projeto_amor_e_acao.TCC.model.Usuario;
+import projeto_amor_e_acao.TCC.service.FirebaseStorageService;
 import projeto_amor_e_acao.TCC.service.UsuarioService;
 import java.util.Optional;
 
@@ -18,6 +20,9 @@ public class UsuarioController {
     @Autowired
     private UsuarioService service;
 
+    @Autowired
+    private FirebaseStorageService firebaseService;
+
     @GetMapping()
     public String formulario(Model model) {
         model.addAttribute("usuario", new Usuario());
@@ -27,6 +32,7 @@ public class UsuarioController {
 
     @PostMapping("salvar")
     public String salvar(@Valid Usuario usuario,
+                         @RequestParam(value = "file", required = false) MultipartFile file,
                          BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("usuario", usuario);
@@ -35,16 +41,79 @@ public class UsuarioController {
         }
 
         try {
-            service.save(usuario);
+            if (file != null && !file.isEmpty()) {
+                String url = firebaseService.uploadFile(file);
+                usuario.setFotoPerfil(url);
+            }
+
+            service.salvar(usuario);
             return "redirect:/usuario/listar";
-        } catch (IllegalArgumentException e) {
-            if (e.getMessage().contains("senha")) {
-                result.rejectValue("senha", "error.usuario", e.getMessage());
-            } else {
+        } catch (IllegalStateException e) {
+            if (e.getMessage().contains("E-mail")) {
                 result.rejectValue("email", "error.usuario", e.getMessage());
             }
             model.addAttribute("usuario", usuario);
             model.addAttribute("acao", "criar");
+            return "usuario/formulario";
+        } catch (IllegalArgumentException e) {
+            if (e.getMessage().contains("Senha")) {
+                result.rejectValue("senha", "error.usuario", e.getMessage());
+            }
+            model.addAttribute("usuario", usuario);
+            model.addAttribute("acao", "criar");
+            return "usuario/formulario";
+        } catch (Exception e) {
+            model.addAttribute("erro", e.getMessage());
+            model.addAttribute("usuario", usuario);
+            model.addAttribute("acao", "criar");
+            return "usuario/formulario";
+        }
+    }
+
+    @PostMapping("/atualizar/{id}")
+    public String atualizar(@PathVariable Long id,
+                            @Valid Usuario usuario,
+                            BindingResult result,
+                            @RequestParam(value = "file", required = false) MultipartFile file,
+                            Model model)
+    {
+        if (result.hasFieldErrors("nome") || result.hasFieldErrors("email")) {
+            model.addAttribute("usuario", usuario);
+            model.addAttribute("acao", "editar");
+            return "usuario/formulario";
+        }
+
+        try {
+            if (file != null && !file.isEmpty()) {
+                String url = firebaseService.uploadFile(file);
+                usuario.setFotoPerfil(url);
+            }
+
+            service.atualizar(id, usuario);
+            return "redirect:/usuario/listar";
+        } catch (IllegalStateException e) {
+            if (e.getMessage().contains("E-mail")) {
+                result.rejectValue("email", "error.usuario", e.getMessage());
+            }
+
+            model.addAttribute("usuario", usuario);
+            model.addAttribute("acao", "editar");
+            return "usuario/formulario";
+
+        } catch (IllegalArgumentException e) {
+            if (e.getMessage().contains("Senha")) {
+                result.rejectValue(
+                        "senha", "error.usuario", e.getMessage());
+            }
+
+            model.addAttribute("usuario", usuario);
+            model.addAttribute("acao", "editar");
+            return "usuario/formulario";
+
+        } catch (Exception e) {
+            model.addAttribute("usuario", usuario);
+            model.addAttribute("acao", "editar");
+            model.addAttribute("erro", e.getMessage());
             return "usuario/formulario";
         }
     }
@@ -58,7 +127,7 @@ public class UsuarioController {
 
         model.addAttribute("usuarios", usuarios);
         model.addAttribute("paginaAtual", page);
-        return "usuario/listar";
+        return "usuario/lista";
     }
 
     @GetMapping("filtrarPesquisa")
@@ -114,7 +183,7 @@ public class UsuarioController {
 
     @GetMapping("/visualizar/{id}")
     public String visualizar(@PathVariable Long id, Model model) {
-        Optional<Usuario> usuarioOptional = service.findById(id);
+        Optional<Usuario> usuarioOptional = service.buscarPorId(id);
         if (usuarioOptional.isPresent()) {
             model.addAttribute("usuario", usuarioOptional.get());
             return "usuario/visualizar";
@@ -125,7 +194,7 @@ public class UsuarioController {
 
     @GetMapping("/editar/{id}")
     public String editar(@PathVariable Long id, Model model) {
-        Usuario usuario = service.findById(id).orElse(null);
+        Usuario usuario = service.buscarPorId(id).orElse(null);
         if (usuario == null) {
             return "redirect:/usuario/listar";
         }
@@ -135,43 +204,9 @@ public class UsuarioController {
         return "usuario/formulario";
     }
 
-    @PostMapping("/atualizar/{id}")
-    public String atualizar(@PathVariable Long id,
-                                   @Valid Usuario usuario,
-                                   BindingResult result, Model model)
-    {
-        if (result.hasFieldErrors("nome") || result.hasFieldErrors("email")) {
-            model.addAttribute("usuario", usuario);
-            model.addAttribute("acao", "editar");
-            return "usuario/formulario";
-        }
-
-        try {
-            service.atualizarUsuario(id, usuario);
-            return "redirect:/usuario/listar";
-        } catch (IllegalArgumentException e) {
-            if (e.getMessage().contains("senha")) {
-                result.rejectValue(
-                        "senha", "error.usuario", e.getMessage());
-            } else {
-                result.rejectValue(
-                        "email", "error.usuario", e.getMessage());
-            }
-
-            model.addAttribute("usuario", usuario);
-            model.addAttribute("acao", "editar");
-            return "usuario/formulario";
-        } catch (Exception e) {
-            model.addAttribute("usuario", usuario);
-            model.addAttribute("acao", "editar");
-            model.addAttribute("erro", e.getMessage());
-            return "usuario/formulario";
-        }
-    }
-
     @PostMapping("/remover/{id}")
     public String removerUsuario(@PathVariable Long id) {
-        service.deleteById(id);
+        service.deletarPorID(id);
         return "redirect:/usuario/listar";
     }
 
