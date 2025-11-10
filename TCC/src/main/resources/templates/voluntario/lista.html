@@ -108,11 +108,9 @@
             <td class="actions">
                 <a th:href="@{'/voluntario/visualiza/' + ${voluntario.id}}" class="btn-visualizar"><i class="fas fa-eye"></i></a>
                 <a th:href="@{'/voluntario/editar/' + ${voluntario.id}}"><i class="fas fa-edit"></i></a>
-                <form th:action="@{'/voluntario/remover/' + ${voluntario.id}}" style="display:inline;">
-                    <button type="submit" class="delete-btn" onclick="return confirm('Tem certeza que deseja remover este voluntario?');">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                </form>
+                <a href="#" class="delete-btn" th:attr="data-id=${voluntario.id}, data-nome=${voluntario.nome}">
+                    <i class="fas fa-trash-alt"></i>
+                </a>
             </td>
         </tr>
         </tbody>
@@ -128,7 +126,39 @@
         <button th:if="${voluntarios.hasNext()}" type="submit" name="page" th:value="${voluntarios.number + 1}" th:text="${voluntarios.number + 2}"></button>
     </form>
 </div>
+
+<div id="modal-overlay" class="modal-overlay" style="display:none;">
+    <div class="modal-content">
+        <h2>Confirmação de Exclusão</h2>
+        <p>Tem certeza que deseja excluir o voluntario: <span id="modal-nome"></span>?</p>
+
+        <div class="card-actions" style="justify-content:center;">
+            <form th:action="@{/usuario/remover/{id}}" id="form-delete" method="post">
+                <button type="submit" class="delete-confirm" style="width: 100px;">Confirmar</button>
+            </form>
+            <button id="cancelar-modal" class="button-vol" style="width: 100px;">Cancelar</button>
+        </div>
+    </div>
+</div>
+
 <script>
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.preventDefault();
+            const voluntarioId = btn.getAttribute('data-id');
+            const voluntarioName = btn.getAttribute('data-nome');
+
+            document.querySelector('#modal-nome').textContent = voluntarioName;
+            document.querySelector('#form-delete').setAttribute('action', `/voluntario/remover/${voluntarioId}`);
+
+            document.querySelector('#modal-overlay').style.display = 'flex';
+        });
+    });
+
+    document.querySelector('#cancelar-modal').addEventListener('click', () => {
+        document.querySelector('#modal-overlay').style.display = 'none';
+    });
+
     const toggleButton = document.getElementById('toggleFilter');
     const filterPanel = document.getElementById('filterPanel');
     let open = false;

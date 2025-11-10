@@ -36,7 +36,7 @@
           <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error"></span>
         </label>
         <input id="nomeAluno" type="text" th:field="*{nome}"
-               th:classappend="${#fields.hasErrors('nome')} ? ' field-error' : ''" required />
+               th:classappend="${#fields.hasErrors('nome')} ? ' field-error' : ''" minlength="3" maxlength="100" placeholder="Digite o nome" required />
       </div>
 
       <div class="form-group">
@@ -45,7 +45,7 @@
           <span th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}" class="error"></span>
         </label>
         <input id="cpfAluno" type="text" th:field="*{cpf}"
-               th:classappend="${#fields.hasErrors('cpf')} ? ' field-error' : ''" placeholder="000.000.000-00" required />
+               th:classappend="${#fields.hasErrors('cpf')} ? ' field-error' : ''" placeholder="Ex: 000.000.000-00" required />
       </div>
 
       <div class="form-group">
@@ -54,7 +54,7 @@
           <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></span>
         </label>
         <input id="emailAluno" type="email" th:field="*{email}"
-               th:classappend="${#fields.hasErrors('email')} ? ' field-error' : ''" placeholder="exemplo@gmail.com" required />
+               th:classappend="${#fields.hasErrors('email')} ? ' field-error' : ''" maxlength="255" placeholder="Ex: exemplo@gmail.com" required />
       </div>
 
       <div class="form-group">
@@ -63,7 +63,7 @@
           <span th:if="${#fields.hasErrors('telefone')}" th:errors="*{telefone}" class="error"></span>
         </label>
         <input id="telefoneAluno" type="text" th:field="*{telefone}"
-               th:classappend="${#fields.hasErrors('telefone')} ? ' field-error' : ''" placeholder="(00) 00000-0000" required />
+               th:classappend="${#fields.hasErrors('telefone')} ? ' field-error' : ''" minlength="11" maxlength="15" placeholder="Ex: (00) 00000-0000" required />
       </div>
 
       <div class="form-group">
@@ -81,30 +81,30 @@
 
       <div class="form-group">
         <label for="cepAluno">CEP</label>
-        <input id="cepAluno" type="text" th:field="*{cep}" maxlength="9" placeholder="Ex: 01001-000" />
+        <input id="cepAluno" type="text" th:field="*{cep}" minlength="8" maxlength="9" placeholder="Ex: 01001-000" />
       </div>
 
       <div class="form-group">
         <label for="bairroAluno">Bairro</label>
-        <input id="bairroAluno" type="text" th:field="*{bairro}" />
+        <input id="bairroAluno" type="text" th:field="*{bairro}" maxlength="255" placeholder="Ex: Jardim Botanica"/>
       </div>
 
       <div class="form-group">
         <label for="enderecoAluno">Endereço</label>
-        <input id="enderecoAluno" type="text" th:field="*{endereco}" />
+        <input id="enderecoAluno" type="text" th:field="*{endereco}" maxlength="255" placeholder="Ex: Rua Flores"/>
       </div>
 
       <div class="form-group">
         <label for="nrCasaAluno">Número da Casa</label>
-        <input id="nrCasaAluno" type="text" th:field="*{nrCasa}" />
+        <input id="nrCasaAluno" type="text" th:field="*{nrCasa}" placeholder="Ex: 1234" />
       </div>
 
       <div class="form-group">
         <label for="matriculasAluno">Cursos
-          <span th:if="${#fields.hasErrors('matriculas')}" th:errors="*{matriculas}" class="error"></span>
+          <span th:if="${matriculaErro}" th:text="${matriculaErro}" class="error"></span>
         </label>
         <select id="matriculasAluno" name="cursosSelecionados"
-                th:classappend="${#fields.hasErrors('genero')} ? ' field-error' : ''" multiple required>
+                th:classappend="${matriculaErro} ? ' field-error' : ''" multiple required>
           <option value=" " hidden="hidden">Selecionar</option>
           <option th:each="curso : ${cursos}"
                   th:value="${curso.id}"

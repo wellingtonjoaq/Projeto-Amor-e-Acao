@@ -17,8 +17,8 @@
         <p th:text="${successMessage}"></p>
     </div>
 
-    <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
-        <p th:text="${errorMessage}"></p>
+    <div th:if="${erro}" class="erroGlobal">
+        <p th:text="${erro}"></p>
     </div>
 
     <form th:action="@{/empresaParceira/salvar}" th:object="${empresaParceira}" method="post" class="form-adm">
@@ -35,72 +35,88 @@
         <div class="form-grid">
 
             <div class="form-group">
-                <label for="nome">Nome da Empresa</label>
-                <input type="text" id="nome" th:field="*{nome}" required />
-                <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error"></span>
+                <label for="nome">
+                    Nome da Empresa
+                    <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error"></span>
+                </label>
+                <input type="text" id="nome" th:field="*{nome}" th:classappend="${#fields.hasErrors('nome')} ? ' field-error' : ''" minlength="3" maxlength="100" placeholder="Digite o nome da empresa" required />
             </div>
 
             <div class="form-group">
-                <label for="cnpj">CNPJ</label>
-                <input type="text" id="cnpj" th:field="*{cnpj}" required />
-                <span th:if="${#fields.hasErrors('cnpj')}" th:errors="*{cnpj}" class="error"></span>
+                <label for="cnpj">
+                    CNPJ
+                    <span th:if="${#fields.hasErrors('cnpj')}" th:errors="*{cnpj}" class="error"></span>
+                </label>
+                <input type="text" id="cnpj" th:field="*{cnpj}" th:classappend="${#fields.hasErrors('cnpj')} ? ' field-error' : ''" minlength="14" maxlength="18" placeholder="Ex: 00.000.000/0000-00" required />
             </div>
 
             <div class="form-group">
-                <label for="endereco">Endereço</label>
-                <input type="text" id="endereco" th:field="*{endereco}" />
-                <span th:if="${#fields.hasErrors('endereco')}" th:errors="*{endereco}" class="error"></span>
+                <label for="endereco">
+                    Endereço
+                    <span th:if="${#fields.hasErrors('endereco')}" th:errors="*{endereco}" class="error"></span>
+                </label>
+                <input type="text" id="endereco" th:field="*{endereco}" maxlength="255" placeholder="Ex: Rua Flores, Jardim Botania, 1234"/>
             </div>
 
             <div class="form-group">
-                <label for="nomeRepresentante">Nome do Representante</label>
-                <input type="text" id="nomeRepresentante" th:field="*{nomeRepresentante}" required />
-                <span th:if="${#fields.hasErrors('nomeRepresentante')}" th:errors="*{nomeRepresentante}" class="error"></span>
+                <label for="nomeRepresentante">
+                    Nome do Representante
+                    <span th:if="${#fields.hasErrors('nomeRepresentante')}" th:errors="*{nomeRepresentante}" class="error"></span>
+                </label>
+                <input type="text" id="nomeRepresentante" th:field="*{nomeRepresentante}" th:classappend="${#fields.hasErrors('nomeRepresentante')} ? ' field-error' : ''" minlength="3" maxlength="100" placeholder="Digite o nome do Representante" required />
             </div>
 
             <div class="form-group">
-                <label for="cpfRepresentante">CPF do Representante</label>
-                <input type="text" id="cpfRepresentante" th:field="*{cpfRepresentante}" />
-                <span th:if="${#fields.hasErrors('cpfRepresentante')}" th:errors="*{cpf_representante}" class="error"></span>
+                <label for="cpfRepresentante">
+                    CPF do Representante
+                    <span th:if="${#fields.hasErrors('cpfRepresentante')}" th:errors="*{cpfRepresentante}" class="error"></span>
+                </label>
+                <input type="text" id="cpfRepresentante" th:field="*{cpfRepresentante}" th:classappend="${#fields.hasErrors('cpfRepresentante')} ? ' field-error' : ''" minlength="11" maxlength="14" placeholder="Ex: 000.000.000-00" required/>
             </div>
 
             <div class="form-group">
-                <label for="email">Email</label>
-                <input type="text" id="email" th:field="*{email}" />
-                <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></span>
+                <label for="email">
+                    Email
+                    <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></span>
+                </label>
+                <input type="text" id="email" th:field="*{email}" th:classappend="${#fields.hasErrors('email')} ? ' field-error' : ''" maxlength="255" placeholder="Ex: exemplo@gmail.com" required/>
             </div>
 
             <div class="form-group">
-                <label for="data_inicio">Data de Início</label>
-                <input type="date" id="data_inicio" th:field="*{data_inicio}" required />
-                <span th:if="${#fields.hasErrors('data_inicio')}" th:errors="*{data_inicio}" class="error"></span>
+                <label for="dataInicio">
+                    Data de Início
+                    <span th:if="${#fields.hasErrors('dataInicio')}" th:errors="*{dataInicio}" class="error"></span>
+                </label>
+                <input type="date" id="dataInicio" th:field="*{dataInicio}" th:classappend="${#fields.hasErrors('dataInicio')} ? ' field-error' : ''" required />
             </div>
 
             <div class="form-group">
-                <label for="data_fim">Data de Fim</label>
-                <input type="date" id="data_fim" th:field="*{data_fim}" />
-                <span th:if="${#fields.hasErrors('data_fim')}" th:errors="*{data_fim}" class="error"></span>
+                <label for="dataFim">
+                    Data de Fim
+                    <span th:if="${#fields.hasErrors('dataFim')}" th:errors="*{dataFim}" class="error"></span>
+                </label>
+                <input type="date" id="dataFim" th:field="*{dataFim}" th:classappend="${#fields.hasErrors('dataFim')} ? ' field-error' : ''" />
             </div>
 
             <div class="form-group">
-                <label for="telefone">Telefone</label>
-                <input type="text" id="telefone" th:field="*{telefone}" />
-                <span th:if="${#fields.hasErrors('telefone')}" th:errors="*{telefone}" class="error"></span>
+                <label for="telefone">
+                    Telefone
+                    <span th:if="${#fields.hasErrors('telefone')}" th:errors="*{telefone}" class="error"></span>
+                </label>
+                <input type="text" id="telefone" th:field="*{telefone}" th:classappend="${#fields.hasErrors('telefone')} ? ' field-error' : ''" minlength="11" maxlength="15" placeholder="Ex: (00) 00000-0000" required/>
             </div>
 
             <div class="form-group">
                 <label for="objetivo">Objetivo</label>
-                <input type="text" id="objetivo" th:field="*{objetivo}" />
-                <span th:if="${#fields.hasErrors('objetivo')}" th:errors="*{objetivo}" class="error"></span>
+                <input type="text" id="objetivo" th:field="*{objetivo}" maxlength="500"/>
             </div>
 
             <div class="form-group">
                 <label for="termos">Termos</label>
                 <input type="text" id="termos" th:field="*{termos}" />
-                <span th:if="${#fields.hasErrors('termos')}" th:errors="*{termos}" class="error"></span>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" th:if="${id != null}">
                 <label for="status">Status</label>
                 <select id="status" th:field="*{status}" required>
                     <option value="ATIVO">ATIVO</option>

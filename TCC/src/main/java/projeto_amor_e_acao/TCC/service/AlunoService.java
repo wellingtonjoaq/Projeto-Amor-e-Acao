@@ -11,6 +11,7 @@ import projeto_amor_e_acao.TCC.model.Aluno;
 import projeto_amor_e_acao.TCC.model.Curso;
 import projeto_amor_e_acao.TCC.repository.AlunoRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -21,24 +22,30 @@ public class AlunoService {
 
     @Transactional
     public Aluno salvar(Aluno aluno) {
+        aluno.setDataAlteracaoStatus(LocalDate.now());
         aluno.getMatriculas().forEach(matricula -> matricula.setAluno(aluno));
+
+        var existenteCpf = repository.findByCpfIgnoreCase(aluno.getCpf());
+        if (existenteCpf.isPresent() && !existenteCpf.get().getId().equals(aluno.getId())) {
+            throw new IllegalStateException("( Esse CPF já existe! )");
+        }
+
+        var existenteEmail = repository.findByEmailIgnoreCase(aluno.getEmail());
+        if (existenteEmail.isPresent() && !existenteEmail.get().getId().equals(aluno.getId())) {
+            throw new IllegalStateException("( Esse E-mail já existe! )");
+        }
 
         try {
             return repository.save(aluno);
-        } catch (DataIntegrityViolationException e) {
-            throw new IllegalStateException("Já existe um aluno cadastrado com este CPF ou E-mail.");
         } catch (Exception e) {
             throw new RuntimeException("Erro inesperado ao salvar aluno.", e);
         }
     }
 
+
     public Page<Aluno> listarAtivos(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return repository.findByStatusIgnoreCase("ATIVO", pageable);
-    }
-
-    public List<Aluno> listarTodosInativos() {
-        return repository.findByStatusIgnoreCase("INATIVO");
     }
 
     public Page<Aluno> listarInativos(int page, int size) {

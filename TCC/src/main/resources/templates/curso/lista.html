@@ -95,11 +95,9 @@
             <div class="card-footer">
                 <div class="card-actions">
                     <a th:href="@{'/curso/editar/' + ${curso.id}}" class="btn-edit"><i class="fas fa-edit"></i></a>
-                    <form th:action="@{'/curso/remover/' + ${curso.id}}" style="display:inline;">
-                        <button type="submit" class="delete-btn" onclick="return confirm('Tem certeza que deseja remover este aluno?');">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    </form>
+                    <a href="#" class="delete-btn" th:attr="data-id=${curso.id}, data-nome=${curso.nome}">
+                        <i class="fas fa-trash-alt"></i>
+                    </a>
                 </div>
                 <div class="card-tag">
                     <i class="fa-solid fa-tags"></i>
@@ -121,8 +119,38 @@
     <button th:if="${cursos.hasNext()}" type="submit" name="page" th:value="${cursos.number + 1}" th:text="${cursos.number + 2}"></button>
 </form>
 
+<div id="modal-overlay" class="modal-overlay" style="display:none;">
+    <div class="modal-content">
+        <h2>Confirmação de Exclusão</h2>
+        <p>Tem certeza que deseja excluir o curso: <span id="modal-nome"></span>?</p>
+
+        <div class="card-actions" style="justify-content:center;">
+            <form th:action="@{/curso/remover/{id}}" id="form-delete" method="post">
+                <button type="submit" class="delete-confirm" style="width: 100px;">Confirmar</button>
+            </form>
+            <button id="cancelar-modal" class="button-vol" style="width: 100px;">Cancelar</button>
+        </div>
+    </div>
+</div>
 
 <script>
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.preventDefault();
+            const cursoId = btn.getAttribute('data-id');
+            const cursoName = btn.getAttribute('data-nome');
+
+            document.querySelector('#modal-nome').textContent = cursoName;
+            document.querySelector('#form-delete').setAttribute('action', `/curso/remover/${cursoId}`);
+
+            document.querySelector('#modal-overlay').style.display = 'flex';
+        });
+    });
+
+    document.querySelector('#cancelar-modal').addEventListener('click', () => {
+        document.querySelector('#modal-overlay').style.display = 'none';
+    });
+
     const toggleButton = document.getElementById('toggleFilter');
     const filterPanel = document.getElementById('filterPanel');
     let open = false;

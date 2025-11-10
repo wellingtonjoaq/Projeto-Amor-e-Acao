@@ -1,16 +1,15 @@
 package projeto_amor_e_acao.TCC.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
 import lombok.*;
+import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.format.annotation.DateTimeFormat;
+import projeto_amor_e_acao.TCC.validation.DataInicioAntesDeDataFim;
 
-import jakarta.validation.constraints.Pattern;
-
-import java.sql.Date;
 import java.time.LocalDate;
-import java.util.function.LongFunction;
 
+@DataInicioAntesDeDataFim
 @Entity
 @Getter
 @Setter
@@ -24,56 +23,50 @@ public class EmpresaParceira {
     @EqualsAndHashCode.Include
     private Long id;
 
-    @Column(nullable = false, length = 150)
-    @jakarta.validation.constraints.NotBlank(
-            message = "O nome da empresa é obrigatório")
-    @jakarta.validation.constraints.Size(
-            min = 3, max = 150,
-            message = "O nome da empresa deve ter entre 3 e 150 caracteres")
+    @Column(nullable = false, length = 100)
+    @NotBlank(message = "( Campo Obrigatório )")
+    @Size(min = 3, max = 100, message = "( Deve conter entre 3 a 100 caracteres )")
     private String nome;
 
     @Column(nullable = false, unique = true)
-    @jakarta.validation.constraints.NotNull(message = "O CNPJ é obrigatório")
-    @Pattern(regexp = "^\\d{14}$",
-            message = "O CNPJ deve conter exatamente 14 dígitos numéricos")
+    @NotBlank(message = "( Campo Obrigatorio )")
+    @Size(min = 14, max = 18, message = "( Campo Invalido )")
     private String cnpj;
 
-    @jakarta.validation.constraints.Size(
-            max = 255, message = "O endereço pode ter no máximo 255 caracteres")
+    @Size(max = 255, message = "( Tamanho Excedido )")
     private String endereco;
 
-    @Column(nullable = false, length = 150, name = "nome_representante")
-    @jakarta.validation.constraints.NotBlank(
-            message = "O nome do representante é obrigatório")
-    @jakarta.validation.constraints.Size(
-            max = 100,
-            message = "O nome do representante pode ter no máximo 100 caracteres")
+    @Column(nullable = false, length = 100, name = "nome_representante")
+    @NotBlank(message = "( Campo Obrigatório )")
+    @Size(min = 3, max = 100, message = "( Deve conter entre 3 a 100 caracteres )")
     private String nomeRepresentante;
 
-    @Column(name = "cpf_representante")
-    @Pattern(regexp = "^\\d{11}$",
-            message = "O CPF deve conter exatamente 11 dígitos numéricos")
+    @Column(nullable = false, length = 14, unique = true, name = "cpf_representante")
+    @NotBlank(message = "( Campo Obrigatório )")
+    @CPF(message = "( Campo Invalido )")
     private String cpfRepresentante;
 
-    @jakarta.validation.constraints.Email(message = "E-mail inválido")
-    @jakarta.validation.constraints.NotNull(message = "O e-mail é obrigatório")
+    @Column(unique = true)
+    @NotBlank(message = "( Campo Obrigatorio )")
+    @Email(message = "( Campo Invalido )")
+    @Size(max = 255, message = "( Tamanho Excedido )")
     private String email;
 
-    @Column(nullable = false)
-    @jakarta.validation.constraints.NotNull(
-            message = "A data de início é obrigatória")
-    private Date data_inicio; //sql.Date
-
+    @Column(name = "data_inicio")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate data_fim;
+    @NotNull(message = "( Campo Obrigatório )")
+    private LocalDate dataInicio;
 
-    @Pattern(regexp = "^\\d{10,11}$",
-            message = "O telefone deve conter 10 ou 11 dígitos numéricos")
-    @jakarta.validation.constraints.NotNull(message = "O telefone é obrigatório")
+    @Column(name = "data_fim")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dataFim;
+
+    @Column(length = 11)
+    @NotBlank(message = "( Campo Obrigatorio )")
+    @Size(min = 11, max = 15, message = "( Campo Invalido )")
     private String telefone;
 
-    @jakarta.validation.constraints.Size(
-            max = 500, message = "O objetivo pode ter no máximo 500 caracteres")
+    @Size(max = 500, message = "( Tamanho Excedido )")
     private String objetivo;
 
     private String termos;
@@ -85,4 +78,21 @@ public class EmpresaParceira {
     @Column(name = "data_alteracao")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataAlteracaoStatus;
+
+    @PrePersist
+    @PreUpdate
+    private void normalizar() {
+        if (cpfRepresentante != null) {
+            cpfRepresentante = cpfRepresentante.replaceAll("\\D", "");
+        }
+        if (cnpj != null) {
+            cnpj = cnpj.replaceAll("\\D", "");
+        }
+        if (email != null) {
+            email = email.trim().toLowerCase();
+        }
+        if (telefone != null){
+            telefone = telefone.replaceAll("\\D", "");
+        }
+    }
 }

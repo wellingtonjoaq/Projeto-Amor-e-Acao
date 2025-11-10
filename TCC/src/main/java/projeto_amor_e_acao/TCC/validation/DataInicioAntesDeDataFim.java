@@ -5,9 +5,12 @@ import jakarta.validation.Payload;
 
 import java.lang.annotation.*;
 
+@Constraint(validatedBy = {
+        DataInicioAntesDeDataFimCursoValidator.class,
+        DataInicioAntesDeDataFimEmpresaValidator.class
+})
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = DataInicioAntesDeDataFimValidator.class)
 @Documented
 public @interface DataInicioAntesDeDataFim {
     String message() default "Data Início deve ser antes de Data Fim";

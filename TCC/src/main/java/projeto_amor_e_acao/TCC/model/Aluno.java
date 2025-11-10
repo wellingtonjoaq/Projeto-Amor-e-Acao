@@ -72,7 +72,6 @@ public class Aluno {
 
     @OneToMany(mappedBy = "aluno", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-//    @NotEmpty(message = "( Escolha pelo menos um curso )")
     private List<Matricula> matriculas = new ArrayList<>();
 
     @PrePersist

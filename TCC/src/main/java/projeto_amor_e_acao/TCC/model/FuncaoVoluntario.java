@@ -25,6 +25,6 @@ public class FuncaoVoluntario {
 
     @Column(nullable = false)
     @NotBlank(message = "( Campo Obrigatório )")
-    @Size(max = 100, message = "( Limite Excedido! )")
+    @Size(max = 500, message = "( Limite Excedido! )")
     private String descricao;
 }

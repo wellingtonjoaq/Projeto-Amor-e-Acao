@@ -3,15 +3,11 @@ package projeto_amor_e_acao.TCC.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import projeto_amor_e_acao.TCC.model.RelatorioVoluntarioDTO;
-import projeto_amor_e_acao.TCC.model.Voluntario;
 import projeto_amor_e_acao.TCC.repository.VoluntarioRepository;
 
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class RelatorioVoluntarioService {

@@ -13,6 +13,7 @@ import projeto_amor_e_acao.TCC.model.Matricula;
 import projeto_amor_e_acao.TCC.service.AlunoService;
 import projeto_amor_e_acao.TCC.service.CursoService;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -37,12 +38,19 @@ public class AlunoController {
     public String salvar(
             @Valid Aluno aluno,
             BindingResult result,
-            @RequestParam("cursosSelecionados") List<Long> cursosIds,
+            @RequestParam(value = "cursosSelecionados", required = false) List<Long> cursosIds,
             Model model) {
 
         if (result.hasErrors()) {
             model.addAttribute("cursos", cursoService.listarTodos());
             model.addAttribute("aluno", aluno);
+            return "aluno/formulario";
+        }
+
+        if (cursosIds == null || cursosIds.isEmpty()) {
+            model.addAttribute("cursos", cursoService.listarTodos());
+            model.addAttribute("aluno", aluno);
+            model.addAttribute("matriculaErro", "( Selecione pelo menos um curso! )");
             return "aluno/formulario";
         }
 
@@ -55,16 +63,24 @@ public class AlunoController {
                 aluno.getMatriculas().add(matricula);
             });
 
+            if (aluno.getStatus().equals("INATIVO")){
+                aluno.setMatriculas(new ArrayList<>());
+            }
+
             service.salvar(aluno);
             return "redirect:/aluno/listar";
 
         }
-        catch (IllegalStateException e){
-            model.addAttribute("erro", e.getMessage());
-            model.addAttribute("cursos", cursoService.listarTodos());
-            return "aluno/formulario";
+        catch (IllegalStateException e) {
+        if (e.getMessage().contains("CPF")) {
+            result.rejectValue("cpf", "error.aluno", e.getMessage());
+        } else if (e.getMessage().contains("E-mail")) {
+            result.rejectValue("email", "error.aluno", e.getMessage());
         }
-        catch (Exception e) {
+
+        model.addAttribute("cursos", cursoService.listarTodos());
+        return "aluno/formulario";
+    } catch (Exception e) {
             model.addAttribute("erro", e.getMessage());
             model.addAttribute("aluno", aluno);
             model.addAttribute("cursos", cursoService.listarTodos());

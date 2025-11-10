@@ -36,7 +36,7 @@
                     <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error"></span>
                 </label>
                 <input id="nomeFuncao" type="text" th:field="*{nome}"
-                       th:classappend="${#fields.hasErrors('nome')} ? ' field-error' : ''" required />
+                       th:classappend="${#fields.hasErrors('nome')} ? ' field-error' : ''" minlength="3" maxlength="100" placeholder="Digiteo nome da função" required />
             </div>
 
             <div class="form-group">
@@ -49,6 +49,7 @@
                           th:field="*{descricao}"
                           th:classappend="${#fields.hasErrors('descricao')} ? ' field-error' : ''"
                           rows="4"
+                          maxlength="500"
                           placeholder="Digite aqui a descrição da função..."
                           required></textarea>
             </div>

@@ -3,6 +3,7 @@ package projeto_amor_e_acao.TCC.model;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -57,10 +58,12 @@ public class Curso {
 
     @Column(name = "data_inicio")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = "( Campo Obrigatório )")
     private LocalDate dataInicio;
 
     @Column(name = "data_fim")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = "( Campo Obrigatório )")
     private LocalDate dataFim;
 
     @Column(length = 500)
@@ -70,6 +73,7 @@ public class Curso {
     private String descricao;
 
     @Column(nullable = false)
+    @NotBlank(message = "( Campo Obrigatório )")
     private String categorias;
 
     @Column(nullable = false, length = 20)

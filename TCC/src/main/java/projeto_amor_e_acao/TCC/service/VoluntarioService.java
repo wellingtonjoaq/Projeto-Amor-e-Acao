@@ -12,6 +12,7 @@ import projeto_amor_e_acao.TCC.model.FuncaoVoluntario;
 import projeto_amor_e_acao.TCC.model.Voluntario;
 import projeto_amor_e_acao.TCC.repository.VoluntarioRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -22,11 +23,18 @@ public class VoluntarioService {
 
     @Transactional
     public void salvar(Voluntario voluntario) {
+        voluntario.setDataAlteracaoStatus(LocalDate.now());
+
         if (voluntario.getFuncao() != null && voluntario.getFuncao().getId() != null &&
                 voluntario.getFuncao().getId() == 0) {
             voluntario.setFuncao(null);
         }
-        repository.save(voluntario);
+
+        try {
+            repository.save(voluntario);
+        } catch (Exception e) {
+            throw new RuntimeException("Erro inesperado ao salvar voluntario.", e);
+        }
     }
 
     public Page<Voluntario> listarAtivos(int page, int size) {

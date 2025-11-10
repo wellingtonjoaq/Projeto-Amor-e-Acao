@@ -4,7 +4,7 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import projeto_amor_e_acao.TCC.model.Curso;
 
-public class DataInicioAntesDeDataFimValidator implements ConstraintValidator<DataInicioAntesDeDataFim, Curso> {
+public class DataInicioAntesDeDataFimCursoValidator implements ConstraintValidator<DataInicioAntesDeDataFim, Curso> {
     @Override
     public boolean isValid(Curso curso, ConstraintValidatorContext context) {
         if (curso == null || curso.getDataInicio() == null || curso.getDataFim() == null) {

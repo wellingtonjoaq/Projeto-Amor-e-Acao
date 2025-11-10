@@ -15,11 +15,11 @@ import java.util.Optional;
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     Optional<Usuario> findByEmail(String email);
 
-    List<Usuario> findByStatusIgnoreCase(String status);
-
     Page<Usuario> findByStatusIgnoreCase(String status, Pageable pageable);
 
     Page<Usuario> findByStatusIgnoreCaseAndNomeContainingIgnoreCase(String status, String nome, Pageable pageable);
+
+    Optional<Usuario> findByEmailIgnoreCase(String email);
 
     Page<Usuario> findByStatusIgnoreCaseAndEmailContainingIgnoreCase(String status, String email, Pageable pageable);
 
