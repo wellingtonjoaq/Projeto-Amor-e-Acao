@@ -13,6 +13,14 @@ public interface CursoRepository extends JpaRepository<Curso, Long> {
 
     Page<Curso> findByStatusIgnoreCaseAndCategoriasContainingIgnoreCase(String status, String categoria, Pageable pageable);
 
+    Page<Curso> findByStatusIgnoreCaseAndPeriodoIgnoreCase(String status, String periodo, Pageable pageable);
+
+    Page<Curso> findByStatusIgnoreCaseAndCategoriasContainingIgnoreCaseAndPeriodoIgnoreCase(String status, String categoria, String periodo, Pageable pageable);
+
+    Page<Curso> findByCategoriasContainingIgnoreCase(String categoria, Pageable pageable);
+
+    Page<Curso> findByPeriodoIgnoreCase(String periodo, Pageable pageable);
+
     Page<Curso> findByStatusIgnoreCaseAndNomeContainingIgnoreCase(String status, String nome, Pageable pageable);
 
     Page<Curso> findByStatusIgnoreCaseAndProfessorContainingIgnoreCase(String status, String pesquisa, Pageable pageable);
@@ -22,5 +30,5 @@ public interface CursoRepository extends JpaRepository<Curso, Long> {
     Page<Curso> findByStatusIgnoreCaseAndEnderecoContainingIgnoreCase(String status, String pesquisa, Pageable pageable);
 
     Page<Curso> findByStatusIgnoreCaseAndBairroContainingIgnoreCase(String status, String pesquisa, Pageable pageable);
-
 }
+

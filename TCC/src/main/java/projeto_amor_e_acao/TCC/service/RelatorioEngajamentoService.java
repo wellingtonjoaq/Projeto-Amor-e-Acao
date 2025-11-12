@@ -2,7 +2,7 @@ package projeto_amor_e_acao.TCC.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import projeto_amor_e_acao.TCC.model.RelatorioEngajamentoDTO;
+import projeto_amor_e_acao.TCC.dto.RelatorioEngajamentoDTO;
 import projeto_amor_e_acao.TCC.repository.AlunoRepository;
 import projeto_amor_e_acao.TCC.repository.LogAuditoriaRepository;
 import projeto_amor_e_acao.TCC.repository.VoluntarioRepository;

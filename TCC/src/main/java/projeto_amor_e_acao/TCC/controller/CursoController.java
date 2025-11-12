@@ -8,15 +8,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.bind.annotation.*;
-import projeto_amor_e_acao.TCC.model.Aluno;
 import projeto_amor_e_acao.TCC.model.Curso;
 import projeto_amor_e_acao.TCC.service.CursoService;
 import projeto_amor_e_acao.TCC.service.FirebaseStorageService;
 
 import java.io.IOException;
 
-import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -47,6 +44,18 @@ public class CursoController {
             return "curso/formulario";
         }
 
+        if (curso.getId() != null) {
+            var cursoExistente = service.buscarPorId(curso.getId());
+
+            if (file != null && !file.isEmpty()) {
+                if (cursoExistente.getFoto() != null && !cursoExistente.getFoto().isBlank()) {
+                    firebaseService.deleteFile(cursoExistente.getFoto());
+                }
+            } else {
+                curso.setFoto(cursoExistente.getFoto());
+            }
+        }
+
         if (categoriasSelecionadas == null || categoriasSelecionadas.isEmpty()) {
             model.addAttribute("curso", curso);
             model.addAttribute("erro", "Selecione pelo menos uma categoria.");
@@ -54,6 +63,7 @@ public class CursoController {
         }
 
         try {
+            // 🔹 3. Faz upload apenas se realmente veio arquivo novo
             if (file != null && !file.isEmpty()) {
                 String url = firebaseService.uploadFile(file);
                 curso.setFoto(url);
@@ -67,6 +77,7 @@ public class CursoController {
 
             service.salvar(curso);
             return "redirect:/curso/listar";
+
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Erro ao fazer upload da imagem", e);
@@ -77,6 +88,7 @@ public class CursoController {
             return "curso/formulario";
         }
     }
+
 
     @GetMapping("listar")
     public String listar(@RequestParam(defaultValue = "0") int page,
@@ -119,20 +131,23 @@ public class CursoController {
             @RequestParam(defaultValue = "20") int size,
             @RequestParam(required = false) String status,
             @RequestParam(required = false) String categoria,
+            @RequestParam(required = false) String periodo,
             Model model) {
 
         boolean temCategoria = (categoria != null && !categoria.isEmpty());
-        boolean temStatus = (status != null && !status.isBlank());
+        boolean temPeriodo = (periodo != null && !periodo.isEmpty());
+        boolean temStatus = (status != null && !status.isEmpty());
 
-        Page<Curso> cursos = service.filtrar(categoria, status, page, size);
+        Page<Curso> cursos = service.filtrar(categoria, periodo, status, page, size);
 
         model.addAttribute("cursos", cursos);
         model.addAttribute("paginaAtual", page);
         model.addAttribute("categoria", categoria);
         model.addAttribute("status", status);
+        model.addAttribute("periodo", periodo);
         model.addAttribute("vazio", false);
 
-        if (!temCategoria && !temStatus) {
+        if (!temCategoria && !temStatus && !temPeriodo) {
             return "redirect:/curso/listar";
         }
 
@@ -141,12 +156,6 @@ public class CursoController {
         }
 
         return "curso/filtro/lista";
-    }
-
-    @GetMapping("visualiza/{id}")
-    public String visualizar(@PathVariable Long id, Model model) {
-        model.addAttribute("curso", service.buscarPorId(id));
-        return "curso/visualizar";
     }
 
     @GetMapping("editar/{id}")

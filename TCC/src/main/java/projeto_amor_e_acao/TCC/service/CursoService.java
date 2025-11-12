@@ -20,6 +20,9 @@ public class CursoService {
     @Autowired
     private CursoRepository repository;
 
+    @Autowired
+    private FirebaseStorageService firebaseStorageService;
+
     @Transactional
     public void salvar(Curso curso) {
         try {
@@ -72,27 +75,42 @@ public class CursoService {
     }
 
 
-    public Page<Curso> filtrar(String categoria, String status, int page, int size) {
+    public Page<Curso> filtrar(String categoria, String periodo, String status, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
 
-        boolean temCategoria = (categoria != null && !categoria.isEmpty());
-        boolean temStatus = (status != null && !status.isBlank() && !status.equalsIgnoreCase("TODOS"));
+        boolean temCategoria = categoria != null && !categoria.isBlank();
+        boolean temPeriodo = periodo != null && !periodo.isBlank() && !periodo.equalsIgnoreCase("TODOS");
+        boolean temStatus = status != null && !status.isBlank() && !status.equalsIgnoreCase("TODOS");
+
+        if (temCategoria && temPeriodo && temStatus) {
+            return repository.findByStatusIgnoreCaseAndCategoriasContainingIgnoreCaseAndPeriodoIgnoreCase(
+                    status, categoria, periodo, pageable);
+        }
 
         if (temCategoria && temStatus) {
-            return repository.findByStatusIgnoreCaseAndCategoriasContainingIgnoreCase(status, categoria, pageable
-            );
-        } else if (temCategoria) {
             return repository.findByStatusIgnoreCaseAndCategoriasContainingIgnoreCase(
-                    "ATIVO", categoria, pageable
-            );
-        } else if (temStatus) {
-            return repository.findByStatusIgnoreCase(
-                    status, pageable
-            );
+                    status, categoria, pageable);
+        }
+
+        if (temPeriodo && temStatus) {
+            return repository.findByStatusIgnoreCaseAndPeriodoIgnoreCase(status, periodo, pageable);
+        }
+
+        if (temCategoria) {
+            return repository.findByCategoriasContainingIgnoreCase(categoria, pageable);
+        }
+
+        if (temPeriodo) {
+            return repository.findByPeriodoIgnoreCase(periodo, pageable);
+        }
+
+        if (temStatus) {
+            return repository.findByStatusIgnoreCase(status, pageable);
         }
 
         return repository.findAll(pageable);
     }
+
 
     public Curso buscarPorId(Long id) {
         return repository.findById(id).orElseThrow();
@@ -103,6 +121,8 @@ public class CursoService {
     }
 
     public void deletarPorId(Long id) {
-        repository.deleteById(id);
+            var curso = repository.findById(id).orElseThrow();
+            firebaseStorageService.deleteFile(curso.getFoto());
+            repository.deleteById(id);
     }
 }

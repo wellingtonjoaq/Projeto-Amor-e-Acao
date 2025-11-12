@@ -1,4 +1,4 @@
-package projeto_amor_e_acao.TCC.model;
+package projeto_amor_e_acao.TCC.dto;
 
 import lombok.Data;
 import java.util.Map;

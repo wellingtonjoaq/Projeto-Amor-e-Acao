@@ -3,7 +3,6 @@ package projeto_amor_e_acao.TCC.middleware;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import projeto_amor_e_acao.TCC.service.LogAuditoriaService;

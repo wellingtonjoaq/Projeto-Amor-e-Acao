@@ -84,6 +84,46 @@ public class HistoricoService {
         return new PageImpl<>(pagina, pageable, lista.size());
     }
 
+    public Page<HistoricoDTO> filtroHistorico(List<String> tipos ,int page, int size) {
+        List<HistoricoDTO> lista = new ArrayList<>();
+
+        if (tipos != null && !tipos.isEmpty()) {
+
+            if (tipos.contains("Aluno")) {
+                alunoService.listarInativos(0, Integer.MAX_VALUE)
+                        .forEach(aluno -> lista.add(mapAlunoToDTO(aluno)));
+            }
+
+            if (tipos.contains("Voluntario")) {
+                voluntarioService.listarInativos(0, Integer.MAX_VALUE)
+                        .forEach(voluntario -> lista.add(mapVoluntarioToDTO(voluntario)));
+            }
+
+            if (tipos.contains("Empresa Parceira")) {
+                empresaParceiraService.listarInativos(0, Integer.MAX_VALUE)
+                        .forEach(empresa -> lista.add(mapEmpresaToDTO(empresa)));
+            }
+
+            if (tipos.contains("Usuario")) {
+                usuarioService.listarInativos(0, Integer.MAX_VALUE)
+                        .forEach(usuario -> lista.add(mapUsuarioToDTO(usuario)));
+            }
+        }
+
+        lista.sort(Comparator.comparing(
+                HistoricoDTO::getDataAlteracaoStatus,
+                Comparator.nullsLast(Comparator.reverseOrder())
+        ));
+
+        Pageable pageable = PageRequest.of(page, size);
+        int start = (int) pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(), lista.size());
+
+        List<HistoricoDTO> pagina = (start > lista.size()) ? Collections.emptyList() : lista.subList(start, end);
+
+        return new PageImpl<>(pagina, pageable, lista.size());
+    }
+
 
     private HistoricoDTO mapAlunoToDTO(Aluno a) {
         return new HistoricoDTO(

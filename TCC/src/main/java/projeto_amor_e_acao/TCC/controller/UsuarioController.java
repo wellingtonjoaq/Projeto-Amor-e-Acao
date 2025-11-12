@@ -75,8 +75,7 @@ public class UsuarioController {
                             @Valid Usuario usuario,
                             BindingResult result,
                             @RequestParam(value = "file", required = false) MultipartFile file,
-                            Model model)
-    {
+                            Model model) {
         if (result.hasFieldErrors("nome") || result.hasFieldErrors("email")) {
             model.addAttribute("usuario", usuario);
             model.addAttribute("acao", "editar");
@@ -84,28 +83,35 @@ public class UsuarioController {
         }
 
         try {
+            var usuarioExistente = service.buscaPorId(id);
+
             if (file != null && !file.isEmpty()) {
-                String url = firebaseService.uploadFile(file);
-                usuario.setFotoPerfil(url);
+                String novaUrl = firebaseService.uploadFile(file);
+
+                if (usuarioExistente.getFotoPerfil() != null && !usuarioExistente.getFotoPerfil().isBlank()) {
+                    firebaseService.deleteFile(usuarioExistente.getFotoPerfil());
+                }
+
+                usuario.setFotoPerfil(novaUrl);
+            } else {
+                usuario.setFotoPerfil(usuarioExistente.getFotoPerfil());
             }
 
             service.atualizar(id, usuario);
             return "redirect:/usuario/listar";
+
         } catch (IllegalStateException e) {
             if (e.getMessage().contains("E-mail")) {
                 result.rejectValue("email", "error.usuario", e.getMessage());
             }
-
             model.addAttribute("usuario", usuario);
             model.addAttribute("acao", "editar");
             return "usuario/formulario";
 
         } catch (IllegalArgumentException e) {
             if (e.getMessage().contains("Senha")) {
-                result.rejectValue(
-                        "senha", "error.usuario", e.getMessage());
+                result.rejectValue("senha", "error.usuario", e.getMessage());
             }
-
             model.addAttribute("usuario", usuario);
             model.addAttribute("acao", "editar");
             return "usuario/formulario";
@@ -205,10 +211,8 @@ public class UsuarioController {
     }
 
     @PostMapping("/remover/{id}")
-    public String removerUsuario(@PathVariable Long id) {
-        service.deletarPorID(id);
+    public String remover(@PathVariable Long id) {
+        service.deletarPorId(id);
         return "redirect:/usuario/listar";
     }
-
-
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import projeto_amor_e_acao.TCC.model.Aluno;
 import projeto_amor_e_acao.TCC.model.Curso;
 import projeto_amor_e_acao.TCC.model.Matricula;
@@ -39,6 +40,7 @@ public class AlunoController {
             @Valid Aluno aluno,
             BindingResult result,
             @RequestParam(value = "cursosSelecionados", required = false) List<Long> cursosIds,
+            RedirectAttributes redirectAttributes,
             Model model) {
 
         if (result.hasErrors()) {
@@ -69,7 +71,6 @@ public class AlunoController {
 
             service.salvar(aluno);
             return "redirect:/aluno/listar";
-
         }
         catch (IllegalStateException e) {
         if (e.getMessage().contains("CPF")) {

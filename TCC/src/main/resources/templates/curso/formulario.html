@@ -34,7 +34,7 @@
                     <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error"></span>
                 </label>
                 <input id="nomeCurso" type="text" th:field="*{nome}"
-                       th:classappend="${#fields.hasErrors('nome')} ? ' field-error' : ''" required />
+                       th:classappend="${#fields.hasErrors('nome')} ? ' field-error' : ''" minlength="3" maxlength="100" placeholder="Digite o nome" required />
             </div>
 
             <div class="form-group">
@@ -42,7 +42,7 @@
                     <span th:if="${#fields.hasErrors('professor')}" th:errors="*{professor}" class="error"></span>
                 </label>
                 <input id="professorCurso" type="text" th:field="*{professor}"
-                       th:classappend="${#fields.hasErrors('professor')} ? ' field-error' : ''" required/>
+                       th:classappend="${#fields.hasErrors('professor')} ? ' field-error' : ''" placeholder="Digite o nome" required/>
             </div>
 
             <div class="form-group">
@@ -50,7 +50,7 @@
                     <span th:if="${#fields.hasErrors('formacao')}" th:errors="*{formacao}" class="error"></span>
                 </label>
                 <input id="formacaoCurso" type="text" th:field="*{formacao}"
-                       th:classappend="${#fields.hasErrors('formacao')} ? ' field-error' : ''" required/>
+                       th:classappend="${#fields.hasErrors('formacao')} ? ' field-error' : ''" placeholder="Digite a formação" required/>
             </div>
 
             <div class="form-group">
@@ -60,17 +60,17 @@
 
             <div class="form-group">
                 <label for="bairroCurso">Bairro</label>
-                <input id="bairroCurso" type="text" th:field="*{bairro}" />
+                <input id="bairroCurso" type="text" th:field="*{bairro}" placeholder="Ex: Jardim Botanica"/>
             </div>
 
             <div class="form-group">
                 <label for="enderecoCurso">Endereço</label>
-                <input id="enderecoCurso" type="text" th:field="*{endereco}" />
+                <input id="enderecoCurso" type="text" th:field="*{endereco}" placeholder="Ex: Rua Flores"/>
             </div>
 
             <div class="form-group">
                 <label for="nrLocalCurso">Número Da Propriedade</label>
-                <input id="nrLocalCurso" type="text" th:field="*{nrLocal}" />
+                <input id="nrLocalCurso" type="text" th:field="*{nrLocal}" placeholder="Ex: 1234"/>
             </div>
 
             <div class="form-group">
@@ -78,7 +78,7 @@
                     <span th:if="${#fields.hasErrors('cargaHoraria')}" th:errors="*{cargaHoraria}" class="error"></span>
                 </label>
                 <input id="cargaHorariaCurso" type="text" th:field="*{cargaHoraria}"
-                       th:classappend="${#fields.hasErrors('cargaHoraria')} ? ' field-error' : ''" required/>
+                       th:classappend="${#fields.hasErrors('cargaHoraria')} ? ' field-error' : ''" placeholder="Ex: 110, 200, etc.." required/>
             </div>
 
             <div class="form-group">
@@ -98,6 +98,68 @@
             </div>
 
             <div class="form-group">
+                <label for="periodoCurso">
+                    Periodo
+                    <span th:if="${#fields.hasErrors('periodo')}" th:errors="*{periodo}" class="error"></span>
+                </label>
+                <select id="periodoCurso" th:field="*{periodo}"
+                        th:classappend="${#fields.hasErrors('periodo')} ? ' field-error' : ''" required>
+                    <option value="" hidden="hidden">Selecionar</option>
+                    <option value="Manhã">Manhã</option>
+                    <option value="Tarde">Tarde</option>
+                    <option value="Noite">Noite</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="categoriasLista">Categorias
+                    <span th:if="${#fields.hasErrors('categorias')}" th:errors="*{categorias}" class="error"></span>
+                </label>
+
+                <ul id="categoriasLista" class="lista-categorias">
+                    <li class="item-categorias" th:classappend="${#fields.hasErrors('categorias')} ? ' field-error' : ''">
+                        <label><input type="checkbox" name="categoriasSelecionadas" value="Educação"
+                                      th:checked="${curso.categorias != null and curso.categorias.contains('Educação')}"> Educação</label>
+                    </li>
+                    <li class="item-categorias" th:classappend="${#fields.hasErrors('categorias')} ? ' field-error' : ''">
+                        <label><input type="checkbox" name="categoriasSelecionadas" value="Saúde"
+                                      th:checked="${curso.categorias != null and curso.categorias.contains('Saúde')}"> Saúde</label>
+                    </li>
+                    <li class="item-categorias" th:classappend="${#fields.hasErrors('categorias')} ? ' field-error' : ''">
+                        <label><input type="checkbox" name="categoriasSelecionadas" value="Tecnologia"
+                                      th:checked="${curso.categorias != null and curso.categorias.contains('Tecnologia')}"> Tecnologia</label>
+                    </li>
+                    <li class="item-categorias" th:classappend="${#fields.hasErrors('categorias')} ? ' field-error' : ''">
+                        <label><input type="checkbox" name="categoriasSelecionadas" value="Esporte"
+                                      th:checked="${curso.categorias != null and curso.categorias.contains('Esporte')}"> Esporte</label>
+                    </li>
+                    <li class="item-categorias" th:classappend="${#fields.hasErrors('categorias')} ? ' field-error' : ''">
+                        <label><input type="checkbox" name="categoriasSelecionadas" value="Arte"
+                                      th:checked="${curso.categorias != null and curso.categorias.contains('Arte')}"> Arte</label>
+                    </li>
+                    <li class="item-categorias" th:classappend="${#fields.hasErrors('categorias')} ? ' field-error' : ''">
+                        <label><input type="checkbox" name="categoriasSelecionadas" value="Moda"
+                                      th:checked="${curso.categorias != null and curso.categorias.contains('Moda')}"> Moda</label>
+                    </li>
+                    <li class="item-categorias" th:classappend="${#fields.hasErrors('categorias')} ? ' field-error' : ''">
+                        <label><input type="checkbox" name="categoriasSelecionadas" value="Engenharia"
+                                      th:checked="${curso.categorias != null and curso.categorias.contains('Engenharia')}"> Engenharia</label>
+                    </li>
+                    <li class="item-categorias" th:classappend="${#fields.hasErrors('categorias')} ? ' field-error' : ''">
+                        <label><input type="checkbox" name="categoriasSelecionadas" value="Agricultura"
+                                      th:checked="${curso.categorias != null and curso.categorias.contains('Agricultura')}"> Agricultura</label>
+                    </li>
+                </ul>
+
+                <!-- 🔹 Campo oculto que será enviado ao backend -->
+                <input type="hidden" th:field="*{categorias}" id="categoriasHidden">
+
+                <small id="categoriaLimiteMsg" class="error" style="display:none;">
+                    Você pode selecionar no máximo 3 categorias.
+                </small>
+            </div>
+
+            <div class="form-group">
                 <label for="fotoCurso">Foto do Curso</label>
                 <div class="upload-area">
                     <label for="fotoCurso" class="upload-btn">
@@ -108,7 +170,6 @@
                 </div>
             </div>
 
-
             <div class="form-group" th:if="${curso.foto}">
                 <label>Pré-visualização</label>
                 <img th:src="${curso.foto}" alt="Imagem atual" style="max-width: 150px; border-radius: 10px;">
@@ -117,23 +178,6 @@
             <div class="form-group">
                 <label for="descricaoCurso">Descrição do Curso</label>
                 <input id="descricaoCurso" type="text" th:field="*{descricao}" />
-            </div>
-
-            <div class="form-group">
-                <label for="categoriasCurso">Categorias
-                    <span th:if="${#fields.hasErrors('categorias')}" th:errors="*{categorias}" class="error"></span>
-                </label>
-                <select id="categoriasCurso" name="categoriasSelecionadas"
-                        th:classappend="${#fields.hasErrors('categorias')} ? ' field-error' : ''" multiple required>
-                    <option value="Educação" th:selected="${categoriasSelecionadas != null and categoriasSelecionadas.contains('Educação')}">Educação</option>
-                    <option value="Saúde" th:selected="${categoriasSelecionadas != null and categoriasSelecionadas.contains('Saúde')}">Saúde</option>
-                    <option value="Tecnologia" th:selected="${categoriasSelecionadas != null and categoriasSelecionadas.contains('Tecnologia')}">Tecnologia</option>
-                    <option value="Esporte" th:selected="${categoriasSelecionadas != null and categoriasSelecionadas.contains('Esporte')}">Esporte</option>
-                    <option value="Arte" th:selected="${categoriasSelecionadas != null and categoriasSelecionadas.contains('Arte')}">Arte</option>
-                    <option value="Moda" th:selected="${categoriasSelecionadas != null and categoriasSelecionadas.contains('Moda')}">Moda</option>
-                    <option value="Engenharia" th:selected="${categoriasSelecionadas != null and categoriasSelecionadas.contains('Engenharia')}">Engenharia</option>
-                    <option value="Agricultura" th:selected="${categoriasSelecionadas != null and categoriasSelecionadas.contains('Agricultura')}">Agricultura</option>
-                </select>
             </div>
 
             <div th:if="${curso.id != null}">
@@ -154,41 +198,40 @@
 </div>
 
 <script>
-    document.getElementById('cepCurso').addEventListener('blur', function() {
-      let cep = this.value.replace(/\D/g, '');
+    document.addEventListener("DOMContentLoaded", function () {
+        const checkboxes = document.querySelectorAll('input[name="categoriasSelecionadas"]');
+        const limiteMsg = document.getElementById("categoriaLimiteMsg");
+        const limite = 3;
+        const hiddenCategorias = document.getElementById("categoriasHidden");
 
-      if (cep.length === 8) {
-        fetch(`https://viacep.com.br/ws/${cep}/json/`)
-          .then(response => response.json())
-          .then(data => {
-            if (!data.erro) {
-              document.getElementById('enderecoCurso').value = data.logradouro || '';
-              document.getElementById('bairroCurso').value = data.bairro || '';
+        function atualizarHidden() {
+          const selecionadas = Array.from(checkboxes)
+            .filter(chk => chk.checked)
+            .map(chk => chk.value);
+          hiddenCategorias.value = selecionadas.join(", "); // Exemplo: "Educação, Saúde, Tecnologia"
+        }
+
+        checkboxes.forEach(chk => {
+          chk.addEventListener("change", function () {
+            const selecionadas = document.querySelectorAll('input[name="categoriasSelecionadas"]:checked');
+            if (selecionadas.length > limite) {
+              this.checked = false;
+              limiteMsg.style.display = "inline";
             } else {
-              alert('CEP não encontrado!');
+              limiteMsg.style.display = "none";
             }
-          })
-          .catch(() => alert('Erro ao buscar o CEP!'));
-      } else if (cep.length > 0) {
-        alert('CEP inválido! Digite 8 números.');
-      }
-    });
+            atualizarHidden();
+          });
+        });
 
-    document.getElementById("categoriasCurso").addEventListener("change", function() {
-      if (this.selectedOptions.length > 3) {
-        alert("Você só pode selecionar até 3 categorias.");
-        this.options[this.selectedIndex].selected = false;
-      }
-    });
+        atualizarHidden(); // garante atualização inicial
+      });
 
-    const fileInput = document.getElementById('fotoCurso');
-    const fileName = document.getElementById('file-name');
-
-    fileInput.addEventListener('change', function () {
-      fileName.textContent = this.files.length > 0
-        ? this.files[0].name
-        : 'Nenhum arquivo selecionado';
-    });
+      const fileInput = document.getElementById('fotoCurso');
+      const fileName = document.getElementById('file-name');
+      fileInput.addEventListener('change', function () {
+        fileName.textContent = this.files.length > 0 ? this.files[0].name : 'Nenhum arquivo selecionado';
+      });
 </script>
 
 </body>

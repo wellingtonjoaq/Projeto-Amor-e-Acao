@@ -12,7 +12,6 @@
 <div th:replace="/navbar/dashboard :: menu"></div>
 
 <div class="container">
-
   <div th:if="${erro}" class="erroGlobal">
     <p th:text="${erro}"></p>
   </div>
@@ -103,15 +102,21 @@
         <label for="matriculasAluno">Cursos
           <span th:if="${matriculaErro}" th:text="${matriculaErro}" class="error"></span>
         </label>
-        <select id="matriculasAluno" name="cursosSelecionados"
-                th:classappend="${matriculaErro} ? ' field-error' : ''" multiple required>
-          <option value=" " hidden="hidden">Selecionar</option>
-          <option th:each="curso : ${cursos}"
-                  th:value="${curso.id}"
-                  th:text="${curso.nome}"
-                  th:selected="${aluno.matriculas != null and #lists.contains(aluno.matriculas.![curso.id], curso.id)}">
-          </option>
-        </select>
+
+        <ul id="matriculasAluno" class="lista-cursos">
+          <li th:each="curso : ${cursos}">
+            <label class="curso-item">
+              <input type="checkbox" name="cursosSelecionados"
+                     th:value="${curso.id}"
+                     th:checked="${aluno.matriculas != null and #lists.contains(aluno.matriculas.![curso.id], curso.id)}" />
+              <strong th:text="${curso.nome}"></strong>
+            </label>
+          </li>
+        </ul>
+
+        <small id="cursoLimiteMsg" class="error" style="display:none;">
+          Você pode selecionar no máximo 3 cursos.
+        </small>
       </div>
 
       <div th:if="${aluno.id != null}">
@@ -150,6 +155,25 @@
     } else if (cep.length > 0) {
       alert('CEP inválido! Digite 8 números.');
     }
+  });
+
+  const maxTotal = 5;
+  const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+  let checkedOrder = [];
+
+  allCheckboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', () => {
+      if (checkbox.checked) {
+        checkedOrder.push(checkbox);
+
+        if (checkedOrder.length > maxTotal) {
+          const firstChecked = checkedOrder.shift();
+          firstChecked.checked = false;
+        }
+      } else {
+        checkedOrder = checkedOrder.filter(c => c !== checkbox);
+      }
+    });
   });
 </script>
 

@@ -25,6 +25,9 @@ public class UsuarioService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private FirebaseStorageService firebaseStorageService;
+
     public Usuario salvar(Usuario usuario) {
         usuario.setDataAlteracaoStatus(LocalDate.now());
 
@@ -141,11 +144,19 @@ public class UsuarioService {
         return repository.findById(id);
     }
 
-    public void deletarPorID(Long id) {
+    public Usuario buscaPorId(Long id) {
+        return repository.findById(id).orElseThrow();
+    }
+
+    public void deletarPorId(Long id) {
+        var usuarioFoto = repository.findById(id).orElseThrow();
+        firebaseStorageService.deleteFile(usuarioFoto.getFotoPerfil());
+        repository.deleteById(id);
+
+
         Usuario usuario = repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
 
-        //Não permitir excluir o último administrador ativo
         if (usuario.getCargo() == Usuario.Cargo.USUARIO_ADMINISTRADOR
                 && usuario.getStatus().equals("INATIVO"))
         {
