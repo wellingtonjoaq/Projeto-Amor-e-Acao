@@ -8,14 +8,13 @@ import org.openpdf.text.pdf.PdfPTable;
 import org.openpdf.text.pdf.PdfWriter;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
-import projeto_amor_e_acao.TCC.model.RelatorioEvasaoDTO;
+import projeto_amor_e_acao.TCC.dto.RelatorioEvasaoDTO;
 
 import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.List;
-import java.util.stream.Stream;
 
 @Service
 public class PdfExportEvasaoService {

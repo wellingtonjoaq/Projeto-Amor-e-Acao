@@ -41,18 +41,18 @@
         <div class="filter-section">
             <div class="filter-header"><i class="fas fa-id-card" id="filtro-icones"></i> Empresa </div>
             <div class="filter-options">
-                <label><input type="checkbox" name="nome" value="true"> Nome da Empresa</label>
-                <label><input type="checkbox" name="cnpj" value="true"> CNPJ</label>
-                <label><input type="checkbox" name="email" value="true"> E-mail da Empresa</label>
-                <label><input type="checkbox" name="telefone" value="true"> Telefone</label>
+                <label><input type="checkbox" name="nome" value="true" th:checked="${nome}"> Nome</label>
+                <label><input type="checkbox" name="cnpj" value="true" th:checked="${cnpj}"> CNPJ</label>
+                <label><input type="checkbox" name="email" value="true" th:checked="${email}"> E-mail</label>
+                <label><input type="checkbox" name="telefone" value="true" th:checked="${telefone}"> Telefone</label>
             </div>
         </div>
 
         <div class="filter-section">
             <div class="filter-header"><i class="fas fa-id-card" id="filtro-icones1"></i> Representante </div>
             <div class="filter-options">
-                <label><input type="checkbox" name="nomeRepresentante" value="true"> Nome do Representante</label>
-                <label><input type="checkbox" name="cpfRepresentante" value="true"> CPF</label>
+                <label><input type="checkbox" name="nomeRepresentante" value="true" th:checked="${nomeRepresentante}"> Nome</label>
+                <label><input type="checkbox" name="cpfRepresentante" value="true" th:checked="${cpfRepresentante}"> CPF</label>
             </div>
         </div>
 
@@ -156,6 +156,31 @@
       filterPanel.style.display = open ? 'grid' : 'none';
       toggleButton.querySelector('.fa-chevron-down').style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
     });
+
+    window.addEventListener("load", () => {
+  const maxSelecionados = 4;
+  const checkboxes = Array.from(document.querySelectorAll('input[type="checkbox"]'));
+  let ordemSelecionados = [];
+
+  const atualizarSelecoes = (cb) => {
+    if (cb.checked) {
+      ordemSelecionados.push(cb);
+
+      if (ordemSelecionados.length > maxSelecionados) {
+        const primeiro = ordemSelecionados.shift();
+        primeiro.checked = false;
+      }
+    } else {
+      ordemSelecionados = ordemSelecionados.filter(item => item !== cb);
+    }
+  };
+
+  checkboxes.forEach(cb => {
+    cb.addEventListener("change", () => atualizarSelecoes(cb));
+
+    if (cb.checked) ordemSelecionados.push(cb);
+  });
+});
 </script>
 </body>
 </html>

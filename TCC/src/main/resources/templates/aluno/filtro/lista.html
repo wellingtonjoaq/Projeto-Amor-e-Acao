@@ -168,21 +168,20 @@
 
 <script>
   document.querySelectorAll('.delete-btn').forEach(btn => {
-        btn.addEventListener('click', e => {
-            e.preventDefault();
-            const alunoId = btn.getAttribute('data-id');
-            const alunoName = btn.getAttribute('data-nome');
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      const alunoId = btn.getAttribute('data-id');
+      const alunoName = btn.getAttribute('data-nome');
 
-            document.querySelector('#modal-nome').textContent = alunoName;
-            document.querySelector('#form-delete').setAttribute('action', `/aluno/remover/${alunoId}`);
-
-            document.querySelector('#modal-overlay').style.display = 'flex';
-        });
+      document.querySelector('#modal-nome').textContent = alunoName;
+      document.querySelector('#form-delete').setAttribute('action', `/aluno/remover/${alunoId}`);
+      document.querySelector('#modal-overlay').style.display = 'flex';
     });
+  });
 
-    document.querySelector('#cancelar-modal').addEventListener('click', () => {
-        document.querySelector('#modal-overlay').style.display = 'none';
-    });
+  document.querySelector('#cancelar-modal').addEventListener('click', () => {
+    document.querySelector('#modal-overlay').style.display = 'none';
+  });
 
   const toggleButton = document.getElementById('toggleFilter');
   const filterPanel = document.getElementById('filterPanel');
@@ -193,7 +192,33 @@
     filterPanel.style.display = open ? 'grid' : 'none';
     toggleButton.querySelector('.fa-chevron-down').style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
   });
+
+  window.addEventListener("load", () => {
+  const maxSelecionados = 5;
+  const checkboxes = Array.from(document.querySelectorAll('input[type="checkbox"]'));
+  let ordemSelecionados = [];
+
+  const atualizarSelecoes = (cb) => {
+    if (cb.checked) {
+      ordemSelecionados.push(cb);
+
+      if (ordemSelecionados.length > maxSelecionados) {
+        const primeiro = ordemSelecionados.shift();
+        primeiro.checked = false;
+      }
+    } else {
+      ordemSelecionados = ordemSelecionados.filter(item => item !== cb);
+    }
+  };
+
+  checkboxes.forEach(cb => {
+    cb.addEventListener("change", () => atualizarSelecoes(cb));
+
+    if (cb.checked) ordemSelecionados.push(cb);
+  });
+});
 </script>
+
 
 </body>
 </html>

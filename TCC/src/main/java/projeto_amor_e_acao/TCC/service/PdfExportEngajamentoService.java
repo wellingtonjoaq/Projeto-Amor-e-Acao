@@ -8,7 +8,7 @@ import org.openpdf.text.pdf.PdfPTable;
 import org.openpdf.text.pdf.PdfWriter;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
-import projeto_amor_e_acao.TCC.model.RelatorioEngajamentoDTO;
+import projeto_amor_e_acao.TCC.dto.RelatorioEngajamentoDTO;
 
 import java.awt.*;
 import java.io.ByteArrayOutputStream;

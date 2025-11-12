@@ -1,5 +1,6 @@
 package projeto_amor_e_acao.TCC.service;
 
+import com.google.cloud.storage.Blob;
 import com.google.firebase.cloud.StorageClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,5 +24,22 @@ public class FirebaseStorageService {
                 "https://firebasestorage.googleapis.com/v0/b/%s/o/%s?alt=media",
                 bucketName, fileName.replace("/", "%2F")
         );
+    }
+
+    public boolean deleteFile(String fileName) {
+        
+        if (fileName.contains("https://")) {
+            int index = fileName.indexOf("/o/") + 3;
+            int end = fileName.indexOf("?alt=");
+            fileName = fileName.substring(index, end).replace("%2F", "/");
+        }
+
+        Blob blob = StorageClient.getInstance().bucket().get(fileName);
+
+        if (blob != null) {
+            return blob.delete();
+        }
+
+        return false;
     }
 }

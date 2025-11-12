@@ -41,7 +41,7 @@
 
         <div class="filter-section">
             <div class="filter-header">
-                <i class="fas fa-id-card" id="filtro-icones"></i> Identidade
+                <i class="fa-solid fa-list" id="filtro-icones"></i> Categorias
             </div>
 
             <div class="filter-options">
@@ -58,7 +58,20 @@
 
         <div class="filter-section">
             <div class="filter-header">
-                <i class="fas fa-venus-mars" id="filtro-icones1"></i> Status
+                <i class="fa-solid fa-clock" id="filtro-icones1"></i> Periodo
+            </div>
+
+            <div class="filter-options">
+                <label><input type="radio" name="periodo" value="Manhã"> Manhã</label>
+                <label><input type="radio" name="periodo" value="Tarde"> Tarde</label>
+                <label><input type="radio" name="periodo" value="Noite"> Noite</label>
+                <label><input type="radio" name="periodo" value="TODOS"> Todos</label>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <div class="filter-header">
+                <i class="fa-solid fa-gear" id="filtro-icones2"></i> Status
             </div>
 
             <div class="filter-options">
@@ -87,8 +100,11 @@
                 <p><i class="fa-solid fa-location-dot"></i>
                     <span th:text="${curso.endereco} + ', ' + ${curso.nrLocal} + ' - ' + ${curso.bairro} + ', ' + ${curso.cep}">Endereço completo</span>
                 </p>
-                <p><i class="fa-solid fa-clock"></i> Carga horária: <span th:text="${curso.cargaHoraria}">60h</span></p>
+                <p><i class="fa-solid fa-clock"></i> Carga horária: <span th:text="${curso.cargaHoraria}"></span> h</p>
                 <p><i class="fa-solid fa-calendar"></i> Início: <span th:text="${curso.dataInicio}">20/08/2025</span> - Fim: <span th:text="${curso.dataFim}">20/11/2025</span></p>
+                <p th:if="${curso.periodo == 'Manhã'}"><i class="fa-solid fa-sun"></i> Periodo: <span th:text="${curso.periodo}"></span></p>
+                <p th:if="${curso.periodo == 'Tarde'}"><i class="fa-solid fa-cloud-sun"></i> Periodo: <span th:text="${curso.periodo}"></span></p>
+                <p th:if="${curso.periodo == 'Noite'}"><i class="fa-solid fa-moon"></i> Periodo: <span th:text="${curso.periodo}"></span></p>
                 <p><i class="fa-solid fa-check-circle"></i> Status: <span th:text="${curso.status}" class="status ativo">Ativo</span></p>
             </div>
 

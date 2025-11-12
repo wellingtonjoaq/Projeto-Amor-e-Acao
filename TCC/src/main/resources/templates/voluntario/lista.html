@@ -69,7 +69,7 @@
         </div>
 
         <div class="filter-section">
-            <div class="filter-header"><i class="fas fa-address-book" id="filtro-icones3"></i> Funções </div>
+            <div class="filter-header"><i class="fa-solid fa-wrench" id="filtro-icones3"></i> Funções </div>
             <div class="filter-options">
                 <label th:each="funcao : ${funcoesVoluntario}">
                     <input type="checkbox" name="funcoes" th:value="${funcao.id}"
@@ -167,6 +167,25 @@
       open = !open;
       filterPanel.style.display = open ? 'grid' : 'none';
       toggleButton.querySelector('.fa-chevron-down').style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
+    });
+
+    const maxTotal = 5;
+    const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+    let checkedOrder = [];
+
+    allCheckboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', () => {
+        if (checkbox.checked) {
+          checkedOrder.push(checkbox);
+
+          if (checkedOrder.length > maxTotal) {
+            const firstChecked = checkedOrder.shift();
+            firstChecked.checked = false;
+          }
+        } else {
+          checkedOrder = checkedOrder.filter(c => c !== checkbox);
+        }
+      });
     });
 </script>
 </body>

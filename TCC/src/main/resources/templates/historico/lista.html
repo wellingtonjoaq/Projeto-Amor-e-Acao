@@ -26,8 +26,31 @@
                     </button>
                 </form>
             </div>
+
+            <button class="filter-btn" id="toggleFilter">
+                <i class="fas fa-filter"></i> Filtrar <i class="fas fa-chevron-down"></i>
+            </button>
         </div>
     </div>
+
+    <form th:action="@{/historico/filtrar}" method="get" class="filter-panel-usuario" id="filterPanel">
+        <div class="filter-section">
+            <div class="filter-header">
+                <i class="fas fa-id-card" id="filtro-icones"></i> Tipos de Histórico
+            </div>
+
+            <div class="filter-options">
+                <label><input type="checkbox" name="tipos" value="Aluno"> Aluno</label>
+                <label><input type="checkbox" name="tipos" value="Voluntario"> Voluntario</label>
+                <label><input type="checkbox" name="tipos" value="Empresa Parceira"> Empresa Parceira</label>
+                <label><input type="checkbox" name="tipos" value="Usuario"> Usuario</label>
+            </div>
+        </div>
+
+        <button type="submit" class="btn-buscar-filtro-usuario">
+            <i class="fa fa-search"></i> Buscar
+        </button>
+    </form>
 
     <table>
         <thead>
@@ -48,28 +71,15 @@
             <td th:text="${historico.status}"></td>
             <td th:text="${historico.tipo}"></td>
             <td class="actions">
-                <a th:if="${historico.tipo == 'Aluno'}" th:href="@{'/historico/visualizaAluno/' + ${historico.id}}" class="btn-visualizar">Visualizar</a>
-                <a th:if="${historico.tipo == 'Voluntario'}" th:href="@{'/historico/visualizaVoluntario/' + ${historico.id}}" class="btn-visualizar">Visualizar</a>
-                <a th:if="${historico.tipo == 'EmpresaParceira'}" th:href="@{'/historico/visualizaEmpresaParceira/' + ${historico.id}}" class="btn-visualizar">Visualizar</a>
-                <a th:if="${historico.tipo == 'Usuario'}" th:href="@{'/historico/visualizaUsuario/' + ${historico.id}}" class="btn-visualizar">Visualizar</a>
-
-                <span th:switch="${historico.tipo}">
-                    <form th:case="'Aluno'" th:action="@{'/historico/ativarAluno/' + ${historico.id}}" method="post" style="display:inline">
-                        <button type="submit" class="btn-editar">Ativar</button>
-                    </form>
-
-                    <form th:case="'Voluntario'" th:action="@{'/historico/ativarVoluntario/' + ${historico.id}}" method="post" style="display:inline">
-                        <button type="submit" class="btn-editar">Ativar</button>
-                    </form>
-
-                    <form th:case="'EmpresaParceira'" th:action="@{'/historico/ativarEmpresaParceira/' + ${historico.id}}" method="post" style="display:inline">
-                        <button type="submit" class="btn-editar">Ativar</button>
-                    </form>
-
-                    <form th:case="'Usuario'" th:action="@{'/historico/ativarUsuario/' + ${historico.id}}" method="post" style="display:inline">
-                        <button type="submit" class="btn-editar">Ativar</button>
-                    </form>
-                </span>
+                <a th:if="${historico.tipo == 'Aluno'}" th:href="@{'/historico/visualizaAluno/' + ${historico.id}}" class="btn-visualizar"><i class="fas fa-eye"></i></a>
+                <a th:if="${historico.tipo == 'Voluntario'}" th:href="@{'/historico/visualizaVoluntario/' + ${historico.id}}" class="btn-visualizar"><i class="fas fa-eye"></i></a>
+                <a th:if="${historico.tipo == 'EmpresaParceira'}" th:href="@{'/historico/visualizaEmpresaParceira/' + ${historico.id}}" class="btn-visualizar"><i class="fas fa-eye"></i></a>
+                <a th:if="${historico.tipo == 'Usuario'}" th:href="@{'/historico/visualizaUsuario/' + ${historico.id}}" class="btn-visualizar"><i class="fas fa-eye"></i></a>
+                <a href="#"
+                   class="ativar-btn"
+                   th:attr="data-id=${historico.id}, data-nome=${historico.nome}, data-tipo=${historico.tipo}">
+                    <i class="fa-solid fa-check"></i>
+                </a>
 
             </td>
         </tr>
@@ -84,7 +94,65 @@
         <button th:if="${historicos.hasNext()}" type="submit" name="page" th:value="${historicos.number + 1}" th:text="${historicos.number + 2}"></button>
     </form>
 </div>
+
+<div id="modal-overlay" class="modal-overlay" style="display:none;">
+    <div class="modal-content">
+        <h2>Confirmação de Ativação</h2>
+        <p>Tem certeza que deseja ativar: <span id="modal-nome"></span>?</p>
+
+        <div class="card-actions" style="justify-content:center;">
+            <form id="form-delete" method="post">
+                <button type="submit" class="ativar-confirm" style="width: 100px;">Ativar</button>
+            </form>
+            <button id="cancelar-modal" class="button-vol" style="width: 100px;">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+
 <script>
+    document.querySelectorAll('.ativar-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+        e.preventDefault();
+
+        const historicoId = btn.getAttribute('data-id');
+        const historicoNome = btn.getAttribute('data-nome');
+        const tipo = btn.getAttribute('data-tipo');
+
+        // Define a URL conforme o tipo
+        let actionUrl = '';
+        switch (tipo) {
+            case 'Aluno':
+                actionUrl = `/historico/ativarAluno/${historicoId}`;
+                break;
+            case 'Voluntario':
+                actionUrl = `/historico/ativarVoluntario/${historicoId}`;
+                break;
+            case 'EmpresaParceira':
+                actionUrl = `/historico/ativarEmpresaParceira/${historicoId}`;
+                break;
+            case 'Usuario':
+                actionUrl = `/historico/ativarUsuario/${historicoId}`;
+                break;
+            default:
+                console.error('Tipo desconhecido:', tipo);
+                return;
+        }
+
+        // Atualiza o nome e o action do formulário
+        document.querySelector('#modal-nome').textContent = historicoNome;
+        document.querySelector('#form-delete').setAttribute('action', actionUrl);
+
+        // Mostra o modal
+        document.querySelector('#modal-overlay').style.display = 'flex';
+    });
+});
+
+// Fecha o modal ao cancelar
+document.querySelector('#cancelar-modal').addEventListener('click', () => {
+    document.querySelector('#modal-overlay').style.display = 'none';
+});
+
     const toggleButton = document.getElementById('toggleFilter');
     const filterPanel = document.getElementById('filterPanel');
     let open = false;

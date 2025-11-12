@@ -172,6 +172,25 @@
     filterPanel.style.display = open ? 'grid' : 'none';
     toggleButton.querySelector('.fa-chevron-down').style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
   });
+
+    const maxTotal = 5;
+    const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+    let checkedOrder = [];
+
+    allCheckboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', () => {
+        if (checkbox.checked) {
+          checkedOrder.push(checkbox);
+
+          if (checkedOrder.length > maxTotal) {
+            const firstChecked = checkedOrder.shift();
+            firstChecked.checked = false;
+          }
+        } else {
+          checkedOrder = checkedOrder.filter(c => c !== checkbox);
+        }
+      });
+    });
 </script>
 
 </body>

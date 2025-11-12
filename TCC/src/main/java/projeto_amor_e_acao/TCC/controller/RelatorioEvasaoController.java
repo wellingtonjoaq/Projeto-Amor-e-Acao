@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import projeto_amor_e_acao.TCC.model.RelatorioEvasaoDTO;
+import projeto_amor_e_acao.TCC.dto.RelatorioEvasaoDTO;
 import projeto_amor_e_acao.TCC.service.PdfExportEvasaoService;
 import projeto_amor_e_acao.TCC.service.RelatorioEvasaoService;
 

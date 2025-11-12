@@ -17,19 +17,20 @@
       <h1>Historico</h1>
     </div>
 
-      <div class="header-actions">
-        <div class="pesquisa-box">
-          <form method="get" th:action="@{/historico/filtrarPesquisa}">
-            <input type="text" name="pesquisa" class="campo-pesquisa" placeholder="Pesquisar..." th:value="${pesquisa}">
-            <button class="btn-pesquisar" type="submit">
-              <i class="fa fa-search"></i>
-            </button>
-          </form>
-        </div>
-        <button class="filter-btn" id="toggleFilter">
-          <i class="fas fa-filter"></i> Filtrar <i class="fas fa-chevron-down"></i>
-        </button>
+    <div class="header-actions">
+      <div class="pesquisa-box">
+        <form method="get" th:action="@{/historico/filtrarPesquisa}">
+          <input type="text" name="pesquisa" class="campo-pesquisa" placeholder="Pesquisar..." th:value="${pesquisa}">
+          <button class="btn-pesquisar" type="submit">
+            <i class="fa fa-search"></i>
+          </button>
+        </form>
       </div>
+
+      <button class="filter-btn" id="toggleFilter">
+        <i class="fas fa-filter"></i> Filtrar <i class="fas fa-chevron-down"></i>
+      </button>
+    </div>
   </div>
 
   <form th:action="@{/historico/filtrar}" method="get" class="filter-panel-usuario" id="filterPanel">
@@ -39,10 +40,22 @@
       </div>
 
       <div class="filter-options">
-        <label><input type="checkbox" name="tipos" value="Aluno"> Aluno</label>
-        <label><input type="checkbox" name="tipos" value="Voluntario"> Voluntario</label>
-        <label><input type="checkbox" name="tipos" value="Empresa Parceira"> Empresa Parceira</label>
-        <label><input type="checkbox" name="tipos" value="Usuario"> Usuario</label>
+        <label>
+          <input type="checkbox" name="tipos" value="Aluno"
+                 th:checked="${listaTipo != null and listaTipo.contains('Aluno')}"> Aluno
+        </label>
+        <label>
+          <input type="checkbox" name="tipos" value="Voluntario"
+                 th:checked="${listaTipo != null and listaTipo.contains('Voluntario')}"> Voluntário
+        </label>
+        <label>
+          <input type="checkbox" name="tipos" value="Empresa Parceira"
+                 th:checked="${listaTipo != null and listaTipo.contains('Empresa Parceira')}"> Empresa Parceira
+        </label>
+        <label>
+          <input type="checkbox" name="tipos" value="Usuario"
+                 th:checked="${listaTipo != null and listaTipo.contains('Usuario')}"> Usuário
+        </label>
       </div>
     </div>
 
@@ -96,7 +109,6 @@
                         <button type="submit" class="btn-editar">Ativar</button>
                     </form>
                 </span>
-
       </td>
     </tr>
     </tbody>
