@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Nova Senha | Projeto Amor e Ação</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body class="bodySenha">
+<div class="login-container">
+    <div class="login-card">
+        <img th:src="@{/imagens/logo.png}" alt="Logo ONG"/>
+        <h2>Redefinir Senha</h2>
+        <p>Digite sua nova senha e confirme para continuar</p>
+
+        <form action="/reset-password" method="post">
+
+            <div class="input-group">
+                <i class="fa fa-lock"></i>
+                <input type="password" name="newPassword" placeholder="Senha nova" required>
+            </div>
+
+            <div class="input-group">
+                <i class="fa fa-lock"></i>
+                <input type="password" name="confirmPassword" placeholder="Confirmar senha" required>
+            </div>
+
+            <button type="submit" class="btn-login">Salvar Nova Senha</button>
+
+        </form>
+    </div>
+</div>
+</body>
+</html>

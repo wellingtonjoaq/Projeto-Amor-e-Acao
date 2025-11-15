@@ -99,13 +99,13 @@
         </thead>
         <tbody>
         <tr th:each="voluntario : ${voluntarios}">
-            <td th:text="${voluntario.id}">1</td>
-            <td th:text="${voluntario.nome}">Nome</td>
-            <td th:text="${voluntario.cpf}">CPF</td>
-            <td th:text="${voluntario.email}">Email</td>
-            <td th:text="${voluntario.funcao != null ? voluntario.funcao.nome : 'Sem função'}">Função</td>
-            <td th:text="${voluntario.status}">Status</td>
-            <td class="actions">
+            <td data-label="ID" th:text="${voluntario.id}">1</td>
+            <td data-label="Nome" th:text="${voluntario.nome}">Nome</td>
+            <td data-label="CPF" th:text="${voluntario.cpf}">CPF</td>
+            <td data-label="Email" th:text="${voluntario.email}">Email</td>
+            <td data-label="Função" th:text="${voluntario.funcao != null ? voluntario.funcao.nome : 'Sem função'}">Função</td>
+            <td data-label="Status" th:text="${voluntario.status}">Status</td>
+            <td data-label="Ações" class="actions">
                 <a th:href="@{'/voluntario/visualiza/' + ${voluntario.id}}" class="btn-visualizar"><i class="fas fa-eye"></i></a>
                 <a th:href="@{'/voluntario/editar/' + ${voluntario.id}}"><i class="fas fa-edit"></i></a>
                 <a href="#" class="delete-btn" th:attr="data-id=${voluntario.id}, data-nome=${voluntario.nome}">

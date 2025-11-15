@@ -92,37 +92,37 @@
     <thead>
     <tr>
       <th>#</th>
-      <th th:if="${nome}">Nome</th>
-      <th th:if="${cpf}">CPF</th>
-      <th th:if="${email}">Email</th>
-      <th th:if="${telefone}">Telefone</th>
-      <th th:if="${genero == 'MASCULINO'}">Genero</th>
-      <th th:if="${genero == 'FEMININO'}">Genero</th>
-      <th th:if="${genero == 'TODOS'}">Genero</th>
+      <th data-label="Nome" th:if="${nome}">Nome</th>
+      <th data-label="CPF" th:if="${cpf}">CPF</th>
+      <th data-label="Email" th:if="${email}">Email</th>
+      <th data-label="Telefone" th:if="${telefone}">Telefone</th>
+      <th data-label="Gênero" th:if="${genero == 'MASCULINO'}">Genero</th>
+      <th data-label="Gênero" th:if="${genero == 'FEMININO'}">Genero</th>
+      <th data-label="Gênero" th:if="${genero == 'TODOS'}">Genero</th>
       <th>Cursos</th>
-      <th th:if="${cep}">CEP</th>
-      <th th:if="${bairro}">Bairro</th>
-      <th th:if="${endereco}">Endereço</th>
+      <th data-label="CEP" th:if="${cep}">CEP</th>
+      <th data-label="Bairro" th:if="${bairro}">Bairro</th>
+      <th data-label="Endereço" th:if="${endereco}">Endereço</th>
       <th>Status</th>
       <th>Ações</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="aluno : ${alunos}">
-      <td th:text="${aluno.id}">1</td>
-      <td th:if="${nome}" th:text="${aluno.nome}">Nome</td>
-      <td th:if="${cpf}" th:text="${aluno.cpf}">CPF</td>
-      <td th:if="${email}" th:text="${aluno.email}">Email</td>
-      <td th:if="${telefone}" th:text="${aluno.telefone}">Telefone</td>
-      <td th:if="${genero == 'MASCULINO'}" th:text="${aluno.genero}">Genero</td>
-      <td th:if="${genero == 'FEMININO'}" th:text="${aluno.genero}">Genero</td>
-      <td th:if="${genero == 'TODOS'}" th:text="${aluno.genero}">Genero</td>
-      <td th:text="${aluno.matriculas != null and !aluno.matriculas.isEmpty() ? aluno.matriculas[0].curso.nome : 'Sem curso'}"></td>
-      <td th:if="${cep}" th:text="${aluno.cep}">CEP</td>
-      <td th:if="${bairro}" th:text="${aluno.bairro}">Bairro</td>
-      <td th:if="${endereco}" th:text="${aluno.endereco}">Endereco</td>
-      <td th:text="${aluno.status}">Status</td>
-      <td class="actions">
+      <td data-label="ID" th:text="${aluno.id}">1</td>
+      <td data-label="Nome" th:if="${nome}" th:text="${aluno.nome}">Nome</td>
+      <td data-label="CPF" th:if="${cpf}" th:text="${aluno.cpf}">CPF</td>
+      <td data-label="Email" th:if="${email}" th:text="${aluno.email}">Email</td>
+      <td data-label="Telefone" th:if="${telefone}" th:text="${aluno.telefone}">Telefone</td>
+      <td data-label="Gênero" th:if="${genero == 'MASCULINO'}" th:text="${aluno.genero}">Genero</td>
+      <td data-label="Gênero" th:if="${genero == 'FEMININO'}" th:text="${aluno.genero}">Genero</td>
+      <td data-label="Gênero" th:if="${genero == 'TODOS'}" th:text="${aluno.genero}">Genero</td>
+      <td data-label="Cursos" th:text="${aluno.matriculas != null and !aluno.matriculas.isEmpty() ? aluno.matriculas[0].curso.nome : 'Sem curso'}"></td>
+      <td data-label="CEP" th:if="${cep}" th:text="${aluno.cep}">CEP</td>
+      <td data-label="Bairro" th:if="${bairro}" th:text="${aluno.bairro}">Bairro</td>
+      <td data-label="Endereço" th:if="${endereco}" th:text="${aluno.endereco}">Endereco</td>
+      <td data-label="Status" th:text="${aluno.status}">Status</td>
+      <td data-label="Ações" class="actions">
         <a th:href="@{'/aluno/visualiza/' + ${aluno.id}}" class="btn-visualizar"><i class="fas fa-eye"></i></a>
         <a th:href="@{'/aluno/editar/' + ${aluno.id}}"><i class="fas fa-edit"></i></a>
         <a href="#" class="delete-btn" th:attr="data-id=${aluno.id}, data-nome=${aluno.nome}">
