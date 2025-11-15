@@ -11,28 +11,33 @@
 <div th:replace="/administrativo/navbar/dashboard :: menu"></div>
 
 <div class="container">
-    <h1>Relatórios Estratégicos</h1>
+    <div class="header-bar">
+        <h1>Relatórios Estratégicos</h1>
+    </div>
 
-    <div class="cards">
-        <div class="card">
-            <h2>Relatório de Alunos</h2>
+    <div class="card-grid">
+        <div class="card card-relatorio">
+            <h2><i class="fa-solid fa-user-graduate"></i> Relatório de Alunos</h2>
             <p>Relatório a respeito dos alunos cadastrados e desistentes.</p>
+
             <a th:href="@{/api/relatorios/alunos/exportar/pdf}" download class="btn-download">
                 <i class="fas fa-file-pdf"></i> Baixar PDF
             </a>
         </div>
 
-        <div class="card">
-            <h2>Relatório de Voluntariado</h2>
+        <div class="card card-relatorio">
+            <h2><i class="fa-solid fa-hands-holding-circle"></i> Relatório de Voluntariado</h2>
             <p>Relatório sobre a distribuição dos voluntários e suas funções.</p>
+
             <a th:href="@{/api/relatorios/voluntariado/pdf}" download class="btn-download">
                 <i class="fas fa-file-pdf"></i> Baixar PDF
             </a>
         </div>
 
-        <div class="card">
-            <h2>Relatório de Engajamento</h2>
+        <div class="card card-relatorio">
+            <h2><i class="fa-solid fa-chart-line"></i> Relatório de Engajamento</h2>
             <p>Relatório de análise do engajamento dos usuários do sistema.</p>
+
             <a th:href="@{/api/relatorios/engajamento/pdf}" download class="btn-download">
                 <i class="fas fa-file-pdf"></i> Baixar PDF
             </a>
