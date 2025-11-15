@@ -15,11 +15,14 @@
         <h2>Redefinir Senha</h2>
         <p>Digite sua nova senha e confirme para continuar</p>
 
-        <form action="/reset-password" method="post">
+        <form th:action="@{/login/salvarNovaSenha}" method="post">
+
+            <!-- Token vindo via model -->
+            <input type="hidden" name="token" th:value="${token}">
 
             <div class="input-group">
                 <i class="fa fa-lock"></i>
-                <input type="password" name="newPassword" placeholder="Senha nova" required>
+                <input type="password" name="senha" placeholder="Senha nova" required>
             </div>
 
             <div class="input-group">
@@ -29,7 +32,11 @@
 
             <button type="submit" class="btn-login">Salvar Nova Senha</button>
 
+            <p th:text="${erro}" style="color:red;"></p>
+            <p th:text="${mensagem}" style="color:green;"></p>
+
         </form>
+
     </div>
 </div>
 </body>
