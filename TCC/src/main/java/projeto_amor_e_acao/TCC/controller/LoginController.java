@@ -8,6 +8,11 @@ public class LoginController {
 
     @GetMapping("/login")
     public String login() {
-        return "login"; 
+        return "login/login";
+    }
+
+    @GetMapping("/login/esqueciSenha")
+    public String esqueciSenha() {
+        return "login/esqueceuSenha"; // nova página que você vai criar
     }
 }

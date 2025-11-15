@@ -29,7 +29,7 @@ public class CursoController {
     @GetMapping()
     public String formulario(Curso curso, Model model) {
         model.addAttribute("curso", curso);
-        return "curso/formulario";
+        return "administrativo/curso/formulario";
     }
 
     @PostMapping("salvar")
@@ -41,7 +41,7 @@ public class CursoController {
 
         if (result.hasErrors()) {
             model.addAttribute("curso", curso);
-            return "curso/formulario";
+            return "administrativo/curso/formulario";
         }
 
         if (curso.getId() != null) {
@@ -59,7 +59,7 @@ public class CursoController {
         if (categoriasSelecionadas == null || categoriasSelecionadas.isEmpty()) {
             model.addAttribute("curso", curso);
             model.addAttribute("erro", "Selecione pelo menos uma categoria.");
-            return "curso/formulario";
+            return "administrativo/curso/formulario";
         }
 
         try {
@@ -85,7 +85,7 @@ public class CursoController {
         } catch (Exception e) {
             model.addAttribute("erro", e.getMessage());
             model.addAttribute("curso", curso);
-            return "curso/formulario";
+            return "administrativo/curso/formulario";
         }
     }
 
@@ -100,7 +100,7 @@ public class CursoController {
         model.addAttribute("cursos", cursos);
         model.addAttribute("paginaAtual", page);
 
-        return "curso/lista";
+        return "administrativo/curso/lista";
     }
 
     @GetMapping("filtrarPesquisa")
@@ -118,7 +118,7 @@ public class CursoController {
             model.addAttribute("paginaAtual", page);
             model.addAttribute("vazio", cursos.isEmpty());
 
-            return "curso/pesquisaFiltro/lista";
+            return "administrativo/curso/pesquisaFiltro/lista";
         }
         else {
             return "redirect:/curso/listar";
@@ -155,18 +155,86 @@ public class CursoController {
             model.addAttribute("vazio", cursos.isEmpty());
         }
 
-        return "curso/filtro/lista";
+        return "administrativo/curso/filtro/lista";
     }
 
     @GetMapping("editar/{id}")
     public String editar(@PathVariable Long id, Model model) {
         model.addAttribute("curso", service.buscarPorId(id));
-        return "curso/formulario";
+        return "administrativo/curso/formulario";
     }
 
     @PostMapping("remover/{id}")
     public String remover(@PathVariable Long id) {
         service.deletarPorId(id);
         return "redirect:/curso/listar";
+    }
+
+    @GetMapping("listarUsuarioSimples")
+    public String listarUsuarioSimples(@RequestParam(defaultValue = "0") int page,
+                         @RequestParam(defaultValue = "12") int size,
+                         Model model) {
+
+        Page<Curso> cursos = service.listarPaginados(page, size);
+
+        model.addAttribute("cursos", cursos);
+        model.addAttribute("paginaAtual", page);
+
+        return "usuario-simples/curso/lista";
+    }
+
+    @GetMapping("filtrarPesquisaUsuarioSimples")
+    public String filtrarPesquisaUsuarioSimples(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(required = false) String pesquisa,
+            Model model) {
+
+        if (!pesquisa.isEmpty()){
+            Page<Curso> cursos = service.filtrarPesquisa(pesquisa, page, size);
+
+            model.addAttribute("pesquisa", pesquisa);
+            model.addAttribute("cursos", cursos);
+            model.addAttribute("paginaAtual", page);
+            model.addAttribute("vazio", cursos.isEmpty());
+
+            return "usuario-simples/curso/pesquisaFiltro/lista";
+        }
+        else {
+            return "redirect:/curso/listarUsuarioSimples";
+        }
+    }
+
+    @GetMapping("filtrarUsuarioSimples")
+    public String filtrarUsuarioSimples(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String categoria,
+            @RequestParam(required = false) String periodo,
+            Model model) {
+
+        boolean temCategoria = (categoria != null && !categoria.isEmpty());
+        boolean temPeriodo = (periodo != null && !periodo.isEmpty());
+        boolean temStatus = (status != null && !status.isEmpty());
+
+        Page<Curso> cursos = service.filtrar(categoria, periodo, status, page, size);
+
+        model.addAttribute("cursos", cursos);
+        model.addAttribute("paginaAtual", page);
+        model.addAttribute("categoria", categoria);
+        model.addAttribute("status", status);
+        model.addAttribute("periodo", periodo);
+        model.addAttribute("vazio", false);
+
+        if (!temCategoria && !temStatus && !temPeriodo) {
+            return "redirect:/curso/listarUsuarioSimples";
+        }
+
+        if (cursos.isEmpty()){
+            model.addAttribute("vazio", cursos.isEmpty());
+        }
+
+        return "usuario-simples/curso/filtro/lista";
     }
 }
