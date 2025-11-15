@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Lista de Voluntario</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<div th:replace="/usuario-simples/navbar/dashboard :: menu"></div>
+
+<div class="container">
+  <div class="header-bar">
+    <div class="header-title">
+      <h1>Lista de Voluntarios</h1>
+    </div>
+
+    <div class="header-actions">
+      <div class="pesquisa-box">
+        <form method="get" th:action="@{/voluntario/filtrarPesquisaUsuarioSimples}">
+          <input type="text" name="pesquisa" class="campo-pesquisa" placeholder="Pesquisar..." th:value="${pesquisa}">
+          <button class="btn-pesquisar" type="submit">
+            <i class="fa fa-search"></i>
+          </button>
+        </form>
+      </div>
+
+      <button class="filter-btn" id="toggleFilter">
+        <i class="fas fa-filter"></i> Filtrar <i class="fas fa-chevron-down"></i>
+      </button>
+    </div>
+  </div>
+
+  <form th:action="@{/voluntario/filtrarUsuarioSimples}" method="get" class="filter-panel-voluntario" id="filterPanel">
+    <div class="filter-section">
+      <div class="filter-header"><i class="fas fa-id-card" id="filtro-icones"></i> Identidade </div>
+      <div class="filter-options">
+        <label><input type="checkbox" name="nome" value="true"> Nome</label>
+        <label><input type="checkbox" name="cpf" value="true"> CPF</label>
+        <label><input type="checkbox" name="email" value="true"> E-mail</label>
+        <label><input type="checkbox" name="telefone" value="true"> Telefone</label>
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <div class="filter-header"><i class="fas fa-venus-mars" id="filtro-icones1"></i> Gênero </div>
+      <div class="filter-options">
+        <label><input type="radio" name="genero" value="MASCULINO"> Masculino</label>
+        <label><input type="radio" name="genero" value="FEMININO"> Feminino</label>
+        <label><input type="radio" name="genero" value="TODOS"> Todos</label>
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <div class="filter-header"><i class="fas fa-map-marker-alt" id="filtro-icones2"></i> Localização </div>
+      <div class="filter-options">
+        <label><input type="checkbox" name="cep" value="true"> CEP</label>
+        <label><input type="checkbox" name="bairro" value="true"> Bairro</label>
+        <label><input type="checkbox" name="endereco" value="true"> Endereco</label>
+        <label><input type="checkbox" name="cidade" value="true"> Cidade</label>
+        <label><input type="checkbox" name="estado" value="true"> Estado</label>
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <div class="filter-header"><i class="fa-solid fa-wrench" id="filtro-icones3"> Funções </i></div>
+      <div class="filter-options">
+        <label th:each="funcao : ${funcoesVoluntario}">
+          <input type="checkbox" name="funcoes" th:value="${funcao.id}"
+                 th:checked="${funcoesIds != null and funcoesIds.contains(funcao.id)}">
+          <span th:text="${funcao.nome}"></span>
+        </label>
+      </div>
+    </div>
+
+
+    <button class="btn-buscar-filtro-voluntario" type="submit">
+      <i class="fa fa-search"></i> Buscar
+    </button>
+  </form>
+
+  <div th:if="${vazio}" class="vazio">
+    <h1>Nenhum Voluntario Encontrado :\</h1>
+  </div>
+
+  <table th:if="${!vazio}">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>Nome</th>
+      <th>CPF</th>
+      <th>Email</th>
+      <th>Função</th>
+      <th>Status</th>
+      <th>Ações</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="voluntario : ${voluntarios}">
+      <td data-label="ID" th:text="${voluntario.id}">1</td>
+      <td data-label="Nome" th:text="${voluntario.nome}">Nome</td>
+      <td data-label="CPF" th:text="${voluntario.cpf}">CPF</td>
+      <td data-label="Email" th:text="${voluntario.email}">Email</td>
+      <td data-label="Função" th:text="${voluntario.funcao != null ? voluntario.funcao.nome : 'Sem função'}">Função</td>
+      <td data-label="Status" th:text="${voluntario.status}">Status</td>
+      <td data-label="Ações" class="actions">
+        <a th:href="@{'/voluntario/visualizaUsuarioSimples/' + ${voluntario.id}}" class="btn-visualizar"><i class="fas fa-eye"></i></a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <form th:if="${!vazio}" class="action-botton-page" th:action="@{/voluntario/listarUsuarioSimples}" method="get">
+    <input type="hidden" name="pesquisa" th:value="${pesquisa}">
+
+    <h1>Página</h1>
+    <button th:if="${voluntarios.hasPrevious()}" type="submit" name="page" th:value="${voluntarios.number - 1}" th:text="${voluntarios.number}"></button>
+    <button class="active" type="submit" name="page" th:value="${voluntarios.number}" th:text="${voluntarios.number + 1}"></button>
+    <button th:if="${voluntarios.hasNext()}" type="submit" name="page" th:value="${voluntarios.number + 1}" th:text="${voluntarios.number + 2}"></button>
+  </form>
+</div>
+
+<script>
+  const toggleButton = document.getElementById('toggleFilter');
+  const filterPanel = document.getElementById('filterPanel');
+  let open = false;
+
+  toggleButton.addEventListener('click', () => {
+    open = !open;
+    filterPanel.style.display = open ? 'grid' : 'none';
+    toggleButton.querySelector('.fa-chevron-down').style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
+  });
+
+  const maxTotal = 5;
+    const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+    let checkedOrder = [];
+
+    allCheckboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', () => {
+        if (checkbox.checked) {
+          checkedOrder.push(checkbox);
+
+          if (checkedOrder.length > maxTotal) {
+            const firstChecked = checkedOrder.shift();
+            firstChecked.checked = false;
+          }
+        } else {
+          checkedOrder = checkedOrder.filter(c => c !== checkbox);
+        }
+      });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/imgens}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body th:fragment="menu">
+
+<div class="topbar">
+    <div class="topbar-left">
+        <button class="menu-toggle" id="menuToggleBtn">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <h1 id="painel-title">Painel Usuario Simples</h1>
+    </div>
+
+    <div class="topbar-right">
+        <img class="img-user" th:src="@{/imagens/usuario.jpg}" alt="usuario Ong" height="50px"/>
+        <div class="user-menu hidden" id="userMenu">
+            <a th:href="@{/logout}">Mudar de Usuario</a>
+            <a th:href="@{/logout}">Sair</a>
+        </div>
+    </div>
+</div>
+
+<ul class="sidebar collapsed" id="sidebar">
+    <li><a href="/curso/listarUsuarioSimples"><i class="fa-solid fa-table"></i><span>Formulários</span></a></li>
+    <li><a href="/aluno/listarUsuarioSimples"><i class="fa-solid fa-user-graduate"></i><span>Alunos</span></a></li>
+    <li><a href="/voluntario/listarUsuarioSimples"><i class="fa-solid fa-handshake-angle"></i><span>Voluntários</span></a></li>
+    <li><a href="/relatorio/listarUsuarioSimples"><i class="fa-solid fa-file-excel"></i><span>Relatórios</span></a></li>
+
+    <div class="sidebar-logo">
+        <a href="/curso/listarUsuarioSimples">
+            <img th:src="@{/imagens/logo.png}" alt="Logo ONG"/>
+        </a>
+    </div>
+</ul>
+
+<script>
+    const sidebar = document.getElementById('sidebar');
+    const menuToggleBtn = document.getElementById('menuToggleBtn');
+    const sidebarLinks = document.querySelectorAll('.sidebar li a');
+
+    menuToggleBtn.addEventListener('click', () => {
+      if (window.innerWidth <= 768) {
+        sidebar.classList.toggle('active');
+      } else {
+        sidebar.classList.toggle('collapsed');
+      }
+    });
+
+    sidebarLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+          sidebar.classList.remove('active');
+        } else {
+          sidebar.classList.add('collapsed');
+        }
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (window.innerWidth <= 768 && !sidebar.contains(e.target) && !menuToggleBtn.contains(e.target)) {
+        sidebar.classList.remove('active');
+      }
+    });
+</script>
+
+<script>
+    const userImg = document.querySelector(".img-user");
+    const userMenu = document.getElementById("userMenu");
+
+    userImg.addEventListener("click", () => {
+        userMenu.classList.toggle("hidden");
+    });
+
+    document.addEventListener("click", (e) => {
+        if (!userMenu.contains(e.target) && !userImg.contains(e.target)) {
+            userMenu.classList.add("hidden");
+        }
+    });
+</script>
+
+</body>
+</html>
