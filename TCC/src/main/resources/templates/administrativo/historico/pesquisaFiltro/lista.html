@@ -26,7 +26,7 @@
             </button>
           </form>
         </div>
-        <button class="filter-btn" id="toggleFilter">
+        <button class="filter-btn-historico" id="toggleFilter">
           <i class="fas fa-filter"></i> Filtrar <i class="fas fa-chevron-down"></i>
         </button>
       </div>
@@ -68,12 +68,12 @@
     </thead>
     <tbody>
     <tr th:each="historico : ${historicos}">
-      <td th:text="${historico.id}"></td>
-      <td th:text="${historico.nome}"></td>
-      <td th:text="${historico.email}"></td>
-      <td th:text="${historico.status}"></td>
-      <td th:text="${historico.tipo}"></td>
-      <td class="actions">
+      <td data-label="ID" th:text="${historico.id}"></td>
+      <td data-label="Nome" th:text="${historico.nome}"></td>
+      <td data-label="Email" th:text="${historico.email}"></td>
+      <td data-label="Status" th:text="${historico.status}"></td>
+      <td data-label="Tipo" th:text="${historico.tipo}"></td>
+      <td data-label="Ações" class="actions">
         <a th:if="${historico.tipo == 'Aluno'}" th:href="@{'/historico/visualizaAluno/' + ${historico.id}}" class="btn-visualizar">Visualizar</a>
         <a th:if="${historico.tipo == 'Voluntario'}" th:href="@{'/historico/visualizaVoluntario/' + ${historico.id}}" class="btn-visualizar">Visualizar</a>
         <a th:if="${historico.tipo == 'EmpresaParceira'}" th:href="@{'/historico/visualizaEmpresaParceira/' + ${historico.id}}" class="btn-visualizar">Visualizar</a>
@@ -95,8 +95,7 @@
                     <form th:case="'Usuario'" th:action="@{'/historico/ativarUsuario/' + ${historico.id}}" method="post" style="display:inline">
                         <button type="submit" class="btn-editar">Ativar</button>
                     </form>
-                </span>
-
+        </span>
       </td>
     </tr>
     </tbody>

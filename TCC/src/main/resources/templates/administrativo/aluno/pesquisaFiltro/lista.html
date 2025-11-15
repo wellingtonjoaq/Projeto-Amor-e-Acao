@@ -103,13 +103,12 @@
     </thead>
     <tbody>
     <tr th:each="aluno : ${alunos}">
-      <td th:text="${aluno.id}">1</td>
-      <td th:text="${aluno.nome}">Nome</td>
-      <td th:text="${aluno.cpf}">CPF</td>
-      <td th:text="${aluno.email}">Email</td>
-      <td th:text="${aluno.telefone}">Telefone</td>
-      <td th:text="${aluno.status}">Status</td>
-      <td class="actions">
+      <td data-label="ID" th:text="${aluno.id}">1</td>
+      <td data-label="Nome" th:text="${aluno.nome}">Nome</td>
+      <td data-label="CPF" th:text="${aluno.cpf}">CPF</td>
+      <td data-label="Cursos" th:text="${aluno.matriculas != null and !aluno.matriculas.isEmpty() ? aluno.matriculas[0].curso.nome : 'Sem curso'}"></td>
+      <td data-label="Status" th:text="${aluno.status}">Status</td>
+      <td data-label="Ações" class="actions">
         <a th:href="@{'/aluno/visualiza/' + ${aluno.id}}" class="btn-visualizar"><i class="fas fa-eye"></i></a>
         <a th:href="@{'/aluno/editar/' + ${aluno.id}}"><i class="fas fa-edit"></i></a>
         <a href="#" class="delete-btn" th:attr="data-id=${aluno.id}, data-nome=${aluno.nome}">

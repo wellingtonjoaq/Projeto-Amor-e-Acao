@@ -22,7 +22,59 @@
             <i class="fa-solid fa-bell"></i>
         </button>
         <img class="img-user" th:src="@{/imagens/usuario.jpg}" alt="usuario Ong" height="50px"/>
+        <div class="user-menu hidden" id="userMenu">
+            <a href="">Mudar de Administrador</a>
+            <a href="">Sair</a>
+        </div>
     </div>
+</div>
+
+<div id="notificationModal" class="notification-modal hidden">
+    <div class="notif-header">
+        <h2>Notificações</h2>
+    </div>
+
+    <div class="notif-section">
+        <h3>Hoje</h3>
+
+        <div class="notif-item">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span>Wellington Joaquim | Aluno</span>
+            <button class="btn-view"><i class="fa-solid fa-eye"></i></button>
+        </div>
+
+        <div class="notif-item">
+            <i class="fa-solid fa-handshake"></i>
+            <span>Wellington Joaquim | Voluntário</span>
+            <button class="btn-view"><i class="fa-solid fa-eye"></i></button>
+        </div>
+
+        <div class="notif-item">
+            <i class="fa-solid fa-building"></i>
+            <span>Empresa | Parceria</span>
+            <button class="btn-view"><i class="fa-solid fa-eye"></i></button>
+        </div>
+    </div>
+
+    <div class="notif-section">
+        <h3>Ontem</h3>
+        <div class="notif-item">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span>Wellington Joaquim | Aluno</span>
+            <button class="btn-view"><i class="fa-solid fa-eye"></i></button>
+        </div>
+    </div>
+
+    <div class="notif-section">
+        <h3>Esta semana</h3>
+        <div class="notif-item">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span>Wellington Joaquim | Aluno</span>
+            <button class="btn-view"><i class="fa-solid fa-eye"></i></button>
+        </div>
+    </div>
+
+    <button class="btn-all">Ver todas</button>
 </div>
 
 <ul class="sidebar collapsed" id="sidebar">
@@ -47,7 +99,6 @@
     const menuToggleBtn = document.getElementById('menuToggleBtn');
     const sidebarLinks = document.querySelectorAll('.sidebar li a');
 
-    // Toggle manual (desktop e mobile)
     menuToggleBtn.addEventListener('click', () => {
       if (window.innerWidth <= 768) {
         sidebar.classList.toggle('active');
@@ -56,7 +107,6 @@
       }
     });
 
-    // Fecha sidebar ao clicar em link
     sidebarLinks.forEach(link => {
       link.addEventListener('click', () => {
         if (window.innerWidth <= 768) {
@@ -67,15 +117,40 @@
       });
     });
 
-    // Fecha se clicar fora (mobile)
     document.addEventListener('click', (e) => {
       if (window.innerWidth <= 768 && !sidebar.contains(e.target) && !menuToggleBtn.contains(e.target)) {
         sidebar.classList.remove('active');
       }
     });
 </script>
+<script>
+    const notifBtn = document.querySelector(".icon-button");
+    const notifModal = document.getElementById("notificationModal");
 
+    notifBtn.addEventListener("click", () => {
+        notifModal.classList.toggle("hidden");
+    });
 
+    document.addEventListener("click", (e) => {
+        if (!notifModal.contains(e.target) && !notifBtn.contains(e.target)) {
+            notifModal.classList.add("hidden");
+        }
+    });
+</script>
+<script>
+    const userImg = document.querySelector(".img-user");
+    const userMenu = document.getElementById("userMenu");
+
+    userImg.addEventListener("click", () => {
+        userMenu.classList.toggle("hidden");
+    });
+
+    document.addEventListener("click", (e) => {
+        if (!userMenu.contains(e.target) && !userImg.contains(e.target)) {
+            userMenu.classList.add("hidden");
+        }
+    });
+</script>
 
 </body>
 </html>
