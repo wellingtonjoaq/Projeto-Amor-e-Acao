@@ -20,7 +20,12 @@ public class RelatorioController {
 
     @GetMapping("/listar")
     public String mostrarPaginaListar(Model model) {
-        return "relatorio/listar";
+        return "administrativo/relatorio/listar";
+    }
+
+    @GetMapping("/listarUsuarioSimples")
+    public String mostrarPaginaListarUsuarioSimples(Model model) {
+        return "usuario-simples/relatorio/listar";
     }
 
     @GetMapping("/relatorios/alunos/pdf")

@@ -39,7 +39,7 @@ public class HistoricoController {
 
         Page<HistoricoDTO> historicos = service.listarHistorico(page, size);
         model.addAttribute("historicos", historicos);
-        return "historico/lista";
+        return "administrativo/historico/lista";
     }
 
     @GetMapping("filtrarPesquisa")
@@ -55,7 +55,7 @@ public class HistoricoController {
             model.addAttribute("pesquisa", pesquisa);
             model.addAttribute("vazio", historicos.isEmpty());
 
-            return "historico/pesquisaFiltro/lista";
+            return "administrativo/historico/pesquisaFiltro/lista";
         }
         else {
             return "redirect:/historico/listar";
@@ -85,19 +85,19 @@ public class HistoricoController {
             model.addAttribute("vazio", historicos.isEmpty());
         }
 
-        return "historico/filtro/lista";
+        return "administrativo/historico/filtro/lista";
     }
 
     @GetMapping("visualizaAluno/{id}")
     public String visualizarAluno(@PathVariable Long id, Model model) {
         model.addAttribute("aluno", alunoService.buscarPorId(id));
-        return "historico/visualizarAluno";
+        return "administrativo/historico/visualizarAluno";
     }
 
     @GetMapping("visualizaVoluntario/{id}")
     public String visualizarVoluntario(@PathVariable Long id, Model model) {
         model.addAttribute("voluntario", voluntarioService.buscarPorId(id));
-        return "historico/visualizarVoluntario";
+        return "administrativo/historico/visualizarVoluntario";
     }
 
     @GetMapping("visualizaEmpresaParceira/{id}")
@@ -105,7 +105,7 @@ public class HistoricoController {
         Optional<EmpresaParceira> empresaParceira = empresaParceiraService.buscarPorId(id);
 
             model.addAttribute("empresa", empresaParceira.get());
-            return "historico/visualizarEmpresaParceira";
+            return "administrativo/historico/visualizarEmpresaParceira";
     }
 
     @GetMapping("visualizaUsuario/{id}")
@@ -113,7 +113,7 @@ public class HistoricoController {
         Optional<Usuario> usuarioOptional = usuarioService.buscarPorId(id);
 
             model.addAttribute("usuario", usuarioOptional.get());
-            return "usuario/visualizar";
+            return "administrativo/usuario/visualizar";
     }
 
     @PostMapping("/ativarAluno/{id}")

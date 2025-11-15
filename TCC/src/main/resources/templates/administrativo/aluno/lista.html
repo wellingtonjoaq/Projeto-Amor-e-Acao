@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Alunos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<div th:replace="/administrativo/navbar/dashboard :: menu"></div>
+
+<div class="container">
+
+    <div class="header-bar">
+        <div class="header-title">
+            <h1>Lista de Alunos</h1>
+        </div>
+
+        <div class="header-actions">
+            <div class="pesquisa-box">
+                <form method="get" th:action="@{/aluno/filtrarPesquisa}">
+                    <input type="text" name="pesquisa" class="campo-pesquisa" placeholder="Pesquisar..." th:value="${pesquisa}">
+                    <button class="btn-pesquisar" type="submit">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </form>
+            </div>
+
+            <button class="filter-btn" id="toggleFilter">
+                <i class="fas fa-filter"></i> Filtrar <i class="fas fa-chevron-down"></i>
+            </button>
+
+            <a th:href="@{/aluno}" class="btn-create">
+                <i class="fas fa-user-plus"></i> Novo Aluno
+            </a>
+        </div>
+    </div>
+
+    <form th:action="@{/aluno/filtrar}" method="get" class="filter-panel-aluno" id="filterPanel">
+
+        <div class="filter-section">
+            <div class="filter-header"><i class="fas fa-id-card" id="filtro-icones"></i> Identidade </div>
+            <div class="filter-options">
+                <label><input type="checkbox" name="nome" value="true"> Nome</label>
+                <label><input type="checkbox" name="cpf" value="true"> CPF</label>
+                <label><input type="checkbox" name="email" value="true"> E-mail</label>
+                <label><input type="checkbox" name="telefone" value="true"> Telefone</label>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <div class="filter-header"><i class="fas fa-venus-mars" id="filtro-icones1"></i> Gênero </div>
+            <div class="filter-options">
+                <label><input type="radio" name="genero" value="MASCULINO"> Masculino</label>
+                <label><input type="radio" name="genero" value="FEMININO"> Feminino</label>
+                <label><input type="radio" name="genero" value="TODOS"> Todos</label>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <div class="filter-header"><i class="fas fa-map-marker-alt" id="filtro-icones2"></i> Localização </div>
+            <div class="filter-options">
+                <label><input type="checkbox" name="cep" value="true"> CEP</label>
+                <label><input type="checkbox" name="bairro" value="true"> Bairro</label>
+                <label><input type="checkbox" name="endereco" value="true"> Endereco</label>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <div class="filter-header"><i class="fas fa-book" id="filtro-icones3"></i> Cursos </div>
+            <div class="filter-options">
+                <label th:each="curso : ${cursos}">
+                    <input type="checkbox" name="cursos" th:value="${curso.id}"
+                           th:checked="${cursosIds != null and cursosIds.contains(curso.id)}">
+                    <span th:text="${curso.nome}"></span>
+                </label>
+            </div>
+        </div>
+
+        <button class="btn-buscar-filtro-aluno" type="submit">
+            <i class="fa fa-search"></i> Buscar
+        </button>
+    </form>
+
+    <table>
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>Cursos</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="aluno : ${alunos}">
+            <td th:text="${aluno.id}">1</td>
+            <td th:text="${aluno.nome}">Nome</td>
+            <td th:text="${aluno.cpf}">CPF</td>
+            <td th:text="${aluno.matriculas != null and !aluno.matriculas.isEmpty() ? aluno.matriculas[0].curso.nome : 'Sem curso'}"></td>
+            <td th:text="${aluno.status}">Status</td>
+            <td class="actions">
+                <a th:href="@{'/aluno/visualiza/' + ${aluno.id}}" class="btn-visualizar"><i class="fas fa-eye"></i></a>
+                <a th:href="@{'/aluno/editar/' + ${aluno.id}}"><i class="fas fa-edit"></i></a>
+                <a href="#" class="delete-btn" th:attr="data-id=${aluno.id}, data-nome=${aluno.nome}">
+                    <i class="fas fa-trash-alt"></i>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <form class="action-botton-page" th:action="@{/aluno/listar}" method="get">
+        <h1>Página</h1>
+
+        <button th:if="${alunos.hasPrevious()}" type="submit" name="page" th:value="${alunos.number - 1}" th:text="${alunos.number}"></button>
+
+        <button class="active" type="submit" name="page" th:value="${alunos.number}" th:text="${alunos.number + 1}"></button>
+
+        <button th:if="${alunos.hasNext()}" type="submit" name="page" th:value="${alunos.number + 1}" th:text="${alunos.number + 2}"></button>
+    </form>
+</div>
+
+<div id="modal-overlay" class="modal-overlay" style="display:none;">
+    <div class="modal-content">
+        <h2>Confirmação de Exclusão</h2>
+        <p>Tem certeza que deseja excluir o aluno: <span id="modal-nome"></span>?</p>
+
+        <div class="card-actions" style="justify-content:center;">
+            <form th:action="@{/aluno/remover/{id}}" id="form-delete" method="post">
+                <button type="submit" class="delete-confirm" style="width: 100px;">Confirmar</button>
+            </form>
+            <button id="cancelar-modal" class="button-vol" style="width: 100px;">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.preventDefault();
+            const alunoId = btn.getAttribute('data-id');
+            const alunoName = btn.getAttribute('data-nome');
+
+            document.querySelector('#modal-nome').textContent = alunoName;
+            document.querySelector('#form-delete').setAttribute('action', `/aluno/remover/${alunoId}`);
+            document.querySelector('#modal-overlay').style.display = 'flex';
+        });
+    });
+
+    document.querySelector('#cancelar-modal').addEventListener('click', () => {
+        document.querySelector('#modal-overlay').style.display = 'none';
+    });
+
+    const toggleButton = document.getElementById('toggleFilter');
+    const filterPanel = document.getElementById('filterPanel');
+    let open = false;
+
+    toggleButton.addEventListener('click', () => {
+        open = !open;
+        filterPanel.style.display = open ? 'grid' : 'none';
+        toggleButton.querySelector('.fa-chevron-down').style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
+    });
+
+    const maxTotal = 5;
+    const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+    let checkedOrder = [];
+
+    allCheckboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', () => {
+        if (checkbox.checked) {
+          checkedOrder.push(checkbox);
+
+          if (checkedOrder.length > maxTotal) {
+            const firstChecked = checkedOrder.shift();
+            firstChecked.checked = false;
+          }
+        } else {
+          checkedOrder = checkedOrder.filter(c => c !== checkbox);
+        }
+      });
+    });
+</script>
+
+
+</body>
+</html>

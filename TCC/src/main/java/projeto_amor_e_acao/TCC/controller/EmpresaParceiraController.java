@@ -27,7 +27,7 @@ public class EmpresaParceiraController {
     @GetMapping()
     public String formulario(Model model) {
         model.addAttribute("empresaParceira", new EmpresaParceira());
-        return "empresaParceira/formulario";
+        return "administrativo/empresaParceira/formulario";
     }
 
     @PostMapping("/salvar")
@@ -36,7 +36,7 @@ public class EmpresaParceiraController {
             BindingResult result, Model model, RedirectAttributes redirectAttributes)
     {
         if (result.hasErrors()) {
-            return "empresaParceira/formulario";
+            return "administrativo/empresaParceira/formulario";
         }
 
         try {
@@ -54,11 +54,11 @@ public class EmpresaParceiraController {
                 result.rejectValue("email", "error.empresaParceira", e.getMessage());
             }
 
-            return "empresaParceira/formulario";
+            return "administrativo/empresaParceira/formulario";
         } catch (Exception e) {
             model.addAttribute("erro", e.getMessage());
             model.addAttribute("empresaParceira", empresaParceira);
-            return "empresaParceira/formulario";
+            return "administrativo/empresaParceira/formulario";
         }
     }
 
@@ -71,7 +71,7 @@ public class EmpresaParceiraController {
         model.addAttribute("empresasParceiras", empresasParceiras);
         model.addAttribute("paginaAtual", page);
 
-        return "empresaParceira/lista";
+        return "administrativo/empresaParceira/lista";
     }
 
     @GetMapping("filtrarPesquisa")
@@ -89,7 +89,7 @@ public class EmpresaParceiraController {
             model.addAttribute("paginaAtual", page);
             model.addAttribute("vazio", empresasParceiras.isEmpty());
 
-            return "empresaParceira/pesquisaFiltro/lista";
+            return "administrativo/empresaParceira/pesquisaFiltro/lista";
         }
         else {
             return "redirect:/empresaParceira/listar";
@@ -128,7 +128,7 @@ public class EmpresaParceiraController {
             model.addAttribute("vazio", empresasParceiras.isEmpty());
         }
 
-        return "empresaParceira/filtro/lista";
+        return "administrativo/empresaParceira/filtro/lista";
     }
 
     @GetMapping("/visualizar/{id}")
@@ -137,7 +137,7 @@ public class EmpresaParceiraController {
 
         if (empresaParceira.isPresent()) {
             model.addAttribute("empresa", empresaParceira.get());
-            return "empresaParceira/visualizar";
+            return "administrativo/empresaParceira/visualizar";
         } else {
             model.addAttribute("errorMessage",
                     "Empresa parceira não encontrada.");
@@ -151,7 +151,7 @@ public class EmpresaParceiraController {
 
         if (empresaParceira.isPresent()) {
             model.addAttribute("empresaParceira", empresaParceira.get());
-            return "empresaParceira/formulario";
+            return "administrativo/empresaParceira/formulario";
         } else {
             model.addAttribute("errorMessage",
                     "Empresa parceira não encontrada.");

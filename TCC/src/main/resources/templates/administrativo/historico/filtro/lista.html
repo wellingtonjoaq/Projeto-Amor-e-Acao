@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Historico</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<div th:replace="/administrativo/navbar/dashboard :: menu"></div>
+
+<div class="container">
+  <div class="header-bar">
+    <div class="header-title">
+      <h1>Historico</h1>
+    </div>
+
+    <div class="header-actions">
+      <div class="pesquisa-box">
+        <form method="get" th:action="@{/historico/filtrarPesquisa}">
+          <input type="text" name="pesquisa" class="campo-pesquisa" placeholder="Pesquisar..." th:value="${pesquisa}">
+          <button class="btn-pesquisar" type="submit">
+            <i class="fa fa-search"></i>
+          </button>
+        </form>
+      </div>
+
+      <button class="filter-btn" id="toggleFilter">
+        <i class="fas fa-filter"></i> Filtrar <i class="fas fa-chevron-down"></i>
+      </button>
+    </div>
+  </div>
+
+  <form th:action="@{/historico/filtrar}" method="get" class="filter-panel-usuario" id="filterPanel">
+    <div class="filter-section">
+      <div class="filter-header">
+        <i class="fas fa-id-card" id="filtro-icones"></i> Tipos de Histórico
+      </div>
+
+      <div class="filter-options">
+        <label>
+          <input type="checkbox" name="tipos" value="Aluno"
+                 th:checked="${listaTipo != null and listaTipo.contains('Aluno')}"> Aluno
+        </label>
+        <label>
+          <input type="checkbox" name="tipos" value="Voluntario"
+                 th:checked="${listaTipo != null and listaTipo.contains('Voluntario')}"> Voluntário
+        </label>
+        <label>
+          <input type="checkbox" name="tipos" value="Empresa Parceira"
+                 th:checked="${listaTipo != null and listaTipo.contains('Empresa Parceira')}"> Empresa Parceira
+        </label>
+        <label>
+          <input type="checkbox" name="tipos" value="Usuario"
+                 th:checked="${listaTipo != null and listaTipo.contains('Usuario')}"> Usuário
+        </label>
+      </div>
+    </div>
+
+    <button type="submit" class="btn-buscar-filtro-usuario">
+      <i class="fa fa-search"></i> Buscar
+    </button>
+  </form>
+
+  <div th:if="${vazio}" class="vazio">
+    <h1>Nenhum Registro Encontrado :\</h1>
+  </div>
+
+  <table th:if="${!vazio}">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>Nome</th>
+      <th>Email</th>
+      <th>Status</th>
+      <th>tipo</th>
+      <th>Ações</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="historico : ${historicos}">
+      <td th:text="${historico.id}"></td>
+      <td th:text="${historico.nome}"></td>
+      <td th:text="${historico.email}"></td>
+      <td th:text="${historico.status}"></td>
+      <td th:text="${historico.tipo}"></td>
+      <td class="actions">
+        <a th:if="${historico.tipo == 'Aluno'}" th:href="@{'/historico/visualizaAluno/' + ${historico.id}}" class="btn-visualizar">Visualizar</a>
+        <a th:if="${historico.tipo == 'Voluntario'}" th:href="@{'/historico/visualizaVoluntario/' + ${historico.id}}" class="btn-visualizar">Visualizar</a>
+        <a th:if="${historico.tipo == 'EmpresaParceira'}" th:href="@{'/historico/visualizaEmpresaParceira/' + ${historico.id}}" class="btn-visualizar">Visualizar</a>
+        <a th:if="${historico.tipo == 'Usuario'}" th:href="@{'/historico/visualizaUsuario/' + ${historico.id}}" class="btn-visualizar">Visualizar</a>
+
+        <span th:switch="${historico.tipo}">
+                    <form th:case="'Aluno'" th:action="@{'/historico/ativarAluno/' + ${historico.id}}" method="post" style="display:inline">
+                        <button type="submit" class="btn-editar">Ativar</button>
+                    </form>
+
+                    <form th:case="'Voluntario'" th:action="@{'/historico/ativarVoluntario/' + ${historico.id}}" method="post" style="display:inline">
+                        <button type="submit" class="btn-editar">Ativar</button>
+                    </form>
+
+                    <form th:case="'EmpresaParceira'" th:action="@{'/historico/ativarEmpresaParceira/' + ${historico.id}}" method="post" style="display:inline">
+                        <button type="submit" class="btn-editar">Ativar</button>
+                    </form>
+
+                    <form th:case="'Usuario'" th:action="@{'/historico/ativarUsuario/' + ${historico.id}}" method="post" style="display:inline">
+                        <button type="submit" class="btn-editar">Ativar</button>
+                    </form>
+                </span>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <form th:if="${!vazio}" class="action-botton-page" th:action="@{/historico/filtrarPesquisa}" method="get">
+    <input type="hidden" name="pesquisa" th:value="${pesquisa}">
+
+    <h1>Página</h1>
+    <button th:if="${historicos.hasPrevious()}" type="submit" name="page" th:value="${historicos.number - 1}" th:text="${historicos.number}"></button>
+    <button class="active" type="submit" name="page" th:value="${historicos.number}" th:text="${historicos.number + 1}"></button>
+    <button th:if="${historicos.hasNext()}" type="submit" name="page" th:value="${historicos.number + 1}" th:text="${historicos.number + 2}"></button>
+  </form>
+</div>
+<script>
+  const toggleButton = document.getElementById('toggleFilter');
+  const filterPanel = document.getElementById('filterPanel');
+  let open = false;
+
+  toggleButton.addEventListener('click', () => {
+    open = !open;
+    filterPanel.style.display = open ? 'grid' : 'none';
+    toggleButton.querySelector('.fa-chevron-down').style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
+  });
+</script>
+</body>
+</html>

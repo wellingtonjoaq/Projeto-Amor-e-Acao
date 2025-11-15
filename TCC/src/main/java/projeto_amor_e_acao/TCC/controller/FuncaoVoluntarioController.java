@@ -21,7 +21,7 @@ public class FuncaoVoluntarioController {
     @GetMapping()
     public String formulario(FuncaoVoluntario funcaoVoluntario, Model model) {
         model.addAttribute("funcao", new FuncaoVoluntario());
-        return "funcao/formulario";
+        return "administrativo/funcao/formulario";
     }
 
     @PostMapping("salvar")
@@ -29,7 +29,7 @@ public class FuncaoVoluntarioController {
 
         if (result.hasErrors()) {
             model.addAttribute("funcao", funcaoVoluntario);
-            return "funcao/formulario";
+            return "administrativo/funcao/formulario";
         }
 
         try {
@@ -38,14 +38,14 @@ public class FuncaoVoluntarioController {
 
         } catch (Exception e) {
             model.addAttribute("erro", e.getMessage());
-            return "funcao/lista";
+            return "administrativo/funcao/lista";
         }
     }
 
     @GetMapping("listar")
     public String listar(Model model) {
         model.addAttribute("funcoes", service.listarTodos());
-        return "funcao/lista";
+        return "administrativo/funcao/lista";
     }
 
     @GetMapping("filtrarPesquisa")
@@ -60,7 +60,7 @@ public class FuncaoVoluntarioController {
             model.addAttribute("funcoes", funcoes);
             model.addAttribute("vazio", funcoes.isEmpty());
 
-            return "funcao/pesquisaFiltro/lista";
+            return "administrativo/funcao/pesquisaFiltro/lista";
         }
         else {
 
@@ -71,13 +71,13 @@ public class FuncaoVoluntarioController {
     @GetMapping("visualiza/{id}")
     public String visualizar(@PathVariable Long id, Model model) {
         model.addAttribute("funcao", service.buscarPorId(id));
-        return "funcao/visualizar";
+        return "administrativo/funcao/visualizar";
     }
 
     @GetMapping("editar/{id}")
     public String editar(@PathVariable Long id, Model model) {
         model.addAttribute("funcao", service.buscarPorId(id));
-        return "funcao/formulario";
+        return "administrativo/funcao/formulario";
     }
 
 

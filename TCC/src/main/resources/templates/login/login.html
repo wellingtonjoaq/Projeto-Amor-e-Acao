@@ -14,7 +14,15 @@
         <h2>Bem-vindo</h2>
         <p>Faça login para acessar o painel administrativo</p>
 
-        <form action="/login" method="post">
+        <div th:if="${param.error}" class="error-message">
+            <p><i class="fa fa-exclamation-circle"></i> Usuário ou senha incorretos.</p>
+        </div>
+
+        <div th:if="${param.logout}" class="success-message">
+            <p><i class="fa fa-check-circle"></i> Logout realizado com sucesso.</p>
+        </div>
+
+        <form th:action="@{/login}" method="post">
             <div class="input-group">
                 <i class="fa fa-user"></i>
                 <input type="text" name="username" placeholder="Digite seu usuário" autocomplete="username" required>
@@ -28,7 +36,7 @@
             <button type="submit" class="btn-login">Entrar</button>
 
             <div class="forgot-password">
-                <a href="/">Esqueceu a senha?</a>
+                <a th:href="@{/login/esqueciSenha}">Esqueceu a senha?</a>
             </div>
         </form>
     </div>

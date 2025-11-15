@@ -30,7 +30,7 @@ public class VoluntarioController {
     @GetMapping()
     public String formulario(Voluntario voluntario, Model model) {
         model.addAttribute("funcoesVoluntario", funcaoVoluntarioService.listarTodos());
-        return "voluntario/formulario";
+        return "administrativo/voluntario/formulario";
     }
 
     @PostMapping("salvar")
@@ -42,7 +42,7 @@ public class VoluntarioController {
 
         if (result.hasErrors()) {
             model.addAttribute("funcoesVoluntario", funcaoVoluntarioService.listarTodos());
-            return "voluntario/formulario";
+            return "administrativo/voluntario/formulario";
         }
 
         try {
@@ -51,7 +51,7 @@ public class VoluntarioController {
         } catch (Exception e) {
             model.addAttribute("erro", e.getMessage());
             model.addAttribute("funcoesVoluntario", funcaoVoluntarioService.listarTodos());
-            return "voluntario/formulario";
+            return "administrativo/voluntario/formulario";
         }
     }
 
@@ -65,7 +65,7 @@ public class VoluntarioController {
         model.addAttribute("voluntarios", voluntarios);
         model.addAttribute("funcoesVoluntario", funcaoVoluntarioService.listarTodos());
         model.addAttribute("paginaAtual", page);
-        return "voluntario/lista";
+        return "administrativo/voluntario/lista";
     }
 
     @GetMapping("filtrarPesquisa")
@@ -84,7 +84,7 @@ public class VoluntarioController {
             model.addAttribute("paginaAtual", page);
             model.addAttribute("vazio", voluntarios.isEmpty());
 
-            return "voluntario/pesquisaFiltro/lista";
+            return "administrativo/voluntario/pesquisaFiltro/lista";
         }
         else {
             return "redirect:/voluntario/listar";
@@ -142,25 +142,121 @@ public class VoluntarioController {
             model.addAttribute("vazio", voluntarios.isEmpty());
         }
 
-        return "voluntario/filtro/lista";
+        return "administrativo/voluntario/filtro/lista";
     }
 
     @GetMapping("visualiza/{id}")
     public String visualizar(@PathVariable Long id,Model model) {
         model.addAttribute("voluntario", service.buscarPorId(id));
-        return "voluntario/visualizar";
+        return "administrativo/voluntario/visualizar";
     }
 
     @GetMapping("editar/{id}")
     public String editar(@PathVariable Long id, Model model) {
         model.addAttribute("funcoesVoluntario", funcaoVoluntarioService.listarTodos());
         model.addAttribute("voluntario", service.buscarPorId(id));
-        return "voluntario/formulario";
+        return "administrativo/voluntario/formulario";
     }
 
     @PostMapping("remover/{id}")
     public String remover(@PathVariable Long id, Model model) {
         service.deletarPorId(id);
         return "redirect:/voluntario/listar";
+    }
+
+    @GetMapping("listarUsuarioSimples")
+    public String listarUsuarioSimples(@RequestParam(defaultValue = "0") int page,
+                         @RequestParam(defaultValue = "20") int size,
+                         Model model) {
+
+        Page<Voluntario> voluntarios = service.listarAtivos(page, size);
+
+        model.addAttribute("voluntarios", voluntarios);
+        model.addAttribute("funcoesVoluntario", funcaoVoluntarioService.listarTodos());
+        model.addAttribute("paginaAtual", page);
+        return "usuario-simples/voluntario/lista";
+    }
+
+    @GetMapping("filtrarPesquisaUsuarioSimples")
+    public String filtrarPesquisaUsuarioSimples(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(required = false) String pesquisa,
+            Model model) {
+
+        if (!pesquisa.isEmpty()){
+            Page<Voluntario> voluntarios = service.filtrarPesquisa("ATIVO", pesquisa, page, size);
+
+            model.addAttribute("pesquisa", pesquisa);
+            model.addAttribute("voluntarios", voluntarios);
+            model.addAttribute("funcoesVoluntario", funcaoVoluntarioService.listarTodos());
+            model.addAttribute("paginaAtual", page);
+            model.addAttribute("vazio", voluntarios.isEmpty());
+
+            return "usuario-simples/voluntario/pesquisaFiltro/lista";
+        }
+        else {
+            return "redirect:/voluntario/listarUsuarioSimples";
+        }
+
+    }
+
+    @GetMapping("filtrarUsuarioSimples")
+    public String filtrarUsuarioSimples(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(required = false) String genero,
+            @RequestParam(required = false, name = "funcoes") List<Long> funcoesIds,
+            @RequestParam(required = false) Boolean nome,
+            @RequestParam(required = false) Boolean cpf,
+            @RequestParam(required = false) Boolean email,
+            @RequestParam(required = false) Boolean telefone,
+            @RequestParam(required = false) Boolean cep,
+            @RequestParam(required = false) Boolean bairro,
+            @RequestParam(required = false) Boolean endereco,
+            @RequestParam(required = false) Boolean cidade,
+            @RequestParam(required = false) Boolean estado,
+            Model model) {
+
+        List<FuncaoVoluntario> funcoes = (funcoesIds != null && !funcoesIds.isEmpty())
+                ? funcaoVoluntarioService.buscarPorIds(funcoesIds)
+                : Collections.emptyList();
+
+        boolean temFuncao = !funcoes.isEmpty();
+        boolean temGenero = (genero != null && !genero.isBlank());
+
+        Page<Voluntario> voluntarios = service.filtrar(funcoes, genero, page, size);
+
+        model.addAttribute("voluntarios", voluntarios);
+        model.addAttribute("paginaAtual", page);
+        model.addAttribute("funcoesVoluntario", funcaoVoluntarioService.listarTodos());
+        model.addAttribute("funcoesIds", funcoesIds);
+        model.addAttribute("genero", genero);
+        model.addAttribute("nome", nome);
+        model.addAttribute("cpf", cpf);
+        model.addAttribute("email", email);
+        model.addAttribute("telefone", telefone);
+        model.addAttribute("cep", cep);
+        model.addAttribute("bairro", bairro);
+        model.addAttribute("endereco", endereco);
+        model.addAttribute("cidade", cidade);
+        model.addAttribute("estado", estado);
+        model.addAttribute("vazio", false);
+
+        if (!temFuncao && !temGenero && nome == null && cpf == null && email == null && telefone == null && cep == null && bairro == null && endereco == null && cidade == null && estado == null) {
+            return "redirect:/voluntario/listarUsuarioSimples";
+        }
+
+        if (voluntarios.isEmpty()){
+            model.addAttribute("vazio", voluntarios.isEmpty());
+        }
+
+        return "usuario-simples/voluntario/filtro/lista";
+    }
+
+    @GetMapping("visualizaUsuarioSimples/{id}")
+    public String visualizaUsuarioSimples(@PathVariable Long id,Model model) {
+        model.addAttribute("voluntario", service.buscarPorId(id));
+        return "usuario-simples/voluntario/visualizar";
     }
 }

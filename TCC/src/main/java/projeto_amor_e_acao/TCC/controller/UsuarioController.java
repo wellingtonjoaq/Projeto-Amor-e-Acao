@@ -27,7 +27,7 @@ public class UsuarioController {
     public String formulario(Model model) {
         model.addAttribute("usuario", new Usuario());
         model.addAttribute("acao", "criar");
-        return "usuario/formulario";
+        return "administrativo/usuario/formulario";
     }
 
     @PostMapping("salvar")
@@ -37,7 +37,7 @@ public class UsuarioController {
         if (result.hasErrors()) {
             model.addAttribute("usuario", usuario);
             model.addAttribute("acao", "criar");
-            return "usuario/formulario";
+            return "administrativo/usuario/formulario";
         }
 
         try {
@@ -54,19 +54,19 @@ public class UsuarioController {
             }
             model.addAttribute("usuario", usuario);
             model.addAttribute("acao", "criar");
-            return "usuario/formulario";
+            return "administrativo/usuario/formulario";
         } catch (IllegalArgumentException e) {
             if (e.getMessage().contains("Senha")) {
                 result.rejectValue("senha", "error.usuario", e.getMessage());
             }
             model.addAttribute("usuario", usuario);
             model.addAttribute("acao", "criar");
-            return "usuario/formulario";
+            return "administrativo/usuario/formulario";
         } catch (Exception e) {
             model.addAttribute("erro", e.getMessage());
             model.addAttribute("usuario", usuario);
             model.addAttribute("acao", "criar");
-            return "usuario/formulario";
+            return "administrativo/usuario/formulario";
         }
     }
 
@@ -79,7 +79,7 @@ public class UsuarioController {
         if (result.hasFieldErrors("nome") || result.hasFieldErrors("email")) {
             model.addAttribute("usuario", usuario);
             model.addAttribute("acao", "editar");
-            return "usuario/formulario";
+            return "administrativo/usuario/formulario";
         }
 
         try {
@@ -106,7 +106,7 @@ public class UsuarioController {
             }
             model.addAttribute("usuario", usuario);
             model.addAttribute("acao", "editar");
-            return "usuario/formulario";
+            return "administrativo/usuario/formulario";
 
         } catch (IllegalArgumentException e) {
             if (e.getMessage().contains("Senha")) {
@@ -114,13 +114,13 @@ public class UsuarioController {
             }
             model.addAttribute("usuario", usuario);
             model.addAttribute("acao", "editar");
-            return "usuario/formulario";
+            return "administrativo/usuario/formulario";
 
         } catch (Exception e) {
             model.addAttribute("usuario", usuario);
             model.addAttribute("acao", "editar");
             model.addAttribute("erro", e.getMessage());
-            return "usuario/formulario";
+            return "administrativo/usuario/formulario";
         }
     }
 
@@ -133,7 +133,7 @@ public class UsuarioController {
 
         model.addAttribute("usuarios", usuarios);
         model.addAttribute("paginaAtual", page);
-        return "usuario/lista";
+        return "administrativo/usuario/lista";
     }
 
     @GetMapping("filtrarPesquisa")
@@ -151,7 +151,7 @@ public class UsuarioController {
             model.addAttribute("paginaAtual", page);
             model.addAttribute("vazio", usuarios.isEmpty());
 
-            return "usuario/pesquisaFiltro/lista";
+            return "administrativo/usuario/pesquisaFiltro/lista";
         }
         else {
             return "redirect:/usuario/listar";
@@ -184,7 +184,7 @@ public class UsuarioController {
             model.addAttribute("vazio", usuarios.isEmpty());
         }
 
-        return "usuario/filtro/lista";
+        return "administrativo/usuario/filtro/lista";
     }
 
     @GetMapping("/visualizar/{id}")
@@ -192,7 +192,7 @@ public class UsuarioController {
         Optional<Usuario> usuarioOptional = service.buscarPorId(id);
         if (usuarioOptional.isPresent()) {
             model.addAttribute("usuario", usuarioOptional.get());
-            return "usuario/visualizar";
+            return "administrativo/usuario/visualizar";
         } else {
             return "redirect:/usuario/listar";
         }
@@ -207,7 +207,7 @@ public class UsuarioController {
 
         model.addAttribute("usuario", usuario);
         model.addAttribute("acao", "editar");
-        return "usuario/formulario";
+        return "administrativo/usuario/formulario";
     }
 
     @PostMapping("/remover/{id}")
