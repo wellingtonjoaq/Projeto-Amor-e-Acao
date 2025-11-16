@@ -37,6 +37,9 @@ public class HistoricoController {
                          @RequestParam(defaultValue = "20") int size,
                          Model model) {
 
+        Usuario usuario = usuarioService.getUsuarioLogado();
+        model.addAttribute("usuarioLogado", usuario);
+
         Page<HistoricoDTO> historicos = service.listarHistorico(page, size);
         model.addAttribute("historicos", historicos);
         return "administrativo/historico/lista";
@@ -54,6 +57,9 @@ public class HistoricoController {
             model.addAttribute("historicos", historicos);
             model.addAttribute("pesquisa", pesquisa);
             model.addAttribute("vazio", historicos.isEmpty());
+
+            Usuario usuario = usuarioService.getUsuarioLogado();
+            model.addAttribute("usuarioLogado", usuario);
 
             return "administrativo/historico/pesquisaFiltro/lista";
         }
@@ -85,17 +91,23 @@ public class HistoricoController {
             model.addAttribute("vazio", historicos.isEmpty());
         }
 
+        Usuario usuario = usuarioService.getUsuarioLogado();
+        model.addAttribute("usuarioLogado", usuario);
         return "administrativo/historico/filtro/lista";
     }
 
     @GetMapping("visualizaAluno/{id}")
     public String visualizarAluno(@PathVariable Long id, Model model) {
+        Usuario usuario = usuarioService.getUsuarioLogado();
+        model.addAttribute("usuarioLogado", usuario);
         model.addAttribute("aluno", alunoService.buscarPorId(id));
         return "administrativo/historico/visualizarAluno";
     }
 
     @GetMapping("visualizaVoluntario/{id}")
     public String visualizarVoluntario(@PathVariable Long id, Model model) {
+        Usuario usuario = usuarioService.getUsuarioLogado();
+        model.addAttribute("usuarioLogado", usuario);
         model.addAttribute("voluntario", voluntarioService.buscarPorId(id));
         return "administrativo/historico/visualizarVoluntario";
     }
@@ -104,6 +116,9 @@ public class HistoricoController {
     public String visualizarEmpresaParceira(@PathVariable Long id, Model model) {
         Optional<EmpresaParceira> empresaParceira = empresaParceiraService.buscarPorId(id);
 
+        Usuario usuario = usuarioService.getUsuarioLogado();
+        model.addAttribute("usuarioLogado", usuario);
+
             model.addAttribute("empresa", empresaParceira.get());
             return "administrativo/historico/visualizarEmpresaParceira";
     }
@@ -111,6 +126,9 @@ public class HistoricoController {
     @GetMapping("visualizaUsuario/{id}")
     public String visualizarUsuario(@PathVariable Long id, Model model) {
         Optional<Usuario> usuarioOptional = usuarioService.buscarPorId(id);
+
+        Usuario usuario = usuarioService.getUsuarioLogado();
+        model.addAttribute("usuarioLogado", usuario);
 
             model.addAttribute("usuario", usuarioOptional.get());
             return "administrativo/usuario/visualizar";

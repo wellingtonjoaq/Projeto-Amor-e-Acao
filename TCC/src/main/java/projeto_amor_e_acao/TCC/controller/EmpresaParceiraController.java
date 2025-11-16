@@ -11,7 +11,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import projeto_amor_e_acao.TCC.model.Aluno;
 import projeto_amor_e_acao.TCC.model.Curso;
 import projeto_amor_e_acao.TCC.model.EmpresaParceira;
+import projeto_amor_e_acao.TCC.model.Usuario;
 import projeto_amor_e_acao.TCC.service.EmpresaParceiraService;
+import projeto_amor_e_acao.TCC.service.UsuarioService;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,8 +26,13 @@ public class EmpresaParceiraController {
     @Autowired
     private EmpresaParceiraService service;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
     @GetMapping()
     public String formulario(Model model) {
+        Usuario usuario = usuarioService.getUsuarioLogado();
+        model.addAttribute("usuarioLogado", usuario);
         model.addAttribute("empresaParceira", new EmpresaParceira());
         return "administrativo/empresaParceira/formulario";
     }
@@ -36,14 +43,13 @@ public class EmpresaParceiraController {
             BindingResult result, Model model, RedirectAttributes redirectAttributes)
     {
         if (result.hasErrors()) {
+            Usuario usuario = usuarioService.getUsuarioLogado();
+            model.addAttribute("usuarioLogado", usuario);
             return "administrativo/empresaParceira/formulario";
         }
 
         try {
             service.salvar(empresaParceira);
-            redirectAttributes.addFlashAttribute("successMessage",
-                    "Empresa parceira salva com sucesso!");
-
             return "redirect:/empresaParceira/listar";
         } catch (IllegalStateException e) {
             if (e.getMessage().contains("CPF")) {
@@ -53,9 +59,13 @@ public class EmpresaParceiraController {
             } else if (e.getMessage().contains("E-mail")) {
                 result.rejectValue("email", "error.empresaParceira", e.getMessage());
             }
+            Usuario usuario = usuarioService.getUsuarioLogado();
+            model.addAttribute("usuarioLogado", usuario);
 
             return "administrativo/empresaParceira/formulario";
         } catch (Exception e) {
+            Usuario usuario = usuarioService.getUsuarioLogado();
+            model.addAttribute("usuarioLogado", usuario);
             model.addAttribute("erro", e.getMessage());
             model.addAttribute("empresaParceira", empresaParceira);
             return "administrativo/empresaParceira/formulario";
@@ -66,6 +76,9 @@ public class EmpresaParceiraController {
     public String listar(@RequestParam(defaultValue = "0") int page,
                          @RequestParam(defaultValue = "20") int size,
                          Model model) {
+
+        Usuario usuario = usuarioService.getUsuarioLogado();
+        model.addAttribute("usuarioLogado", usuario);
 
         Page<EmpresaParceira> empresasParceiras = service.listarAtivos(page, size);
         model.addAttribute("empresasParceiras", empresasParceiras);
@@ -88,6 +101,9 @@ public class EmpresaParceiraController {
             model.addAttribute("empresasParceiras", empresasParceiras);
             model.addAttribute("paginaAtual", page);
             model.addAttribute("vazio", empresasParceiras.isEmpty());
+
+            Usuario usuario = usuarioService.getUsuarioLogado();
+            model.addAttribute("usuarioLogado", usuario);
 
             return "administrativo/empresaParceira/pesquisaFiltro/lista";
         }
@@ -128,6 +144,8 @@ public class EmpresaParceiraController {
             model.addAttribute("vazio", empresasParceiras.isEmpty());
         }
 
+        Usuario usuario = usuarioService.getUsuarioLogado();
+        model.addAttribute("usuarioLogado", usuario);
         return "administrativo/empresaParceira/filtro/lista";
     }
 
@@ -136,6 +154,8 @@ public class EmpresaParceiraController {
         Optional<EmpresaParceira> empresaParceira = service.buscarPorId(id);
 
         if (empresaParceira.isPresent()) {
+            Usuario usuario = usuarioService.getUsuarioLogado();
+            model.addAttribute("usuarioLogado", usuario);
             model.addAttribute("empresa", empresaParceira.get());
             return "administrativo/empresaParceira/visualizar";
         } else {
@@ -150,6 +170,8 @@ public class EmpresaParceiraController {
         Optional<EmpresaParceira> empresaParceira = service.buscarPorId(id);
 
         if (empresaParceira.isPresent()) {
+            Usuario usuario = usuarioService.getUsuarioLogado();
+            model.addAttribute("usuarioLogado", usuario);
             model.addAttribute("empresaParceira", empresaParceira.get());
             return "administrativo/empresaParceira/formulario";
         } else {
@@ -160,17 +182,8 @@ public class EmpresaParceiraController {
     }
 
     @PostMapping("remover/{id}")
-    public String remover(@PathVariable Long id,
-                                         RedirectAttributes redirectAttributes) {
-        try {
-            service.deletarPorId(id);
-            redirectAttributes.addFlashAttribute("successMessage",
-                    "Empresa parceira excluída com sucesso!");
-        } catch (IllegalArgumentException | IllegalStateException e) {
-            redirectAttributes.addFlashAttribute(
-                    "errorMessage", e.getMessage());
-        }
-
+    public String remover(@PathVariable Long id) {
+        service.deletarPorId(id);
         return "redirect:/empresaParceira/listar";
     }
 }

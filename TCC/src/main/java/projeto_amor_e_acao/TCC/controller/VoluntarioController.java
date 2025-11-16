@@ -7,11 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import projeto_amor_e_acao.TCC.model.Aluno;
-import projeto_amor_e_acao.TCC.model.Curso;
-import projeto_amor_e_acao.TCC.model.FuncaoVoluntario;
-import projeto_amor_e_acao.TCC.model.Voluntario;
+import projeto_amor_e_acao.TCC.model.*;
 import projeto_amor_e_acao.TCC.service.FuncaoVoluntarioService;
+import projeto_amor_e_acao.TCC.service.UsuarioService;
 import projeto_amor_e_acao.TCC.service.VoluntarioService;
 
 import java.util.Collections;
@@ -27,8 +25,13 @@ public class VoluntarioController {
     @Autowired
     private FuncaoVoluntarioService funcaoVoluntarioService;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
     @GetMapping()
     public String formulario(Voluntario voluntario, Model model) {
+        Usuario usuario = usuarioService.getUsuarioLogado();
+        model.addAttribute("usuarioLogado", usuario);
         model.addAttribute("funcoesVoluntario", funcaoVoluntarioService.listarTodos());
         return "administrativo/voluntario/formulario";
     }
@@ -41,6 +44,8 @@ public class VoluntarioController {
         }
 
         if (result.hasErrors()) {
+            Usuario usuario = usuarioService.getUsuarioLogado();
+            model.addAttribute("usuarioLogado", usuario);
             model.addAttribute("funcoesVoluntario", funcaoVoluntarioService.listarTodos());
             return "administrativo/voluntario/formulario";
         }
@@ -49,6 +54,8 @@ public class VoluntarioController {
             service.salvar(voluntario);
             return "redirect:/voluntario/listar";
         } catch (Exception e) {
+            Usuario usuario = usuarioService.getUsuarioLogado();
+            model.addAttribute("usuarioLogado", usuario);
             model.addAttribute("erro", e.getMessage());
             model.addAttribute("funcoesVoluntario", funcaoVoluntarioService.listarTodos());
             return "administrativo/voluntario/formulario";
@@ -59,6 +66,9 @@ public class VoluntarioController {
     public String listar(@RequestParam(defaultValue = "0") int page,
                          @RequestParam(defaultValue = "20") int size,
                          Model model) {
+
+        Usuario usuario = usuarioService.getUsuarioLogado();
+        model.addAttribute("usuarioLogado", usuario);
 
         Page<Voluntario> voluntarios = service.listarAtivos(page, size);
 
@@ -83,6 +93,9 @@ public class VoluntarioController {
             model.addAttribute("funcoesVoluntario", funcaoVoluntarioService.listarTodos());
             model.addAttribute("paginaAtual", page);
             model.addAttribute("vazio", voluntarios.isEmpty());
+
+            Usuario usuario = usuarioService.getUsuarioLogado();
+            model.addAttribute("usuarioLogado", usuario);
 
             return "administrativo/voluntario/pesquisaFiltro/lista";
         }
@@ -142,17 +155,23 @@ public class VoluntarioController {
             model.addAttribute("vazio", voluntarios.isEmpty());
         }
 
+        Usuario usuario = usuarioService.getUsuarioLogado();
+        model.addAttribute("usuarioLogado", usuario);
         return "administrativo/voluntario/filtro/lista";
     }
 
     @GetMapping("visualiza/{id}")
     public String visualizar(@PathVariable Long id,Model model) {
+        Usuario usuario = usuarioService.getUsuarioLogado();
+        model.addAttribute("usuarioLogado", usuario);
         model.addAttribute("voluntario", service.buscarPorId(id));
         return "administrativo/voluntario/visualizar";
     }
 
     @GetMapping("editar/{id}")
     public String editar(@PathVariable Long id, Model model) {
+        Usuario usuario = usuarioService.getUsuarioLogado();
+        model.addAttribute("usuarioLogado", usuario);
         model.addAttribute("funcoesVoluntario", funcaoVoluntarioService.listarTodos());
         model.addAttribute("voluntario", service.buscarPorId(id));
         return "administrativo/voluntario/formulario";
@@ -168,6 +187,9 @@ public class VoluntarioController {
     public String listarUsuarioSimples(@RequestParam(defaultValue = "0") int page,
                          @RequestParam(defaultValue = "20") int size,
                          Model model) {
+
+        Usuario usuario = usuarioService.getUsuarioLogado();
+        model.addAttribute("usuarioLogado", usuario);
 
         Page<Voluntario> voluntarios = service.listarAtivos(page, size);
 
@@ -192,6 +214,9 @@ public class VoluntarioController {
             model.addAttribute("funcoesVoluntario", funcaoVoluntarioService.listarTodos());
             model.addAttribute("paginaAtual", page);
             model.addAttribute("vazio", voluntarios.isEmpty());
+
+            Usuario usuario = usuarioService.getUsuarioLogado();
+            model.addAttribute("usuarioLogado", usuario);
 
             return "usuario-simples/voluntario/pesquisaFiltro/lista";
         }
@@ -251,11 +276,16 @@ public class VoluntarioController {
             model.addAttribute("vazio", voluntarios.isEmpty());
         }
 
+        Usuario usuario = usuarioService.getUsuarioLogado();
+        model.addAttribute("usuarioLogado", usuario);
+
         return "usuario-simples/voluntario/filtro/lista";
     }
 
     @GetMapping("visualizaUsuarioSimples/{id}")
     public String visualizaUsuarioSimples(@PathVariable Long id,Model model) {
+        Usuario usuario = usuarioService.getUsuarioLogado();
+        model.addAttribute("usuarioLogado", usuario);
         model.addAttribute("voluntario", service.buscarPorId(id));
         return "usuario-simples/voluntario/visualizar";
     }
