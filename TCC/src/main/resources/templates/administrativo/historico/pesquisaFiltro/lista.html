@@ -26,30 +26,33 @@
             </button>
           </form>
         </div>
-        <button class="filter-btn-historico" id="toggleFilter">
-          <i class="fas fa-filter"></i> Filtrar <i class="fas fa-chevron-down"></i>
-        </button>
+
+        <div class="filter-container">
+          <button class="filter-btn-historico" id="toggleFilter">
+            <i class="fas fa-filter"></i> Filtrar <i class="fas fa-chevron-down"></i>
+          </button>
+
+          <form th:action="@{/historico/filtrar}" method="get" class="filter-panel-historico" id="filterPanel">
+            <div class="filter-section">
+              <div class="filter-header">
+                <i class="fas fa-id-card" id="filtro-icones"></i> Tipos
+              </div>
+
+              <div class="filter-options">
+                <label><input type="checkbox" name="tipos" value="Aluno"> Aluno</label>
+                <label><input type="checkbox" name="tipos" value="Voluntario"> Voluntario</label>
+                <label><input type="checkbox" name="tipos" value="Empresa Parceira"> Empresa Parceira</label>
+                <label><input type="checkbox" name="tipos" value="Usuario"> Usuario</label>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-buscar-filtro-historico">
+              <i class="fa fa-search"></i> Buscar
+            </button>
+          </form>
+        </div>
       </div>
   </div>
-
-  <form th:action="@{/historico/filtrar}" method="get" class="filter-panel-usuario" id="filterPanel">
-    <div class="filter-section">
-      <div class="filter-header">
-        <i class="fas fa-id-card" id="filtro-icones"></i> Tipos de Histórico
-      </div>
-
-      <div class="filter-options">
-        <label><input type="checkbox" name="tipos" value="Aluno"> Aluno</label>
-        <label><input type="checkbox" name="tipos" value="Voluntario"> Voluntario</label>
-        <label><input type="checkbox" name="tipos" value="Empresa Parceira"> Empresa Parceira</label>
-        <label><input type="checkbox" name="tipos" value="Usuario"> Usuario</label>
-      </div>
-    </div>
-
-    <button type="submit" class="btn-buscar-filtro-usuario">
-      <i class="fa fa-search"></i> Buscar
-    </button>
-  </form>
 
   <div th:if="${vazio}" class="vazio">
     <h1>Nenhum Registro Encontrado :\</h1>
@@ -58,7 +61,7 @@
   <table th:if="${!vazio}">
     <thead>
     <tr>
-      <th>#</th>
+      <th>ID</th>
       <th>Nome</th>
       <th>Email</th>
       <th>Status</th>
@@ -110,6 +113,7 @@
     <button th:if="${historicos.hasNext()}" type="submit" name="page" th:value="${historicos.number + 1}" th:text="${historicos.number + 2}"></button>
   </form>
 </div>
+
 <script>
   const toggleButton = document.getElementById('toggleFilter');
   const filterPanel = document.getElementById('filterPanel');
@@ -117,7 +121,7 @@
 
   toggleButton.addEventListener('click', () => {
     open = !open;
-    filterPanel.style.display = open ? 'grid' : 'none';
+    filterPanel.style.display = open ? 'block' : 'none';
     toggleButton.querySelector('.fa-chevron-down').style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
   });
 </script>
