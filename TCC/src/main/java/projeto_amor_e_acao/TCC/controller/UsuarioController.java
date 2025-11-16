@@ -25,6 +25,8 @@ public class UsuarioController {
 
     @GetMapping()
     public String formulario(Model model) {
+        Usuario usuarios = service.getUsuarioLogado();
+        model.addAttribute("usuarioLogado", usuarios);
         model.addAttribute("usuario", new Usuario());
         model.addAttribute("acao", "criar");
         return "administrativo/usuario/formulario";
@@ -34,7 +36,10 @@ public class UsuarioController {
     public String salvar(@Valid Usuario usuario,
                          @RequestParam(value = "file", required = false) MultipartFile file,
                          BindingResult result, Model model) {
+
         if (result.hasErrors()) {
+            Usuario usuarios = service.getUsuarioLogado();
+            model.addAttribute("usuarioLogado", usuarios);
             model.addAttribute("usuario", usuario);
             model.addAttribute("acao", "criar");
             return "administrativo/usuario/formulario";
@@ -52,17 +57,25 @@ public class UsuarioController {
             if (e.getMessage().contains("E-mail")) {
                 result.rejectValue("email", "error.usuario", e.getMessage());
             }
+            Usuario usuarios = service.getUsuarioLogado();
+            model.addAttribute("usuarioLogado", usuarios);
             model.addAttribute("usuario", usuario);
             model.addAttribute("acao", "criar");
             return "administrativo/usuario/formulario";
+
         } catch (IllegalArgumentException e) {
             if (e.getMessage().contains("Senha")) {
                 result.rejectValue("senha", "error.usuario", e.getMessage());
             }
+            Usuario usuarios = service.getUsuarioLogado();
+            model.addAttribute("usuarioLogado", usuarios);
             model.addAttribute("usuario", usuario);
             model.addAttribute("acao", "criar");
             return "administrativo/usuario/formulario";
+
         } catch (Exception e) {
+            Usuario usuarios = service.getUsuarioLogado();
+            model.addAttribute("usuarioLogado", usuarios);
             model.addAttribute("erro", e.getMessage());
             model.addAttribute("usuario", usuario);
             model.addAttribute("acao", "criar");
@@ -77,6 +90,8 @@ public class UsuarioController {
                             @RequestParam(value = "file", required = false) MultipartFile file,
                             Model model) {
         if (result.hasFieldErrors("nome") || result.hasFieldErrors("email")) {
+            Usuario usuarios = service.getUsuarioLogado();
+            model.addAttribute("usuarioLogado", usuarios);
             model.addAttribute("usuario", usuario);
             model.addAttribute("acao", "editar");
             return "administrativo/usuario/formulario";
@@ -104,6 +119,8 @@ public class UsuarioController {
             if (e.getMessage().contains("E-mail")) {
                 result.rejectValue("email", "error.usuario", e.getMessage());
             }
+            Usuario usuarios = service.getUsuarioLogado();
+            model.addAttribute("usuarioLogado", usuarios);
             model.addAttribute("usuario", usuario);
             model.addAttribute("acao", "editar");
             return "administrativo/usuario/formulario";
@@ -112,11 +129,15 @@ public class UsuarioController {
             if (e.getMessage().contains("Senha")) {
                 result.rejectValue("senha", "error.usuario", e.getMessage());
             }
+            Usuario usuarios = service.getUsuarioLogado();
+            model.addAttribute("usuarioLogado", usuarios);
             model.addAttribute("usuario", usuario);
             model.addAttribute("acao", "editar");
             return "administrativo/usuario/formulario";
 
         } catch (Exception e) {
+            Usuario usuarios = service.getUsuarioLogado();
+            model.addAttribute("usuarioLogado", usuarios);
             model.addAttribute("usuario", usuario);
             model.addAttribute("acao", "editar");
             model.addAttribute("erro", e.getMessage());
@@ -131,6 +152,9 @@ public class UsuarioController {
 
         Page<Usuario> usuarios = service.listarAtivos(page, size);
 
+        Usuario usuario = service.getUsuarioLogado();
+        model.addAttribute("usuarioLogado", usuario);
+
         model.addAttribute("usuarios", usuarios);
         model.addAttribute("paginaAtual", page);
         return "administrativo/usuario/lista";
@@ -144,12 +168,15 @@ public class UsuarioController {
             Model model) {
 
         if (!pesquisa.isEmpty()){
-            Page<Usuario> usuarios = service.filtrarPesquisa("ATIVO",pesquisa, page, size);
+            Page<Usuario> usuario = service.filtrarPesquisa("ATIVO",pesquisa, page, size);
 
             model.addAttribute("pesquisa", pesquisa);
-            model.addAttribute("usuarios", usuarios);
+            model.addAttribute("usuarios", usuario);
             model.addAttribute("paginaAtual", page);
-            model.addAttribute("vazio", usuarios.isEmpty());
+            model.addAttribute("vazio", usuario.isEmpty());
+
+            Usuario usuarios = service.getUsuarioLogado();
+            model.addAttribute("usuarioLogado", usuarios);
 
             return "administrativo/usuario/pesquisaFiltro/lista";
         }
@@ -169,9 +196,9 @@ public class UsuarioController {
 
         boolean temCargo = (cargo != null && !cargo.isBlank());
 
-        Page<Usuario> usuarios = service.filtrar(cargo, page, size);
+        Page<Usuario> usuario = service.filtrar(cargo, page, size);
 
-        model.addAttribute("usuarios", usuarios);
+        model.addAttribute("usuarios", usuario);
         model.addAttribute("paginaAtual", page);
         model.addAttribute("vazio", false);
         model.addAttribute("cargo", cargo);
@@ -180,9 +207,12 @@ public class UsuarioController {
             return "redirect:/usuario/listar";
         }
 
-        if (usuarios.isEmpty()){
-            model.addAttribute("vazio", usuarios.isEmpty());
+        if (usuario.isEmpty()){
+            model.addAttribute("vazio", usuario.isEmpty());
         }
+
+        Usuario usuarios = service.getUsuarioLogado();
+        model.addAttribute("usuarioLogado", usuarios);
 
         return "administrativo/usuario/filtro/lista";
     }
@@ -191,6 +221,8 @@ public class UsuarioController {
     public String visualizar(@PathVariable Long id, Model model) {
         Optional<Usuario> usuarioOptional = service.buscarPorId(id);
         if (usuarioOptional.isPresent()) {
+            Usuario usuarios = service.getUsuarioLogado();
+            model.addAttribute("usuarioLogado", usuarios);
             model.addAttribute("usuario", usuarioOptional.get());
             return "administrativo/usuario/visualizar";
         } else {
@@ -204,7 +236,8 @@ public class UsuarioController {
         if (usuario == null) {
             return "redirect:/usuario/listar";
         }
-
+        Usuario usuarios = service.getUsuarioLogado();
+        model.addAttribute("usuarioLogado", usuarios);
         model.addAttribute("usuario", usuario);
         model.addAttribute("acao", "editar");
         return "administrativo/usuario/formulario";

@@ -9,8 +9,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import projeto_amor_e_acao.TCC.model.Curso;
+import projeto_amor_e_acao.TCC.model.Usuario;
 import projeto_amor_e_acao.TCC.service.CursoService;
 import projeto_amor_e_acao.TCC.service.FirebaseStorageService;
+import projeto_amor_e_acao.TCC.service.UsuarioService;
 
 import java.io.IOException;
 
@@ -24,10 +26,15 @@ public class CursoController {
     private CursoService service;
 
     @Autowired
+    private UsuarioService usuarioService;
+
+    @Autowired
     private FirebaseStorageService firebaseService;
 
     @GetMapping()
     public String formulario(Curso curso, Model model) {
+        Usuario usuario = usuarioService.getUsuarioLogado();
+        model.addAttribute("usuarioLogado", usuario);
         model.addAttribute("curso", curso);
         return "administrativo/curso/formulario";
     }
@@ -40,6 +47,8 @@ public class CursoController {
                          Model model) {
 
         if (result.hasErrors()) {
+            Usuario usuario = usuarioService.getUsuarioLogado();
+            model.addAttribute("usuarioLogado", usuario);
             model.addAttribute("curso", curso);
             return "administrativo/curso/formulario";
         }
@@ -57,13 +66,14 @@ public class CursoController {
         }
 
         if (categoriasSelecionadas == null || categoriasSelecionadas.isEmpty()) {
+            Usuario usuario = usuarioService.getUsuarioLogado();
+            model.addAttribute("usuarioLogado", usuario);
             model.addAttribute("curso", curso);
             model.addAttribute("erro", "Selecione pelo menos uma categoria.");
             return "administrativo/curso/formulario";
         }
 
         try {
-            // 🔹 3. Faz upload apenas se realmente veio arquivo novo
             if (file != null && !file.isEmpty()) {
                 String url = firebaseService.uploadFile(file);
                 curso.setFoto(url);
@@ -83,6 +93,8 @@ public class CursoController {
             throw new RuntimeException("Erro ao fazer upload da imagem", e);
 
         } catch (Exception e) {
+            Usuario usuario = usuarioService.getUsuarioLogado();
+            model.addAttribute("usuarioLogado", usuario);
             model.addAttribute("erro", e.getMessage());
             model.addAttribute("curso", curso);
             return "administrativo/curso/formulario";
@@ -96,6 +108,9 @@ public class CursoController {
                          Model model) {
 
         Page<Curso> cursos = service.listarPaginados(page, size);
+
+        Usuario usuario = usuarioService.getUsuarioLogado();
+        model.addAttribute("usuarioLogado", usuario);
 
         model.addAttribute("cursos", cursos);
         model.addAttribute("paginaAtual", page);
@@ -117,6 +132,9 @@ public class CursoController {
             model.addAttribute("cursos", cursos);
             model.addAttribute("paginaAtual", page);
             model.addAttribute("vazio", cursos.isEmpty());
+
+            Usuario usuario = usuarioService.getUsuarioLogado();
+            model.addAttribute("usuarioLogado", usuario);
 
             return "administrativo/curso/pesquisaFiltro/lista";
         }
@@ -155,11 +173,16 @@ public class CursoController {
             model.addAttribute("vazio", cursos.isEmpty());
         }
 
+        Usuario usuario = usuarioService.getUsuarioLogado();
+        model.addAttribute("usuarioLogado", usuario);
+
         return "administrativo/curso/filtro/lista";
     }
 
     @GetMapping("editar/{id}")
     public String editar(@PathVariable Long id, Model model) {
+        Usuario usuario = usuarioService.getUsuarioLogado();
+        model.addAttribute("usuarioLogado", usuario);
         model.addAttribute("curso", service.buscarPorId(id));
         return "administrativo/curso/formulario";
     }
@@ -176,6 +199,9 @@ public class CursoController {
                          Model model) {
 
         Page<Curso> cursos = service.listarPaginados(page, size);
+
+        Usuario usuario = usuarioService.getUsuarioLogado();
+        model.addAttribute("usuarioLogado", usuario);
 
         model.addAttribute("cursos", cursos);
         model.addAttribute("paginaAtual", page);

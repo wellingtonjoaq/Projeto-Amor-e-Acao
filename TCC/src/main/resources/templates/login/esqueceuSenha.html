@@ -14,7 +14,7 @@
     <h2>Recuperar Senha</h2>
     <p>Digite seu e-mail cadastrado para redefinir sua senha.</p>
 
-    <form action="/recuperar-senha" method="post">
+    <form th:action="@{/login/processar}" method="post">
       <div class="input-group">
         <i class="fa fa-envelope"></i>
         <input type="email" name="email" placeholder="Digite seu e-mail" required>
@@ -22,10 +22,13 @@
 
       <button type="submit" class="btn-login">Enviar Link de Recuperação</button>
 
+      <p th:text="${mensagem}" style="color:green;"></p>
+
       <div class="forgot-password">
-        <a href="/login">Voltar ao login</a>
+        <a th:href="@{/login}">Voltar ao login</a>
       </div>
     </form>
+
   </div>
 </div>
 </body>
