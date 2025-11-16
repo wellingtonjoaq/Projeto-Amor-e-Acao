@@ -99,53 +99,52 @@
     const menuToggleBtn = document.getElementById('menuToggleBtn');
     const sidebarLinks = document.querySelectorAll('.sidebar li a');
 
-    menuToggleBtn.addEventListener('click', () => {
-      if (window.innerWidth <= 768) {
-        sidebar.classList.toggle('active');
-      } else {
-        sidebar.classList.toggle('collapsed');
-      }
+    menuToggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (window.innerWidth <= 768) {
+            sidebar.classList.toggle('active');
+        } else {
+            sidebar.classList.toggle('collapsed');
+        }
     });
 
     sidebarLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        if (window.innerWidth <= 768) {
-          sidebar.classList.remove('active');
-        } else {
-          sidebar.classList.add('collapsed');
-        }
-      });
+        link.addEventListener('click', () => {
+            if (window.innerWidth <= 768) {
+                sidebar.classList.remove('active');
+            } else {
+                sidebar.classList.add('collapsed');
+            }
+        });
     });
 
-    document.addEventListener('click', (e) => {
-      if (window.innerWidth <= 768 && !sidebar.contains(e.target) && !menuToggleBtn.contains(e.target)) {
-        sidebar.classList.remove('active');
-      }
-    });
-</script>
-<script>
     const notifBtn = document.querySelector(".icon-button");
     const notifModal = document.getElementById("notificationModal");
 
-    notifBtn.addEventListener("click", () => {
+    notifBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
         notifModal.classList.toggle("hidden");
     });
 
-    document.addEventListener("click", (e) => {
-        if (!notifModal.contains(e.target) && !notifBtn.contains(e.target)) {
-            notifModal.classList.add("hidden");
-        }
-    });
-</script>
-<script>
     const userImg = document.querySelector(".img-user");
     const userMenu = document.getElementById("userMenu");
 
-    userImg.addEventListener("click", () => {
+    userImg.addEventListener("click", (e) => {
+        e.stopPropagation();
         userMenu.classList.toggle("hidden");
     });
 
     document.addEventListener("click", (e) => {
+
+        if (!sidebar.contains(e.target) && !menuToggleBtn.contains(e.target)) {
+            sidebar.classList.remove("active");
+            sidebar.classList.add("collapsed");
+        }
+
+        if (!notifModal.contains(e.target) && !notifBtn.contains(e.target)) {
+            notifModal.classList.add("hidden");
+        }
+
         if (!userMenu.contains(e.target) && !userImg.contains(e.target)) {
             userMenu.classList.add("hidden");
         }
