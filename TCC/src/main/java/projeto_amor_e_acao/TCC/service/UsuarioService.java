@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import projeto_amor_e_acao.TCC.model.Aluno;
@@ -171,5 +172,11 @@ public class UsuarioService{
         }
 
         repository.deleteById(id);
+    }
+
+    public Usuario getUsuarioLogado() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        return repository.findByEmailIgnoreCase(email)
+                .orElseThrow(() -> new RuntimeException("Usuário logado não encontrado"));
     }
 }

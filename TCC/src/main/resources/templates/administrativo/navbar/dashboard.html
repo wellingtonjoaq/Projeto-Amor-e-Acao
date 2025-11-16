@@ -21,7 +21,10 @@
         <button class="icon-button">
             <i class="fa-solid fa-bell"></i>
         </button>
-        <img class="img-user" th:src="@{/imagens/usuario.jpg}" alt="usuario Ong" height="50px"/>
+        <img class="img-user"
+             th:src="${usuarioLogado.fotoPerfil != null ? usuarioLogado.fotoPerfil : '/imagens/usuario.jpg'}"
+             alt="Foto do Usuário"
+             height="50px">
         <div class="user-menu hidden" id="userMenu">
             <a th:href="@{/logout}">Mudar de Usuario</a>
             <a th:href="@{/logout}">Sair</a>
