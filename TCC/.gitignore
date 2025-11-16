@@ -34,3 +34,5 @@ build/
 
 ### Firebase credentials ###
 src/main/resources/firebase/serviceAccountKey.json
+
+src/main/resources/templates/application.properties

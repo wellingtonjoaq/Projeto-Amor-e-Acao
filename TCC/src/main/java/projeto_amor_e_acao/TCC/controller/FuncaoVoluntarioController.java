@@ -7,7 +7,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import projeto_amor_e_acao.TCC.model.FuncaoVoluntario;
+import projeto_amor_e_acao.TCC.model.Usuario;
 import projeto_amor_e_acao.TCC.service.FuncaoVoluntarioService;
+import projeto_amor_e_acao.TCC.service.UsuarioService;
 
 import java.util.List;
 
@@ -18,8 +20,13 @@ public class FuncaoVoluntarioController {
     @Autowired
     private FuncaoVoluntarioService service;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
     @GetMapping()
     public String formulario(FuncaoVoluntario funcaoVoluntario, Model model) {
+        Usuario usuario = usuarioService.getUsuarioLogado();
+        model.addAttribute("usuarioLogado", usuario);
         model.addAttribute("funcao", new FuncaoVoluntario());
         return "administrativo/funcao/formulario";
     }
@@ -28,6 +35,8 @@ public class FuncaoVoluntarioController {
     public String salvar(@Valid FuncaoVoluntario funcaoVoluntario, BindingResult result, Model model) {
 
         if (result.hasErrors()) {
+            Usuario usuario = usuarioService.getUsuarioLogado();
+            model.addAttribute("usuarioLogado", usuario);
             model.addAttribute("funcao", funcaoVoluntario);
             return "administrativo/funcao/formulario";
         }
@@ -37,6 +46,8 @@ public class FuncaoVoluntarioController {
             return "redirect:/funcao/listar";
 
         } catch (Exception e) {
+            Usuario usuario = usuarioService.getUsuarioLogado();
+            model.addAttribute("usuarioLogado", usuario);
             model.addAttribute("erro", e.getMessage());
             return "administrativo/funcao/lista";
         }
@@ -44,6 +55,8 @@ public class FuncaoVoluntarioController {
 
     @GetMapping("listar")
     public String listar(Model model) {
+        Usuario usuario = usuarioService.getUsuarioLogado();
+        model.addAttribute("usuarioLogado", usuario);
         model.addAttribute("funcoes", service.listarTodos());
         return "administrativo/funcao/lista";
     }
@@ -60,6 +73,9 @@ public class FuncaoVoluntarioController {
             model.addAttribute("funcoes", funcoes);
             model.addAttribute("vazio", funcoes.isEmpty());
 
+            Usuario usuario = usuarioService.getUsuarioLogado();
+            model.addAttribute("usuarioLogado", usuario);
+
             return "administrativo/funcao/pesquisaFiltro/lista";
         }
         else {
@@ -70,12 +86,16 @@ public class FuncaoVoluntarioController {
 
     @GetMapping("visualiza/{id}")
     public String visualizar(@PathVariable Long id, Model model) {
+        Usuario usuario = usuarioService.getUsuarioLogado();
+        model.addAttribute("usuarioLogado", usuario);
         model.addAttribute("funcao", service.buscarPorId(id));
         return "administrativo/funcao/visualizar";
     }
 
     @GetMapping("editar/{id}")
     public String editar(@PathVariable Long id, Model model) {
+        Usuario usuario = usuarioService.getUsuarioLogado();
+        model.addAttribute("usuarioLogado", usuario);
         model.addAttribute("funcao", service.buscarPorId(id));
         return "administrativo/funcao/formulario";
     }
@@ -83,7 +103,6 @@ public class FuncaoVoluntarioController {
 
     @PostMapping("remover/{id}")
     public String remover(@PathVariable Long id) {
-
         service.deletarPorId(id);
         return "redirect:/funcao/listar";
     }
