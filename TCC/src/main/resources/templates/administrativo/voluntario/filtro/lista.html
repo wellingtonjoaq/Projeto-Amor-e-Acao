@@ -27,62 +27,64 @@
         </form>
       </div>
 
-      <button class="filter-btn" id="toggleFilter">
-        <i class="fas fa-filter"></i> Filtrar <i class="fas fa-chevron-down"></i>
-      </button>
+      <div class="filter-container">
+        <button class="filter-btn" id="toggleFilter">
+          <i class="fas fa-filter"></i> Filtrar <i class="fas fa-chevron-down"></i>
+        </button>
+
+        <form th:action="@{/voluntario/filtrar}" method="get" class="filter-panel-voluntario" id="filterPanel">
+          <div class="filter-section">
+            <div class="filter-header"><i class="fas fa-id-card"></i> Identidade </div>
+            <div class="filter-options">
+              <label><input type="checkbox" name="nome" value="true" th:checked="${nome}"> Nome</label>
+              <label><input type="checkbox" name="cpf" value="true" th:checked="${cpf}"> CPF</label>
+              <label><input type="checkbox" name="email" value="true" th:checked="${email}"> E-mail</label>
+              <label><input type="checkbox" name="telefone" value="true" th:checked="${telefone}"> Telefone</label>
+            </div>
+          </div>
+
+          <div class="filter-section">
+            <div class="filter-header"><i class="fas fa-venus-mars"></i> Gênero </div>
+            <div class="filter-options">
+              <label><input type="radio" name="genero" value="MASCULINO" th:checked="${genero} == 'MASCULINO'"> Masculino</label>
+              <label><input type="radio" name="genero" value="FEMININO" th:checked="${genero} == 'FEMININO'"> Feminino</label>
+              <label><input type="radio" name="genero" value="TODOS" th:checked="${genero} == 'TODOS'"> Todos</label>
+            </div>
+          </div>
+
+          <div class="filter-section">
+            <div class="filter-header"><i class="fas fa-map-marker-alt"></i> Localização </div>
+            <div class="filter-options">
+              <label><input type="checkbox" name="cep" value="true" th:checked="${cep}"> CEP</label>
+              <label><input type="checkbox" name="bairro" value="true" th:checked="${bairro}"> Bairro</label>
+              <label><input type="checkbox" name="endereco" value="true" th:checked="${endereco}"> Endereco</label>
+              <label><input type="checkbox" name="cidade" value="true" th:checked="${cidade}"> Cidade</label>
+              <label><input type="checkbox" name="estado" value="true" th:checked="${estado}"> Estado</label>
+            </div>
+          </div>
+
+          <div class="filter-section">
+            <div class="filter-header"><i class="fa-solid fa-wrench"></i>  Funções </div>
+            <div class="filter-options">
+              <label th:each="funcao : ${funcoesVoluntario}">
+                <input type="checkbox" name="funcoes" th:value="${funcao.id}"
+                       th:checked="${funcoesIds != null and funcoesIds.contains(funcao.id)}">
+                <span th:text="${funcao.nome}"></span>
+              </label>
+            </div>
+          </div>
+
+          <button class="btn-buscar-filtro-voluntario" type="submit">
+            <i class="fa fa-search"></i> Buscar
+          </button>
+        </form>
+      </div>
 
       <a th:href="@{/voluntario}" class="btn-create">
         <i class="fas fa-user-plus"></i> Novo Voluntario
       </a>
     </div>
   </div>
-
-  <form th:action="@{/voluntario/filtrar}" method="get" class="filter-panel-voluntario" id="filterPanel">
-    <div class="filter-section">
-      <div class="filter-header"><i class="fas fa-id-card" id="filtro-icones"></i> Identidade </div>
-      <div class="filter-options">
-        <label><input type="checkbox" name="nome" value="true" th:checked="${nome}"> Nome</label>
-        <label><input type="checkbox" name="cpf" value="true" th:checked="${cpf}"> CPF</label>
-        <label><input type="checkbox" name="email" value="true" th:checked="${email}"> E-mail</label>
-        <label><input type="checkbox" name="telefone" value="true" th:checked="${telefone}"> Telefone</label>
-      </div>
-    </div>
-
-    <div class="filter-section">
-      <div class="filter-header"><i class="fas fa-venus-mars" id="filtro-icones1"></i> Gênero </div>
-      <div class="filter-options">
-        <label><input type="radio" name="genero" value="MASCULINO" th:checked="${genero} == 'MASCULINO'"> Masculino</label>
-        <label><input type="radio" name="genero" value="FEMININO" th:checked="${genero} == 'FEMININO'"> Feminino</label>
-        <label><input type="radio" name="genero" value="TODOS" th:checked="${genero} == 'TODOS'"> Todos</label>
-      </div>
-    </div>
-
-    <div class="filter-section">
-      <div class="filter-header"><i class="fas fa-map-marker-alt" id="filtro-icones2"></i> Localização </div>
-      <div class="filter-options">
-        <label><input type="checkbox" name="cep" value="true" th:checked="${cep}"> CEP</label>
-        <label><input type="checkbox" name="bairro" value="true" th:checked="${bairro}"> Bairro</label>
-        <label><input type="checkbox" name="endereco" value="true" th:checked="${endereco}"> Endereco</label>
-        <label><input type="checkbox" name="cidade" value="true" th:checked="${cidade}"> Cidade</label>
-        <label><input type="checkbox" name="estado" value="true" th:checked="${estado}"> Estado</label>
-      </div>
-    </div>
-
-    <div class="filter-section">
-      <div class="filter-header"><i class="fa-solid fa-wrench" id="filtro-icones3"></i>  Funções </div>
-      <div class="filter-options">
-        <label th:each="funcao : ${funcoesVoluntario}">
-          <input type="checkbox" name="funcoes" th:value="${funcao.id}"
-                 th:checked="${funcoesIds != null and funcoesIds.contains(funcao.id)}">
-          <span th:text="${funcao.nome}"></span>
-        </label>
-      </div>
-    </div>
-
-    <button class="btn-buscar-filtro-voluntario" type="submit">
-      <i class="fa fa-search"></i> Buscar
-    </button>
-  </form>
 
   <div th:if="${vazio}" class="vazio">
     <h1>Nenhum voluntario encontrado com os filtros aplicados :\</h1>
@@ -195,7 +197,7 @@
 
   toggleButton.addEventListener('click', () => {
     open = !open;
-    filterPanel.style.display = open ? 'grid' : 'none';
+    filterPanel.style.display = open ? 'block' : 'none';
     toggleButton.querySelector('.fa-chevron-down').style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
   });
 

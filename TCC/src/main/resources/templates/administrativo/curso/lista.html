@@ -27,64 +27,66 @@
                 </form>
             </div>
 
-            <button class="filter-btn" id="toggleFilter">
-                <i class="fas fa-filter"></i> Filtrar <i class="fas fa-chevron-down"></i>
-            </button>
+            <div class="filter-container">
+                <button class="filter-btn" id="toggleFilter">
+                    <i class="fas fa-filter"></i> Filtrar <i class="fas fa-chevron-down"></i>
+                </button>
+
+                <form th:action="@{/curso/filtrar}"
+                      method="get" class="filter-panel-curso" id="filterPanel">
+
+                    <div class="filter-section">
+                        <div class="filter-header">
+                            <i class="fa-solid fa-list"></i> Categorias
+                        </div>
+                        <div class="filter-options">
+                            <label><input type="radio" name="categoria" value="Educação"> Educação</label>
+                            <label><input type="radio" name="categoria" value="Saúde"> Saúde</label>
+                            <label><input type="radio" name="categoria" value="Tecnologia"> Tecnologia</label>
+                            <label><input type="radio" name="categoria" value="Esporte"> Esporte</label>
+                            <label><input type="radio" name="categoria" value="Arte"> Arte</label>
+                            <label><input type="radio" name="categoria" value="Moda"> Moda</label>
+                            <label><input type="radio" name="categoria" value="Engenharia"> Engenharia</label>
+                            <label><input type="radio" name="categoria" value="Agricultura"> Agricultura</label>
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <div class="filter-header">
+                            <i class="fa-solid fa-clock"></i> Periodo
+                        </div>
+
+                        <div class="filter-options">
+                            <label><input type="radio" name="periodo" value="Manhã"> Manhã</label>
+                            <label><input type="radio" name="periodo" value="Tarde"> Tarde</label>
+                            <label><input type="radio" name="periodo" value="Noite"> Noite</label>
+                            <label><input type="radio" name="periodo" value="TODOS"> Todos</label>
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <div class="filter-header">
+                            <i class="fa-solid fa-gear"></i> Status
+                        </div>
+
+                        <div class="filter-options">
+                            <label><input type="radio" name="status" value="ATIVO"> Ativo</label>
+                            <label><input type="radio" name="status" value="INATIVO"> Inativo</label>
+                            <label><input type="radio" name="status" value="TODOS"> Todos</label>
+                        </div>
+                    </div>
+
+                    <button class="btn-buscar-filtro-curso">
+                        <i class="fa fa-search"></i> Buscar
+                    </button>
+                </form>
+            </div>
 
             <a th:href="@{/curso}" class="btn-create">
                 <i class="fas fa-user-plus"></i> Novo Curso
             </a>
         </div>
     </div>
-
-    <form th:action="@{/curso/filtrar}" method="get" class="filter-panel-curso" id="filterPanel">
-
-        <div class="filter-section">
-            <div class="filter-header">
-                <i class="fa-solid fa-list" id="filtro-icones"></i> Categorias
-            </div>
-
-            <div class="filter-options">
-                <label><input type="radio" name="categoria" value="Educação"> Educação</label>
-                <label><input type="radio" name="categoria" value="Saúde"> Saúde</label>
-                <label><input type="radio" name="categoria" value="Tecnologia"> Tecnologia</label>
-                <label><input type="radio" name="categoria" value="Esporte"> Esporte</label>
-                <label><input type="radio" name="categoria" value="Arte"> Arte</label>
-                <label><input type="radio" name="categoria" value="Moda"> Moda</label>
-                <label><input type="radio" name="categoria" value="Engenharia"> Engenharia</label>
-                <label><input type="radio" name="categoria" value="Agricultura"> Agricultura</label>
-            </div>
-        </div>
-
-        <div class="filter-section">
-            <div class="filter-header">
-                <i class="fa-solid fa-clock" id="filtro-icones1"></i> Periodo
-            </div>
-
-            <div class="filter-options">
-                <label><input type="radio" name="periodo" value="Manhã"> Manhã</label>
-                <label><input type="radio" name="periodo" value="Tarde"> Tarde</label>
-                <label><input type="radio" name="periodo" value="Noite"> Noite</label>
-                <label><input type="radio" name="periodo" value="TODOS"> Todos</label>
-            </div>
-        </div>
-
-        <div class="filter-section">
-            <div class="filter-header">
-                <i class="fa-solid fa-gear" id="filtro-icones2"></i> Status
-            </div>
-
-            <div class="filter-options">
-                <label><input type="radio" name="status" value="ATIVO"> Ativo</label>
-                <label><input type="radio" name="status" value="INATIVO"> Inativo</label>
-                <label><input type="radio" name="status" value="TODOS"> Todos</label>
-            </div>
-        </div>
-
-        <button class="btn-buscar-filtro-curso">
-            <i class="fa fa-search"></i> Buscar
-        </button>
-    </form>
 
     <div class="card-grid">
         <div class="card" th:each="curso : ${cursos}">
@@ -150,7 +152,7 @@
 </div>
 
 <script>
-    document.querySelectorAll('.delete-btn').forEach(btn => {
+    document.querySelectorAll('.btn-delete').forEach(btn => {
         btn.addEventListener('click', e => {
             e.preventDefault();
             const cursoId = btn.getAttribute('data-id');
@@ -173,9 +175,10 @@
 
     toggleButton.addEventListener('click', () => {
       open = !open;
-      filterPanel.style.display = open ? 'grid' : 'none';
+      filterPanel.style.display = open ? 'block' : 'none';
       toggleButton.querySelector('.fa-chevron-down').style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
     });
 </script>
+
 </body>
 </html>
