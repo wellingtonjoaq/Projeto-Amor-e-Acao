@@ -8,11 +8,13 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import projeto_amor_e_acao.TCC.dto.NotificacaoDTO;
 import projeto_amor_e_acao.TCC.model.Aluno;
 import projeto_amor_e_acao.TCC.model.Curso;
 import projeto_amor_e_acao.TCC.model.EmpresaParceira;
 import projeto_amor_e_acao.TCC.model.Usuario;
 import projeto_amor_e_acao.TCC.service.EmpresaParceiraService;
+import projeto_amor_e_acao.TCC.service.NotificacaoService;
 import projeto_amor_e_acao.TCC.service.UsuarioService;
 
 import java.util.Collections;
@@ -29,9 +31,17 @@ public class EmpresaParceiraController {
     @Autowired
     private UsuarioService usuarioService;
 
+    @Autowired
+    private NotificacaoService notificacaoService;
+
     @ModelAttribute("usuarioLogado")
     public Usuario usuarioLogado() {
         return usuarioService.getUsuarioLogado();
+    }
+
+    @ModelAttribute("notificacoesMenu")
+    public List<NotificacaoDTO> carregarNotifMenu() {
+        return notificacaoService.listarNotificacaoLimitado(7);
     }
 
     @GetMapping()
@@ -53,6 +63,7 @@ public class EmpresaParceiraController {
 
         try {
             service.salvar(empresaParceira);
+            redirectAttributes.addFlashAttribute("sucesso", "Empresa Parceira salva com sucesso!");
             return "redirect:/empresaParceira/listar";
         } catch (IllegalStateException e) {
             if (e.getMessage().contains("CPF")) {
@@ -181,8 +192,9 @@ public class EmpresaParceiraController {
     }
 
     @PostMapping("remover/{id}")
-    public String remover(@PathVariable Long id) {
+    public String remover(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         service.deletarPorId(id);
+        redirectAttributes.addFlashAttribute("sucesso", "Empresa Parceira deletada com sucesso!");
         return "redirect:/empresaParceira/listar";
     }
 }

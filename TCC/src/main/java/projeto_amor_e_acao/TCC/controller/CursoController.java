@@ -8,10 +8,13 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import projeto_amor_e_acao.TCC.dto.NotificacaoDTO;
 import projeto_amor_e_acao.TCC.model.Curso;
 import projeto_amor_e_acao.TCC.model.Usuario;
 import projeto_amor_e_acao.TCC.service.CursoService;
 import projeto_amor_e_acao.TCC.service.FirebaseStorageService;
+import projeto_amor_e_acao.TCC.service.NotificacaoService;
 import projeto_amor_e_acao.TCC.service.UsuarioService;
 
 import java.io.IOException;
@@ -31,9 +34,17 @@ public class CursoController {
     @Autowired
     private FirebaseStorageService firebaseService;
 
+    @Autowired
+    private NotificacaoService notificacaoService;
+
     @ModelAttribute("usuarioLogado")
     public Usuario usuarioLogado() {
         return usuarioService.getUsuarioLogado();
+    }
+
+    @ModelAttribute("notificacoesMenu")
+    public List<NotificacaoDTO> carregarNotifMenu() {
+        return notificacaoService.listarNotificacaoLimitado(7);
     }
 
     @GetMapping()
@@ -47,6 +58,7 @@ public class CursoController {
                          BindingResult result,
                          @RequestParam(value = "file", required = false) MultipartFile file,
                          @RequestParam(value = "categoriasSelecionadas", required = false) List<String> categoriasSelecionadas,
+                         RedirectAttributes redirectAttributes,
                          Model model) {
 
         if (result.hasErrors()) {
@@ -89,6 +101,7 @@ public class CursoController {
             curso.setCategorias(String.join(",", categoriasSelecionadas));
 
             service.salvar(curso);
+            redirectAttributes.addFlashAttribute("sucesso", "Curso salvo com sucesso!");
             return "redirect:/curso/listar";
 
         } catch (IOException e) {
@@ -185,8 +198,9 @@ public class CursoController {
     }
 
     @PostMapping("remover/{id}")
-    public String remover(@PathVariable Long id) {
+    public String remover(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         service.deletarPorId(id);
+        redirectAttributes.addFlashAttribute("sucesso", "Curso deletado com sucesso!");
         return "redirect:/curso/listar";
     }
 

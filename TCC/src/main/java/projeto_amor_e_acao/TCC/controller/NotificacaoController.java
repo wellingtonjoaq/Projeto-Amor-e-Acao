@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import projeto_amor_e_acao.TCC.dto.HistoricoDTO;
 import projeto_amor_e_acao.TCC.dto.NotificacaoDTO;
 import projeto_amor_e_acao.TCC.model.Aluno;
@@ -119,27 +120,27 @@ public class NotificacaoController {
 
 
     @GetMapping("/ativarAluno/{id}")
-    public String ativarAluno(@PathVariable Long id) {
+    public String ativarAluno(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         Aluno aluno = alunoService.buscarPorId(id);
 
         aluno.setStatus("ATIVO");
         alunoService.salvar(aluno);
-
+        redirectAttributes.addFlashAttribute("sucesso", "Aluno ativado com sucesso!");
         return "redirect:/notificacao/listar";
     }
 
     @GetMapping("ativarVoluntario/{id}")
-    public String ativarVoluntario(@PathVariable Long id) {
+    public String ativarVoluntario(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         Voluntario voluntario = voluntarioService.buscarPorId(id);
 
         voluntario.setStatus("ATIVO");
         voluntarioService.salvar(voluntario);
-
+        redirectAttributes.addFlashAttribute("sucesso", "Voluntario ativado com sucesso!");
         return "redirect:/notificacao/listar";
     }
 
     @GetMapping("/ativarEmpresaParceira/{id}")
-    public String ativarEmpresaParceira(@PathVariable Long id) {
+    public String ativarEmpresaParceira(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         Optional<EmpresaParceira> empresaParceira = empresaParceiraService.buscarPorId(id);
 
         if (empresaParceira.isPresent()) {
@@ -147,25 +148,28 @@ public class NotificacaoController {
             ep.setStatus("ATIVO");
             empresaParceiraService.salvar(ep);
         }
-
+        redirectAttributes.addFlashAttribute("sucesso", "Empresa Parceira ativada com sucesso!");
         return "redirect:/notificacao/listar";
     }
 
     @PostMapping("/recusarAluno/{id}")
-    public String recusarAluno(@PathVariable Long id) {
+    public String recusarAluno(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         alunoService.deletarPorId(id);
+        redirectAttributes.addFlashAttribute("sucesso", "Aluno recusado com sucesso!");
         return "redirect:/notificacao/listar";
     }
 
     @PostMapping("recusarVoluntario/{id}")
-    public String recusarVoluntario(@PathVariable Long id) {
+    public String recusarVoluntario(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         voluntarioService.deletarPorId(id);
+        redirectAttributes.addFlashAttribute("sucesso", "Voluntario recusado com sucesso!");
         return "redirect:/notificacao/listar";
     }
 
     @PostMapping("/recusarEmpresaParceira/{id}")
-    public String recusarEmpresaParceira(@PathVariable Long id) {
+    public String recusarEmpresaParceira(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         empresaParceiraService.deletarPorId(id);
+        redirectAttributes.addFlashAttribute("sucesso", "Empresa Parceira recusada com sucesso!");
         return "redirect:/notificacao/listar";
     }
 }

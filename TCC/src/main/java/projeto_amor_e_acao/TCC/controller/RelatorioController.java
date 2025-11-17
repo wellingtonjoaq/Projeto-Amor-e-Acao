@@ -10,13 +10,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import projeto_amor_e_acao.TCC.dto.NotificacaoDTO;
 import projeto_amor_e_acao.TCC.model.Usuario;
+import projeto_amor_e_acao.TCC.service.NotificacaoService;
 import projeto_amor_e_acao.TCC.service.UsuarioService;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 @RequestMapping("relatorio")
@@ -25,9 +28,17 @@ public class RelatorioController {
     @Autowired
     private UsuarioService usuarioService;
 
+    @Autowired
+    private NotificacaoService notificacaoService;
+
     @ModelAttribute("usuarioLogado")
     public Usuario usuarioLogado() {
         return usuarioService.getUsuarioLogado();
+    }
+
+    @ModelAttribute("notificacoesMenu")
+    public List<NotificacaoDTO> carregarNotifMenu() {
+        return notificacaoService.listarNotificacaoLimitado(7);
     }
 
     @GetMapping("/listar")
