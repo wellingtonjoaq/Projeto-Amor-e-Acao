@@ -136,6 +136,14 @@
   </form>
 </div>
 
+<div id="message-modal" class="modal-overlay" th:if="${erro != null or sucesso != null}" style="display:none;">
+  <div class="modal-content">
+    <span id="close-modal" class="close-btn">&times;</span>
+    <p th:if="${erro}" th:text="${erro}" style="color: red; font-weight: bold;"></p>
+    <p th:if="${sucesso}" th:text="${sucesso}" style="color: green; font-weight: bold;"></p>
+  </div>
+</div>
+
 <script>
   document.getElementById('cepAluno').addEventListener('blur', function() {
     let cep = this.value.replace(/\D/g, '');
@@ -177,5 +185,25 @@
   });
 </script>
 
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+      const modal = document.getElementById("message-modal");
+      const closeBtn = document.getElementById("close-modal");
+
+      if(modal) {
+          modal.style.display = "flex";
+      }
+
+      closeBtn.addEventListener("click", () => {
+          modal.style.display = "none";
+      });
+
+      window.addEventListener("click", (e) => {
+          if(e.target === modal) {
+              modal.style.display = "none";
+          }
+      });
+  });
+</script>
 </body>
 </html>

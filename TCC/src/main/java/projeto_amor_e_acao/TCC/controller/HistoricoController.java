@@ -5,7 +5,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import projeto_amor_e_acao.TCC.dto.HistoricoDTO;
+import projeto_amor_e_acao.TCC.dto.NotificacaoDTO;
 import projeto_amor_e_acao.TCC.model.*;
 import projeto_amor_e_acao.TCC.service.*;
 
@@ -32,9 +34,17 @@ public class HistoricoController {
     @Autowired
     private UsuarioService usuarioService;
 
+    @Autowired
+    private NotificacaoService notificacaoService;
+
     @ModelAttribute("usuarioLogado")
     public Usuario usuarioLogado() {
         return usuarioService.getUsuarioLogado();
+    }
+
+    @ModelAttribute("notificacoesMenu")
+    public List<NotificacaoDTO> carregarNotifMenu() {
+        return notificacaoService.listarNotificacaoLimitado(7);
     }
 
     @GetMapping("listar")
@@ -128,27 +138,27 @@ public class HistoricoController {
     }
 
     @PostMapping("/ativarAluno/{id}")
-    public String ativarAluno(@PathVariable Long id) {
+    public String ativarAluno(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         Aluno aluno = alunoService.buscarPorId(id);
 
         aluno.setStatus("ATIVO");
         alunoService.salvar(aluno);
-
+        redirectAttributes.addFlashAttribute("sucesso", "Aluno ativado com sucesso!");
         return "redirect:/historico/listar";
     }
 
     @PostMapping("ativarVoluntario/{id}")
-    public String ativarVoluntario(@PathVariable Long id) {
+    public String ativarVoluntario(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         Voluntario voluntario = voluntarioService.buscarPorId(id);
 
         voluntario.setStatus("ATIVO");
         voluntarioService.salvar(voluntario);
-
+        redirectAttributes.addFlashAttribute("sucesso", "Voluntario ativado com sucesso!");
         return "redirect:/historico/listar";
     }
 
     @PostMapping("/ativarEmpresaParceira/{id}")
-    public String ativarEmpresaParceira(@PathVariable Long id) {
+    public String ativarEmpresaParceira(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         Optional<EmpresaParceira> empresaParceira = empresaParceiraService.buscarPorId(id);
 
         if (empresaParceira.isPresent()) {
@@ -156,18 +166,18 @@ public class HistoricoController {
             ep.setStatus("ATIVO");
             empresaParceiraService.salvar(ep);
         }
-
+        redirectAttributes.addFlashAttribute("sucesso", "Empresa Parceira ativada com sucesso!");
         return "redirect:/historico/listar";
     }
 
 
     @PostMapping("ativarUsuario/{id}")
-    public String ativarUsuario(@PathVariable Long id) {
+    public String ativarUsuario(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         Optional<Usuario> usuario = usuarioService.buscarPorId(id);
 
         usuario.get().setStatus("ATIVO");
         usuarioService.salvar(usuario.orElse(null));
-
+        redirectAttributes.addFlashAttribute("sucesso", "Usuario ativado com sucesso!");
         return "redirect:/historico/listar";
     }
 }

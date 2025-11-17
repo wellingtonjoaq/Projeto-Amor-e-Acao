@@ -150,29 +150,26 @@ public class UsuarioService{
     }
 
     public void deletarPorId(Long id) {
-        var usuarioFoto = repository.findById(id).orElseThrow();
-        firebaseStorageService.deleteFile(usuarioFoto.getFotoPerfil());
-        repository.deleteById(id);
-
-
         Usuario usuario = repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
 
         if (usuario.getCargo() == Usuario.Cargo.USUARIO_ADMINISTRADOR
-                && usuario.getStatus().equals("INATIVO"))
-        {
-            long adminsAtivos = repository.findAll().stream().filter(
-                    u -> u.getCargo() == Usuario.Cargo.USUARIO_ADMINISTRADOR
-                            && u.getStatus().equals("INATIVO")).count();
+                && usuario.getStatus().equals("ATIVO")) {
+            long adminsAtivos = repository.findAll().stream()
+                    .filter(u -> u.getCargo() == Usuario.Cargo.USUARIO_ADMINISTRADOR
+                            && u.getStatus().equals("ATIVO"))
+                    .count();
 
             if (adminsAtivos <= 1) {
-                throw new IllegalStateException(
-                        "Não é possível excluir o último administrador ativo");
+                throw new IllegalStateException("Não é possível excluir o último administrador ativo");
             }
         }
 
+        firebaseStorageService.deleteFile(usuario.getFotoPerfil());
+
         repository.deleteById(id);
     }
+
 
     public Usuario getUsuarioLogado() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();

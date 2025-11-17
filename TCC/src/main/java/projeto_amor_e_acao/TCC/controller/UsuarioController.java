@@ -8,12 +8,14 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import projeto_amor_e_acao.TCC.dto.NotificacaoDTO;
 import projeto_amor_e_acao.TCC.model.Usuario;
 import projeto_amor_e_acao.TCC.service.FirebaseStorageService;
 import projeto_amor_e_acao.TCC.service.NotificacaoService;
 import projeto_amor_e_acao.TCC.service.UsuarioService;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,6 +53,7 @@ public class UsuarioController {
     public String salvar(@Valid Usuario usuario,
                          BindingResult result,
                          @RequestParam(value = "file", required = false) MultipartFile file,
+                         RedirectAttributes redirectAttributes,
                          Model model) {
 
         if (result.hasErrors()) {
@@ -60,46 +63,41 @@ public class UsuarioController {
         }
 
         try {
-            // salva usuário SEM foto
             Usuario salvo = service.salvar(usuario);
 
-            // faz upload da foto e atualiza
             if (file != null && !file.isEmpty()) {
                 String url = firebaseService.uploadFile(file);
                 salvo.setFotoPerfil(url);
                 service.atualizar(salvo.getId(), salvo);
             }
 
+            redirectAttributes.addFlashAttribute("sucesso", "Usuário salvo com sucesso!");
             return "redirect:/usuario/listar";
 
         } catch (IllegalStateException e) {
-
             if (e.getMessage().contains("E-mail")) {
                 result.rejectValue("email", "error.usuario", e.getMessage());
             }
-
             model.addAttribute("usuario", usuario);
             model.addAttribute("acao", "criar");
             return "administrativo/usuario/formulario";
 
         } catch (IllegalArgumentException e) {
-
             if (e.getMessage().contains("Senha")) {
                 result.rejectValue("senha", "error.usuario", e.getMessage());
             }
-
             model.addAttribute("usuario", usuario);
             model.addAttribute("acao", "criar");
             return "administrativo/usuario/formulario";
 
         } catch (Exception e) {
-
             model.addAttribute("erro", e.getMessage());
             model.addAttribute("usuario", usuario);
             model.addAttribute("acao", "criar");
             return "administrativo/usuario/formulario";
         }
     }
+
 
     @PostMapping("/atualizar/{id}")
     public String atualizar(@PathVariable Long id,
@@ -256,8 +254,21 @@ public class UsuarioController {
     }
 
     @PostMapping("/remover/{id}")
-    public String remover(@PathVariable Long id) {
-        service.deletarPorId(id);
+    public String remover(@PathVariable Long id, Principal principal, RedirectAttributes redirectAttributes) {
+        Usuario usuarioLogado = service.getUsuarioLogado();
+
+        try {
+            if (usuarioLogado.getId().equals(id)) {
+                throw new IllegalStateException("Você não pode deletar a si mesmo!");
+            }
+            service.deletarPorId(id);
+            redirectAttributes.addFlashAttribute("sucesso", "Usuário deletado com sucesso!");
+        } catch (IllegalStateException | IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("erro", e.getMessage());
+        }
+
         return "redirect:/usuario/listar";
     }
+
+
 }

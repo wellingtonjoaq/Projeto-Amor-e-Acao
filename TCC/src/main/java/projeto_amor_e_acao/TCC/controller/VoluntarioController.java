@@ -7,8 +7,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import projeto_amor_e_acao.TCC.dto.NotificacaoDTO;
 import projeto_amor_e_acao.TCC.model.*;
 import projeto_amor_e_acao.TCC.service.FuncaoVoluntarioService;
+import projeto_amor_e_acao.TCC.service.NotificacaoService;
 import projeto_amor_e_acao.TCC.service.UsuarioService;
 import projeto_amor_e_acao.TCC.service.VoluntarioService;
 
@@ -28,9 +31,17 @@ public class VoluntarioController {
     @Autowired
     private UsuarioService usuarioService;
 
+    @Autowired
+    private NotificacaoService notificacaoService;
+
     @ModelAttribute("usuarioLogado")
     public Usuario usuarioLogado() {
         return usuarioService.getUsuarioLogado();
+    }
+
+    @ModelAttribute("notificacoesMenu")
+    public List<NotificacaoDTO> carregarNotifMenu() {
+        return notificacaoService.listarNotificacaoLimitado(7);
     }
 
     @GetMapping()
@@ -40,7 +51,7 @@ public class VoluntarioController {
     }
 
     @PostMapping("salvar")
-    public String salvar(@Valid Voluntario voluntario, BindingResult result, Model model) {
+    public String salvar(@Valid Voluntario voluntario, BindingResult result, RedirectAttributes redirectAttributes, Model model) {
         if (voluntario.getFuncao() != null && voluntario.getFuncao().getId() != null &&
                 voluntario.getFuncao().getId() == 0) {
             voluntario.setFuncao(null);
@@ -55,6 +66,7 @@ public class VoluntarioController {
 
         try {
             service.salvar(voluntario);
+            redirectAttributes.addFlashAttribute("sucesso", "Voluntario salvo com sucesso!");
             return "redirect:/voluntario/listar";
         } catch (Exception e) {
             Usuario usuario = usuarioService.getUsuarioLogado();
@@ -173,8 +185,9 @@ public class VoluntarioController {
     }
 
     @PostMapping("remover/{id}")
-    public String remover(@PathVariable Long id, Model model) {
+    public String remover(@PathVariable Long id, RedirectAttributes redirectAttributes, Model model) {
         service.deletarPorId(id);
+        redirectAttributes.addFlashAttribute("sucesso", "Voluntario deletado com sucesso!");
         return "redirect:/voluntario/listar";
     }
 

@@ -26,15 +26,23 @@ public class FirebaseStorageService {
     }
 
     public boolean deleteFile(String fileName) {
+        if (fileName == null || fileName.isBlank()) {
+            return false;
+        }
 
         if (fileName.contains("https://")) {
             int index = fileName.indexOf("/o/") + 3;
             int end = fileName.indexOf("?alt=");
-            fileName = fileName.substring(index, end).replace("%2F", "/");
+            if (index >= 3 && end > index) {
+                fileName = fileName.substring(index, end).replace("%2F", "/");
+            } else {
+                return false;
+            }
         }
 
         Blob blob = StorageClient.getInstance().bucket(bucketName).get(fileName);
         return blob != null && blob.delete();
     }
+
 }
 
