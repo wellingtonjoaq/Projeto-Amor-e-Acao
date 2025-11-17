@@ -23,10 +23,13 @@ public class FuncaoVoluntarioController {
     @Autowired
     private UsuarioService usuarioService;
 
+    @ModelAttribute("usuarioLogado")
+    public Usuario usuarioLogado() {
+        return usuarioService.getUsuarioLogado();
+    }
+
     @GetMapping()
     public String formulario(FuncaoVoluntario funcaoVoluntario, Model model) {
-        Usuario usuario = usuarioService.getUsuarioLogado();
-        model.addAttribute("usuarioLogado", usuario);
         model.addAttribute("funcao", new FuncaoVoluntario());
         return "administrativo/funcao/formulario";
     }
@@ -55,8 +58,6 @@ public class FuncaoVoluntarioController {
 
     @GetMapping("listar")
     public String listar(Model model) {
-        Usuario usuario = usuarioService.getUsuarioLogado();
-        model.addAttribute("usuarioLogado", usuario);
         model.addAttribute("funcoes", service.listarTodos());
         return "administrativo/funcao/lista";
     }
@@ -86,16 +87,12 @@ public class FuncaoVoluntarioController {
 
     @GetMapping("visualiza/{id}")
     public String visualizar(@PathVariable Long id, Model model) {
-        Usuario usuario = usuarioService.getUsuarioLogado();
-        model.addAttribute("usuarioLogado", usuario);
         model.addAttribute("funcao", service.buscarPorId(id));
         return "administrativo/funcao/visualizar";
     }
 
     @GetMapping("editar/{id}")
     public String editar(@PathVariable Long id, Model model) {
-        Usuario usuario = usuarioService.getUsuarioLogado();
-        model.addAttribute("usuarioLogado", usuario);
         model.addAttribute("funcao", service.buscarPorId(id));
         return "administrativo/funcao/formulario";
     }

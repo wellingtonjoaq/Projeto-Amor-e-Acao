@@ -24,15 +24,13 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                // Desativa CSRF se for API; se usar forms POST com CSRF token, remova esta linha.
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
 
-                // Permite iframe da mesma origem (necessário para H2 console)
                 .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()))
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/css/**", "/imagens/**").permitAll()
+                        .requestMatchers("/css/**", "/imagens/**", "/visitantes", "/visitantes/**").permitAll()
                         .requestMatchers("/login", "/login/**", "/error/**").permitAll()
                         .requestMatchers(
                                 "/curso/listarUsuarioSimples", "/curso/filtrarPesquisaUsuarioSimples", "/curso/filtrarUsuarioSimples",
@@ -48,7 +46,9 @@ public class SecurityConfiguration {
                                 "/historico", "/historico/**",
                                 "/usuario", "/usuario/**",
                                 "/voluntario", "/voluntario/**",
-                                "/relatorio", "/relatorio/**"
+                                "/relatorio", "/relatorio/**",
+                                "/notificacao", "/notificacao/**",
+                                "/upload", "/upload/**"
                         ).hasRole("ADMIN")
 
                         .anyRequest().authenticated()

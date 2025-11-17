@@ -34,10 +34,13 @@ public class AlunoController {
     @Autowired
     private UsuarioService usuarioService;
 
+    @ModelAttribute("usuarioLogado")
+    public Usuario usuarioLogado() {
+        return usuarioService.getUsuarioLogado();
+    }
+
     @GetMapping()
     public String formulario(Aluno aluno, Model model) {
-        Usuario usuario = usuarioService.getUsuarioLogado();
-        model.addAttribute("usuarioLogado", usuario);
         model.addAttribute("cursos", cursoService.listarTodos());
         return "administrativo/aluno/formulario";
     }
@@ -89,8 +92,6 @@ public class AlunoController {
         } else if (e.getMessage().contains("E-mail")) {
             result.rejectValue("email", "error.aluno", e.getMessage());
         }
-        Usuario usuario = usuarioService.getUsuarioLogado();
-        model.addAttribute("usuarioLogado", usuario);
 
         model.addAttribute("cursos", cursoService.listarTodos());
         return "administrativo/aluno/formulario";
@@ -171,8 +172,6 @@ public class AlunoController {
 
         Page<Aluno> alunos = service.listarAtivos(page, size);
 
-        Usuario usuario = usuarioService.getUsuarioLogado();
-        model.addAttribute("usuarioLogado", usuario);
 
         model.addAttribute("alunos", alunos);
         model.addAttribute("paginaAtual", page);
@@ -253,23 +252,17 @@ public class AlunoController {
             model.addAttribute("vazio", alunos.isEmpty());
         }
 
-        Usuario usuario = usuarioService.getUsuarioLogado();
-        model.addAttribute("usuarioLogado", usuario);
         return "administrativo/aluno/filtro/lista";
     }
 
     @GetMapping("visualiza/{id}")
     public String visualizar(@PathVariable Long id, Model model) {
-        Usuario usuario = usuarioService.getUsuarioLogado();
-        model.addAttribute("usuarioLogado", usuario);
         model.addAttribute("aluno", service.buscarPorId(id));
         return "administrativo/aluno/visualizar";
     }
 
     @GetMapping("editar/{id}")
     public String editar(@PathVariable Long id, Model model) {
-        Usuario usuario = usuarioService.getUsuarioLogado();
-        model.addAttribute("usuarioLogado", usuario);
         model.addAttribute("aluno", service.buscarPorId(id));
         model.addAttribute("cursos", cursoService.listarTodos());
         return "administrativo/aluno/formulario";
@@ -288,8 +281,6 @@ public class AlunoController {
 
         Page<Aluno> alunos = service.listarAtivos(page, size);
 
-        Usuario usuario = usuarioService.getUsuarioLogado();
-        model.addAttribute("usuarioLogado", usuario);
 
         model.addAttribute("alunos", alunos);
         model.addAttribute("paginaAtual", page);
@@ -371,16 +362,12 @@ public class AlunoController {
             model.addAttribute("vazio", alunos.isEmpty());
         }
 
-        Usuario usuario = usuarioService.getUsuarioLogado();
-        model.addAttribute("usuarioLogado", usuario);
 
         return "usuario-simples/aluno/filtro/lista";
     }
 
     @GetMapping("visualizaUsuarioSimples/{id}")
     public String visualizaUsuarioSimples(@PathVariable Long id, Model model) {
-        Usuario usuario = usuarioService.getUsuarioLogado();
-        model.addAttribute("usuarioLogado", usuario);
         model.addAttribute("aluno", service.buscarPorId(id));
         return "usuario-simples/aluno/visualizar";
     }

@@ -8,9 +8,13 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import projeto_amor_e_acao.TCC.dto.NotificacaoDTO;
 import projeto_amor_e_acao.TCC.model.Usuario;
 import projeto_amor_e_acao.TCC.service.FirebaseStorageService;
+import projeto_amor_e_acao.TCC.service.NotificacaoService;
 import projeto_amor_e_acao.TCC.service.UsuarioService;
+
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -23,10 +27,21 @@ public class UsuarioController {
     @Autowired
     private FirebaseStorageService firebaseService;
 
+    @Autowired
+    private NotificacaoService notificacaoService;
+
+    @ModelAttribute("usuarioLogado")
+    public Usuario usuarioLogado() {
+        return service.getUsuarioLogado();
+    }
+
+    @ModelAttribute("notificacoesMenu")
+    public List<NotificacaoDTO> carregarNotifMenu() {
+        return notificacaoService.listarNotificacaoLimitado(7);
+    }
+
     @GetMapping()
     public String formulario(Model model) {
-        Usuario usuarios = service.getUsuarioLogado();
-        model.addAttribute("usuarioLogado", usuarios);
         model.addAttribute("usuario", new Usuario());
         model.addAttribute("acao", "criar");
         return "administrativo/usuario/formulario";
@@ -34,48 +49,51 @@ public class UsuarioController {
 
     @PostMapping("salvar")
     public String salvar(@Valid Usuario usuario,
+                         BindingResult result,
                          @RequestParam(value = "file", required = false) MultipartFile file,
-                         BindingResult result, Model model) {
+                         Model model) {
 
         if (result.hasErrors()) {
-            Usuario usuarios = service.getUsuarioLogado();
-            model.addAttribute("usuarioLogado", usuarios);
             model.addAttribute("usuario", usuario);
             model.addAttribute("acao", "criar");
             return "administrativo/usuario/formulario";
         }
 
         try {
+            // salva usuário SEM foto
+            Usuario salvo = service.salvar(usuario);
+
+            // faz upload da foto e atualiza
             if (file != null && !file.isEmpty()) {
                 String url = firebaseService.uploadFile(file);
-                usuario.setFotoPerfil(url);
+                salvo.setFotoPerfil(url);
+                service.atualizar(salvo.getId(), salvo);
             }
 
-            service.salvar(usuario);
             return "redirect:/usuario/listar";
+
         } catch (IllegalStateException e) {
+
             if (e.getMessage().contains("E-mail")) {
                 result.rejectValue("email", "error.usuario", e.getMessage());
             }
-            Usuario usuarios = service.getUsuarioLogado();
-            model.addAttribute("usuarioLogado", usuarios);
+
             model.addAttribute("usuario", usuario);
             model.addAttribute("acao", "criar");
             return "administrativo/usuario/formulario";
 
         } catch (IllegalArgumentException e) {
+
             if (e.getMessage().contains("Senha")) {
                 result.rejectValue("senha", "error.usuario", e.getMessage());
             }
-            Usuario usuarios = service.getUsuarioLogado();
-            model.addAttribute("usuarioLogado", usuarios);
+
             model.addAttribute("usuario", usuario);
             model.addAttribute("acao", "criar");
             return "administrativo/usuario/formulario";
 
         } catch (Exception e) {
-            Usuario usuarios = service.getUsuarioLogado();
-            model.addAttribute("usuarioLogado", usuarios);
+
             model.addAttribute("erro", e.getMessage());
             model.addAttribute("usuario", usuario);
             model.addAttribute("acao", "criar");
@@ -85,43 +103,44 @@ public class UsuarioController {
 
     @PostMapping("/atualizar/{id}")
     public String atualizar(@PathVariable Long id,
-                            @Valid Usuario usuario,
+                            @Valid Usuario usuarioForm,
                             BindingResult result,
                             @RequestParam(value = "file", required = false) MultipartFile file,
                             Model model) {
+
         if (result.hasFieldErrors("nome") || result.hasFieldErrors("email")) {
-            Usuario usuarios = service.getUsuarioLogado();
-            model.addAttribute("usuarioLogado", usuarios);
-            model.addAttribute("usuario", usuario);
+            model.addAttribute("usuario", usuarioForm);
             model.addAttribute("acao", "editar");
             return "administrativo/usuario/formulario";
         }
 
         try {
-            var usuarioExistente = service.buscaPorId(id);
+            Usuario usuarioExistente = service.buscaPorId(id);
+
+            usuarioExistente.setNome(usuarioForm.getNome());
+            usuarioExistente.setEmail(usuarioForm.getEmail());
+            usuarioExistente.setCargo(usuarioForm.getCargo());
 
             if (file != null && !file.isEmpty()) {
+
                 String novaUrl = firebaseService.uploadFile(file);
 
                 if (usuarioExistente.getFotoPerfil() != null && !usuarioExistente.getFotoPerfil().isBlank()) {
                     firebaseService.deleteFile(usuarioExistente.getFotoPerfil());
                 }
 
-                usuario.setFotoPerfil(novaUrl);
-            } else {
-                usuario.setFotoPerfil(usuarioExistente.getFotoPerfil());
+                usuarioExistente.setFotoPerfil(novaUrl);
             }
 
-            service.atualizar(id, usuario);
+            service.atualizar(id, usuarioExistente);
+
             return "redirect:/usuario/listar";
 
         } catch (IllegalStateException e) {
             if (e.getMessage().contains("E-mail")) {
                 result.rejectValue("email", "error.usuario", e.getMessage());
             }
-            Usuario usuarios = service.getUsuarioLogado();
-            model.addAttribute("usuarioLogado", usuarios);
-            model.addAttribute("usuario", usuario);
+            model.addAttribute("usuario", usuarioForm);
             model.addAttribute("acao", "editar");
             return "administrativo/usuario/formulario";
 
@@ -129,21 +148,18 @@ public class UsuarioController {
             if (e.getMessage().contains("Senha")) {
                 result.rejectValue("senha", "error.usuario", e.getMessage());
             }
-            Usuario usuarios = service.getUsuarioLogado();
-            model.addAttribute("usuarioLogado", usuarios);
-            model.addAttribute("usuario", usuario);
+            model.addAttribute("usuario", usuarioForm);
             model.addAttribute("acao", "editar");
             return "administrativo/usuario/formulario";
 
         } catch (Exception e) {
-            Usuario usuarios = service.getUsuarioLogado();
-            model.addAttribute("usuarioLogado", usuarios);
-            model.addAttribute("usuario", usuario);
+            model.addAttribute("usuario", usuarioForm);
             model.addAttribute("acao", "editar");
             model.addAttribute("erro", e.getMessage());
             return "administrativo/usuario/formulario";
         }
     }
+
 
     @GetMapping("listar")
     public String listar(@RequestParam(defaultValue = "0") int page,
@@ -175,8 +191,6 @@ public class UsuarioController {
             model.addAttribute("paginaAtual", page);
             model.addAttribute("vazio", usuario.isEmpty());
 
-            Usuario usuarios = service.getUsuarioLogado();
-            model.addAttribute("usuarioLogado", usuarios);
 
             return "administrativo/usuario/pesquisaFiltro/lista";
         }
@@ -221,8 +235,6 @@ public class UsuarioController {
     public String visualizar(@PathVariable Long id, Model model) {
         Optional<Usuario> usuarioOptional = service.buscarPorId(id);
         if (usuarioOptional.isPresent()) {
-            Usuario usuarios = service.getUsuarioLogado();
-            model.addAttribute("usuarioLogado", usuarios);
             model.addAttribute("usuario", usuarioOptional.get());
             return "administrativo/usuario/visualizar";
         } else {

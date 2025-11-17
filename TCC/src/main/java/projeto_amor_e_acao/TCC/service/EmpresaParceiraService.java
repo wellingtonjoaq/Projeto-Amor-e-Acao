@@ -59,7 +59,7 @@ public class EmpresaParceiraService {
 
     public Page<EmpresaParceira> listarPendentes(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return repository.findByStatusIgnoreCase("PENDENTE", pageable);
+        return repository.findByStatusIgnoreCase("PENDENT", pageable);
     }
 
     public Page<EmpresaParceira> filtrarPesquisa(String status, String pesquisa, int page, int size) {

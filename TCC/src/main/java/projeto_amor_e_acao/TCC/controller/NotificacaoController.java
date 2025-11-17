@@ -1,14 +1,22 @@
 package projeto_amor_e_acao.TCC.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import projeto_amor_e_acao.TCC.dto.HistoricoDTO;
+import projeto_amor_e_acao.TCC.dto.NotificacaoDTO;
 import projeto_amor_e_acao.TCC.model.Aluno;
 import projeto_amor_e_acao.TCC.model.EmpresaParceira;
+import projeto_amor_e_acao.TCC.model.Usuario;
 import projeto_amor_e_acao.TCC.model.Voluntario;
 import projeto_amor_e_acao.TCC.service.*;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -27,35 +35,90 @@ public class NotificacaoController {
     @Autowired
     private EmpresaParceiraService empresaParceiraService;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
+    @ModelAttribute("usuarioLogado")
+    public Usuario usuarioLogado() {
+        return usuarioService.getUsuarioLogado();
+    }
+
+    @ModelAttribute("notificacoesMenu")
+    public List<NotificacaoDTO> carregarNotifMenu() {
+        return service.listarNotificacaoLimitado(7);
+    }
+
     @GetMapping("listar")
     public String listar(@RequestParam(defaultValue = "0") int page,
-                         @RequestParam(defaultValue = "20") int size, Model model) {
+                         @RequestParam(defaultValue = "5") int size,
+                         Model model) {
         model.addAttribute("notificacoes", service.listarNotificacao(page, size));
         model.addAttribute("paginaAtual", page);
-        return "notificacao/lista";
+        return "administrativo/notificacao/lista";
     }
 
-    @GetMapping("visualizaAluno/{id}")
-    public String visualizarAluno(@PathVariable Long id, Model model) {
-        model.addAttribute("aluno", alunoService.buscarPorId(id));
-        return "notificacao/visualizarAluno";
+    @GetMapping("filtrar")
+    public String filtrar(
+            @RequestParam(required = false) String dataInicio,
+            @RequestParam(required = false) String dataFim,
+            @RequestParam(required = false) List<String> tipos,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            Model model) {
+
+        if (tipos == null) {
+            tipos = new ArrayList<>();
+        }
+
+        boolean semFiltros =
+                tipos.isEmpty() &&
+                        (dataInicio == null || dataInicio.isBlank()) &&
+                        (dataFim == null || dataFim.isBlank());
+
+        if (semFiltros) {
+            return "redirect:/notificacao/listar";
+        }
+
+        LocalDate inicio = (dataInicio == null || dataInicio.isBlank()) ? null : LocalDate.parse(dataInicio);
+        LocalDate fim = (dataFim == null || dataFim.isBlank()) ? null : LocalDate.parse(dataFim);
+
+        Page<NotificacaoDTO> notificacoes =
+                service.filtroNotificacao(inicio, fim, tipos, page, size);
+
+        model.addAttribute("notificacoes", notificacoes);
+        model.addAttribute("paginaAtual", page);
+        model.addAttribute("listaTipo", tipos);
+        model.addAttribute("dataInicio", inicio);
+        model.addAttribute("dataFim", fim);
+        model.addAttribute("vazio", notificacoes.isEmpty());
+
+        return "administrativo/notificacao/filtro/lista";
     }
 
-    @GetMapping("visualizaVoluntario/{id}")
-    public String visualizarVoluntario(@PathVariable Long id, Model model) {
-        model.addAttribute("voluntario", voluntarioService.buscarPorId(id));
-        return "notificacao/visualizarVoluntario";
+
+    @GetMapping("/visualiza{tipo}/{id}")
+    public String visualizar(@PathVariable String tipo, @PathVariable Long id, Model model) {
+
+        switch (tipo) {
+            case "Aluno":
+                model.addAttribute("aluno", alunoService.buscarPorId(id));
+                return "administrativo/notificacao/visualizaAluno";
+
+            case "Voluntario":
+                model.addAttribute("voluntario", voluntarioService.buscarPorId(id));
+                return "administrativo/notificacao/visualizaVoluntario";
+
+            case "EmpresaParceira":
+                model.addAttribute("empresa", empresaParceiraService.buscarPorId(id));
+                return "administrativo/notificacao/visualizaEmpresa";
+
+            default:
+                return "redirect:/notificacao/listar";
+        }
     }
 
-    @GetMapping("visualizaEmpresaParceira/{id}")
-    public String visualizarEmpresaParceira(@PathVariable Long id, Model model) {
-        Optional<EmpresaParceira> empresaParceira = empresaParceiraService.buscarPorId(id);
 
-        model.addAttribute("empresa", empresaParceira.get());
-        return "notificacao/visualizarEmpresaParceira";
-    }
-
-    @PostMapping("/ativarAluno/{id}")
+    @GetMapping("/ativarAluno/{id}")
     public String ativarAluno(@PathVariable Long id) {
         Aluno aluno = alunoService.buscarPorId(id);
 
@@ -65,7 +128,7 @@ public class NotificacaoController {
         return "redirect:/notificacao/listar";
     }
 
-    @PostMapping("ativarVoluntario/{id}")
+    @GetMapping("ativarVoluntario/{id}")
     public String ativarVoluntario(@PathVariable Long id) {
         Voluntario voluntario = voluntarioService.buscarPorId(id);
 
@@ -75,7 +138,7 @@ public class NotificacaoController {
         return "redirect:/notificacao/listar";
     }
 
-    @PostMapping("/ativarEmpresaParceira/{id}")
+    @GetMapping("/ativarEmpresaParceira/{id}")
     public String ativarEmpresaParceira(@PathVariable Long id) {
         Optional<EmpresaParceira> empresaParceira = empresaParceiraService.buscarPorId(id);
 

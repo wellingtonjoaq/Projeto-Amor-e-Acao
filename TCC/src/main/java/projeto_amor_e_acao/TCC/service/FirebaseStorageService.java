@@ -17,29 +17,24 @@ public class FirebaseStorageService {
         String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
 
         StorageClient.getInstance()
-                .bucket()
+                .bucket(bucketName)
                 .create(fileName, file.getInputStream(), file.getContentType());
 
-        return String.format(
-                "https://firebasestorage.googleapis.com/v0/b/%s/o/%s?alt=media",
-                bucketName, fileName.replace("/", "%2F")
-        );
+        return "https://firebasestorage.googleapis.com/v0/b/" +
+                bucketName + "/o/" +
+                fileName.replace("/", "%2F") + "?alt=media";
     }
 
     public boolean deleteFile(String fileName) {
-        
+
         if (fileName.contains("https://")) {
             int index = fileName.indexOf("/o/") + 3;
             int end = fileName.indexOf("?alt=");
             fileName = fileName.substring(index, end).replace("%2F", "/");
         }
 
-        Blob blob = StorageClient.getInstance().bucket().get(fileName);
-
-        if (blob != null) {
-            return blob.delete();
-        }
-
-        return false;
+        Blob blob = StorageClient.getInstance().bucket(bucketName).get(fileName);
+        return blob != null && blob.delete();
     }
 }
+
