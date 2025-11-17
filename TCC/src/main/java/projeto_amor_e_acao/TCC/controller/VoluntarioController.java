@@ -28,10 +28,13 @@ public class VoluntarioController {
     @Autowired
     private UsuarioService usuarioService;
 
+    @ModelAttribute("usuarioLogado")
+    public Usuario usuarioLogado() {
+        return usuarioService.getUsuarioLogado();
+    }
+
     @GetMapping()
     public String formulario(Voluntario voluntario, Model model) {
-        Usuario usuario = usuarioService.getUsuarioLogado();
-        model.addAttribute("usuarioLogado", usuario);
         model.addAttribute("funcoesVoluntario", funcaoVoluntarioService.listarTodos());
         return "administrativo/voluntario/formulario";
     }
@@ -67,8 +70,6 @@ public class VoluntarioController {
                          @RequestParam(defaultValue = "20") int size,
                          Model model) {
 
-        Usuario usuario = usuarioService.getUsuarioLogado();
-        model.addAttribute("usuarioLogado", usuario);
 
         Page<Voluntario> voluntarios = service.listarAtivos(page, size);
 
@@ -155,23 +156,17 @@ public class VoluntarioController {
             model.addAttribute("vazio", voluntarios.isEmpty());
         }
 
-        Usuario usuario = usuarioService.getUsuarioLogado();
-        model.addAttribute("usuarioLogado", usuario);
         return "administrativo/voluntario/filtro/lista";
     }
 
     @GetMapping("visualiza/{id}")
     public String visualizar(@PathVariable Long id,Model model) {
-        Usuario usuario = usuarioService.getUsuarioLogado();
-        model.addAttribute("usuarioLogado", usuario);
         model.addAttribute("voluntario", service.buscarPorId(id));
         return "administrativo/voluntario/visualizar";
     }
 
     @GetMapping("editar/{id}")
     public String editar(@PathVariable Long id, Model model) {
-        Usuario usuario = usuarioService.getUsuarioLogado();
-        model.addAttribute("usuarioLogado", usuario);
         model.addAttribute("funcoesVoluntario", funcaoVoluntarioService.listarTodos());
         model.addAttribute("voluntario", service.buscarPorId(id));
         return "administrativo/voluntario/formulario";
@@ -188,8 +183,6 @@ public class VoluntarioController {
                          @RequestParam(defaultValue = "20") int size,
                          Model model) {
 
-        Usuario usuario = usuarioService.getUsuarioLogado();
-        model.addAttribute("usuarioLogado", usuario);
 
         Page<Voluntario> voluntarios = service.listarAtivos(page, size);
 
@@ -276,16 +269,12 @@ public class VoluntarioController {
             model.addAttribute("vazio", voluntarios.isEmpty());
         }
 
-        Usuario usuario = usuarioService.getUsuarioLogado();
-        model.addAttribute("usuarioLogado", usuario);
 
         return "usuario-simples/voluntario/filtro/lista";
     }
 
     @GetMapping("visualizaUsuarioSimples/{id}")
     public String visualizaUsuarioSimples(@PathVariable Long id,Model model) {
-        Usuario usuario = usuarioService.getUsuarioLogado();
-        model.addAttribute("usuarioLogado", usuario);
         model.addAttribute("voluntario", service.buscarPorId(id));
         return "usuario-simples/voluntario/visualizar";
     }

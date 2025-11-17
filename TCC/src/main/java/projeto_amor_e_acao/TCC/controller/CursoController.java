@@ -31,10 +31,13 @@ public class CursoController {
     @Autowired
     private FirebaseStorageService firebaseService;
 
+    @ModelAttribute("usuarioLogado")
+    public Usuario usuarioLogado() {
+        return usuarioService.getUsuarioLogado();
+    }
+
     @GetMapping()
     public String formulario(Curso curso, Model model) {
-        Usuario usuario = usuarioService.getUsuarioLogado();
-        model.addAttribute("usuarioLogado", usuario);
         model.addAttribute("curso", curso);
         return "administrativo/curso/formulario";
     }
@@ -109,8 +112,6 @@ public class CursoController {
 
         Page<Curso> cursos = service.listarPaginados(page, size);
 
-        Usuario usuario = usuarioService.getUsuarioLogado();
-        model.addAttribute("usuarioLogado", usuario);
 
         model.addAttribute("cursos", cursos);
         model.addAttribute("paginaAtual", page);
@@ -173,16 +174,12 @@ public class CursoController {
             model.addAttribute("vazio", cursos.isEmpty());
         }
 
-        Usuario usuario = usuarioService.getUsuarioLogado();
-        model.addAttribute("usuarioLogado", usuario);
 
         return "administrativo/curso/filtro/lista";
     }
 
     @GetMapping("editar/{id}")
     public String editar(@PathVariable Long id, Model model) {
-        Usuario usuario = usuarioService.getUsuarioLogado();
-        model.addAttribute("usuarioLogado", usuario);
         model.addAttribute("curso", service.buscarPorId(id));
         return "administrativo/curso/formulario";
     }
@@ -200,8 +197,6 @@ public class CursoController {
 
         Page<Curso> cursos = service.listarPaginados(page, size);
 
-        Usuario usuario = usuarioService.getUsuarioLogado();
-        model.addAttribute("usuarioLogado", usuario);
 
         model.addAttribute("cursos", cursos);
         model.addAttribute("paginaAtual", page);

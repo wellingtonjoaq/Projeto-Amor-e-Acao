@@ -29,10 +29,13 @@ public class EmpresaParceiraController {
     @Autowired
     private UsuarioService usuarioService;
 
+    @ModelAttribute("usuarioLogado")
+    public Usuario usuarioLogado() {
+        return usuarioService.getUsuarioLogado();
+    }
+
     @GetMapping()
     public String formulario(Model model) {
-        Usuario usuario = usuarioService.getUsuarioLogado();
-        model.addAttribute("usuarioLogado", usuario);
         model.addAttribute("empresaParceira", new EmpresaParceira());
         return "administrativo/empresaParceira/formulario";
     }
@@ -77,8 +80,6 @@ public class EmpresaParceiraController {
                          @RequestParam(defaultValue = "20") int size,
                          Model model) {
 
-        Usuario usuario = usuarioService.getUsuarioLogado();
-        model.addAttribute("usuarioLogado", usuario);
 
         Page<EmpresaParceira> empresasParceiras = service.listarAtivos(page, size);
         model.addAttribute("empresasParceiras", empresasParceiras);
@@ -144,8 +145,6 @@ public class EmpresaParceiraController {
             model.addAttribute("vazio", empresasParceiras.isEmpty());
         }
 
-        Usuario usuario = usuarioService.getUsuarioLogado();
-        model.addAttribute("usuarioLogado", usuario);
         return "administrativo/empresaParceira/filtro/lista";
     }
 

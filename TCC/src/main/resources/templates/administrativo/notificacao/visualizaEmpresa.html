@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Visualizar Empresa Parceira</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<div th:replace="/administrativo/navbar/dashboard :: menu"></div>
+
+<div class="container" th:fragment="visualizaEmpresaParceira">
+
+  <form class="form-adm">
+    <h1>Visualizar Empresa Parceira</h1>
+    <input type="hidden" name="id" th:value="${empresa.id}" disabled />
+
+    <div class="form-grid">
+
+      <div class="form-group">
+        <label for="nomeEmpresa">Nome da Empresa</label>
+        <input id="nomeEmpresa" name="nome" type="text" th:value="${empresa.nome}" disabled />
+      </div>
+
+      <div class="form-group">
+        <label for="cnpjEmpresa">CNPJ</label>
+        <input id="cnpjEmpresa" name="cnpj" type="text" th:value="${empresa.cnpj}" disabled />
+      </div>
+
+      <div class="form-group">
+        <label for="enderecoEmpresa">Endereço</label>
+        <input id="enderecoEmpresa" name="endereco" type="text" th:value="${empresa.endereco}" disabled />
+      </div>
+
+      <div class="form-group">
+        <label for="representanteEmpresa">Nome do Representante</label>
+        <input id="representanteEmpresa" name="nomeRepresentante" type="text" th:value="${empresa.nomeRepresentante}" disabled />
+      </div>
+
+      <div class="form-group">
+        <label for="cpfRepresentanteEmpresa">CPF do Representante</label>
+        <input id="cpfRepresentanteEmpresa" name="cpfRepresentante" type="text" th:value="${empresa.cpfRepresentante}" disabled />
+      </div>
+
+      <div class="form-group">
+        <label for="emailEmpresa">Email</label>
+        <input id="emailEmpresa" name="email" type="email" th:value="${empresa.email}" disabled />
+      </div>
+
+      <div class="form-group">
+        <label for="dataInicioEmpresa">Data de Início</label>
+        <input id="dataInicioEmpresa" name="dataInicio" type="date" th:value="${empresa.dataInicio}" disabled />
+      </div>
+
+      <div class="form-group">
+        <label for="dataFimEmpresa">Data de Fim</label>
+        <input id="dataFimEmpresa" name="dataFim" type="date" th:value="${empresa.dataFim}" disabled />
+      </div>
+
+      <div class="form-group">
+        <label for="telefoneEmpresa">Telefone</label>
+        <input id="telefoneEmpresa" name="telefone" type="text" th:value="${empresa.telefone}" disabled />
+      </div>
+
+      <div class="form-group">
+        <label for="objetivoEmpresa">Objetivo</label>
+        <input id="objetivoEmpresa" name="objetivo" type="text" th:value="${empresa.objetivo}" disabled />
+      </div>
+
+      <div class="form-group">
+        <label for="termosEmpresa">Termos</label>
+        <input id="termosEmpresa" name="termos" type="text" th:value="${empresa.termos}" disabled />
+      </div>
+
+    </div>
+    <a type="button" class="button-vol" th:href="@{'/notificacao/ativarEmpresaParceira/' + ${empresa.id}}">
+      <i class="fa-solid fa-arrow-left"></i> Aceitar
+    </a>
+
+    <a href="#" class="delete-btn" th:attr="data-id=${empresa.id}, data-nome=${empresa.nome}">
+      Recusar
+    </a>
+  </form>
+</div>
+
+<div id="modal-overlay" class="modal-overlay" style="display:none;">
+  <div class="modal-content">
+    <h2>Recusar Empresa Parceira</h2>
+    <p>Tem certeza que deseja recusar o empresa: <span id="modal-nome"></span>?</p>
+
+    <div class="card-actions" style="justify-content:center;">
+      <form th:action="@{/notificacao/recusarVoluntario/{id}}" id="form-delete" method="post">
+        <button type="submit" class="delete-confirm" style="width: 100px;">Confirmar</button>
+      </form>
+      <button id="cancelar-modal" class="button-vol" style="width: 100px;">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.delete-btn').forEach(btn => {
+      btn.addEventListener('click', e => {
+          e.preventDefault();
+          const empresaId = btn.getAttribute('data-id');
+          const empresaName = btn.getAttribute('data-nome');
+
+          document.querySelector('#modal-nome').textContent = empresaName;
+          document.querySelector('#form-delete').setAttribute('action', `/notificacao/recusarEmpresaParceira/${empresaId}`);
+          document.querySelector('#modal-overlay').style.display = 'flex';
+      });
+  });
+
+  document.querySelector('#cancelar-modal').addEventListener('click', () => {
+      document.querySelector('#modal-overlay').style.display = 'none';
+  });
+</script>
+</body>
+</html>
