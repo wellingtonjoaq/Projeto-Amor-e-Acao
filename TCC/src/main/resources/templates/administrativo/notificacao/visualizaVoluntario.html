@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Visualizar Voluntário</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<div th:replace="/administrativo/navbar/dashboard :: menu"></div>
+
+<div class="container" th:fragment="visualizaVoluntario">
+
+  <form class="form-adm">
+    <h1>Visualizar Voluntário</h1>
+
+    <input type="hidden" name="id" th:value="${voluntario.id}" disabled />
+
+    <div class="form-grid">
+
+      <div class="form-group">
+        <label for="nomeVoluntario">Nome</label>
+        <input id="nomeVoluntario" name="nome" type="text" th:value="${voluntario.nome}" disabled />
+      </div>
+
+      <div class="form-group">
+        <label for="cpfVoluntario">CPF</label>
+        <input id="cpfVoluntario" name="cpf" type="text" th:value="${voluntario.cpf}" disabled />
+      </div>
+
+      <div class="form-group">
+        <label for="emailVoluntario">Email</label>
+        <input id="emailVoluntario" name="email" type="email" th:value="${voluntario.email}" disabled />
+      </div>
+
+      <div class="form-group">
+        <label for="telefoneVoluntario">Telefone</label>
+        <input id="telefoneVoluntario" name="telefone" type="text" th:value="${voluntario.telefone}" disabled />
+      </div>
+
+      <div class="form-group">
+        <label for="funcaoVoluntario">Função</label>
+        <input id="funcaoVoluntario" name="funcao" type="text"
+               th:value="${voluntario.funcao != null ? voluntario.funcao.nome : 'Sem função'}" disabled />
+      </div>
+
+
+      <div class="form-group">
+        <label for="motivacaoVoluntario">Motivação</label>
+        <input id="motivacaoVoluntario" name="motivacao" type="text" th:value="${voluntario.motivacao}" disabled />
+      </div>
+
+      <div class="form-group">
+        <label for="cepVoluntario">CEP</label>
+        <input id="cepVoluntario" name="cep" type="text" th:value="${voluntario.cep}" disabled />
+      </div>
+
+      <div class="form-group">
+        <label for="bairroVoluntario">Bairro</label>
+        <input id="bairroVoluntario" name="bairro" type="text" th:value="${voluntario.bairro}" disabled />
+      </div>
+
+      <div class="form-group">
+        <label for="enderecoVoluntario">Endereço</label>
+        <input id="enderecoVoluntario" name="endereco" type="text" th:value="${voluntario.endereco}" disabled />
+      </div>
+
+      <div class="form-group">
+        <label for="nrCasaVoluntario">Número</label>
+        <input id="nrCasaVoluntario" name="nrCasa" type="text" th:value="${voluntario.nrCasa}" disabled />
+      </div>
+
+      <div class="form-group">
+        <label for="cidadeVoluntario">Cidade</label>
+        <input id="cidadeVoluntario" name="cidade" type="text" th:value="${voluntario.cidade}" disabled />
+      </div>
+
+      <div class="form-group">
+        <label for="estadoVoluntario">Estado</label>
+        <input id="estadoVoluntario" name="estado" type="text" th:value="${voluntario.estado}" disabled />
+      </div>
+
+    </div>
+
+    <a type="button" class="button-vol" th:href="@{'/notificacao/ativarVoluntario/' + ${voluntario.id}}">
+        Aceitar
+    </a>
+
+    <a href="#" class="delete-btn" th:attr="data-id=${voluntario.id}, data-nome=${voluntario.nome}">
+        Recusar
+    </a>
+
+  </form>
+</div>
+
+<div id="message-modal" class="modal-overlay" th:if="${erro != null or sucesso != null}" style="display:none;">
+  <div class="modal-content">
+    <span id="close-modal" class="close-btn">&times;</span>
+    <p th:if="${erro}" th:text="${erro}" style="color: red; font-weight: bold;"></p>
+    <p th:if="${sucesso}" th:text="${sucesso}" style="color: green; font-weight: bold;"></p>
+  </div>
+</div>
+
+<div id="modal-overlay" class="modal-overlay" style="display:none;">
+  <div class="modal-content">
+    <h2>Recusar Voluntario</h2>
+    <p>Tem certeza que deseja recusar o voluntario: <span id="modal-nome"></span>?</p>
+
+    <div class="card-actions" style="justify-content:center;">
+      <form th:action="@{/notificacao/recusarVoluntario/{id}}" id="form-delete" method="post">
+        <button type="submit" class="delete-confirm" style="width: 100px;">Confirmar</button>
+      </form>
+      <button id="cancelar-modal" class="button-vol" style="width: 100px;">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.delete-btn').forEach(btn => {
+      btn.addEventListener('click', e => {
+          e.preventDefault();
+          const voluntarioId = btn.getAttribute('data-id');
+          const voluntarioName = btn.getAttribute('data-nome');
+
+          document.querySelector('#modal-nome').textContent = voluntarioName;
+          document.querySelector('#form-delete').setAttribute('action', `/notificacao/recusarVoluntario/${voluntarioId}`);
+          document.querySelector('#modal-overlay').style.display = 'flex';
+      });
+  });
+
+  document.querySelector('#cancelar-modal').addEventListener('click', () => {
+      document.querySelector('#modal-overlay').style.display = 'none';
+  });
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+      const modal = document.getElementById("message-modal");
+      const closeBtn = document.getElementById("close-modal");
+
+      if(modal) {
+          modal.style.display = "flex";
+      }
+
+      closeBtn.addEventListener("click", () => {
+          modal.style.display = "none";
+      });
+
+      window.addEventListener("click", (e) => {
+          if(e.target === modal) {
+              modal.style.display = "none";
+          }
+      });
+  });
+</script>
+</body>
+</html>

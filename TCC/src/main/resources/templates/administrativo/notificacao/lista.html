@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Notificações</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<div th:replace="/administrativo/navbar/dashboard :: menu"></div>
+
+<div class="container">
+
+    <div class="header-bar">
+        <div class="header-title">
+            <h1>Notificações</h1>
+        </div>
+
+        <div class="header-actions">
+            <button class="filter-btn-historico" id="toggleFilter">
+                <i class="fas fa-filter"></i> Filtrar <i class="fas fa-chevron-down"></i>
+            </button>
+        </div>
+    </div>
+
+    <form th:action="@{/notificacao/filtrar}" method="get" class="filter-panel-notificacao" id="filterPanel">
+        <div class="filter-section">
+            <div class="filter-header">
+                <i class="fas fa-id-card" id="filtro-icones"></i> Identidade
+            </div>
+
+            <div class="filter-options">
+                <label><input type="checkbox" name="tipos" value="Aluno"> Aluno</label>
+                <label><input type="checkbox" name="tipos" value="Voluntario"> Voluntario</label>
+                <label><input type="checkbox" name="tipos" value="Empresa Parceira"> Empresa Parceira</label>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <div class="filter-header">
+                <i class="fas fa-id-card" id="filtro-icones1"></i> Data
+            </div>
+
+            <div class="filter-options">
+                <label><input type="date" name="dataInicio"> Data Inicio</label>
+                <label><input type="date" name="dataFim"> Data Fim</label>
+            </div>
+        </div>
+
+        <button type="submit" class="btn-buscar-filtro-usuario">
+            <i class="fa fa-search"></i> Buscar
+        </button>
+    </form>
+
+    <div>
+        <div class="notificacao">
+            <h3>Solicitações</h3>
+
+            <div th:if="${#lists.isEmpty(notificacoes)}">
+                <p style="padding: 10px;">Nenhuma solicitação pendente.</p>
+            </div>
+
+            <ul th:if="${!#lists.isEmpty(notificacoes)}" class="notif-list">
+                <li class="notif-item" th:each="n : ${notificacoes}">
+                    <i class="fa-solid"
+                       th:classappend="${n.tipo == 'Aluno'} ? ' fa-graduation-cap' : (${n.tipo == 'Voluntario'} ? ' fa-handshake' : ' fa-building')">
+                    </i>
+
+                    <span th:text="${n.nome + ' | ' + n.tipo}"></span>
+
+                    <a th:href="@{|/notificacao/visualiza${n.tipo}/${n.id}|}" class="btn-view">
+                        <i class="fa-solid fa-eye"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <form class="action-botton-page" th:action="@{/notificacao/listar}" method="get">
+        <h1>Página</h1>
+
+        <button th:if="${notificacoes.hasPrevious()}" type="submit" name="page" th:value="${notificacoes.number - 1}" th:text="${notificacoes.number}"></button>
+
+        <button class="active" type="submit" name="page" th:value="${notificacoes.number}" th:text="${notificacoes.number + 1}"></button>
+
+        <button th:if="${notificacoes.hasNext()}" type="submit" name="page" th:value="${notificacoes.number + 1}" th:text="${notificacoes.number + 2}"></button>
+    </form>
+</div>
+
+<script>
+    const toggleButton = document.getElementById('toggleFilter');
+    const filterPanel = document.getElementById('filterPanel');
+    let open = false;
+
+    toggleButton.addEventListener('click', () => {
+        open = !open;
+        filterPanel.style.display = open ? 'grid' : 'none';
+        toggleButton.querySelector('.fa-chevron-down').style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
+    });
+
+    const maxTotal = 5;
+    const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+    let checkedOrder = [];
+
+    allCheckboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', () => {
+        if (checkbox.checked) {
+          checkedOrder.push(checkbox);
+
+          if (checkedOrder.length > maxTotal) {
+            const firstChecked = checkedOrder.shift();
+            firstChecked.checked = false;
+          }
+        } else {
+          checkedOrder = checkedOrder.filter(c => c !== checkbox);
+        }
+      });
+    });
+</script>
+
+
+</body>
+</html>

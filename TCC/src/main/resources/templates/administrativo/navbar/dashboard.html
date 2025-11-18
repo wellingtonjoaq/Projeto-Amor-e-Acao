@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/imagens}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body th:fragment="menu">
+
+<div class="topbar">
+    <div class="topbar-left">
+        <button class="menu-toggle" id="menuToggleBtn">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <h1 id="painel-title">Painel Administrativo</h1>
+    </div>
+
+    <div class="topbar-right">
+        <button class="icon-button">
+            <i class="fa-solid fa-bell"></i>
+        </button>
+        <img class="img-user"
+             th:src="${usuarioLogado.fotoPerfil != null ? usuarioLogado.fotoPerfil : '/imagens/usuario.jpg'}"
+             alt="Foto do Usuário"
+             height="50px">
+        <div class="user-menu hidden" id="userMenu">
+            <a th:href="@{/logout}">Mudar de Usuario</a>
+            <a th:href="@{/logout}">Sair</a>
+        </div>
+    </div>
+</div>
+
+<div id="notificationModal" class="notification-modal hidden">
+    <div class="notif-header">
+        <h2>Notificações</h2>
+    </div>
+
+    <div class="notif-section">
+        <h3>Solicitações</h3>
+
+        <div th:if="${#lists.isEmpty(notificacoesMenu)}">
+            <p style="padding: 10px;">Nenhuma notificação pendente.</p>
+        </div>
+
+        <div class="notif-item" th:each="n : ${notificacoesMenu}">
+            <i class="fa-solid"
+               th:classappend="${n.tipo == 'Aluno'} ? ' fa-graduation-cap' : (${n.tipo == 'Voluntario'} ? ' fa-handshake' : ' fa-building')">
+            </i>
+
+            <span th:text="${n.nome + ' | ' + n.tipo}"></span>
+
+            <a th:href="@{|/notificacao/visualiza${n.tipo}/${n.id}|}" class="btn-view">
+                <i class="fa-solid fa-eye"></i>
+            </a>
+        </div>
+    </div>
+
+    <a class="btn-all" th:href="@{/notificacao/listar}">Ver todas</a>
+</div>
+
+<ul class="sidebar collapsed" id="sidebar">
+    <li><a href="/usuario/listar"><i class="fa-solid fa-user"></i><span>Usuários</span></a></li>
+    <li><a href="/curso/listar"><i class="fa-solid fa-table"></i><span>Formulários</span></a></li>
+    <li><a href="/aluno/listar"><i class="fa-solid fa-user-graduate"></i><span>Alunos</span></a></li>
+    <li><a href="/voluntario/listar"><i class="fa-solid fa-handshake-angle"></i><span>Voluntários</span></a></li>
+    <li><a href="/funcao/listar"><i class="fa-solid fa-address-book"></i><span>Funções</span></a></li>
+    <li><a href="/empresaParceira/listar"><i class="fa-solid fa-building"></i><span>Parcerias</span></a></li>
+    <li><a href="/relatorio/listar"><i class="fa-solid fa-file-excel"></i><span>Relatórios</span></a></li>
+    <li><a href="/historico/listar"><i class="fa-solid fa-history"></i><span>Histórico</span></a></li>
+
+    <div class="sidebar-logo">
+        <a href="/usuario/listar">
+            <img th:src="@{/imagens/logo.png}" alt="Logo ONG"/>
+        </a>
+    </div>
+</ul>
+
+<script>
+    const sidebar = document.getElementById('sidebar');
+    const menuToggleBtn = document.getElementById('menuToggleBtn');
+    const sidebarLinks = document.querySelectorAll('.sidebar li a');
+
+    menuToggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (window.innerWidth <= 768) {
+            sidebar.classList.toggle('active');
+        } else {
+            sidebar.classList.toggle('collapsed');
+        }
+    });
+
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            if (window.innerWidth <= 768) {
+                sidebar.classList.remove('active');
+            } else {
+                sidebar.classList.add('collapsed');
+            }
+        });
+    });
+
+    const notifBtn = document.querySelector(".icon-button");
+    const notifModal = document.getElementById("notificationModal");
+
+    notifBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        notifModal.classList.toggle("hidden");
+    });
+
+    const userImg = document.querySelector(".img-user");
+    const userMenu = document.getElementById("userMenu");
+
+    userImg.addEventListener("click", (e) => {
+        e.stopPropagation();
+        userMenu.classList.toggle("hidden");
+    });
+
+    document.addEventListener("click", (e) => {
+
+        if (!sidebar.contains(e.target) && !menuToggleBtn.contains(e.target)) {
+            sidebar.classList.remove("active");
+            sidebar.classList.add("collapsed");
+        }
+
+        if (!notifModal.contains(e.target) && !notifBtn.contains(e.target)) {
+            notifModal.classList.add("hidden");
+        }
+
+        if (!userMenu.contains(e.target) && !userImg.contains(e.target)) {
+            userMenu.classList.add("hidden");
+        }
+    });
+</script>
+
+</body>
+</html>

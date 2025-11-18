@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulário de Voluntário</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<div th:replace="/administrativo/navbar/dashboard :: menu"></div>
+
+<div class="container">
+
+    <div th:if="${erro}" class="erroGlobal">
+        <p th:text="${erro}"></p>
+    </div>
+
+    <form th:action="@{/voluntario/salvar}" th:object="${voluntario}" method="post" class="form-adm">
+        <input type="hidden" th:field="*{id}" />
+
+        <div class="add-voltar">
+            <h1 th:text="${voluntario.id == null ? 'Novo Voluntário' : 'Editar Voluntário'}"></h1>
+
+            <a type="button" class="button-vol" th:href="@{/voluntario/listar}">
+                <i class="fa-solid fa-arrow-left"></i> Voltar
+            </a>
+        </div>
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label for="nomeVoluntario">Nome Completo
+                    <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error"></span>
+                </label>
+                <input id="nomeVoluntario" type="text" th:field="*{nome}"
+                       th:classappend="${#fields.hasErrors('nome')} ? ' field-error' : ''" minlength="3" maxlength="100" placeholder="Digite o nome" required />
+            </div>
+
+            <div class="form-group">
+                <label for="cpfVoluntario">CPF
+                    <span th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}" class="error"></span>
+                </label>
+                <input id="cpfVoluntario" type="text" th:field="*{cpf}"
+                       th:classappend="${#fields.hasErrors('cpf')} ? ' field-error' : ''" placeholder="Ex: 000.000.000-00" required />
+            </div>
+
+            <div class="form-group">
+                <label for="emailVoluntario">E-mail
+                    <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></span>
+                </label>
+                <input id="emailVoluntario" type="email" th:field="*{email}"
+                       th:classappend="${#fields.hasErrors('email')} ? ' field-error' : ''" placeholder="Ex: exemplo@gmail.com" maxlength="255" required/>
+            </div>
+
+            <div class="form-group">
+                <label for="telefoneVoluntario">Telefone
+                    <span th:if="${#fields.hasErrors('telefone')}" th:errors="*{telefone}" class="error"></span>
+                </label>
+                <input id="telefoneVoluntario" type="text" th:field="*{telefone}"
+                       th:classappend="${#fields.hasErrors('telefone')} ? ' field-error' : ''" placeholder="Ex: (00) 00000-0000" minlength="11" maxlength="15" required/>
+            </div>
+
+            <div class="form-group">
+                <label for="generoVoluntario">Genero
+                    <span th:if="${#fields.hasErrors('genero')}" th:errors="*{genero}" class="error"></span>
+                </label>
+                <select id="generoVoluntario" th:field="*{genero}"
+                        th:classappend="${#fields.hasErrors('genero')} ? ' field-error' : ''" required>
+                    <option value=" ">Selecionar</option>
+                    <option value="MASCULINO">MASCULINO</option>
+                    <option value="FEMININO">FEMININO</option>
+                    <option value="OUTRO">OUTRO</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="funcaoVoluntario">Função</label>
+                <select id="funcaoVoluntario" th:field="*{funcao}" class="form-control">
+                    <option th:value="${' '}" hidden="hidden">Selecionar</option>
+                    <option th:each="funcao : ${funcoesVoluntario}"
+                            th:value="${funcao.id}"
+                            th:text="${funcao.nome}"></option>
+                </select>
+                <span class="erro" th:errors="*{funcao}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="motivacaoVoluntario">Motivação
+                    <span th:if="${#fields.hasErrors('motivacao')}" th:errors="*{motivacao}" class="error"></span>
+                </label>
+                <input id="motivacaoVoluntario" type="text" th:field="*{motivacao}"
+                       th:classappend="${#fields.hasErrors('motivacao')} ? ' field-error' : ''" maxlength="255" placeholder="Descreva o motivo..." required/>
+            </div>
+
+            <div class="form-group">
+                <label for="cepVoluntario">CEP
+                    <span th:if="${#fields.hasErrors('cep')}" th:errors="*{cep}" class="error"></span>
+                </label>
+                <input id="cepVoluntario" type="text" th:field="*{cep}" minlength="8" maxlength="9" placeholder="Ex: 01001-000"
+                       th:classappend="${#fields.hasErrors('cep')} ? ' field-error' : ''" required/>
+            </div>
+
+            <div class="form-group">
+                <label for="bairroVoluntario">Bairro
+                    <span th:if="${#fields.hasErrors('bairro')}" th:errors="*{bairro}" class="error"></span>
+                </label>
+                <input id="bairroVoluntario" type="text" th:field="*{bairro}"
+                       th:classappend="${#fields.hasErrors('bairro')} ? ' field-error' : ''" maxlength="255" placeholder="Ex: Jardim Botanica" required/>
+            </div>
+
+            <div class="form-group">
+                <label for="enderecoVoluntario">Endereço
+                    <span th:if="${#fields.hasErrors('endereco')}" th:errors="*{endereco}" class="error"></span>
+                </label>
+                <input id="enderecoVoluntario" type="text" th:field="*{endereco}"
+                       th:classappend="${#fields.hasErrors('endereco')} ? ' field-error' : ''" maxlength="255" placeholder="Ex: Rua Flores" required/>
+            </div>
+
+            <div class="form-group">
+                <label for="nrCasaVoluntario">Número da Casa
+                    <span th:if="${#fields.hasErrors('nrCasa')}" th:errors="*{nrCasa}" class="error"></span>
+                </label>
+                <input id="nrCasaVoluntario" type="text" th:field="*{nrCasa}"
+                       th:classappend="${#fields.hasErrors('nrCasa')} ? ' field-error' : ''" maxlength="4" placeholder="Ex: 1234" required/>
+            </div>
+
+            <div class="form-group">
+                <label for="cidadeVoluntario">Cidade
+                    <span th:if="${#fields.hasErrors('cidade')}" th:errors="*{cidade}" class="error"></span>
+                </label>
+                <input id="cidadeVoluntario" type="text" th:field="*{cidade}"
+                       th:classappend="${#fields.hasErrors('cidade')} ? ' field-error' : ''" maxlength="100" placeholder="Ex: Umuarama" required/>
+            </div>
+
+            <div class="form-group">
+                <label for="estadoVoluntario">Estado
+                    <span th:if="${#fields.hasErrors('estado')}" th:errors="*{estado}" class="error"></span>
+                </label>
+                <input id="estadoVoluntario" type="text" th:field="*{estado}"
+                       th:classappend="${#fields.hasErrors('estado')} ? ' field-error' : ''" maxlength="100" placeholder="Ex: Paraná" required/>
+            </div>
+
+            <div th:if="${voluntario.id != null}">
+                <div class="form-group">
+                    <label for="statusVoluntario">Status</label>
+                    <select id="statusVoluntario" th:field="*{status}"
+                            th:classappend="${#fields.hasErrors('status')} ? ' field-error' : ''" required>
+                        <option value=" ">Selecionar</option>
+                        <option value="ATIVO">ATIVO</option>
+                        <option value="INATIVO">INATIVO</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+
+        <button type="submit" class="button-sav">Salvar Voluntário</button>
+    </form>
+</div>
+
+<div id="message-modal" class="modal-overlay" th:if="${erro != null or sucesso != null}" style="display:none;">
+    <div class="modal-content">
+        <span id="close-modal" class="close-btn">&times;</span>
+        <p th:if="${erro}" th:text="${erro}" style="color: red; font-weight: bold;"></p>
+        <p th:if="${sucesso}" th:text="${sucesso}" style="color: green; font-weight: bold;"></p>
+    </div>
+</div>
+
+<script>
+    document.getElementById('cepVoluntario').addEventListener('blur', function() {
+      let cep = this.value.replace(/\D/g, '');
+
+      if (cep.length === 8) {
+        fetch(`https://viacep.com.br/ws/${cep}/json/`)
+          .then(response => response.json())
+          .then(data => {
+            if (!data.erro) {
+              document.getElementById('enderecoVoluntario').value = data.logradouro || '';
+              document.getElementById('bairroVoluntario').value = data.bairro || '';
+              document.getElementById('cidadeVoluntario').value = data.localidade || '';
+              document.getElementById('estadoVoluntario').value = data.uf || ''; // Corrigido de data.estado para data.uf
+            } else {
+              alert('CEP não encontrado!');
+            }
+          })
+          .catch(() => alert('Erro ao buscar o CEP!'));
+      } else if (cep.length > 0) {
+        alert('CEP inválido! Digite 8 números.');
+      }
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const modal = document.getElementById("message-modal");
+        const closeBtn = document.getElementById("close-modal");
+
+        if(modal) {
+            modal.style.display = "flex";
+        }
+
+        closeBtn.addEventListener("click", () => {
+            modal.style.display = "none";
+        });
+
+        window.addEventListener("click", (e) => {
+            if(e.target === modal) {
+                modal.style.display = "none";
+            }
+        });
+    });
+</script>
+</body>
+</html>

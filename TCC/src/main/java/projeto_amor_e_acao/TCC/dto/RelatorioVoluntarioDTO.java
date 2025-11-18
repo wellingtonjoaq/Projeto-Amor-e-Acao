@@ -1,0 +1,13 @@
+package projeto_amor_e_acao.TCC.dto;
+
+import lombok.Data;
+import java.util.Map;
+
+@Data
+public class RelatorioVoluntarioDTO {
+
+    private Map<String, Long> voluntariosAtivosPorFuncao;
+    private Map<String, Long> distribuicaoPorGenero;
+    private Map<String, Long> distribuicaoPorMotivacao;
+}
+

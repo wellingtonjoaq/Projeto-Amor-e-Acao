@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatórios Estratégicos</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<div th:replace="/administrativo/navbar/dashboard :: menu"></div>
+
+<div class="container">
+    <div class="header-bar">
+        <h1>Relatórios Estratégicos</h1>
+    </div>
+
+    <div class="card-grid">
+        <div class="card card-relatorio">
+            <h2><i class="fa-solid fa-user-graduate"></i> Relatório de Alunos</h2>
+            <p>Relatório a respeito dos alunos cadastrados e desistentes.</p>
+
+            <a th:href="@{/api/relatorios/alunos/exportar/pdf}" download class="btn-download">
+                <i class="fas fa-file-pdf"></i> Baixar PDF
+            </a>
+        </div>
+
+        <div class="card card-relatorio">
+            <h2><i class="fa-solid fa-hands-holding-circle"></i> Relatório de Voluntariado</h2>
+            <p>Relatório sobre a distribuição dos voluntários e suas funções.</p>
+
+            <a th:href="@{/api/relatorios/voluntariado/pdf}" download class="btn-download">
+                <i class="fas fa-file-pdf"></i> Baixar PDF
+            </a>
+        </div>
+
+        <div class="card card-relatorio">
+            <h2><i class="fa-solid fa-chart-line"></i> Relatório de Engajamento</h2>
+            <p>Relatório de análise do engajamento dos usuários do sistema.</p>
+
+            <a th:href="@{/api/relatorios/engajamento/pdf}" download class="btn-download">
+                <i class="fas fa-file-pdf"></i> Baixar PDF
+            </a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

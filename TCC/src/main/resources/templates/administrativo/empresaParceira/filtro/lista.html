@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Empresas Parceiras</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<div th:replace="/administrativo/navbar/dashboard :: menu"></div>
+
+<div class="container">
+    <div class="header-bar">
+        <div class="header-title">
+            <h1>Lista de Empresas Parceiras</h1>
+        </div>
+
+        <div class="header-actions">
+            <div class="pesquisa-box">
+                <form method="get" th:action="@{/empresaParceira/filtrarPesquisa}">
+                    <input type="text" name="pesquisa" class="campo-pesquisa" placeholder="Pesquisar..." th:value="${pesquisa}">
+                    <button class="btn-pesquisar" type="submit">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </form>
+            </div>
+
+            <div class="filter-container">
+                <button class="filter-btn" id="toggleFilter">
+                    <i class="fas fa-filter"></i> Filtrar <i class="fas fa-chevron-down"></i>
+                </button>
+
+                <form th:action="@{/empresaParceira/filtrar}" method="get" class="filter-panel-parceria" id="filterPanel">
+                    <div class="filter-section">
+                        <div class="filter-header" style="width: 93%;"><i class="fas fa-id-card" id="filtro-icones"></i> Empresa </div>
+                        <div class="filter-options">
+                            <label><input type="checkbox" name="nome" value="true" th:checked="${nome}"> Nome</label>
+                            <label><input type="checkbox" name="cnpj" value="true" th:checked="${cnpj}"> CNPJ</label>
+                            <label><input type="checkbox" name="email" value="true" th:checked="${email}"> E-mail</label>
+                            <label><input type="checkbox" name="telefone" value="true" th:checked="${telefone}"> Telefone</label>
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <div class="filter-header" style="width: 93%;"><i class="fas fa-id-card" id="filtro-icones1"></i> Representante </div>
+                        <div class="filter-options">
+                            <label><input type="checkbox" name="nomeRepresentante" value="true" th:checked="${nomeRepresentante}"> Nome</label>
+                            <label><input type="checkbox" name="cpfRepresentante" value="true" th:checked="${cpfRepresentante}"> CPF</label>
+                        </div>
+                    </div>
+
+                    <button class="btn-buscar-filtro-parceria">
+                        <i class="fa fa-search"></i> Buscar
+                    </button>
+                </form>
+            </div>
+
+            <a th:href="@{/empresaParceira}" class="btn-create">
+                <i class="fas fa-user-plus"></i> Nova Empresa
+            </a>
+        </div>
+    </div>
+
+    <div th:if="${vazio}" class="vazio">
+        <h1>Nenhuma empresa encontrada com os filtros aplicados :\</h1>
+    </div>
+
+    <table th:if="${!vazio}">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th data-label="Empresa" th:if="${nome}">Nome da Empresa</th>
+            <th data-label="CNPJ" th:if="${cnpj}">CNPJ</th>
+            <th data-label="Email" th:if="${email}">E-Mail da Empresa</th>
+            <th data-label="Telefone" th:if="${telefone}">Telefone</th>
+            <th data-label="Representante" th:if="${nomeRepresentante}">Representante</th>
+            <th data-label="CPF" th:if="${cpfRepresentante}">CPF</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="empresa : ${empresasParceiras}" id="backgroudTr">
+            <td data-label="ID" th:text="${empresa.id}"></td>
+            <td data-label="Nome" th:if="${nome}" th:text="${empresa.nome}"></td>
+            <td data-label="CNPJ" th:if="${cnpj}" th:text="${empresa.cnpj}"></td>
+            <td data-label="Email" th:if="${email}" th:text="${empresa.email}"></td>
+            <td data-label="Telefone" th:if="${telefone}" th:text="${empresa.telefone}"></td>
+            <td data-label="Representante" th:if="${nomeRepresentante}" th:text="${empresa.nomeRepresentante}"></td>
+            <td data-label="CPF" th:if="${cpfRepresentante}" th:text="${empresa.cpfRepresentante}"></td>
+            <td data-label="Status" th:text="${empresa.status}"></td>
+            <td data-label="Ações" class="actions">
+                <a th:href="@{'/empresaParceira/visualizar/' + ${empresa.id}}" class="btn-visualizar"><i class="fas fa-eye"></i></a>
+                <a th:href="@{/empresaParceira/editar/{id}(id=${empresa.id})}"><i class="fas fa-edit"></i></a>
+                <a href="#" class="delete-btn" th:attr="data-id=${empresa.id}, data-nome=${empresa.nome}">
+                    <i class="fas fa-trash-alt"></i>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <form th:if="${!vazio}" class="action-botton-page" th:action="@{/empresaParceira/filtrar}" method="get">
+        <input type="hidden" name="nome" th:value="${nome}">
+        <input type="hidden" name="cnpj" th:value="${cnpj}">
+        <input type="hidden" name="email" th:value="${email}">
+        <input type="hidden" name="telefone" th:value="${telefone}">
+        <input type="hidden" name="nomeRepresentante" th:value="${nomeRepresentante}">
+        <input type="hidden" name="cpfRepresentante" th:value="${cpfRepresentante}">
+
+        <h1>Página</h1>
+        <button th:if="${empresasParceiras.hasPrevious()}" type="submit" name="page" th:value="${empresasParceiras.number - 1}" th:text="${empresasParceiras.number}"></button>
+        <button class="active" type="submit" name="page" th:value="${empresasParceiras.number}" th:text="${empresasParceiras.number + 1}"></button>
+        <button th:if="${empresasParceiras.hasNext()}" type="submit" name="page" th:value="${empresasParceiras.number + 1}" th:text="${empresasParceiras.number + 2}"></button>
+    </form>
+</div>
+
+<div id="message-modal" class="modal-overlay" th:if="${erro != null or sucesso != null}" style="display:none;">
+    <div class="modal-content">
+        <span id="close-modal" class="close-btn">&times;</span>
+        <p th:if="${erro}" th:text="${erro}" style="color: red; font-weight: bold;"></p>
+        <p th:if="${sucesso}" th:text="${sucesso}" style="color: green; font-weight: bold;"></p>
+    </div>
+</div>
+
+<div id="modal-overlay" class="modal-overlay" style="display:none;">
+    <div class="modal-content">
+        <h2>Confirmação de Exclusão</h2>
+        <p>Tem certeza que deseja excluir a empresa: <span id="modal-nome"></span>?</p>
+
+        <div class="card-actions" style="justify-content:center;">
+            <form th:action="@{/empresaParceira/remover/{id}}" id="form-delete" method="post">
+                <button type="submit" class="delete-confirm" style="width: 100px;">Confirmar</button>
+            </form>
+            <button id="cancelar-modal" class="button-vol" style="width: 100px;">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+            e.preventDefault();
+            const empresaId = btn.getAttribute('data-id');
+            const empresaName = btn.getAttribute('data-nome');
+
+            document.querySelector('#modal-nome').textContent = empresaName;
+            document.querySelector('#form-delete').setAttribute('action', `/empresaParceira/remover/${empresaId}`);
+
+            document.querySelector('#modal-overlay').style.display = 'flex';
+        });
+    });
+
+    document.querySelector('#cancelar-modal').addEventListener('click', () => {
+        document.querySelector('#modal-overlay').style.display = 'none';
+    });
+
+    const toggleButton = document.getElementById('toggleFilter');
+    const filterPanel = document.getElementById('filterPanel');
+    let open = false;
+
+    toggleButton.addEventListener('click', () => {
+      open = !open;
+      filterPanel.style.display = open ? 'block' : 'none';
+      toggleButton.querySelector('.fa-chevron-down').style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
+    });
+
+    window.addEventListener("load", () => {
+  const maxSelecionados = 4;
+  const checkboxes = Array.from(document.querySelectorAll('input[type="checkbox"]'));
+  let ordemSelecionados = [];
+
+  const atualizarSelecoes = (cb) => {
+    if (cb.checked) {
+      ordemSelecionados.push(cb);
+
+      if (ordemSelecionados.length > maxSelecionados) {
+        const primeiro = ordemSelecionados.shift();
+        primeiro.checked = false;
+      }
+    } else {
+      ordemSelecionados = ordemSelecionados.filter(item => item !== cb);
+    }
+  };
+
+  checkboxes.forEach(cb => {
+    cb.addEventListener("change", () => atualizarSelecoes(cb));
+
+    if (cb.checked) ordemSelecionados.push(cb);
+  });
+});
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const modal = document.getElementById("message-modal");
+        const closeBtn = document.getElementById("close-modal");
+
+        if(modal) {
+            modal.style.display = "flex";
+        }
+
+        closeBtn.addEventListener("click", () => {
+            modal.style.display = "none";
+        });
+
+        window.addEventListener("click", (e) => {
+            if(e.target === modal) {
+                modal.style.display = "none";
+            }
+        });
+    });
+</script>
+</body>
+</html>
