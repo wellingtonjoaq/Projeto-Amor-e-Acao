@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" th:href="@{/css/styleVisitantes.css}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <title>Navbar Visitantes</title>
+</head>
+<body th:fragment="navbar">
+
+<div class="visitante-navbar-container">
+  <div class="visitante-navbar-content">
+
+    <div class="visitante-navbar-brand">
+      <a href="/" class="visitante-logo">Projeto Amor & Ação</a>
+    </div>
+
+    <nav class="visitante-nav-links">
+      <a href="/" class="nav-link">Home</a>
+      <a th:href="@{/cursos}" class="nav-link">Cursos</a>
+      <a th:href="@{/sobre-nos}" class="nav-link">Sobre nós</a>
+
+      <div class="dropdown">
+        <a href="#" class="nav-link dropdown-toggle" id="comoAjudarDropdown">
+          Como Ajudar <i class="fas fa-chevron-down dropdown-arrow"></i>
+        </a>
+        <div class="dropdown-menu">
+          <a th:href="@{/voluntariado}" class="dropdown-item">Quero ser Voluntário</a>
+          <a th:href="@{/parcerias}" class="dropdown-item">Quero ser Parceiro</a>
+          <a th:href="@{/doacoes}" class="dropdown-item">Fazer Doação</a>
+        </div>
+      </div>
+
+      <span class="nav-separator">|</span>
+      <a th:href="@{/login}" class="nav-link login-link">
+        <i class="fas fa-user-circle"></i> Login
+      </a>
+    </nav>
+
+    <button class="menu-toggle-btn-visitante" id="menuToggleBtnVisitante">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+      const dropdownToggle = document.getElementById('comoAjudarDropdown');
+      const dropdownMenu = document.querySelector('.dropdown-menu');
+      const menuToggleBtn = document.getElementById('menuToggleBtnVisitante');
+      const navLinks = document.querySelector('.visitante-nav-links');
+
+      // Toggle do Dropdown "Como Ajudar"
+      if (dropdownToggle) {
+          dropdownToggle.addEventListener('click', (e) => {
+              e.preventDefault();
+              // Fecha o menu principal se estiver aberto
+              if (navLinks.classList.contains('active')) {
+                   navLinks.classList.remove('active');
+                   menuToggleBtn.querySelector('i').classList.replace('fa-times', 'fa-bars');
+              }
+              dropdownMenu.classList.toggle('show');
+              const arrow = dropdownToggle.querySelector('.dropdown-arrow');
+              arrow.classList.toggle('rotate-up');
+          });
+      }
+
+      // Fecha o dropdown ao clicar fora
+      document.addEventListener('click', (e) => {
+          if (!dropdownToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
+              dropdownMenu.classList.remove('show');
+              const arrow = dropdownToggle.querySelector('.dropdown-arrow');
+              arrow.classList.remove('rotate-up');
+          }
+      });
+
+      // Toggle do Menu Mobile
+      menuToggleBtn.addEventListener('click', () => {
+          navLinks.classList.toggle('active');
+          const icon = menuToggleBtn.querySelector('i');
+          if (navLinks.classList.contains('active')) {
+              icon.classList.replace('fa-bars', 'fa-times');
+          } else {
+              icon.classList.replace('fa-times', 'fa-bars');
+              // Garante que o dropdown está fechado ao fechar o menu principal
+              dropdownMenu.classList.remove('show');
+          }
+      });
+
+  });
+</script>
+
+</body>
+</html>

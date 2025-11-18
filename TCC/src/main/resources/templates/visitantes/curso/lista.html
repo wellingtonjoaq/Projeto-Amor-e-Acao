@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cursos Disponíveis | Projeto Amor e Ação</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/styleVisitantes.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<div th:replace="~{visitantes/navbar/navbar :: navbar}"></div>
+
+<div class="container-visitante">
+
+    <section class="curso-header-section">
+        <h1 class="curso-main-title">As habilidades que você precisa em um só lugar</h1>
+        <p class="curso-intro-text">
+            Projeto Amor e Ação, promovido pela ASSEBE (Assistência Social Lar Betel) em Umuarama-PR, oferece cursos de qualificação profissional gratuitos em parceria com instituições como o Senac e a Prefeitura Municipal. Esses cursos visam capacitar os participantes para o mercado de trabalho e fomentar o empreendedorismo local.
+        </p>
+    </section>
+
+    <div class="header-bar-visitante">
+        <div class="header-actions">
+            <div class="pesquisa-box-visitante">
+                <form method="get" th:action="@{/curso/filtrarPesquisaUsuarioSimples}">
+                    <input type="text" name="pesquisa" class="campo-pesquisa-visitante" placeholder="Pesquisar..." th:value="${pesquisa}">
+                    <button class="btn-pesquisar-visitante" type="submit">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </form>
+            </div>
+
+            <div class="filter-group-visitante">
+                <button class="btn-toggle-curso">
+                    Cursos disponíveis
+                </button>
+                <button class="btn-toggle-categoria" id="toggleFilter">
+                    Categorias <i class="fas fa-chevron-down dropdown-arrow"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <a class="btn-ver-todos">Ver todos</a>
+
+
+    <section class="section-contato">
+        <p class="contato-text">Você pode entrar em contato diretamente com a ASSEBE para saber sobre novas turmas e requisitos de inscrição.</p>
+        <a th:href="@{/contato}" class="btn-contato">Entrar em contato</a>
+    </section>
+
+</div>
+
+
+<div th:replace="~{visitantes/footer/footer :: footer}"></div>
+
+
+</body>
+</html>

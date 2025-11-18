@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto Amor & Ação | Página Inicial</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/styleVisitantes.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<div th:replace="~{visitantes/navbar/navbar :: navbar}"></div>
+
+<div class="main-content-visitante">
+
+    <section class="section-intro">
+        <div class="intro-box">
+            <img th:src="@{/imagens/logo.png}" alt="Logo Projeto Amor e Ação" class="intro-logo"/>
+            <p class="intro-text">
+                Esse projeto tem como objetivo ajudar e contribuir com a sociedade, divulgando o amor e ação com objetivos bens sociais.
+            </p>
+            <a href="#" class="btn-primary-visitante">Saiba Mais Sobre o Projeto</a>
+        </div>
+    </section>
+
+    <section class="section-details">
+        <div class="details-content">
+            <h2 class="section-title">Projeto Amor é Ação</h2>
+            <div class="details-grid">
+                <p>
+                    É uma iniciativa da ASSEBE (Assistência Social Lar Betel), uma organização sem fins lucrativos fundado em 1986.
+                </p>
+                <p>
+                    Localizada na Rua Ricardo Reis, 3156, no bairro Parque Dom Pedro I, em Umuarama, a ASSEBE desenvolve atividades voltadas ao apoio e desenvolvimento de crianças, adolescentes e famílias em situação de vulnerabilidade social.
+                </p>
+            </div>
+            <div class="share-box">
+                <div class="share-fill"></div>
+                <button class="btn-share"><i class="fas fa-share-alt"></i> Compartilhar Projeto</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-doacao">
+        <div class="doacao-card">
+            <div class="doacao-content">
+                <img th:src="@{/imagens/coracaonamao.png}" alt="Coração na Mão" class="doacao-img"/>
+                <p class="doacao-text">
+                    A sua ajuda contribui imensamente para comunidade, faça uma pequena doação
+                </p>
+            </div>
+            <a href="#" class="btn-doar">Doar</a>
+        </div>
+    </section>
+
+    <section class="section-voluntariado">
+        <div class="voluntariado-card">
+            <div class="voluntariado-text-container">
+                <p class="voluntariado-text">
+                    Sua ajuda voluntária vale mais que mil palavras, sendo um voluntário no nosso projeto a sua contribuição ajuda quem precisa!
+                </p>
+                <a th:href="@{/voluntario}" class="btn-voluntariar">Voluntariar-se</a>
+            </div>
+            <img th:src="@{/imagens/equipeunida.jpeg}" alt="Equipe Unida" class="voluntariado-img"/>
+        </div>
+    </section>
+
+</div>
+
+<div th:replace="~{visitantes/footer/footer :: footer}"></div>
+
+</body>
+</html>
