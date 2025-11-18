@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Faça uma Doação | Projeto Amor e Ação</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/styleVisitantes.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<div th:replace="~{visitantes/navbar/navbar :: navbar}"></div>
+
+<div class="container-visitante">
+
+    <div class="doacao-page-container">
+
+        <header class="doacao-header">
+            <h1 class="doacao-title">AJUDE O PROJETO <br> <span class="highlight-blue">AMOR É AÇÃO</span></h1>
+            <p class="doacao-subtitle">Sua contribuição transforma a realidade de muitas famílias.</p>
+        </header>
+
+        <div class="pix-card">
+            <div class="pix-header">
+                <i class="fa-brands fa-pix"></i>
+                <h2>Faça uma contribuição via Pix</h2>
+            </div>
+
+            <div class="qr-code-container">
+                <img th:src="@{/imagens/qrcode.jpeg}" alt="QR Code Pix" class="qr-code-img">
+            </div>
+
+            <div class="pix-key-box">
+                <p class="pix-label">Chave Pix (CNPJ)</p>
+                <div class="input-copy-wrapper">
+                    <input type="text" value="79.265.708/0001-24" id="pixCnpj" readonly>
+                    <button onclick="copiarTexto('pixCnpj')" class="btn-copy" title="Copiar CNPJ">
+                        <i class="fa-regular fa-copy"></i> Copiar
+                    </button>
+                </div>
+            </div>
+
+            <div class="pix-key-box">
+                <p class="pix-label">Chave Pix (Celular)</p>
+                <div class="input-copy-wrapper">
+                    <input type="text" value="(44) 99976-8728" id="pixCelular" readonly>
+                    <button onclick="copiarTexto('pixCelular')" class="btn-copy" title="Copiar Celular">
+                        <i class="fa-regular fa-copy"></i> Copiar
+                    </button>
+                </div>
+            </div>
+
+            <p id="copy-feedback" class="copy-feedback-msg">Chave copiada com sucesso!</p>
+
+            <div class="bank-details">
+                <p><strong>Favorecido:</strong> ASSEBE - Assistência Social Lar Betel</p>
+            </div>
+        </div>
+
+        <div class="share-highlight-container">
+            <p class="share-text">Ajude a espalhar essa corrente do bem!</p>
+            <button class="btn-share-large">
+                <i class="fa-solid fa-share-nodes"></i> Compartilhar Projeto
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<div th:replace="~{visitantes/footer/footer :: footer}"></div>
+
+<script>
+    function copiarTexto(elementId) {
+        // Seleciona o elemento de input baseado no ID passado
+        var copyText = document.getElementById(elementId);
+
+        // Seleciona o texto
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); /* Para mobile */
+
+        // Copia para a área de transferência
+        navigator.clipboard.writeText(copyText.value).then(() => {
+            // Exibe feedback visual
+            var feedback = document.getElementById("copy-feedback");
+            feedback.style.display = "block";
+            feedback.style.opacity = "1";
+
+            // Esconde após 2 segundos
+            setTimeout(function() {
+                feedback.style.opacity = "0";
+                setTimeout(() => { feedback.style.display = "none"; }, 300);
+            }, 2000);
+        });
+    }
+</script>
+
+</body>
+</html>

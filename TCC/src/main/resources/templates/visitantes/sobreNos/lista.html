@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sobre Nós | Projeto Amor e Ação</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/styleVisitantes.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<div th:replace="~{visitantes/navbar/navbar :: navbar}"></div>
+
+<div class="container-visitante">
+
+    <div class="sobre-nos-content">
+
+        <section class="section-missao">
+            <div class="missao-text-box">
+                <h1 class="missao-title">Missão Social</h1>
+                <p class="missao-paragraph">
+                    A missão social do Projeto Amor e Ação, promovido pela ASSEBE (Assistência Social Lar Betel) em Umuarama-PR, é transformar a realidade de crianças, adolescentes e famílias em situação de vulnerabilidade social por meio da educação, acolhimento e desenvolvimento humano. O projeto acredita que é possível construir um mundo melhor e mais saudável a partir do cuidado e da formação das novas gerações.
+                </p>
+                <p class="missao-paragraph">
+                    Para atingir esse objetivo, o projeto oferece atividades no contraturno escolar, incluindo oficinas de artesanato, esportes e ações educativas. Além disso, promove cursos de qualificação profissional gratuitos em parceria com instituições como o Senac e a Prefeitura de Umuarama, visando capacitar os participantes para o mercado de trabalho e fomentar o empreendedorismo local.
+                </p>
+                <p class="missao-highlight">
+                    O lema do projeto, inspirado nas palavras de um dos atendidos – "O projeto me trouxe esperança" – reflete o compromisso da ASSEBE em oferecer oportunidades reais de mudança de vida para quem mais precisa.
+                </p>
+            </div>
+
+            <div class="missao-image-box">
+                <h2 class="section-subtitle">Sobre nós</h2>
+                <img th:src="@{/imagens/pessoalreunido.png}" alt="Grupo de pessoas e crianças reunidas" class="missao-img"/>
+            </div>
+        </section>
+
+        <section class="section-historia">
+            <div class="historia-wrapper">
+
+                <div class="historia-image-box-left">
+                    <img th:src="@{/imagens/pinturanaparede.jpeg}" alt="Projeto Amor e Ação ASSEBE Pintura" class="historia-img-left"/>
+                </div>
+
+                <div class="historia-text-content">
+                    <h2 class="historia-title">Nossa História</h2>
+                    <p class="historia-paragraph">
+                        Uma organização sem fins lucrativos fundada em 2 de setembro de 1986 em Umuarama, Paraná. A ASSEBE foi criada com o propósito de oferecer suporte social, educacional e emocional a crianças, adolescentes e famílias em situação de vulnerabilidade social.
+                    </p>
+                    <p class="historia-paragraph">
+                        Desde sua fundação, a ASSEBE tem se dedicado a desenvolver atividades que promovem o bem-estar e o desenvolvimento integral dos seus atendidos. O Projeto Amor e Ação surgiu como uma extensão desse compromisso, focando em ações concretas que visam transformar a realidade de seus beneficiários por meio da educação, capacitação profissional e fortalecimento de vínculos familiares e comunitários.
+                    </p>
+                    <p class="historia-paragraph">
+                        Ao longo dos anos, o projeto tem realizado diversas atividades, incluindo cursos de qualificação profissional, oficinas de artesanato, eventos culturais e ações solidárias, sempre com o objetivo de proporcionar oportunidades de crescimento pessoal e profissional para seus participantes.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+</div>
+
+<div th:replace="~{visitantes/footer/footer :: footer}"></div>
+
+</body>
+</html>

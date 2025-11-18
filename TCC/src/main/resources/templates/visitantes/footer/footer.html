@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" th:href="@{/css/styleVisitantes.css}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body th:fragment="footer">
+
+<footer class="visitante-footer">
+  <div class="footer-top-container">
+    <div class="footer-col footer-brand-col">
+      <div class="footer-logo-box">
+        <img th:src="@{/imagens/logo.png}" alt="Logo Projeto Amor e Ação" class="footer-logo"/>
+      </div>
+      <h2 class="footer-title">Amor e Ação</h2>
+      <p class="footer-subtitle">Assistência Social Lar Betel</p>
+    </div>
+
+    <div class="footer-col">
+      <h3 class="footer-heading">Bem vindo</h3>
+      <ul class="footer-links">
+        <li><a href="/" class="footer-link">Home</a></li>
+        <li><a th:href="@{/cursos}" class="footer-link">Cursos</a></li>
+        <li><a th:href="@{/sobre-nos}" class="footer-link">Sobre nós</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h3 class="footer-heading">Como Ajudar</h3>
+      <ul class="footer-links">
+        <li><a th:href="@{/voluntariado}" class="footer-link">Ajuda voluntária</a></li>
+        <li><a th:href="@{/doacoes}" class="footer-link">Faça uma Doação</a></li>
+        <li><a th:href="@{/parcerias}" class="footer-link">Seja um Parceiro</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom-container">
+    <div class="footer-description-box">
+      <p class="footer-description">
+        O projeto amor e ação e uma empresa solidaria com o objetivo de ajudar a comunidade, fornecendo um espaço educacional para as crianças.
+      </p>
+      <span class="footer-copyright">
+                © 2014 Amor e Ação Assistência Social Lar Betel
+            </span>
+    </div>
+
+    <div class="footer-social-media">
+      <a href="https://www.instagram.com" target="_blank" class="social-icon">
+        <i class="fab fa-instagram"></i>
+      </a>
+      <a href="https://www.facebook.com" target="_blank" class="social-icon">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
