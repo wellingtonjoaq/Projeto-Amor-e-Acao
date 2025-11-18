@@ -94,6 +94,10 @@ public class Voluntario {
     @Size(min = 5, max = 7, message = "( Campo Invalido )")
     private String status = "ATIVO";
 
+    @Column(name = "data_inicio_atividade", updatable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dataInicioAtividade;
+
     @Column(name = "data_alteracao")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataAlteracaoStatus;
@@ -112,6 +116,10 @@ public class Voluntario {
         }
         if (telefone != null){
             telefone = telefone.replaceAll("\\D", "");
+        }
+
+        if (dataInicioAtividade == null) {
+            dataInicioAtividade = LocalDate.now();
         }
     }
 }

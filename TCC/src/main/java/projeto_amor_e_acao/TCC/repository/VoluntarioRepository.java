@@ -9,6 +9,7 @@ import projeto_amor_e_acao.TCC.model.Curso;
 import projeto_amor_e_acao.TCC.model.FuncaoVoluntario;
 import projeto_amor_e_acao.TCC.model.Voluntario;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface VoluntarioRepository extends JpaRepository<Voluntario, Long> {
@@ -21,6 +22,15 @@ public interface VoluntarioRepository extends JpaRepository<Voluntario, Long> {
 
     @Query("SELECT v.motivacao, COUNT(v) FROM Voluntario v GROUP BY v.motivacao")
     List<Object[]> countByMotivation();
+
+    @Query("SELECT v.funcao.nome, COUNT(v) FROM Voluntario v WHERE v.status = 'ATIVO' AND v.dataAlteracaoStatus BETWEEN :dataInicio AND :dataFim GROUP BY v.funcao.nome")
+    List<Object[]> countActiveVolunteersByFunctionBetweenDates(LocalDate dataInicio, LocalDate dataFim);
+
+    @Query("SELECT v.genero, COUNT(v) FROM Voluntario v WHERE v.dataAlteracaoStatus BETWEEN :dataInicio AND :dataFim GROUP BY v.genero")
+    List<Object[]> countByGenderBetweenDates(LocalDate dataInicio, LocalDate dataFim);
+
+    @Query("SELECT v.motivacao, COUNT(v) FROM Voluntario v WHERE v.dataAlteracaoStatus BETWEEN :dataInicio AND :dataFim GROUP BY v.motivacao")
+    List<Object[]> countByMotivationBetweenDates(LocalDate dataInicio, LocalDate dataFim);
 
     List<Voluntario> findByStatusIgnoreCase(String status);
 
