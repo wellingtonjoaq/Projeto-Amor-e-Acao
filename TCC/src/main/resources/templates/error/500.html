@@ -1,13 +1,19 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
-<head></head>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Erro 500 - Erro interno no servidor</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
 <body>
-
-<div class="container text-center my-auto">
+<div class="error-container">
     <h1 class="display-4">500</h1>
     <p class="lead">Erro interno no servidor. Por favor, tente novamente mais tarde.</p>
-    <a th:href="@{/}" class="btn btn-outline-warning">Voltar para o início</a>
+    <button class="btn btn-outline-warning" onclick="history.back()">
+        <i class="fa-solid fa-arrow-left"></i> Voltar
+    </button>
 </div>
-
 </body>
 </html>

@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import projeto_amor_e_acao.TCC.dto.RelatorioVoluntarioDTO;
 import projeto_amor_e_acao.TCC.repository.VoluntarioRepository;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -32,6 +34,33 @@ public class RelatorioVoluntarioService {
 
         return relatorio;
     }
+
+    public RelatorioVoluntarioDTO gerarRelatorioVoluntariadoFiltrado(LocalDateTime dataInicio, LocalDateTime dataFim) {
+        RelatorioVoluntarioDTO relatorio = new RelatorioVoluntarioDTO();
+        LocalDate dataInicioLocalDate = dataInicio != null ? dataInicio.toLocalDate() : null;
+        LocalDate dataFimLocalDate = dataFim != null ? dataFim.toLocalDate() : null;
+
+        List<Object[]> funcaoCounts;
+        List<Object[]> generoCounts;
+        List<Object[]> motivacaoCounts;
+
+        if (dataInicioLocalDate != null && dataFimLocalDate != null) {
+            funcaoCounts = voluntarioRepository.countActiveVolunteersByFunctionBetweenDates(dataInicioLocalDate, dataFimLocalDate);
+            generoCounts = voluntarioRepository.countByGenderBetweenDates(dataInicioLocalDate, dataFimLocalDate);
+            motivacaoCounts = voluntarioRepository.countByMotivationBetweenDates(dataInicioLocalDate, dataFimLocalDate);
+        } else {
+            funcaoCounts = voluntarioRepository.countActiveVolunteersByFunction();
+            generoCounts = voluntarioRepository.countByGender();
+            motivacaoCounts = voluntarioRepository.countByMotivation();
+        }
+
+        relatorio.setVoluntariosAtivosPorFuncao(convertObjectListToMap(funcaoCounts));
+        relatorio.setDistribuicaoPorGenero(convertObjectListToMap(generoCounts));
+        relatorio.setDistribuicaoPorMotivacao(convertObjectListToMap(motivacaoCounts));
+
+        return relatorio;
+    }
+
 
     private Map<String, Long> convertObjectListToMap(List<Object[]> list) {
         return list.stream()

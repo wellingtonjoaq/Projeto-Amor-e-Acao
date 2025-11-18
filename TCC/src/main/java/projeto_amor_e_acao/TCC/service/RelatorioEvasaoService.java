@@ -9,6 +9,7 @@ import projeto_amor_e_acao.TCC.repository.CursoRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RelatorioEvasaoService {
@@ -43,6 +44,34 @@ public class RelatorioEvasaoService {
             resultados.add(dto);
         }
 
+        return resultados;
+    }
+
+    public List<RelatorioEvasaoDTO> calcularRelatorioEvasaoPorCursoId(Long cursoId) {
+        List<RelatorioEvasaoDTO> resultados = new ArrayList<>();
+
+        Optional<Curso> optionalCurso = cursoRepository.findById(cursoId);
+        if (optionalCurso.isPresent()) {
+            Curso curso = optionalCurso.get();
+
+            Long totalMatriculados = alunoRepository.countAlunosMatriculadosByCursoId(curso.getId());
+
+            Long totalEvasivos = alunoRepository.countAlunosEvasivosByCursoIdAndStatus(
+                    curso.getId(), "INATIVO");
+
+            double taxaEvasao = 0.0;
+            if (totalMatriculados != null && totalMatriculados > 0) {
+                taxaEvasao = (double) totalEvasivos / totalMatriculados * 100.0;
+            }
+
+            RelatorioEvasaoDTO dto = new RelatorioEvasaoDTO();
+            dto.setNomeCurso(curso.getNome());
+            dto.setTotalMatriculados(totalMatriculados);
+            dto.setTotalEvasivos(totalEvasivos);
+            dto.setTaxaEvasao(taxaEvasao);
+
+            resultados.add(dto);
+        }
         return resultados;
     }
 }
