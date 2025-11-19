@@ -28,6 +28,21 @@ public class VisitantesController {
         return "visitantes/sobreNos/lista";
     }
 
+    @GetMapping("voluntario")
+    public String voluntario() {
+        return "visitantes/voluntario/formulario";
+    }
+
+    @GetMapping("matricula")
+    public String matricula() {
+        return "visitantes/matricula/formulario";
+    }
+
+    @GetMapping("parceria")
+    public String parceria() {
+        return "visitantes/parceria/formulario";
+    }
+
     @GetMapping("login")
     public String login() {
         return "redirect:/login";
