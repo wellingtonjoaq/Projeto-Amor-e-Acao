@@ -13,27 +13,27 @@
   <div class="visitante-navbar-content">
 
     <div class="visitante-navbar-brand">
-      <a href="/" class="visitante-logo">Projeto Amor & Ação</a>
+      <a th:href="@{/visitantes/}" class="visitante-logo">Projeto Amor & Ação</a>
     </div>
 
     <nav class="visitante-nav-links">
-      <a href="/" class="nav-link">Home</a>
-      <a th:href="@{/cursos}" class="nav-link">Cursos</a>
-      <a th:href="@{/sobre-nos}" class="nav-link">Sobre nós</a>
+      <a th:href="@{/visitantes/}" class="nav-link">Home</a>
+      <a th:href="@{/visitantes/cursos}" class="nav-link">Cursos</a>
+      <a th:href="@{/visitantes/sobre}" class="nav-link">Sobre nós</a>
 
       <div class="dropdown">
         <a href="#" class="nav-link dropdown-toggle" id="comoAjudarDropdown">
           Como Ajudar <i class="fas fa-chevron-down dropdown-arrow"></i>
         </a>
         <div class="dropdown-menu">
-          <a th:href="@{/voluntariado}" class="dropdown-item">Quero ser Voluntário</a>
-          <a th:href="@{/parcerias}" class="dropdown-item">Quero ser Parceiro</a>
-          <a th:href="@{/doacoes}" class="dropdown-item">Fazer Doação</a>
+          <a th:href="@{/visitantes/voluntariado}" class="dropdown-item">Quero ser Voluntário</a>
+          <a th:href="@{/visitantes/parcerias}" class="dropdown-item">Quero ser Parceiro</a>
+          <a th:href="@{/visitantes/doacoes}" class="dropdown-item">Fazer Doação</a>
         </div>
       </div>
 
       <span class="nav-separator">|</span>
-      <a th:href="@{/login}" class="nav-link login-link">
+      <a th:href="@{/visitantes/login}" class="nav-link login-link">
         <i class="fas fa-user-circle"></i> Login
       </a>
     </nav>

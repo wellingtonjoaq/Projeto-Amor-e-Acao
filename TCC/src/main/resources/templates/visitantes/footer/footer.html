@@ -20,18 +20,18 @@
     <div class="footer-col">
       <h3 class="footer-heading">Bem vindo</h3>
       <ul class="footer-links">
-        <li><a href="/" class="footer-link">Home</a></li>
-        <li><a th:href="@{/cursos}" class="footer-link">Cursos</a></li>
-        <li><a th:href="@{/sobre-nos}" class="footer-link">Sobre nós</a></li>
+        <li><a th:href="@{/visitantes/}" class="footer-link">Home</a></li>
+        <li><a th:href="@{/visitantes/cursos}" class="footer-link">Cursos</a></li>
+        <li><a th:href="@{/visitantes/sobre}" class="footer-link">Sobre nós</a></li>
       </ul>
     </div>
 
     <div class="footer-col">
       <h3 class="footer-heading">Como Ajudar</h3>
       <ul class="footer-links">
-        <li><a th:href="@{/voluntariado}" class="footer-link">Ajuda voluntária</a></li>
-        <li><a th:href="@{/doacoes}" class="footer-link">Faça uma Doação</a></li>
-        <li><a th:href="@{/parcerias}" class="footer-link">Seja um Parceiro</a></li>
+        <li><a th:href="@{/visitantes/voluntariado}" class="footer-link">Ajuda voluntária</a></li>
+        <li><a th:href="@{/visitantes/doacoes}" class="footer-link">Faça uma Doação</a></li>
+        <li><a th:href="@{/visitantes/parcerias}" class="footer-link">Seja um Parceiro</a></li>
       </ul>
     </div>
 
@@ -48,10 +48,10 @@
     </div>
 
     <div class="footer-social-media">
-      <a href="https://www.instagram.com" target="_blank" class="social-icon">
+      <a th:href="@{https://www.instagram.com/amoreacaoassebe/}" target="_blank" class="social-icon">
         <i class="fab fa-instagram"></i>
       </a>
-      <a href="https://www.facebook.com" target="_blank" class="social-icon">
+      <a th:href="@{https://www.facebook.com/amoreacaoassebe/}" target="_blank" class="social-icon">
         <i class="fab fa-facebook-f"></i>
       </a>
     </div>
