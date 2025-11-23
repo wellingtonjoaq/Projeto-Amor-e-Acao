@@ -37,7 +37,7 @@
             </div>
             <div class="share-box">
                 <div class="share-fill"></div>
-                <button class="btn-share"><i class="fas fa-share-alt"></i> Compartilhar Projeto</button>
+                <button id="botaoCompartilhar" class="btn-share"><i class="fas fa-share-alt"></i> Compartilhar Projeto</button>
             </div>
         </div>
     </section>
@@ -70,5 +70,27 @@
 
 <div th:replace="~{visitantes/footer/footer :: footer}"></div>
 
+<script>
+const botao = document.getElementById('botaoCompartilhar');
+
+if (navigator.share) {
+    botao.addEventListener('click', async () => {
+        try {
+            await navigator.share({
+                title: document.title, // Título da página
+                text: 'Confira este site!', // Texto a ser compartilhado
+                url: window.location.href // URL da página atual
+            });
+            console.log('Conteúdo compartilhado com sucesso!');
+        } catch (error) {
+            console.error('Erro ao compartilhar:', error);
+        }
+    });
+} else {
+    console.log('Web Share API não suportada. Ofereça opções manuais.');
+    botao.style.display = 'none'; // Esconde o botão se a API não funcionar
+}
+
+</script>
 </body>
 </html>

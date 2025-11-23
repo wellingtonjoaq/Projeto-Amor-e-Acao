@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Cursos Disponíveis | Projeto Amor e Ação</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" th:href="@{/css/styleVisitantes.css}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<div th:replace="~{visitantes/navbar/navbar :: navbar}"></div>
+
+<div class="container-visitante">
+  <div class="header-bar-visitante">
+    <div class="header-actions">
+      <div class="pesquisa-box">
+        <form method="get" th:action="@{/visitantes/cursos/filtrarPesquisa}">
+          <input type="text" name="pesquisa" class="campo-pesquisa" placeholder="Pesquisar..." th:value="${pesquisa}">
+          <button class="btn-pesquisar" type="submit">
+            <i class="fa fa-search"></i>
+          </button>
+        </form>
+      </div>
+
+      <div class="filter-group-visitante">
+        <button class="btn-toggle-curso">
+          Cursos disponíveis
+        </button>
+        <div class="filter-container">
+          <button class="btn-toggle-categoria" id="toggleFilter">
+            Categorias <i class="fas fa-chevron-down dropdown-arrow"></i>
+          </button>
+
+          <form th:action="@{/visitantes/cursos/filtrar}"
+                method="get" class="filter-panel-curso" id="filterPanel">
+
+            <div class="filter-section">
+              <div class="filter-header">
+                <i class="fa-solid fa-list"></i> Categorias
+              </div>
+              <div class="filter-options">
+                <label><input type="radio" name="categoria" value="Educação"> Educação</label>
+                <label><input type="radio" name="categoria" value="Saúde"> Saúde</label>
+                <label><input type="radio" name="categoria" value="Tecnologia"> Tecnologia</label>
+                <label><input type="radio" name="categoria" value="Esporte"> Esporte</label>
+                <label><input type="radio" name="categoria" value="Arte"> Arte</label>
+                <label><input type="radio" name="categoria" value="Moda"> Moda</label>
+                <label><input type="radio" name="categoria" value="Engenharia"> Engenharia</label>
+                <label><input type="radio" name="categoria" value="Agricultura"> Agricultura</label>
+              </div>
+            </div>
+
+            <div class="filter-section">
+              <div class="filter-header">
+                <i class="fa-solid fa-clock"></i> Periodo
+              </div>
+
+              <div class="filter-options">
+                <label><input type="radio" name="periodo" value="Manhã"> Manhã</label>
+                <label><input type="radio" name="periodo" value="Tarde"> Tarde</label>
+                <label><input type="radio" name="periodo" value="Noite"> Noite</label>
+                <label><input type="radio" name="periodo" value="TODOS"> Todos</label>
+              </div>
+            </div>
+
+            <button class="btn-buscar-filtro-curso">
+              <i class="fa fa-search"></i> Buscar
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div th:if="${vazio}" class="vazio">
+    <h1>Nenhum Curso Encontrado :\</h1>
+  </div>
+
+  <div class="card-grid">
+    <div class="card" th:each="curso : ${cursos}">
+      <div class="card-header">
+        <img th:if="${curso.foto}" th:src="${curso.foto}" alt="Imagem do curso" class="card-img">
+        <img th:if="${curso.foto == null}" src="/imagens/default.png" alt="Sem imagem" class="card-img">
+      </div>
+
+      <div class="card-body">
+        <h2 th:text="${curso.nome}">Curso profissionalizante de Manicure</h2>
+        <p><i class="fa-solid fa-user"></i> <span th:text="${curso.professor}">Maria Rocha</span>, <span th:text="${curso.formacao}">Ensino Superior</span></p>
+        <p><i class="fa-solid fa-location-dot"></i>
+          <span th:text="${curso.endereco} + ', ' + ${curso.nrLocal} + ' - ' + ${curso.bairro} + ', ' + ${curso.cep}">Endereço completo</span>
+        </p>
+        <p><i class="fa-solid fa-clock"></i> Carga horária: <span th:text="${curso.cargaHoraria}"></span> h</p>
+        <p><i class="fa-solid fa-calendar"></i> Início: <span th:text="${curso.dataInicio}">20/08/2025</span> - Fim: <span th:text="${curso.dataFim}">20/11/2025</span></p>
+        <p th:if="${curso.periodo == 'Manhã'}"><i class="fa-solid fa-sun"></i> Periodo: <span th:text="${curso.periodo}"></span></p>
+        <p th:if="${curso.periodo == 'Tarde'}"><i class="fa-solid fa-cloud-sun"></i> Periodo: <span th:text="${curso.periodo}"></span></p>
+        <p th:if="${curso.periodo == 'Noite'}"><i class="fa-solid fa-moon"></i> Periodo: <span th:text="${curso.periodo}"></span></p>
+      </div>
+
+      <div class="card-footer">
+        <a th:href="@{/visitantes/matricula}">Matricular-se</a>
+      </div>
+    </div>
+  </div>
+
+  <form th:if="${!vazio}" class="action-botton-page" th:action="@{/curso/listar}" method="get">
+
+    <h1>Página</h1>
+
+    <button th:if="${cursos.hasPrevious()}" type="submit" name="page" th:value="${cursos.number - 1}" th:text="${cursos.number}"></button>
+
+    <button class="active" type="submit" name="page" th:value="${cursos.number}" th:text="${cursos.number + 1}"></button>
+
+    <button th:if="${cursos.hasNext()}" type="submit" name="page" th:value="${cursos.number + 1}" th:text="${cursos.number + 2}"></button>
+  </form>
+
+
+  <section class="section-contato">
+    <p class="contato-text">Você pode entrar em contato diretamente com a ASSEBE para saber sobre novas turmas e requisitos de inscrição.</p>
+    <a th:href="@{https://wa.me/554498313339}" class="btn-contato">Entrar em contato</a>
+  </section>
+
+</div>
+
+
+<div th:replace="~{visitantes/footer/footer :: footer}"></div>
+
+<script>
+  const toggleButton = document.getElementById('toggleFilter');
+  const filterPanel = document.getElementById('filterPanel');
+  let open = false;
+
+  toggleButton.addEventListener('click', () => {
+    open = !open;
+    filterPanel.style.display = open ? 'block' : 'none';
+    toggleButton.querySelector('.fa-chevron-down').style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
+  });
+</script>
+
+</body>
+</html>

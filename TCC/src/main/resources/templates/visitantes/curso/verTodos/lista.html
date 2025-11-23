@@ -13,14 +13,6 @@
 <div th:replace="~{visitantes/navbar/navbar :: navbar}"></div>
 
 <div class="container-visitante">
-
-    <section class="curso-header-section">
-        <h1 class="curso-main-title">As habilidades que você precisa em um só lugar</h1>
-        <p class="curso-intro-text">
-            Projeto Amor e Ação, promovido pela ASSEBE (Assistência Social Lar Betel) em Umuarama-PR, oferece cursos de qualificação profissional gratuitos em parceria com instituições como o Senac e a Prefeitura Municipal. Esses cursos visam capacitar os participantes para o mercado de trabalho e fomentar o empreendedorismo local.
-        </p>
-    </section>
-
     <div class="header-bar-visitante">
         <div class="header-actions">
             <div class="pesquisa-box">
@@ -108,7 +100,16 @@
         </div>
     </div>
 
-    <a class="btn-ver-todos" th:href="@{/visitantes/cursos/verTodos}">Ver todos</a>
+    <form class="action-botton-page" th:action="@{/visitantes/cursos/verTodos}" method="get">
+
+        <h1>Página</h1>
+
+        <button th:if="${cursos.hasPrevious()}" type="submit" name="page" th:value="${cursos.number - 1}" th:text="${cursos.number}"></button>
+
+        <button class="active" type="submit" name="page" th:value="${cursos.number}" th:text="${cursos.number + 1}"></button>
+
+        <button th:if="${cursos.hasNext()}" type="submit" name="page" th:value="${cursos.number + 1}" th:text="${cursos.number + 2}"></button>
+    </form>
 
 
     <section class="section-contato">
