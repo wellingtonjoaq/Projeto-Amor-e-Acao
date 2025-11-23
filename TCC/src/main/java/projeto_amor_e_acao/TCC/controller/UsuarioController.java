@@ -118,6 +118,7 @@ public class UsuarioController {
             usuarioExistente.setNome(usuarioForm.getNome());
             usuarioExistente.setEmail(usuarioForm.getEmail());
             usuarioExistente.setCargo(usuarioForm.getCargo());
+            usuarioExistente.setSenha(usuarioForm.getSenha());
 
             if (file != null && !file.isEmpty()) {
 
@@ -165,9 +166,6 @@ public class UsuarioController {
                                  Model model) {
 
         Page<Usuario> usuarios = service.listarAtivos(page, size);
-
-        Usuario usuario = service.getUsuarioLogado();
-        model.addAttribute("usuarioLogado", usuario);
 
         model.addAttribute("usuarios", usuarios);
         model.addAttribute("paginaAtual", page);

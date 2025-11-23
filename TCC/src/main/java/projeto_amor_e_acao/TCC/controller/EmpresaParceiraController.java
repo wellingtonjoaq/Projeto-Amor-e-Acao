@@ -56,8 +56,6 @@ public class EmpresaParceiraController {
             BindingResult result, Model model, RedirectAttributes redirectAttributes)
     {
         if (result.hasErrors()) {
-            Usuario usuario = usuarioService.getUsuarioLogado();
-            model.addAttribute("usuarioLogado", usuario);
             return "administrativo/empresaParceira/formulario";
         }
 
@@ -73,13 +71,9 @@ public class EmpresaParceiraController {
             } else if (e.getMessage().contains("E-mail")) {
                 result.rejectValue("email", "error.empresaParceira", e.getMessage());
             }
-            Usuario usuario = usuarioService.getUsuarioLogado();
-            model.addAttribute("usuarioLogado", usuario);
 
             return "administrativo/empresaParceira/formulario";
         } catch (Exception e) {
-            Usuario usuario = usuarioService.getUsuarioLogado();
-            model.addAttribute("usuarioLogado", usuario);
             model.addAttribute("erro", e.getMessage());
             model.addAttribute("empresaParceira", empresaParceira);
             return "administrativo/empresaParceira/formulario";
@@ -114,8 +108,6 @@ public class EmpresaParceiraController {
             model.addAttribute("paginaAtual", page);
             model.addAttribute("vazio", empresasParceiras.isEmpty());
 
-            Usuario usuario = usuarioService.getUsuarioLogado();
-            model.addAttribute("usuarioLogado", usuario);
 
             return "administrativo/empresaParceira/pesquisaFiltro/lista";
         }
@@ -164,8 +156,6 @@ public class EmpresaParceiraController {
         Optional<EmpresaParceira> empresaParceira = service.buscarPorId(id);
 
         if (empresaParceira.isPresent()) {
-            Usuario usuario = usuarioService.getUsuarioLogado();
-            model.addAttribute("usuarioLogado", usuario);
             model.addAttribute("empresa", empresaParceira.get());
             return "administrativo/empresaParceira/visualizar";
         } else {
@@ -180,8 +170,6 @@ public class EmpresaParceiraController {
         Optional<EmpresaParceira> empresaParceira = service.buscarPorId(id);
 
         if (empresaParceira.isPresent()) {
-            Usuario usuario = usuarioService.getUsuarioLogado();
-            model.addAttribute("usuarioLogado", usuario);
             model.addAttribute("empresaParceira", empresaParceira.get());
             return "administrativo/empresaParceira/formulario";
         } else {

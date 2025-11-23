@@ -23,7 +23,14 @@ public class AlunoService {
     @Transactional
     public Aluno salvar(Aluno aluno) {
         aluno.setDataAlteracaoStatus(LocalDate.now());
-        aluno.getMatriculas().forEach(matricula -> matricula.setAluno(aluno));
+
+        if (aluno.getMatriculas() != null) {
+            aluno.getMatriculas().forEach(m -> {
+                if (m.getAluno() == null) {
+                    m.setAluno(aluno);
+                }
+            });
+        }
 
         var existenteCpf = repository.findByCpfIgnoreCase(aluno.getCpf());
         if (existenteCpf.isPresent() && !existenteCpf.get().getId().equals(aluno.getId())) {

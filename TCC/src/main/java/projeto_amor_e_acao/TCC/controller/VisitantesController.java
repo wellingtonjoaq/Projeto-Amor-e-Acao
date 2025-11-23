@@ -11,6 +11,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import projeto_amor_e_acao.TCC.model.*;
 import projeto_amor_e_acao.TCC.service.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -143,24 +144,35 @@ public class VisitantesController {
 
         if (result.hasErrors()) {
             model.addAttribute("funcoesVoluntario", funcaoVoluntarioService.listarTodos());
-            return "visitantes/voluntario/formulario";
+            return "administrativo/voluntario/formulario";
         }
 
         try {
-            voluntario.setStatus("PENDENT");
             voluntarioService.salvar(voluntario);
-            redirectAttributes.addFlashAttribute("sucesso", "Formulario enviado com sucesso!");
-            return "redirect:/voluntario/listar";
+            redirectAttributes.addFlashAttribute("sucesso", "Voluntario salvo com sucesso!");
+            return "redirect:/visitantes/voluntario";
+        }
+        catch (IllegalStateException e) {
+            if (e.getMessage().contains("CPF")) {
+                result.rejectValue("cpf", "error.voluntario", e.getMessage());
+            } else if (e.getMessage().contains("E-mail")) {
+                result.rejectValue("email", "error.voluntario", e.getMessage());
+            }
+
+            model.addAttribute("funcoesVoluntario", funcaoVoluntarioService.listarTodos());
+            return "visitantes/voluntario/formulario";
         } catch (Exception e) {
+
             model.addAttribute("erro", e.getMessage());
             model.addAttribute("funcoesVoluntario", funcaoVoluntarioService.listarTodos());
             return "visitantes/voluntario/formulario";
         }
     }
 
-    @GetMapping("matricula")
-    public String matricula(Aluno aluno, Model model) {
-        model.addAttribute("cursos", cursoService.listarTodos());
+    @GetMapping("matricula/{id}")
+    public String matricula(@PathVariable Long id, Aluno aluno, Model model) {
+        model.addAttribute("curso", cursoService.buscarPorId(id));
+        model.addAttribute("aluno", new Aluno());
         return "visitantes/matricula/formulario";
     }
 
@@ -168,54 +180,60 @@ public class VisitantesController {
     public String salvar(
             @Valid Aluno aluno,
             BindingResult result,
-            @RequestParam(value = "cursosSelecionados", required = false) List<Long> cursosIds,
+            @RequestParam Long cursoId,
             RedirectAttributes redirectAttributes,
             Model model) {
 
         if (result.hasErrors()) {
-            model.addAttribute("cursos", cursoService.listarTodos());
+            model.addAttribute("curso", cursoService.buscarPorId(cursoId));
             model.addAttribute("aluno", aluno);
-            return "visitantes/matricula/formulario";
-        }
-
-        if (cursosIds == null || cursosIds.isEmpty()) {
-            model.addAttribute("cursos", cursoService.listarTodos());
-            model.addAttribute("aluno", aluno);
-            model.addAttribute("matriculaErro", "( Selecione pelo menos um curso! )");
             return "visitantes/matricula/formulario";
         }
 
         try {
-            cursosIds.forEach(cursoId -> {
-                Curso curso = cursoService.buscarPorId(cursoId);
-                Matricula matricula = new Matricula();
-                matricula.setCurso(curso);
-                matricula.setAluno(aluno);
-                aluno.getMatriculas().add(matricula);
-            });
+
+            Curso curso = cursoService.buscarPorId(cursoId);
+
+            Matricula matricula = new Matricula();
+            matricula.setAluno(aluno);
+            matricula.setCurso(curso);
+            matricula.setData(LocalDate.now());
+            matricula.setStatusMatricula("EM_ANDAMENTO");
+
+            if (aluno.getMatriculas() == null) {
+                aluno.setMatriculas(new ArrayList<>());
+            }
+            aluno.getMatriculas().add(matricula);
 
             aluno.setStatus("PENDENT");
 
             alunoService.salvar(aluno);
+            redirectAttributes.addFlashAttribute("sucesso", "Matricula feita com sucesso!");
             return "redirect:/visitantes/cursos";
         }
         catch (IllegalStateException e) {
+
             if (e.getMessage().contains("CPF")) {
                 result.rejectValue("cpf", "error.aluno", e.getMessage());
-            } else if (e.getMessage().contains("E-mail")) {
+            }
+            else if (e.getMessage().contains("E-mail")) {
                 result.rejectValue("email", "error.aluno", e.getMessage());
             }
 
-            model.addAttribute("cursos", cursoService.listarTodos());
+            model.addAttribute("curso", cursoService.buscarPorId(cursoId));
+            model.addAttribute("aluno", aluno);
             return "visitantes/matricula/formulario";
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
 
             model.addAttribute("erro", e.getMessage());
             model.addAttribute("aluno", aluno);
-            model.addAttribute("cursos", cursoService.listarTodos());
+            model.addAttribute("curso", cursoService.buscarPorId(cursoId));
+
             return "visitantes/matricula/formulario";
         }
     }
+
 
 
     @GetMapping("parceria")

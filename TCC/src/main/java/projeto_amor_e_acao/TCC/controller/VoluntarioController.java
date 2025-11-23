@@ -58,8 +58,6 @@ public class VoluntarioController {
         }
 
         if (result.hasErrors()) {
-            Usuario usuario = usuarioService.getUsuarioLogado();
-            model.addAttribute("usuarioLogado", usuario);
             model.addAttribute("funcoesVoluntario", funcaoVoluntarioService.listarTodos());
             return "administrativo/voluntario/formulario";
         }
@@ -68,9 +66,18 @@ public class VoluntarioController {
             service.salvar(voluntario);
             redirectAttributes.addFlashAttribute("sucesso", "Voluntario salvo com sucesso!");
             return "redirect:/voluntario/listar";
+        }
+        catch (IllegalStateException e) {
+            if (e.getMessage().contains("CPF")) {
+                result.rejectValue("cpf", "error.voluntario", e.getMessage());
+            } else if (e.getMessage().contains("E-mail")) {
+                result.rejectValue("email", "error.voluntario", e.getMessage());
+            }
+
+            model.addAttribute("funcoesVoluntario", funcaoVoluntarioService.listarTodos());
+            return "administrativo/voluntario/formulario";
         } catch (Exception e) {
-            Usuario usuario = usuarioService.getUsuarioLogado();
-            model.addAttribute("usuarioLogado", usuario);
+
             model.addAttribute("erro", e.getMessage());
             model.addAttribute("funcoesVoluntario", funcaoVoluntarioService.listarTodos());
             return "administrativo/voluntario/formulario";
@@ -81,7 +88,6 @@ public class VoluntarioController {
     public String listar(@RequestParam(defaultValue = "0") int page,
                          @RequestParam(defaultValue = "20") int size,
                          Model model) {
-
 
         Page<Voluntario> voluntarios = service.listarAtivos(page, size);
 
@@ -107,15 +113,11 @@ public class VoluntarioController {
             model.addAttribute("paginaAtual", page);
             model.addAttribute("vazio", voluntarios.isEmpty());
 
-            Usuario usuario = usuarioService.getUsuarioLogado();
-            model.addAttribute("usuarioLogado", usuario);
-
             return "administrativo/voluntario/pesquisaFiltro/lista";
         }
         else {
             return "redirect:/voluntario/listar";
         }
-
     }
 
     @GetMapping("filtrar")
@@ -196,7 +198,6 @@ public class VoluntarioController {
                          @RequestParam(defaultValue = "20") int size,
                          Model model) {
 
-
         Page<Voluntario> voluntarios = service.listarAtivos(page, size);
 
         model.addAttribute("voluntarios", voluntarios);
@@ -221,15 +222,11 @@ public class VoluntarioController {
             model.addAttribute("paginaAtual", page);
             model.addAttribute("vazio", voluntarios.isEmpty());
 
-            Usuario usuario = usuarioService.getUsuarioLogado();
-            model.addAttribute("usuarioLogado", usuario);
-
             return "usuario-simples/voluntario/pesquisaFiltro/lista";
         }
         else {
             return "redirect:/voluntario/listarUsuarioSimples";
         }
-
     }
 
     @GetMapping("filtrarUsuarioSimples")
@@ -281,7 +278,6 @@ public class VoluntarioController {
         if (voluntarios.isEmpty()){
             model.addAttribute("vazio", voluntarios.isEmpty());
         }
-
 
         return "usuario-simples/voluntario/filtro/lista";
     }

@@ -52,6 +52,11 @@ public class RelatorioController {
     @Autowired
     private CursoRepository cursoRepository;
 
+    @ModelAttribute("usuarioLogado")
+    public Usuario usuarioLogado() {
+        return usuarioService.getUsuarioLogado();
+    }
+
     @GetMapping("/listar")
     public String listarRelatorio(
             @RequestParam(name = "tipoRelatorio", defaultValue = "alunos") String tipoRelatorio,

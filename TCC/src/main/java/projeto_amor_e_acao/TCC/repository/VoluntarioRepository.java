@@ -11,6 +11,7 @@ import projeto_amor_e_acao.TCC.model.Voluntario;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface VoluntarioRepository extends JpaRepository<Voluntario, Long> {
     @Query("SELECT v.funcao.nome, COUNT(v) FROM Voluntario v WHERE v.status = " +
@@ -46,7 +47,11 @@ public interface VoluntarioRepository extends JpaRepository<Voluntario, Long> {
 
     Page<Voluntario> findByStatusIgnoreCaseAndCpfContainingIgnoreCase(String status, String cpf, Pageable pageable);
 
+    Optional<Voluntario> findByCpfIgnoreCase(String cpf);
+
     Page<Voluntario> findByStatusIgnoreCaseAndEmailContainingIgnoreCase(String status, String email, Pageable pageable);
+
+    Optional<Voluntario> findByEmailIgnoreCase(String email);
 
     Page<Voluntario> findByStatusIgnoreCaseAndTelefoneContainingIgnoreCase(String status, String telefone, Pageable pageable);
 

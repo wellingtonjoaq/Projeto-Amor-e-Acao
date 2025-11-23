@@ -49,8 +49,6 @@ public class FuncaoVoluntarioController {
     public String salvar(@Valid FuncaoVoluntario funcaoVoluntario, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
 
         if (result.hasErrors()) {
-            Usuario usuario = usuarioService.getUsuarioLogado();
-            model.addAttribute("usuarioLogado", usuario);
             model.addAttribute("funcao", funcaoVoluntario);
             return "administrativo/funcao/formulario";
         }
@@ -61,8 +59,6 @@ public class FuncaoVoluntarioController {
             return "redirect:/funcao/listar";
 
         } catch (Exception e) {
-            Usuario usuario = usuarioService.getUsuarioLogado();
-            model.addAttribute("usuarioLogado", usuario);
             model.addAttribute("erro", e.getMessage());
             return "administrativo/funcao/lista";
         }
@@ -86,9 +82,6 @@ public class FuncaoVoluntarioController {
             model.addAttribute("funcoes", funcoes);
             model.addAttribute("vazio", funcoes.isEmpty());
 
-            Usuario usuario = usuarioService.getUsuarioLogado();
-            model.addAttribute("usuarioLogado", usuario);
-
             return "administrativo/funcao/pesquisaFiltro/lista";
         }
         else {
@@ -108,7 +101,6 @@ public class FuncaoVoluntarioController {
         model.addAttribute("funcao", service.buscarPorId(id));
         return "administrativo/funcao/formulario";
     }
-
 
     @PostMapping("remover/{id}")
     public String remover(@PathVariable Long id, RedirectAttributes redirectAttributes) {

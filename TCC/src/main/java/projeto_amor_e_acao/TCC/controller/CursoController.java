@@ -62,8 +62,6 @@ public class CursoController {
                          Model model) {
 
         if (result.hasErrors()) {
-            Usuario usuario = usuarioService.getUsuarioLogado();
-            model.addAttribute("usuarioLogado", usuario);
             model.addAttribute("curso", curso);
             return "administrativo/curso/formulario";
         }
@@ -81,8 +79,6 @@ public class CursoController {
         }
 
         if (categoriasSelecionadas == null || categoriasSelecionadas.isEmpty()) {
-            Usuario usuario = usuarioService.getUsuarioLogado();
-            model.addAttribute("usuarioLogado", usuario);
             model.addAttribute("curso", curso);
             model.addAttribute("erro", "Selecione pelo menos uma categoria.");
             return "administrativo/curso/formulario";
@@ -109,8 +105,6 @@ public class CursoController {
             throw new RuntimeException("Erro ao fazer upload da imagem", e);
 
         } catch (Exception e) {
-            Usuario usuario = usuarioService.getUsuarioLogado();
-            model.addAttribute("usuarioLogado", usuario);
             model.addAttribute("erro", e.getMessage());
             model.addAttribute("curso", curso);
             return "administrativo/curso/formulario";
@@ -124,7 +118,6 @@ public class CursoController {
                          Model model) {
 
         Page<Curso> cursos = service.listarPaginados(page, size);
-
 
         model.addAttribute("cursos", cursos);
         model.addAttribute("paginaAtual", page);
@@ -146,9 +139,6 @@ public class CursoController {
             model.addAttribute("cursos", cursos);
             model.addAttribute("paginaAtual", page);
             model.addAttribute("vazio", cursos.isEmpty());
-
-            Usuario usuario = usuarioService.getUsuarioLogado();
-            model.addAttribute("usuarioLogado", usuario);
 
             return "administrativo/curso/pesquisaFiltro/lista";
         }
@@ -187,7 +177,6 @@ public class CursoController {
             model.addAttribute("vazio", cursos.isEmpty());
         }
 
-
         return "administrativo/curso/filtro/lista";
     }
 
@@ -210,7 +199,6 @@ public class CursoController {
                          Model model) {
 
         Page<Curso> cursos = service.listarPaginados(page, size);
-
 
         model.addAttribute("cursos", cursos);
         model.addAttribute("paginaAtual", page);

@@ -22,16 +22,25 @@ public class VoluntarioService {
     private VoluntarioRepository repository;
 
     @Transactional
-    public void salvar(Voluntario voluntario) {
+    public Voluntario salvar(Voluntario voluntario) {
         voluntario.setDataAlteracaoStatus(LocalDate.now());
 
-        if (voluntario.getFuncao() != null && voluntario.getFuncao().getId() != null &&
-                voluntario.getFuncao().getId() == 0) {
+        if (voluntario.getFuncao() != null && voluntario.getFuncao().getId() != null && voluntario.getFuncao().getId() == 0) {
             voluntario.setFuncao(null);
         }
 
+        var existenteCpf = repository.findByCpfIgnoreCase(voluntario.getCpf());
+        if (existenteCpf.isPresent() && !existenteCpf.get().getId().equals(voluntario.getId())) {
+            throw new IllegalStateException("( Esse CPF já existe! )");
+        }
+
+        var existenteEmail = repository.findByEmailIgnoreCase(voluntario.getEmail());
+        if (existenteEmail.isPresent() && !existenteEmail.get().getId().equals(voluntario.getId())) {
+            throw new IllegalStateException("( Esse E-mail já existe! )");
+        }
+
         try {
-            repository.save(voluntario);
+            return repository.save(voluntario);
         } catch (Exception e) {
             throw new RuntimeException("Erro inesperado ao salvar voluntario.", e);
         }
