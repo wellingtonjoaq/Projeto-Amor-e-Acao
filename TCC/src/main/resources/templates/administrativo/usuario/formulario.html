@@ -48,8 +48,12 @@
                 <label for="senha">Senha
                     <span th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}" class="error"></span>
                 </label>
-                <input type="password" th:field="*{senha}" id="senha" th:classappend="${#fields.hasErrors('senha')} ? ' field-error' : ''" th:attr="required=${acao == 'criar'}" placeholder="Ex: a12!pQ"/>
-                <small th:if="${acao == 'editar'}">(Deixe em branco para manter a senha atual)</small>
+                <input type="password" th:field="*{senha}" id="senha" th:classappend="${#fields.hasErrors('senha')} ? ' field-error' : ''" th:attr="required=${acao == 'criar'}" placeholder="Digite uma senha"/>
+                <div id="password-strength" style="margin-top: 8px; display:none;">
+                    <div id="strength-bar" style="height: 6px;width: 0%;background: red;border-radius: 4px;transition: width 0.3s ease, background 0.3s ease;">
+                    </div>
+                    <small id="strength-text" style="font-weight: bold; display:block; margin-top: 5px;"></small>
+                </div>
             </div>
 
             <div class="form-group">
@@ -76,7 +80,7 @@
 
             <input type="hidden" th:field="*{fotoPerfil}" />
 
-            <div class="form-group" th:if="${id != null}">
+            <div class="form-group" th:if="${usuario.id != null}">
                 <label for="status">Status
                     <span th:if="${#fields.hasErrors('status')}" th:errors="*{status}" class="error"></span>
                 </label>
@@ -110,37 +114,81 @@
 </div>
 
 <script>
-    const fileInput = document.getElementById('fotoPerfil');
-    const fileName = document.getElementById('file-name');
+    function calcularPontuacao(senha) {
+        let score = 0;
 
-    fileInput.addEventListener('change', function () {
-      fileName.textContent = this.files.length > 0
-        ? this.files[0].name
-        : 'Nenhum arquivo selecionado';
-    });
-</script>
+        if (senha.length >= 6) score++;
+        if (/[A-Z]/.test(senha)) score++;
+        if (/[a-z]/.test(senha)) score++;
+        if (/[0-9]/.test(senha)) score++;
+        if (/[!@#$%^&*()_+\-={}[\]|;:'",.<>/?]/.test(senha)) score++;
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const modal = document.getElementById("success-modal");
-        const closeBtn = document.getElementById("close-success-modal");
+        return score;
+    }
 
-        if(modal) {
-            modal.style.display = "flex";
-        }
+    document.addEventListener("DOMContentLoaded", function () {
+        const senhaInput = document.getElementById("senha");
+        const strengthBox = document.getElementById("password-strength");
+        const strengthBar = document.getElementById("strength-bar");
+        const strengthText = document.getElementById("strength-text");
+        const form = document.querySelector("form");
 
-        closeBtn.addEventListener("click", () => {
-            modal.style.display = "none";
+        const acao = senhaInput.getAttribute("required") !== null ? "criar" : "editar";
+
+        senhaInput.addEventListener("input", function () {
+            const senha = senhaInput.value;
+
+            if (acao === "editar" && senha.trim() === "") {
+                strengthBox.style.display = "none";
+                senhaInput.style.borderColor = "";
+                return;
+            }
+
+            if (senha.length === 0) {
+                strengthBox.style.display = "none";
+                return;
+            }
+
+            strengthBox.style.display = "block";
+
+            const score = calcularPontuacao(senha);
+
+            if (score <= 2) {
+                strengthBar.style.width = "33%";
+                strengthBar.style.background = "red";
+                strengthText.textContent = "Senha Fraca";
+                strengthText.style.color = "red";
+                senhaInput.style.borderColor = "red";
+
+            } else if (score === 3 || score === 4) {
+                strengthBar.style.width = "66%";
+                strengthBar.style.background = "orange";
+                strengthText.textContent = "Senha Média";
+                strengthText.style.color = "orange";
+                senhaInput.style.borderColor = "orange";
+
+            } else {
+                strengthBar.style.width = "100%";
+                strengthBar.style.background = "green";
+                strengthText.textContent = "Senha Forte";
+                strengthText.style.color = "green";
+                senhaInput.style.borderColor = "green";
+            }
         });
 
-        window.addEventListener("click", (e) => {
-            if(e.target === modal) {
-                modal.style.display = "none";
+        form.addEventListener("submit", function (e) {
+            const senha = senhaInput.value;
+
+            if (acao === "editar" && senha.trim() === "") return;
+
+            const score = calcularPontuacao(senha);
+
+            if (score < 3) {
+                e.preventDefault();
+                alert("A senha é muito fraca. Use uma senha mais forte.");
             }
         });
     });
 </script>
-
-
 </body>
 </html>

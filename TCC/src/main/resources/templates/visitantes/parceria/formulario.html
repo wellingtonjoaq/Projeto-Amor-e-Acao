@@ -127,7 +127,7 @@
 
 </div>
 
-<div id="message-modal" class="modal-overlay" th:if="${erro != null or sucesso != null}" style="display:none;">
+<div id="message-modal" class="modal-overlay" th:if="${erro != null or sucesso != null}">
   <div class="modal-content">
     <span id="close-modal" class="close-btn">&times;</span>
     <p th:if="${erro}" th:text="${erro}" style="color: red; font-weight: bold;"></p>

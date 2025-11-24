@@ -125,7 +125,7 @@ public class NotificacaoController {
 
         aluno.setStatus("ATIVO");
         alunoService.salvar(aluno);
-        redirectAttributes.addFlashAttribute("sucesso", "Aluno ativado com sucesso!");
+        redirectAttributes.addFlashAttribute("sucesso", "Aluno aceita com sucesso!");
         return "redirect:/notificacao/listar";
     }
 
@@ -135,7 +135,7 @@ public class NotificacaoController {
 
         voluntario.setStatus("ATIVO");
         voluntarioService.salvar(voluntario);
-        redirectAttributes.addFlashAttribute("sucesso", "Voluntario ativado com sucesso!");
+        redirectAttributes.addFlashAttribute("sucesso", "Voluntario aceita com sucesso!");
         return "redirect:/notificacao/listar";
     }
 
@@ -148,7 +148,7 @@ public class NotificacaoController {
             ep.setStatus("ATIVO");
             empresaParceiraService.salvar(ep);
         }
-        redirectAttributes.addFlashAttribute("sucesso", "Empresa Parceira ativada com sucesso!");
+        redirectAttributes.addFlashAttribute("sucesso", "Empresa Parceira aceita com sucesso!");
         return "redirect:/notificacao/listar";
     }
 

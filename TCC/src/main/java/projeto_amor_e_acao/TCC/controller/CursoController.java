@@ -97,7 +97,12 @@ public class CursoController {
             curso.setCategorias(String.join(",", categoriasSelecionadas));
 
             service.salvar(curso);
-            redirectAttributes.addFlashAttribute("sucesso", "Curso salvo com sucesso!");
+            if (curso.getId() != null){
+                redirectAttributes.addFlashAttribute("sucesso", "Curso atualizado com sucesso!");
+            }
+            else {
+                redirectAttributes.addFlashAttribute("sucesso", "Curso salvo com sucesso!");
+            }
             return "redirect:/curso/listar";
 
         } catch (IOException e) {

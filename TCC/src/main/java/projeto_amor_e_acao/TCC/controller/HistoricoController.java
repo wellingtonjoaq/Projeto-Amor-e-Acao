@@ -169,8 +169,11 @@ public class HistoricoController {
     public String ativarUsuario(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         Optional<Usuario> usuario = usuarioService.buscarPorId(id);
 
-        usuario.get().setStatus("ATIVO");
-        usuarioService.salvar(usuario.orElse(null));
+        if (usuario.isPresent()) {
+            Usuario user = usuario.get();
+            user.setStatus("ATIVO");
+            usuarioService.salvar(user);
+        }
         redirectAttributes.addFlashAttribute("sucesso", "Usuario ativado com sucesso!");
         return "redirect:/historico/listar";
     }

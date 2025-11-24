@@ -33,22 +33,23 @@ public class UsuarioService{
         usuario.setDataAlteracaoStatus(LocalDate.now());
 
         var existenteEmail = repository.findByEmailIgnoreCase(usuario.getEmail());
-        if (existenteEmail.isPresent() && !existenteEmail.get().getId().equals(usuario.getId())) {
+        if (existenteEmail.isPresent()) {
             throw new IllegalStateException("( Esse E-mail já existe! )");
         }
 
-        if (usuario.getId() == null) {
-            if (usuario.getSenha() == null || usuario.getSenha().isBlank()) {
-                throw new IllegalArgumentException("( Senha é Obrigatoria )");
-            }
-            if (usuario.getSenha().length() < 6) {
-                throw new IllegalArgumentException("( Senha deve ter no mínimo 6 caracteres )");
-            }
+        if (usuario.getSenha().length() < 6) {
+            throw new IllegalArgumentException("( Deve ter no mínimo 6 caracteres )");
         }
-
-        if (usuario.getSenha() != null && !usuario.getSenha().isBlank()) {
-            usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
+        if (!usuario.getSenha().matches(".*[A-Z].*")) {
+            throw new IllegalArgumentException("( Deve conter pelo menos uma letra maiúscula )");
         }
+        if (!usuario.getSenha().matches(".*\\d.*")) {
+            throw new IllegalArgumentException("( Deve conter pelo menos um número )");
+        }
+        if (!usuario.getSenha().matches(".*[!@#$%^&*()_+=|<>?{}\\[\\]~\\-].*")) {
+            throw new IllegalArgumentException("( Deve conter pelo menos um caractere especial )");
+        }
+        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
 
         try {
             return repository.save(usuario);
@@ -75,8 +76,18 @@ public class UsuarioService{
         usuarioExistente.setDataAlteracaoStatus(LocalDate.now());
 
         if (usuario.getSenha() != null && !usuario.getSenha().isBlank()) {
+
             if (usuario.getSenha().length() < 6) {
-                throw new IllegalArgumentException("( Senha deve ter no mínimo 6 caracteres )");
+                throw new IllegalArgumentException("( Deve ter no mínimo 6 caracteres )");
+            }
+            if (!usuario.getSenha().matches(".*[A-Z].*")) {
+                throw new IllegalArgumentException("( Deve conter pelo menos uma letra maiúscula )");
+            }
+            if (!usuario.getSenha().matches(".*\\d.*")) {
+                throw new IllegalArgumentException("( Deve conter pelo menos um número )");
+            }
+            if (!usuario.getSenha().matches(".*[!@#$%^&*()_+=|<>?{}\\[\\]~\\-].*")) {
+                throw new IllegalArgumentException("( Deve conter pelo menos um caractere especial )");
             }
             usuarioExistente.setSenha(passwordEncoder.encode(usuario.getSenha()));
         }
@@ -87,6 +98,7 @@ public class UsuarioService{
             throw new RuntimeException("Erro inesperado ao atualizar usuário.", e);
         }
     }
+
 
     public Page<Usuario> listarAtivos(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -175,5 +187,22 @@ public class UsuarioService{
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         return repository.findByEmailIgnoreCase(email)
                 .orElseThrow(() -> new RuntimeException("Usuário logado não encontrado"));
+    }
+
+    private void validarSenha(String senha) {
+        if (senha == null || senha.isBlank()) return;
+
+        if (senha.length() < 6) {
+            throw new IllegalArgumentException("( Senha deve ter no mínimo 6 caracteres )");
+        }
+        if (!senha.matches(".*[A-Z].*")) {
+            throw new IllegalArgumentException("( A senha deve conter pelo menos uma letra maiúscula )");
+        }
+        if (!senha.matches(".*\\d.*")) {
+            throw new IllegalArgumentException("( A senha deve conter pelo menos um número )");
+        }
+        if (!senha.matches(".*[!@#$%^&*()_+=|<>?{}\\[\\]~\\-].*")) {
+            throw new IllegalArgumentException("( A senha deve conter pelo menos um caractere especial )");
+        }
     }
 }

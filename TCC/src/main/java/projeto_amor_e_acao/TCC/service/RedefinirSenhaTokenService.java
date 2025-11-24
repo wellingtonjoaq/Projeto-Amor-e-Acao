@@ -80,6 +80,19 @@ public class RedefinirSenhaTokenService {
 
         Usuario usuario = resetToken.getUsuario();
 
+        if (novaSenha.length() < 6) {
+            throw new IllegalArgumentException("( Deve ter no mínimo 6 caracteres )");
+        }
+        if (!novaSenha.matches(".*[A-Z].*")) {
+            throw new IllegalArgumentException("( Deve conter pelo menos uma letra maiúscula )");
+        }
+        if (!novaSenha.matches(".*\\d.*")) {
+            throw new IllegalArgumentException("( Deve conter pelo menos um número )");
+        }
+        if (!novaSenha.matches(".*[!@#$%^&*()_+=|<>?{}\\[\\]~\\-].*")) {
+            throw new IllegalArgumentException("( Deve conter pelo menos um caractere especial )");
+        }
+
         usuario.setSenha(passwordEncoder.encode(novaSenha));
         usuarioRepository.save(usuario);
 
@@ -87,4 +100,5 @@ public class RedefinirSenhaTokenService {
 
         return true;
     }
+
 }
