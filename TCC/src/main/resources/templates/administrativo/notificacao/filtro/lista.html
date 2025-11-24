@@ -15,82 +15,94 @@
 
   <div class="header-bar">
     <div class="header-title">
-      <h1>Notificações</h1>
+      <h1>Central de Notificações</h1>
     </div>
 
     <div class="header-actions">
-      <button class="filter-btn" id="toggleFilter">
-        <i class="fas fa-filter"></i> Filtrar <i class="fas fa-chevron-down"></i>
-      </button>
+      <div class="filter-container">
+        <button class="filter-btn" id="toggleFilter">
+          <i class="fas fa-filter"></i> Filtrar <i class="fas fa-chevron-down"></i>
+        </button>
+
+        <form th:action="@{/notificacao/filtrar}" method="get" class="filter-panel-notificacao" id="filterPanel">
+          <div class="filter-section">
+            <div class="filter-header" style="width: 50%;">
+              <i class="fas fa-id-card" id="filtro-icones"></i> Identidade
+            </div>
+
+            <div class="filter-options-data">
+              <label><input type="checkbox" name="tipos" value="Aluno"> Aluno</label>
+              <label><input type="checkbox" name="tipos" value="Voluntario"> Voluntario</label>
+              <label><input type="checkbox" name="tipos" value="Empresa Parceira"> Empresa Parceira</label>
+            </div>
+          </div>
+
+          <div class="filter-section" style="flex-direction: column; height: 190px;">
+            <div class="filter-header" style="width: 100%; flex-direction: row-reverse;">
+              <i class="fas fa-calendar-alt" id="filtro-icones1"></i> Data
+            </div>
+
+            <div class="filter-options-data">
+              Início <label><input type="date" name="dataInicio" style="width: 242px;"></label>
+              Fim <label><input type="date" name="dataFim" style="width: 242px;"></label>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-buscar-filtro-notificacao">
+            <i class="fa fa-search"></i> Buscar
+          </button>
+        </form>
+      </div>
     </div>
   </div>
 
-  <form th:action="@{/notificacao/filtrar}" method="get" class="filter-panel-usuario" id="filterPanel">
-    <div class="filter-section">
-      <div class="filter-header">
-        <i class="fas fa-id-card" id="filtro-icones"></i> Tipos de Histórico
-      </div>
-
-      <div class="filter-options">
-        <label>
-          <input type="checkbox" name="tipos" value="Aluno"
-                 th:checked="${listaTipo != null and listaTipo.contains('Aluno')}"> Aluno
-        </label>
-        <label>
-          <input type="checkbox" name="tipos" value="Voluntario"
-                 th:checked="${listaTipo != null and listaTipo.contains('Voluntario')}"> Voluntário
-        </label>
-        <label>
-          <input type="checkbox" name="tipos" value="Empresa Parceira"
-                 th:checked="${listaTipo != null and listaTipo.contains('Empresa Parceira')}"> Empresa Parceira
-        </label>
-      </div>
+  <div class="notifications-card">
+    <div class="notifications-header">
+      <h3>
+        <i class="fa-regular fa-bell"></i> Solicitações Pendentes
+      </h3>
+      <span class="badge-count" th:if="${notificacoes.totalElements > 0}"
+            th:text="${notificacoes.totalElements} + ' pendentes'">
+            </span>
     </div>
 
-    <div class="filter-section">
-      <div class="filter-header">
-        <i class="fas fa-id-card" id="filtro-icones1"></i> Data
-      </div>
-
-      <div class="filter-options">
-        <label><input type="date" name="dataInicio" th:value="${dataInicio}"> Data Inicio</label>
-        <label><input type="date" name="dataFim" th:value="${dataFim}"> Data Fim</label>
-      </div>
+    <div th:if="${#lists.isEmpty(notificacoes)}" class="empty-state-container">
+      <i class="fa-regular fa-folder-open empty-state-icon"></i>
+      <p class="empty-state-text">Nenhuma solicitação pendente encontrada.</p>
     </div>
 
-    <button type="submit" class="btn-buscar-filtro-usuario">
-      <i class="fa fa-search"></i> Buscar
-    </button>
-  </form>
+    <ul th:if="${!#lists.isEmpty(notificacoes)}" class="custom-notif-list">
+      <li class="custom-notif-item" th:each="n : ${notificacoes}">
 
-  <div>
-    <div class="notificacao">
-      <h3>Solicitações</h3>
+        <div class="notif-info-group">
+          <div class="notif-icon-wrapper"
+               th:classappend="${n.tipo == 'Aluno'} ? 'bg-blue' : (${n.tipo == 'Voluntario'} ? 'bg-green' : 'bg-orange')">
+            <i class="fa-solid"
+               th:classappend="${n.tipo == 'Aluno'} ? ' fa-user-graduate' : (${n.tipo == 'Voluntario'} ? ' fa-hand-holding-heart' : ' fa-building')">
+            </i>
+          </div>
 
-      <div th:if="${#lists.isEmpty(notificacoes)}">
-        <p style="padding: 10px;">Nenhuma solicitação pendente.</p>
-      </div>
+          <div class="notif-text-content">
+            <span class="notif-title" th:text="${n.nome}">Nome do Usuário</span>
+            <span class="notif-subtitle">
+                            <i class="fas fa-tag"></i> <span th:text="${n.tipo}">Tipo</span>
+                        </span>
+          </div>
+        </div>
 
-      <ul th:if="${!#lists.isEmpty(notificacoes)}" class="notif-list">
-        <li class="notif-item" th:each="n : ${notificacoes}">
-          <i class="fa-solid"
-             th:classappend="${n.tipo == 'Aluno'} ? ' fa-graduation-cap' : (${n.tipo == 'Voluntario'} ? ' fa-handshake' : ' fa-building')">
-          </i>
-
-          <span th:text="${n.nome + ' | ' + n.tipo}"></span>
-
-          <a th:href="@{|/notificacao/visualiza${n.tipo}/${n.id}|}" class="btn-view">
-            <i class="fa-solid fa-eye"></i>
-          </a>
-        </li>
-      </ul>
-    </div>
+        <a th:href="@{|/notificacao/visualiza${n.tipo}/${n.id}|}" class="btn-action-circle" title="Visualizar Detalhes">
+          <i class="fa-solid fa-chevron-right"></i>
+        </a>
+      </li>
+    </ul>
   </div>
 
-  <form class="action-botton-page" th:action="@{/notificacao/filtrar}" method="get">
+  <form th:if="${!#lists.isEmpty(notificacoes)}" class="action-botton-page" th:action="@{/notificacao/listar}" method="get" style="margin-top: 30px;">
     <input type="hidden" name="dataInicio" th:value="${dataInicio}">
     <input type="hidden" name="dataFim" th:value="${dataFim}">
-    <input type="hidden" th:each="t : ${listaTipo}" name="tipos" th:value="${t}">
+    <th:block th:each="tipo : ${listaTipo}">
+      <input type="hidden" name="tipos" th:value="${tipo}">
+    </th:block>
 
     <h1>Página</h1>
     <button th:if="${notificacoes.hasPrevious()}" type="submit" name="page" th:value="${notificacoes.number - 1}" th:text="${notificacoes.number}"></button>
@@ -106,7 +118,7 @@
 
   toggleButton.addEventListener('click', () => {
       open = !open;
-      filterPanel.style.display = open ? 'grid' : 'none';
+      filterPanel.style.display = open ? 'block' : 'none';
       toggleButton.querySelector('.fa-chevron-down').style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
   });
 
@@ -118,7 +130,6 @@
     checkbox.addEventListener('change', () => {
       if (checkbox.checked) {
         checkedOrder.push(checkbox);
-
         if (checkedOrder.length > maxTotal) {
           const firstChecked = checkedOrder.shift();
           firstChecked.checked = false;
@@ -129,7 +140,6 @@
     });
   });
 </script>
-
 
 </body>
 </html>

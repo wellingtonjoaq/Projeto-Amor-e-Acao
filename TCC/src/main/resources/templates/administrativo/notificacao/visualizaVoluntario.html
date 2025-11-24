@@ -14,7 +14,13 @@
 <div class="container" th:fragment="visualizaVoluntario">
 
   <form class="form-adm">
-    <h1>Visualizar Voluntário</h1>
+    <div class="add-voltar">
+      <h1>Visualizar Voluntário</h1>
+
+      <a type="button" class="button-vol" th:href="@{/notificacao/listar}">
+        <i class="fa-solid fa-arrow-left"></i> Voltar
+      </a>
+    </div>
 
     <input type="hidden" name="id" th:value="${voluntario.id}" disabled />
 
@@ -84,13 +90,15 @@
 
     </div>
 
-    <a type="button" class="button-vol" th:href="@{'/notificacao/ativarVoluntario/' + ${voluntario.id}}">
-        Aceitar
-    </a>
+    <div class="espacamento-botton">
+      <a type="button" class="button-vol" th:href="@{'/notificacao/ativarVoluntario/' + ${voluntario.id}}" style="width: 50%;">
+          Aceitar
+      </a>
 
-    <a href="#" class="delete-btn" th:attr="data-id=${voluntario.id}, data-nome=${voluntario.nome}">
-        Recusar
-    </a>
+      <a href="#" class="delete-btn" th:attr="data-id=${voluntario.id}, data-nome=${voluntario.nome}" style="width: 50%;">
+          Recusar
+      </a>
+    </div>
 
   </form>
 </div>

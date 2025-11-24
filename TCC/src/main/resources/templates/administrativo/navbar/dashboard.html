@@ -34,32 +34,39 @@
 
 <div id="notificationModal" class="notification-modal hidden">
     <div class="notif-header">
-        <h2>Notificações</h2>
+        <h2>Notificações Recentes</h2>
     </div>
 
     <div class="notif-section">
-        <h3>Solicitações</h3>
-
-        <div th:if="${#lists.isEmpty(notificacoesMenu)}">
-            <p style="padding: 10px;">Nenhuma notificação pendente.</p>
+        <div th:if="${#lists.isEmpty(notificacoesMenu)}" style="text-align: center; padding: 20px; color: #777;">
+            <i class="fa-regular fa-folder-open" style="font-size: 1.5rem; margin-bottom: 5px;"></i>
+            <p style="font-size: 0.9rem; margin: 0;">Nenhuma notificação.</p>
         </div>
 
-        <div class="notif-item" th:each="n : ${notificacoesMenu}">
-            <i class="fa-solid"
-               th:classappend="${n.tipo == 'Aluno'} ? ' fa-graduation-cap' : (${n.tipo == 'Voluntario'} ? ' fa-handshake' : ' fa-building')">
-            </i>
+        <div class="notif-item" th:each="n : ${notificacoesMenu}" style="display: flex; align-items: center; padding: 10px; border-bottom: 1px solid #eee;">
 
-            <span th:text="${n.nome + ' | ' + n.tipo}"></span>
+            <div class="notif-icon-box-small"
+                 th:classappend="${n.tipo == 'Aluno'} ? 'icon-aluno' : (${n.tipo == 'Voluntario'} ? 'icon-voluntario' : 'icon-empresa')">
+                <i class="fa-solid"
+                   th:classappend="${n.tipo == 'Aluno'} ? ' fa-user-graduate' : (${n.tipo == 'Voluntario'} ? ' fa-hand-holding-heart' : ' fa-building')">
+                </i>
+            </div>
 
-            <a th:href="@{|/notificacao/visualiza${n.tipo}/${n.id}|}" class="btn-view">
+            <div style="flex-grow: 1; margin-left: 10px; display: flex; flex-direction: column;">
+                <span th:text="${n.nome}" style="font-weight: 600; font-size: 0.9rem; color: #333;">Nome</span>
+                <span th:text="${n.tipo}" style="font-size: 0.75rem; color: #777;">Tipo</span>
+            </div>
+
+            <a th:href="@{|/notificacao/visualiza${n.tipo}/${n.id}|}" class="btn-view-mini">
                 <i class="fa-solid fa-eye"></i>
             </a>
         </div>
     </div>
 
-    <a class="btn-all" th:href="@{/notificacao/listar}">Ver todas</a>
+    <div class="noti-vertodos">
+        <a class="btn-all" th:href="@{/notificacao/listar}">Ver Todos</a>
+    </div>
 </div>
-
 <ul class="sidebar collapsed" id="sidebar">
     <li><a href="/usuario/listar"><i class="fa-solid fa-user"></i><span>Usuários</span></a></li>
     <li><a href="/curso/listar"><i class="fa-solid fa-table"></i><span>Formulários</span></a></li>
