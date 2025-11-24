@@ -86,6 +86,9 @@ public class UsuarioController {
             if (e.getMessage().contains("Senha")) {
                 result.rejectValue("senha", "error.usuario", e.getMessage());
             }
+            if (e.getMessage().contains("Deve")) {
+                result.rejectValue("senha", "error.usuario", e.getMessage());
+            }
             model.addAttribute("usuario", usuario);
             model.addAttribute("acao", "criar");
             return "administrativo/usuario/formulario";
@@ -104,6 +107,7 @@ public class UsuarioController {
                             @Valid Usuario usuarioForm,
                             BindingResult result,
                             @RequestParam(value = "file", required = false) MultipartFile file,
+                            RedirectAttributes redirectAttributes,
                             Model model) {
 
         if (result.hasFieldErrors("nome") || result.hasFieldErrors("email")) {
@@ -133,6 +137,7 @@ public class UsuarioController {
 
             service.atualizar(id, usuarioExistente);
 
+            redirectAttributes.addFlashAttribute("sucesso", "Usuário atualizado com sucesso!");
             return "redirect:/usuario/listar";
 
         } catch (IllegalStateException e) {
@@ -145,6 +150,9 @@ public class UsuarioController {
 
         } catch (IllegalArgumentException e) {
             if (e.getMessage().contains("Senha")) {
+                result.rejectValue("senha", "error.usuario", e.getMessage());
+            }
+            if (e.getMessage().contains("Deve")) {
                 result.rejectValue("senha", "error.usuario", e.getMessage());
             }
             model.addAttribute("usuario", usuarioForm);
@@ -261,11 +269,11 @@ public class UsuarioController {
             }
             service.deletarPorId(id);
             redirectAttributes.addFlashAttribute("sucesso", "Usuário deletado com sucesso!");
+            return "redirect:/usuario/listar";
         } catch (IllegalStateException | IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("erro", e.getMessage());
+            return "redirect:/usuario/listar";
         }
-
-        return "redirect:/usuario/listar";
     }
 
 

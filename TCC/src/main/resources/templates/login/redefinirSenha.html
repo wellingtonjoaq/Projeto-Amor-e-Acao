@@ -17,7 +17,9 @@
 
         <form th:action="@{/login/salvarNovaSenha}" method="post">
 
-            <!-- Token vindo via model -->
+            <p th:if="${erro}" th:text="${erro}" style="color: white; background-color: red; border-radius: 5px; padding-top: 5px; padding-bottom: 5px;"></p>
+            <p th:text="${mensagem}" style="color:green;"></p>
+
             <input type="hidden" name="token" th:value="${token}">
 
             <div class="input-group">
@@ -31,9 +33,6 @@
             </div>
 
             <button type="submit" class="btn-login">Salvar Nova Senha</button>
-
-            <p th:text="${erro}" style="color:red;"></p>
-            <p th:text="${mensagem}" style="color:green;"></p>
 
         </form>
 

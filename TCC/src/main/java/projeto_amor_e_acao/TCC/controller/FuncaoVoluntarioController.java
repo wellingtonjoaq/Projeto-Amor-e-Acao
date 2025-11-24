@@ -55,7 +55,12 @@ public class FuncaoVoluntarioController {
 
         try {
             service.salvar(funcaoVoluntario);
-            redirectAttributes.addFlashAttribute("sucesso", "Função salva com sucesso!");
+            if (funcaoVoluntario.getId() != null){
+                redirectAttributes.addFlashAttribute("sucesso", "Função atualizada com sucesso!");
+            }
+            else {
+                redirectAttributes.addFlashAttribute("sucesso", "Função salva com sucesso!");
+            }
             return "redirect:/funcao/listar";
 
         } catch (Exception e) {

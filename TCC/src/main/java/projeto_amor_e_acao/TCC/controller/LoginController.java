@@ -49,15 +49,22 @@ public class LoginController {
             @RequestParam String senha,
             Model model) {
 
-        boolean redefinido = redefinirSenhaTokenService.redefinirSenha(token, senha);
+        try {
+            boolean redefinido = redefinirSenhaTokenService.redefinirSenha(token, senha);
 
-        if (!redefinido) {
-            model.addAttribute("erro", "Token inválido ou expirado.");
+            if (!redefinido) {
+                model.addAttribute("erro", "Token inválido ou expirado.");
+                model.addAttribute("token", token);
+                return "login/redefinirSenha";
+            }
+
+            model.addAttribute("mensagem", "Senha redefinida com sucesso! Faça login.");
+            return "login/login";
+
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("erro", e.getMessage());
             model.addAttribute("token", token);
             return "login/redefinirSenha";
         }
-
-        model.addAttribute("mensagem", "Senha redefinida com sucesso! Faça login.");
-        return "login/login";
     }
 }

@@ -149,7 +149,7 @@ public class VisitantesController {
 
         try {
             voluntarioService.salvar(voluntario);
-            redirectAttributes.addFlashAttribute("sucesso", "Voluntario salvo com sucesso!");
+            redirectAttributes.addFlashAttribute("sucesso", "Formulario enviado com sucesso!");
             return "redirect:/visitantes/voluntario";
         }
         catch (IllegalStateException e) {

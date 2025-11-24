@@ -90,7 +90,13 @@ public class AlunoController {
             }
 
             service.salvar(aluno);
-            redirectAttributes.addFlashAttribute("sucesso", "Aluno salvo com sucesso!");
+
+            if (aluno.getId() != null){
+                redirectAttributes.addFlashAttribute("sucesso", "Aluno atualizado com sucesso!");
+            }
+            else {
+                redirectAttributes.addFlashAttribute("sucesso", "Aluno salvo com sucesso!");
+            }
             return "redirect:/aluno/listar";
         }
         catch (IllegalStateException e) {

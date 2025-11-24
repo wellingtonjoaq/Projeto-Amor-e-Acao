@@ -64,7 +64,12 @@ public class VoluntarioController {
 
         try {
             service.salvar(voluntario);
-            redirectAttributes.addFlashAttribute("sucesso", "Voluntario salvo com sucesso!");
+            if (voluntario.getId() != null){
+                redirectAttributes.addFlashAttribute("sucesso", "Voluntario atualizado com sucesso!");
+            }
+            else {
+                redirectAttributes.addFlashAttribute("sucesso", "Voluntario salvo com sucesso!");
+            }
             return "redirect:/voluntario/listar";
         }
         catch (IllegalStateException e) {

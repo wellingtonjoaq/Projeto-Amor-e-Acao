@@ -61,7 +61,12 @@ public class EmpresaParceiraController {
 
         try {
             service.salvar(empresaParceira);
-            redirectAttributes.addFlashAttribute("sucesso", "Empresa Parceira salva com sucesso!");
+            if (empresaParceira.getId() != null){
+                redirectAttributes.addFlashAttribute("sucesso", "Empresa Parceira atualizada com sucesso!");
+            }
+            else {
+                redirectAttributes.addFlashAttribute("sucesso", "Empresa Parceira salva com sucesso!");
+            }
             return "redirect:/empresaParceira/listar";
         } catch (IllegalStateException e) {
             if (e.getMessage().contains("CPF")) {
