@@ -27,60 +27,62 @@
         </form>
       </div>
 
-      <button class="filter-btn" id="toggleFilter">
-        <i class="fas fa-filter"></i> Filtrar <i class="fas fa-chevron-down"></i>
-      </button>
+      <div class="filter-container">
+        <button class="filter-btn" id="toggleFilter">
+          <i class="fas fa-filter"></i> Filtrar <i class="fas fa-chevron-down"></i>
+        </button>
+
+        <form th:action="@{/curso/filtrarUsuarioSimples}" method="get" class="filter-panel-curso" id="filterPanel" style="right: 0px;">
+
+          <div class="filter-section">
+            <div class="filter-header">
+              <i class="fa-solid fa-list"></i> Categorias
+            </div>
+
+            <div class="filter-options">
+              <label><input type="radio" name="categoria" value="Educação" th:checked="${categoria} == 'Educação'"> Educação</label>
+              <label><input type="radio" name="categoria" value="Saúde" th:checked="${categoria} == 'Saúde'"> Saúde</label>
+              <label><input type="radio" name="categoria" value="Tecnologia" th:checked="${categoria} == 'Tecnologia'"> Tecnologia</label>
+              <label><input type="radio" name="categoria" value="Esporte" th:checked="${categoria} == 'Esporte'"> Esporte</label>
+              <label><input type="radio" name="categoria" value="Arte" th:checked="${categoria} == 'Arte'"> Arte</label>
+              <label><input type="radio" name="categoria" value="Moda" th:checked="${categoria} == 'Moda'"> Moda</label>
+              <label><input type="radio" name="categoria" value="Engenharia" th:checked="${categoria} == 'Engenharia'"> Engenharia</label>
+              <label><input type="radio" name="categoria" value="Agricultura" th:checked="${categoria} == 'Agricultura'"> Agricultura</label>
+            </div>
+          </div>
+
+          <div class="filter-section">
+            <div class="filter-header">
+              <i class="fa-solid fa-clock"></i> Periodo
+            </div>
+
+            <div class="filter-options">
+              <label><input type="radio" name="periodo" value="Manhã" th:checked="${periodo} == 'Manhã'"> Manhã</label>
+              <label><input type="radio" name="periodo" value="Tarde" th:checked="${periodo} == 'Tarde'"> Tarde</label>
+              <label><input type="radio" name="periodo" value="Noite" th:checked="${periodo} == 'Noite'"> Noite</label>
+              <label><input type="radio" name="periodo" value="TODOS" th:checked="${periodo} == 'TODOS'"> Todos</label>
+            </div>
+          </div>
+
+          <div class="filter-section">
+            <div class="filter-header">
+              <i class="fa-solid fa-gear"></i> Status
+            </div>
+
+            <div class="filter-options">
+              <label><input type="radio" name="status" value="ATIVO" th:checked="${status} == 'ATIVO'"> Ativo</label>
+              <label><input type="radio" name="status" value="INATIVO" th:checked="${status} == 'INATIVO'"> Inativo</label>
+              <label><input type="radio" name="status" value="TODOS" th:checked="${status} == 'TODOS'"> Todos</label>
+            </div>
+          </div>
+
+          <button class="btn-buscar-filtro-curso">
+            <i class="fa fa-search"></i> Buscar
+          </button>
+        </form>
+      </div>
     </div>
   </div>
-
-  <form th:action="@{/curso/filtrarUsuarioSimples}" method="get" class="filter-panel-curso" id="filterPanel">
-
-    <div class="filter-section">
-      <div class="filter-header">
-        <i class="fa-solid fa-list" id="filtro-icones"></i> Categorias
-      </div>
-
-      <div class="filter-options">
-        <label><input type="radio" name="categoria" value="Educação" th:checked="${categoria} == 'Educação'"> Educação</label>
-        <label><input type="radio" name="categoria" value="Saúde" th:checked="${categoria} == 'Saúde'"> Saúde</label>
-        <label><input type="radio" name="categoria" value="Tecnologia" th:checked="${categoria} == 'Tecnologia'"> Tecnologia</label>
-        <label><input type="radio" name="categoria" value="Esporte" th:checked="${categoria} == 'Esporte'"> Esporte</label>
-        <label><input type="radio" name="categoria" value="Arte" th:checked="${categoria} == 'Arte'"> Arte</label>
-        <label><input type="radio" name="categoria" value="Moda" th:checked="${categoria} == 'Moda'"> Moda</label>
-        <label><input type="radio" name="categoria" value="Engenharia" th:checked="${categoria} == 'Engenharia'"> Engenharia</label>
-        <label><input type="radio" name="categoria" value="Agricultura" th:checked="${categoria} == 'Agricultura'"> Agricultura</label>
-      </div>
-    </div>
-
-    <div class="filter-section">
-      <div class="filter-header">
-        <i class="fa-solid fa-clock" id="filtro-icones1"></i> Periodo
-      </div>
-
-      <div class="filter-options">
-        <label><input type="radio" name="periodo" value="Manhã" th:checked="${periodo} == 'Manhã'"> Manhã</label>
-        <label><input type="radio" name="periodo" value="Tarde" th:checked="${periodo} == 'Tarde'"> Tarde</label>
-        <label><input type="radio" name="periodo" value="Noite" th:checked="${periodo} == 'Noite'"> Noite</label>
-        <label><input type="radio" name="periodo" value="TODOS" th:checked="${periodo} == 'TODOS'"> Todos</label>
-      </div>
-    </div>
-
-    <div class="filter-section">
-      <div class="filter-header">
-        <i class="fa-solid fa-gear" id="filtro-icones2"></i> Status
-      </div>
-
-      <div class="filter-options">
-        <label><input type="radio" name="status" value="ATIVO" th:checked="${status} == 'ATIVO'"> Ativo</label>
-        <label><input type="radio" name="status" value="INATIVO" th:checked="${status} == 'INATIVO'"> Inativo</label>
-        <label><input type="radio" name="status" value="TODOS" th:checked="${status} == 'TODOS'"> Todos</label>
-      </div>
-    </div>
-
-    <button class="btn-buscar-filtro-curso">
-      <i class="fa fa-search"></i> Buscar
-    </button>
-  </form>
 
   <div th:if="${vazio}" class="vazio">
     <h1>Nenhum curso encontrado com os filtros aplicados :\</h1>

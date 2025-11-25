@@ -87,11 +87,11 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="dto : ${relatorioAlunos}">
-                        <td th:text="${dto.nomeCurso}"></td>
-                        <td th:text="${dto.totalMatriculados}"></td>
-                        <td th:text="${dto.totalEvasivos}"></td>
-                        <td>
+                    <tr th:each="dto : ${relatorioAlunos}" id="backgroudTr3">
+                        <td data-label="Curso" th:text="${dto.nomeCurso}"></td>
+                        <td data-label="Matriculados" th:text="${dto.totalMatriculados}"></td>
+                        <td data-label="Evasivos" th:text="${dto.totalEvasivos}"></td>
+                        <td data-label="Taxa Evasão">
                                 <span th:class="${dto.taxaEvasao > 50 ? 'status inativo' : 'status ativo'}"
                                       th:text="${#numbers.formatDecimal(dto.taxaEvasao, 1, 2) + '%'}"></span>
                         </td>
@@ -118,9 +118,9 @@
                         <table>
                             <thead><tr><th>Função</th><th>Qtd</th></tr></thead>
                             <tbody>
-                            <tr th:each="entry : ${relatorioVoluntarios[0].voluntariosAtivosPorFuncao}">
-                                <td th:text="${entry.key}"></td>
-                                <td th:text="${entry.value}" style="font-weight: bold;"></td>
+                            <tr th:each="entry : ${relatorioVoluntarios[0].voluntariosAtivosPorFuncao}"id="backgroudTr3-1">
+                                <td data-label="Função" th:text="${entry.key}"></td>
+                                <td data-label="Qtd" th:text="${entry.value}" style="font-weight: bold;"></td>
                             </tr>
                             </tbody>
                         </table>
@@ -131,9 +131,9 @@
                         <table>
                             <thead><tr><th>Gênero</th><th>Qtd</th></tr></thead>
                             <tbody>
-                            <tr th:each="entry : ${relatorioVoluntarios[0].distribuicaoPorGenero}">
-                                <td th:text="${entry.key}"></td>
-                                <td th:text="${entry.value}" style="font-weight: bold;"></td>
+                            <tr th:each="entry : ${relatorioVoluntarios[0].distribuicaoPorGenero}" id="backgroudTr3-2">
+                                <td data-label="Gênero" th:text="${entry.key}"></td>
+                                <td data-label="Qtd" th:text="${entry.value}" style="font-weight: bold;"></td>
                             </tr>
                             </tbody>
                         </table>
@@ -162,11 +162,11 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr><td>Total de Alunos</td><td th:text="${relatorioEngajamento[0].totalAlunos}"></td></tr>
-                        <tr><td>Total de Voluntários</td><td th:text="${relatorioEngajamento[0].totalVoluntarios}"></td></tr>
-                        <tr><td>Total de Registros</td><td th:text="${relatorioEngajamento[0].totalRegistros}"></td></tr>
-                        <tr><td>Ações no Sistema (Logs)</td><td th:text="${relatorioEngajamento[0].totalAcoesChave}"></td></tr>
-                        <tr><td>Taxa de Conversão</td><td th:text="${#numbers.formatDecimal(relatorioEngajamento[0].taxaConversaoVisitante, 2, 2) + '%'}"></td></tr>
+                        <tr id="#backgroudTr3-3"><td data-label="Métrica">Total de Alunos</td><td data-label="Valor" th:text="${relatorioEngajamento[0].totalAlunos}"></td></tr>
+                        <tr id="#backgroudTr3-4"><td data-label="Métrica">Total de Voluntários</td><td data-label="Valor" th:text="${relatorioEngajamento[0].totalVoluntarios}"></td></tr>
+                        <tr id="#backgroudTr3-5"><td data-label="Métrica">Total de Registros</td><td data-label="Valor" th:text="${relatorioEngajamento[0].totalRegistros}"></td></tr>
+                        <tr id="#backgroudTr3-6"><td data-label="Métrica">Ações no Sistema (Logs)</td><td data-label="Valor" th:text="${relatorioEngajamento[0].totalAcoesChave}"></td></tr>
+                        <tr id="#backgroudTr3-7"><td data-label="Métrica">Taxa de Conversão</td><td data-label="Valor" th:text="${#numbers.formatDecimal(relatorioEngajamento[0].taxaConversaoVisitante, 2, 2) + '%'}"></td></tr>
                         </tbody>
                     </table>
 
@@ -175,8 +175,8 @@
                         <thead><tr><th>Ação / Usuário</th><th>Contagem</th></tr></thead>
                         <tbody>
                         <tr th:each="entry : ${relatorioEngajamento[0].usoFuncionalidades}">
-                            <td th:text="${entry.key}"></td>
-                            <td th:text="${entry.value}"></td>
+                            <td data-label="Ação" th:text="${entry.key}"></td>
+                            <td data-label="Contagem" th:text="${entry.value}"></td>
                         </tr>
                         </tbody>
                     </table>

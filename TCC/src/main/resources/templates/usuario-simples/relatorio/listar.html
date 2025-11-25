@@ -1,49 +1,216 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Relatórios Estratégicos</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 </head>
 <body>
 <div th:replace="/usuario-simples/navbar/dashboard :: menu"></div>
 
 <div class="container">
-    <div class="header-bar">
-        <h1>Relatórios Estratégicos</h1>
+    <div class="header-bar" style="width: 94%;">
+        <div class="header-title">
+            <h1>Relatórios Estratégicos</h1>
+        </div>
+
+        <div class="header-actions">
+            <div class="filter-container" style="position: relative;">
+                <button class="filter-btn-relatorio" id="toggleFilter">
+                    <i class="fas fa-filter"></i> Filtrar <i class="fas fa-chevron-down"></i>
+                </button>
+
+                <form method="get" th:action="@{/relatorio/listar}" class="filter-panel-relatorio" id="filterPanel">
+
+                    <div class="filter-section">
+                        <div class="filter-header" style="width: 100%;">
+                            <i class="fas fa-chart-pie"></i> Tipo
+                        </div>
+                        <div class="filter-options">
+                            <label><input type="radio" name="tipoRelatorio" value="alunos" th:checked="${tipoRelatorio} == 'alunos'"/> Alunos</label>
+                            <label><input type="radio" name="tipoRelatorio" value="voluntarios" th:checked="${tipoRelatorio} == 'voluntarios'"/> Voluntários</label>
+                            <label><input type="radio" name="tipoRelatorio" value="engajamento" th:checked="${tipoRelatorio} == 'engajamento'"/> Engajamento</label>
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <div class="filter-header" style="width: 100%;">
+                            <i class="fas fa-book"></i> Curso
+                        </div>
+                        <div class="filter-options">
+                            <select name="curso" id="curso" class="form-control" style="width: 100%; padding: 5px;">
+                                <option value="" th:selected="${cursoFiltro == null}">Todos</option>
+                                <option th:each="curso : ${cursos}" th:value="${curso.id}" th:text="${curso.nome}" th:selected="${curso.id == cursoFiltro}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="filter-section" style="flex-direction: column; height: 190px;">
+                        <div class="filter-header" style="width: 100%; flex-direction: row-reverse;">
+                            <i class="fas fa-calendar-alt"></i> Data
+                        </div>
+                        <div class="filter-options-data" style="gap: 0px">
+                            Início <label for="dataInicio"></label>
+                            <input type="date" id="dataInicio" name="dataInicio" th:value="${dataInicio}" style="width: 242px;"/>
+
+                            Fim <label for="dataFim"></label>
+                            <input type="date" id="dataFim" name="dataFim" th:value="${dataFim}" style="width: 242px;"/>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-buscar-filtro" style="margin-top: 15px; width: 100%;">
+                        <i class="fa fa-search"></i> Buscar
+                    </button>
+                    <button type="button" onclick="window.location.href='/relatorio/listar'" class="relatorio-limpar" style="margin-top: 5px; width: 100%; padding: 8px; background-color: #6c757d;">
+                        Limpar
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
 
-    <div class="card-grid">
+    <div th:switch="${tipoRelatorio}" class="card-grid" style="grid-template-columns: 1fr;"> <div th:case="'alunos'">
         <div class="card card-relatorio">
-            <h2><i class="fa-solid fa-user-graduate"></i> Relatório de Alunos</h2>
-            <p>Relatório a respeito dos alunos cadastrados e desistentes.</p>
+            <h2><i class="fa-solid fa-user-graduate" style="color: #001F3F;"></i> Evasão de Alunos</h2>
+            <p>Análise de matrículas ativas e evasão por curso.</p>
 
-            <a th:href="@{/api/relatorios/alunos/exportar/pdf}" download class="btn-download">
-                <i class="fas fa-file-pdf"></i> Baixar PDF
-            </a>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Curso</th>
+                        <th>Matriculados</th>
+                        <th>Evasivos</th>
+                        <th>Taxa Evasão</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="dto : ${relatorioAlunos}">
+                        <td th:text="${dto.nomeCurso}"></td>
+                        <td th:text="${dto.totalMatriculados}"></td>
+                        <td th:text="${dto.totalEvasivos}"></td>
+                        <td>
+                                <span th:class="${dto.taxaEvasao > 50 ? 'status inativo' : 'status ativo'}"
+                                      th:text="${#numbers.formatDecimal(dto.taxaEvasao, 1, 2) + '%'}"></span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="btn-download-container">
+                <a th:href="@{/api/relatorios/alunos/exportar/pdf(curso=${cursoFiltro})}" download class="btn-download">
+                    <i class="fas fa-file-pdf"></i> Baixar PDF
+                </a>
+            </div>
+        </div>
+    </div>
+
+        <div th:case="'voluntarios'">
+            <div class="card card-relatorio">
+                <h2><i class="fa-solid fa-hands-helping" style="color: #001F3F;"></i> Métricas de Voluntariado</h2>
+                <p>Distribuição de voluntários ativos por função, gênero e motivação.</p>
+
+                <div class="form-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                    <div class="table-responsive">
+                        <h3 style="font-size: 1.1rem; color: #555; margin-bottom: 10px;">Por Função</h3>
+                        <table>
+                            <thead><tr><th>Função</th><th>Qtd</th></tr></thead>
+                            <tbody>
+                            <tr th:each="entry : ${relatorioVoluntarios[0].voluntariosAtivosPorFuncao}">
+                                <td th:text="${entry.key}"></td>
+                                <td th:text="${entry.value}" style="font-weight: bold;"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="table-responsive">
+                        <h3 style="font-size: 1.1rem; color: #555; margin-bottom: 10px;">Por Gênero</h3>
+                        <table>
+                            <thead><tr><th>Gênero</th><th>Qtd</th></tr></thead>
+                            <tbody>
+                            <tr th:each="entry : ${relatorioVoluntarios[0].distribuicaoPorGenero}">
+                                <td th:text="${entry.key}"></td>
+                                <td th:text="${entry.value}" style="font-weight: bold;"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="btn-download-container">
+                    <a th:href="@{/api/relatorios/voluntariado/pdf(dataInicio=${dataInicio}, dataFim=${dataFim})}" download class="btn-download">
+                        <i class="fas fa-file-pdf"></i> Baixar PDF
+                    </a>
+                </div>
+            </div>
         </div>
 
-        <div class="card card-relatorio">
-            <h2><i class="fa-solid fa-hands-holding-circle"></i> Relatório de Voluntariado</h2>
-            <p>Relatório sobre a distribuição dos voluntários e suas funções.</p>
+        <div th:case="'engajamento'">
+            <div class="card card-relatorio">
+                <h2><i class="fa-solid fa-chart-line" style="color: #001F3F;"></i> Engajamento do Sistema</h2>
+                <p>Visão geral de cadastros e uso das funcionalidades.</p>
 
-            <a th:href="@{/api/relatorios/voluntariado/pdf}" download class="btn-download">
-                <i class="fas fa-file-pdf"></i> Baixar PDF
-            </a>
-        </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Métrica</th>
+                            <th>Valor</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr><td>Total de Alunos</td><td th:text="${relatorioEngajamento[0].totalAlunos}"></td></tr>
+                        <tr><td>Total de Voluntários</td><td th:text="${relatorioEngajamento[0].totalVoluntarios}"></td></tr>
+                        <tr><td>Total de Registros</td><td th:text="${relatorioEngajamento[0].totalRegistros}"></td></tr>
+                        <tr><td>Ações no Sistema (Logs)</td><td th:text="${relatorioEngajamento[0].totalAcoesChave}"></td></tr>
+                        <tr><td>Taxa de Conversão</td><td th:text="${#numbers.formatDecimal(relatorioEngajamento[0].taxaConversaoVisitante, 2, 2) + '%'}"></td></tr>
+                        </tbody>
+                    </table>
 
-        <div class="card card-relatorio">
-            <h2><i class="fa-solid fa-chart-line"></i> Relatório de Engajamento</h2>
-            <p>Relatório de análise do engajamento dos usuários do sistema.</p>
-
-            <a th:href="@{/api/relatorios/engajamento/pdf}" download class="btn-download">
-                <i class="fas fa-file-pdf"></i> Baixar PDF
-            </a>
+                    <h3 style="margin-top: 20px; font-size: 1.1rem;">Uso por Funcionalidade</h3>
+                    <table>
+                        <thead><tr><th>Ação / Usuário</th><th>Contagem</th></tr></thead>
+                        <tbody>
+                        <tr th:each="entry : ${relatorioEngajamento[0].usoFuncionalidades}">
+                            <td th:text="${entry.key}"></td>
+                            <td th:text="${entry.value}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="btn-download-container">
+                    <a th:href="@{/api/relatorios/engajamento/pdf(dataInicio=${dataInicio}, dataFim=${dataFim})}" download class="btn-download">
+                        <i class="fas fa-file-pdf"></i> Baixar PDF
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+<script>
+    const toggleButton = document.getElementById('toggleFilter');
+    const filterPanel = document.getElementById('filterPanel');
+    let open = false;
+
+    toggleButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        open = !open;
+        filterPanel.style.display = open ? 'block' : 'none';
+        toggleButton.querySelector('.fa-chevron-down').style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
+    });
+
+    document.addEventListener('click', (e) => {
+        if (open && !filterPanel.contains(e.target) && !toggleButton.contains(e.target)) {
+            open = false;
+            filterPanel.style.display = 'none';
+            toggleButton.querySelector('.fa-chevron-down').style.transform = 'rotate(0deg)';
+        }
+    });
+</script>
 
 </body>
 </html>
