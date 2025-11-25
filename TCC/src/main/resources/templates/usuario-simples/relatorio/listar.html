@@ -39,7 +39,7 @@
                         <div class="filter-header">
                             <i class="fas fa-book"></i> Curso
                         </div>
-                        <div class="filter-options">
+                        <div class="filter-options" id="cursoFilterOptions">
                             <select name="curso" class="form-control" style="width: 100%; padding: 5px;">
                                 <option value="" th:selected="${cursoFiltro == null}">Todos</option>
                                 <option th:each="curso : ${cursos}"
@@ -203,8 +203,35 @@
     </div>
 </div>
 
-
 <script>
+    const tipoRadios = document.querySelectorAll('input[name="tipoRelatorio"]');
+    const cursoSelect = document.querySelector('select[name="curso"]');
+    const cursoOptionsDiv = document.getElementById('cursoFilterOptions');
+
+    function updateCursoFilterState() {
+        let tipoSelecionado = document.querySelector('input[name="tipoRelatorio"]:checked').value;
+
+        if (tipoSelecionado === 'voluntarios' || tipoSelecionado === 'engajamento') {
+            cursoSelect.disabled = true;
+            cursoSelect.value = '';
+            if (cursoOptionsDiv) {
+                cursoOptionsDiv.classList.add('disabled-options'); // Aplica a classe no DIV
+            }
+        } else {
+            // Habilita
+            cursoSelect.disabled = false;
+            if (cursoOptionsDiv) {
+                cursoOptionsDiv.classList.remove('disabled-options');
+            }
+        }
+    }
+
+    tipoRadios.forEach(radio => {
+        radio.addEventListener('change', updateCursoFilterState);
+    });
+
+    document.addEventListener('DOMContentLoaded', updateCursoFilterState);
+
     const toggleButton = document.getElementById('toggleFilter');
     const filterPanel = document.getElementById('filterPanel');
     let open = false;

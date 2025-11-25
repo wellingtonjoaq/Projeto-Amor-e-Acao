@@ -172,7 +172,7 @@ public class HistoricoController {
         if (usuario.isPresent()) {
             Usuario user = usuario.get();
             user.setStatus("ATIVO");
-            usuarioService.salvar(user);
+            usuarioService.atualizar(id, user);
         }
         redirectAttributes.addFlashAttribute("sucesso", "Usuario ativado com sucesso!");
         return "redirect:/historico/listar";
