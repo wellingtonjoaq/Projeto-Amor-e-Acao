@@ -82,34 +82,48 @@ public class CursoService {
         boolean temPeriodo = periodo != null && !periodo.isBlank() && !periodo.equalsIgnoreCase("TODOS");
         boolean temStatus = status != null && !status.isBlank() && !status.equalsIgnoreCase("TODOS");
 
+        // 1) todos os três
         if (temCategoria && temPeriodo && temStatus) {
-            return repository.findByStatusIgnoreCaseAndCategoriasContainingIgnoreCaseAndPeriodoIgnoreCase(
+            return repository.findByStatusIgnoreCaseAndCategoriasContainingIgnoreCaseAndPeriodoContainingIgnoreCase(
                     status, categoria, periodo, pageable);
         }
 
+        // 2) categoria + periodo (sem status)
+        if (temCategoria && temPeriodo) {
+            return repository.findByCategoriasContainingIgnoreCaseAndPeriodoContainingIgnoreCase(
+                    categoria, periodo, pageable);
+        }
+
+        // 3) categoria + status (sem periodo)
         if (temCategoria && temStatus) {
             return repository.findByStatusIgnoreCaseAndCategoriasContainingIgnoreCase(
                     status, categoria, pageable);
         }
 
+        // 4) periodo + status (sem categoria)
         if (temPeriodo && temStatus) {
-            return repository.findByStatusIgnoreCaseAndPeriodoIgnoreCase(status, periodo, pageable);
+            return repository.findByStatusIgnoreCaseAndPeriodoContainingIgnoreCase(status, periodo, pageable);
         }
 
+        // 5) somente categoria
         if (temCategoria) {
             return repository.findByCategoriasContainingIgnoreCase(categoria, pageable);
         }
 
+        // 6) somente periodo
         if (temPeriodo) {
-            return repository.findByPeriodoIgnoreCase(periodo, pageable);
+            return repository.findByPeriodoContainingIgnoreCase(periodo, pageable);
         }
 
+        // 7) somente status
         if (temStatus) {
             return repository.findByStatusIgnoreCase(status, pageable);
         }
 
+        // nenhum filtro
         return repository.findAll(pageable);
     }
+
 
 
     public Curso buscarPorId(Long id) {

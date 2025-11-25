@@ -62,7 +62,7 @@ public class AlunoService {
 
     public Page<Aluno> listarPendentes(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return repository.findByStatusIgnoreCase("PENDENT", pageable);
+        return repository.findByStatusIgnoreCase("PENDENTE", pageable);
     }
 
     public Page<Aluno> filtrarPesquisa(String status, String pesquisa, int page, int size) {

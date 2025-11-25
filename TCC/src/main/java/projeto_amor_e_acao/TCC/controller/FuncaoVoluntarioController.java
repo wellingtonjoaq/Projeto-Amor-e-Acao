@@ -53,13 +53,15 @@ public class FuncaoVoluntarioController {
             return "administrativo/funcao/formulario";
         }
 
+        boolean novo = (funcaoVoluntario.getId() == null);
+
         try {
             service.salvar(funcaoVoluntario);
-            if (funcaoVoluntario.getId() != null){
-                redirectAttributes.addFlashAttribute("sucesso", "Função atualizada com sucesso!");
+            if (novo){
+                redirectAttributes.addFlashAttribute("sucesso", "Função salva com sucesso!");
             }
             else {
-                redirectAttributes.addFlashAttribute("sucesso", "Função salva com sucesso!");
+                redirectAttributes.addFlashAttribute("sucesso", "Função atualizada com sucesso!");
             }
             return "redirect:/funcao/listar";
 

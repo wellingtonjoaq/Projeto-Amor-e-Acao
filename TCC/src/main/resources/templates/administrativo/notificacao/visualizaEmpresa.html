@@ -14,7 +14,14 @@
 <div class="container" th:fragment="visualizaEmpresaParceira">
 
   <form class="form-adm">
-    <h1>Visualizar Empresa Parceira</h1>
+    <div class="add-voltar">
+      <h1>Visualizar Empresa Parceira</h1>
+
+      <a type="button" class="button-vol" th:href="@{/notificacao/listar}">
+        <i class="fa-solid fa-arrow-left"></i> Voltar
+      </a>
+    </div>
+
     <input type="hidden" name="id" th:value="${empresa.id}" disabled />
 
     <div class="form-grid">
@@ -75,13 +82,15 @@
       </div>
 
     </div>
-    <a type="button" class="button-vol" th:href="@{'/notificacao/ativarEmpresaParceira/' + ${empresa.id}}">
-      <i class="fa-solid fa-arrow-left"></i> Aceitar
-    </a>
+    <div class="espacamento-botton">
+      <a type="button" class="button-vol" th:href="@{'/notificacao/ativarEmpresaParceira/' + ${empresa.id}}" style="width: 50%;">
+        Aceitar
+      </a>
 
-    <a href="#" class="delete-btn" th:attr="data-id=${empresa.id}, data-nome=${empresa.nome}">
-      Recusar
-    </a>
+      <a href="#" class="delete-btn" th:attr="data-id=${empresa.id}, data-nome=${empresa.nome}" style="width: 50%;">
+        Recusar
+      </a>
+    </div>
   </form>
 </div>
 

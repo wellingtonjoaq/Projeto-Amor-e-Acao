@@ -103,7 +103,7 @@
 
 <div id="message-modal" class="modal-overlay" th:if="${erro != null or sucesso != null}" style="display:none;">
     <div class="modal-content">
-        <span id="close-modal" class="close-btn">&times;</span>
+        <span id="close-modal" class="close-btn" style="cursor: pointer;">&times;</span>
         <p th:if="${erro}" th:text="${erro}" style="color: red; font-weight: bold;"></p>
         <p th:if="${sucesso}" th:text="${sucesso}" style="color: green; font-weight: bold;"></p>
     </div>
@@ -169,15 +169,17 @@
         }
       });
     });
-</script>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function() {
         const modal = document.getElementById("message-modal");
         const closeBtn = document.getElementById("close-modal");
 
         if(modal) {
             modal.style.display = "flex";
+
+            setTimeout(() => {
+                modal.style.display = "none";
+            }, 3000);
         }
 
         closeBtn.addEventListener("click", () => {

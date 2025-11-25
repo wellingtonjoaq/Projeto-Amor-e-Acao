@@ -117,7 +117,7 @@ public class HistoricoController {
 
     @GetMapping("visualizaEmpresaParceira/{id}")
     public String visualizarEmpresaParceira(@PathVariable Long id, Model model) {
-        Optional<EmpresaParceira> empresaParceira = empresaParceiraService.buscarPorId(id);
+        Optional<EmpresaParceira> empresaParceira = empresaParceiraService.buscarPorIdOptional(id);
 
             model.addAttribute("empresa", empresaParceira.get());
             return "administrativo/historico/visualizarEmpresaParceira";
@@ -153,7 +153,7 @@ public class HistoricoController {
 
     @PostMapping("/ativarEmpresaParceira/{id}")
     public String ativarEmpresaParceira(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        Optional<EmpresaParceira> empresaParceira = empresaParceiraService.buscarPorId(id);
+        Optional<EmpresaParceira> empresaParceira = empresaParceiraService.buscarPorIdOptional(id);
 
         if (empresaParceira.isPresent()) {
             EmpresaParceira ep = empresaParceira.get();

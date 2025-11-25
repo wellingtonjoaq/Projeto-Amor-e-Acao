@@ -62,13 +62,15 @@ public class VoluntarioController {
             return "administrativo/voluntario/formulario";
         }
 
+        boolean novo = (voluntario.getId() == null);
+
         try {
             service.salvar(voluntario);
-            if (voluntario.getId() != null){
-                redirectAttributes.addFlashAttribute("sucesso", "Voluntario atualizado com sucesso!");
+            if (novo){
+                redirectAttributes.addFlashAttribute("sucesso", "Voluntario salvo com sucesso!");
             }
             else {
-                redirectAttributes.addFlashAttribute("sucesso", "Voluntario salvo com sucesso!");
+                redirectAttributes.addFlashAttribute("sucesso", "Voluntario atualizado com sucesso!");
             }
             return "redirect:/voluntario/listar";
         }

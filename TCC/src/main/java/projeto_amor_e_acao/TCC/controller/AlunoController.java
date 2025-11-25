@@ -76,6 +76,8 @@ public class AlunoController {
             return "administrativo/aluno/formulario";
         }
 
+        boolean novo = (aluno.getId() == null);
+
         try {
             cursosIds.forEach(cursoId -> {
                 Curso curso = cursoService.buscarPorId(cursoId);
@@ -91,11 +93,11 @@ public class AlunoController {
 
             service.salvar(aluno);
 
-            if (aluno.getId() != null){
-                redirectAttributes.addFlashAttribute("sucesso", "Aluno atualizado com sucesso!");
+            if (novo){
+                redirectAttributes.addFlashAttribute("sucesso", "Aluno salvo com sucesso!");
             }
             else {
-                redirectAttributes.addFlashAttribute("sucesso", "Aluno salvo com sucesso!");
+                redirectAttributes.addFlashAttribute("sucesso", "Aluno atualizado com sucesso!");
             }
             return "redirect:/aluno/listar";
         }

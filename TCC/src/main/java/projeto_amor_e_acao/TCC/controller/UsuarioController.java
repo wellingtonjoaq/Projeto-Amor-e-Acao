@@ -16,6 +16,7 @@ import projeto_amor_e_acao.TCC.service.NotificacaoService;
 import projeto_amor_e_acao.TCC.service.UsuarioService;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -122,10 +123,11 @@ public class UsuarioController {
             usuarioExistente.setNome(usuarioForm.getNome());
             usuarioExistente.setEmail(usuarioForm.getEmail());
             usuarioExistente.setCargo(usuarioForm.getCargo());
-            usuarioExistente.setSenha(usuarioForm.getSenha());
+            usuarioExistente.setStatus(usuarioForm.getStatus());
+            usuarioExistente.setFotoPerfil(usuarioForm.getFotoPerfil());
+            usuarioExistente.setDataAlteracaoStatus(LocalDate.now());
 
             if (file != null && !file.isEmpty()) {
-
                 String novaUrl = firebaseService.uploadFile(file);
 
                 if (usuarioExistente.getFotoPerfil() != null && !usuarioExistente.getFotoPerfil().isBlank()) {
@@ -135,7 +137,8 @@ public class UsuarioController {
                 usuarioExistente.setFotoPerfil(novaUrl);
             }
 
-            service.atualizar(id, usuarioExistente);
+            // Atualiza usuário, incluindo validação de senha se preenchida
+            service.atualizar(id, usuarioForm);
 
             redirectAttributes.addFlashAttribute("sucesso", "Usuário atualizado com sucesso!");
             return "redirect:/usuario/listar";

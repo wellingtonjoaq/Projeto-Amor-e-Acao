@@ -67,6 +67,8 @@ public class SecurityConfiguration {
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
                         .logoutSuccessUrl("/login?logout=true")
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout/visitantes", "GET"))
+                        .logoutSuccessUrl("/visitantes/")
                         .invalidateHttpSession(true)
                         .clearAuthentication(true)
                         .permitAll()

@@ -260,6 +260,24 @@
             }
         });
     });
+
+    document.getElementById('cepCurso').addEventListener('blur', function () {
+        const cep = this.value.replace(/\D/g, '');
+
+        if (cep.length === 8) {
+            fetch(`https://viacep.com.br/ws/${cep}/json/`)
+                .then(r => r.json())
+                .then(data => {
+                    if (!data.erro) {
+                        document.getElementById('enderecoCurso').value = data.logradouro || '';
+                        document.getElementById('bairroCurso').value = data.bairro || '';
+                    } else {
+                        alert('CEP não encontrado!');
+                    }
+                })
+                .catch(() => alert('Erro ao buscar o CEP!'));
+        }
+    });
 </script>
 </body>
 </html>

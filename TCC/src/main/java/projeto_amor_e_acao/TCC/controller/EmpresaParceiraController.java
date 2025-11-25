@@ -59,13 +59,15 @@ public class EmpresaParceiraController {
             return "administrativo/empresaParceira/formulario";
         }
 
+        boolean novo = (empresaParceira.getId() == null);
+
         try {
             service.salvar(empresaParceira);
-            if (empresaParceira.getId() != null){
-                redirectAttributes.addFlashAttribute("sucesso", "Empresa Parceira atualizada com sucesso!");
+            if (novo){
+                redirectAttributes.addFlashAttribute("sucesso", "Empresa Parceira salva com sucesso!");
             }
             else {
-                redirectAttributes.addFlashAttribute("sucesso", "Empresa Parceira salva com sucesso!");
+                redirectAttributes.addFlashAttribute("sucesso", "Empresa Parceira atualizada com sucesso!");
             }
             return "redirect:/empresaParceira/listar";
         } catch (IllegalStateException e) {
@@ -158,7 +160,7 @@ public class EmpresaParceiraController {
 
     @GetMapping("/visualizar/{id}")
     public String visualizar(@PathVariable Long id, Model model) {
-        Optional<EmpresaParceira> empresaParceira = service.buscarPorId(id);
+        Optional<EmpresaParceira> empresaParceira = service.buscarPorIdOptional(id);
 
         if (empresaParceira.isPresent()) {
             model.addAttribute("empresa", empresaParceira.get());
@@ -172,7 +174,7 @@ public class EmpresaParceiraController {
 
     @GetMapping("/editar/{id}")
     public String editar(@PathVariable Long id, Model model) {
-        Optional<EmpresaParceira> empresaParceira = service.buscarPorId(id);
+        Optional<EmpresaParceira> empresaParceira = service.buscarPorIdOptional(id);
 
         if (empresaParceira.isPresent()) {
             model.addAttribute("empresaParceira", empresaParceira.get());

@@ -59,7 +59,7 @@ public class EmpresaParceiraService {
 
     public Page<EmpresaParceira> listarPendentes(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return repository.findByStatusIgnoreCase("PENDENT", pageable);
+        return repository.findByStatusIgnoreCase("PENDENTE", pageable);
     }
 
     public Page<EmpresaParceira> filtrarPesquisa(String status, String pesquisa, int page, int size) {
@@ -99,8 +99,12 @@ public class EmpresaParceiraService {
         return resultados;
     }
 
-    public Optional<EmpresaParceira> buscarPorId(Long id) {
+    public Optional<EmpresaParceira> buscarPorIdOptional(Long id) {
         return repository.findById(id);
+    }
+
+    public EmpresaParceira buscarPorId(Long id) {
+        return repository.findById(id).orElseThrow();
     }
 
     public void deletarPorId(Long id) {

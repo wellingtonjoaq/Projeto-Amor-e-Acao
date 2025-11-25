@@ -89,9 +89,9 @@ public class Voluntario {
     @Size(max = 100, message = "( Tamanho Excedido )")
     private String estado;
 
-    @Column(nullable = false, length = 7)
+    @Column(nullable = false, length = 20)
     @NotBlank(message = "( Campo Obrigatório )")
-    @Size(min = 5, max = 7, message = "( Campo Invalido )")
+    @Size(min = 5, max = 20, message = "( Campo Invalido )")
     private String status = "ATIVO";
 
     @Column(name = "data_inicio_atividade", updatable = false)

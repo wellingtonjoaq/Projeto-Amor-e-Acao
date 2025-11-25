@@ -84,6 +84,8 @@ public class CursoController {
             return "administrativo/curso/formulario";
         }
 
+        boolean novo = (curso.getId() == null);
+
         try {
             if (file != null && !file.isEmpty()) {
                 String url = firebaseService.uploadFile(file);
@@ -97,11 +99,11 @@ public class CursoController {
             curso.setCategorias(String.join(",", categoriasSelecionadas));
 
             service.salvar(curso);
-            if (curso.getId() != null){
-                redirectAttributes.addFlashAttribute("sucesso", "Curso atualizado com sucesso!");
+            if (novo){
+                redirectAttributes.addFlashAttribute("sucesso", "Curso salvo com sucesso!");
             }
             else {
-                redirectAttributes.addFlashAttribute("sucesso", "Curso salvo com sucesso!");
+                redirectAttributes.addFlashAttribute("sucesso", "Curso atualizado com sucesso!");
             }
             return "redirect:/curso/listar";
 
@@ -161,9 +163,15 @@ public class CursoController {
             @RequestParam(required = false) String periodo,
             Model model) {
 
-        boolean temCategoria = (categoria != null && !categoria.isEmpty());
-        boolean temPeriodo = (periodo != null && !periodo.isEmpty());
-        boolean temStatus = (status != null && !status.isEmpty());
+        boolean temPeriodo = (periodo != null
+                && !periodo.isBlank());
+
+        boolean temStatus = (status != null
+                && !status.isBlank());
+
+        boolean temCategoria = (categoria != null
+                && !categoria.isBlank());
+
 
         Page<Curso> cursos = service.filtrar(categoria, periodo, status, page, size);
 

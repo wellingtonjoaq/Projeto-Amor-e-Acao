@@ -148,9 +148,11 @@ public class VisitantesController {
         }
 
         try {
+            voluntario.setStatus("PENDENTE");
+
             voluntarioService.salvar(voluntario);
             redirectAttributes.addFlashAttribute("sucesso", "Formulario enviado com sucesso!");
-            return "redirect:/visitantes/voluntario";
+            return "redirect:/visitantes/";
         }
         catch (IllegalStateException e) {
             if (e.getMessage().contains("CPF")) {
@@ -205,10 +207,10 @@ public class VisitantesController {
             }
             aluno.getMatriculas().add(matricula);
 
-            aluno.setStatus("PENDENT");
+            aluno.setStatus("PENDENTE");
 
             alunoService.salvar(aluno);
-            redirectAttributes.addFlashAttribute("sucesso", "Matricula feita com sucesso!");
+            redirectAttributes.addFlashAttribute("sucesso", "Matricula enviada com sucesso!");
             return "redirect:/visitantes/cursos";
         }
         catch (IllegalStateException e) {
@@ -252,10 +254,10 @@ public class VisitantesController {
         }
 
         try {
-            empresaParceira.setStatus("PENDENT");
+            empresaParceira.setStatus("PENDENTE");
             empresaParceiraService.salvar(empresaParceira);
             redirectAttributes.addFlashAttribute("sucesso", "Formulario enviado com sucesso!");
-            return "redirect:/visitantes/parceria";
+            return "redirect:/visitantes/";
         } catch (IllegalStateException e) {
             if (e.getMessage().contains("CPF")) {
                 result.rejectValue("cpfRepresentante", "error.empresaParceira", e.getMessage());
@@ -265,12 +267,12 @@ public class VisitantesController {
                 result.rejectValue("email", "error.empresaParceira", e.getMessage());
             }
 
-            return "visitantes/parceira/formulario";
+            return "visitantes/parceria/formulario";
         } catch (Exception e) {
 
             model.addAttribute("erro", e.getMessage());
             model.addAttribute("empresaParceira", empresaParceira);
-            return "visitantes/parceira/formulario";
+            return "visitantes/parceria/formulario";
         }
     }
 

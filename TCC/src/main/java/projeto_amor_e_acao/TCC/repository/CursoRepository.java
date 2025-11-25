@@ -11,15 +11,17 @@ public interface CursoRepository extends JpaRepository<Curso, Long> {
 
     Page<Curso> findByStatusIgnoreCase(String status, Pageable pageable);
 
-    Page<Curso> findByStatusIgnoreCaseAndCategoriasContainingIgnoreCase(String status, String categoria, Pageable pageable);
-
-    Page<Curso> findByStatusIgnoreCaseAndPeriodoIgnoreCase(String status, String periodo, Pageable pageable);
-
-    Page<Curso> findByStatusIgnoreCaseAndCategoriasContainingIgnoreCaseAndPeriodoIgnoreCase(String status, String categoria, String periodo, Pageable pageable);
-
     Page<Curso> findByCategoriasContainingIgnoreCase(String categoria, Pageable pageable);
 
-    Page<Curso> findByPeriodoIgnoreCase(String periodo, Pageable pageable);
+    Page<Curso> findByPeriodoContainingIgnoreCase(String periodo, Pageable pageable);
+
+    Page<Curso> findByStatusIgnoreCaseAndCategoriasContainingIgnoreCase(String status, String categoria, Pageable pageable);
+
+    Page<Curso> findByStatusIgnoreCaseAndPeriodoContainingIgnoreCase(String status, String periodo, Pageable pageable);
+
+    Page<Curso> findByCategoriasContainingIgnoreCaseAndPeriodoContainingIgnoreCase(String categoria, String periodo, Pageable pageable);
+
+    Page<Curso> findByStatusIgnoreCaseAndCategoriasContainingIgnoreCaseAndPeriodoContainingIgnoreCase(String status, String categoria, String periodo, Pageable pageable);
 
     Page<Curso> findByStatusIgnoreCaseAndNomeContainingIgnoreCase(String status, String nome, Pageable pageable);
 

@@ -62,7 +62,7 @@ public class VoluntarioService {
 
     public Page<Voluntario> listarPendentes(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return repository.findByStatusIgnoreCase("PENDENT", pageable);
+        return repository.findByStatusIgnoreCase("PENDENTE", pageable);
     }
 
     public Page<Voluntario> filtrarPesquisa(String status, String pesquisa, int page, int size) {

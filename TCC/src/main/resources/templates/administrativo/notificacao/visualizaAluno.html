@@ -14,7 +14,13 @@
 <div class="container" th:fragment="visualizaAluno">
 
     <form class="form-adm">
-        <h1>Visualizar Aluno</h1>
+        <div class="add-voltar">
+            <h1>Visualizar Aluno</h1>
+
+            <a type="button" class="button-vol" th:href="@{/notificacao/listar}">
+                <i class="fa-solid fa-arrow-left"></i> Voltar
+            </a>
+        </div>
         <input type="hidden" name="id" th:value="${aluno.id}" disabled />
 
         <div class="form-grid">
@@ -73,13 +79,15 @@
 
         </div>
 
-        <a type="button" class="button-vol" th:href="@{'/notificacao/ativarAluno/' + ${aluno.id}}">
-            Aceitar
-        </a>
+        <div class="espacamento-botton">
+            <a type="button" class="button-vol" th:href="@{'/notificacao/ativarAluno/' + ${aluno.id}}" style="width: 50%;">
+                Aceitar
+            </a>
 
-        <a href="#" class="delete-btn" th:attr="data-id=${aluno.id}, data-nome=${aluno.nome}">
-            Recusar
-        </a>
+            <a href="#" class="delete-btn" th:attr="data-id=${aluno.id}, data-nome=${aluno.nome}" style="width: 50%;">
+                Recusar
+            </a>
+        </div>
     </form>
 </div>
 

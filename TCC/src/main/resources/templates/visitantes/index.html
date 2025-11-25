@@ -96,6 +96,16 @@
 
 <div th:replace="~{visitantes/footer/footer :: footer}"></div>
 
+<div id="message-modal" class="modal-overlay" th:if="${erro != null or sucesso != null}">
+    <div class="modal-content">
+        <span id="close-modal" class="close-btn" style="cursor: pointer;">&times;</span>
+        <div class="modal-icon" th:if="${sucesso}"><i class="fa-solid fa-check-circle" style="color: green;"></i></div>
+        <div class="modal-icon" th:if="${erro}"><i class="fa-solid fa-circle-exclamation" style="color: red;"></i></div>
+        <p th:if="${erro}" th:text="${erro}" class="modal-text error"></p>
+        <p th:if="${sucesso}" th:text="${sucesso}" class="modal-text success"></p>
+    </div>
+</div>
+
 <script>
 const botao = document.getElementById('botaoCompartilhar');
 
@@ -117,6 +127,28 @@ if (navigator.share) {
     botao.style.display = 'none'; // Esconde o botão se a API não funcionar
 }
 
+    document.addEventListener("DOMContentLoaded", function() {
+        const modal = document.getElementById("message-modal");
+        const closeBtn = document.getElementById("close-modal");
+
+        if(modal) {
+            modal.style.display = "flex";
+
+            setTimeout(() => {
+                modal.style.display = "none";
+            }, 3000);
+        }
+
+        closeBtn.addEventListener("click", () => {
+            modal.style.display = "none";
+        });
+
+        window.addEventListener("click", (e) => {
+            if(e.target === modal) {
+                modal.style.display = "none";
+            }
+        });
+    });
 </script>
 </body>
 </html>

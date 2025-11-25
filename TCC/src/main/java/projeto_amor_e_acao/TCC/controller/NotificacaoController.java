@@ -109,7 +109,7 @@ public class NotificacaoController {
                 model.addAttribute("voluntario", voluntarioService.buscarPorId(id));
                 return "administrativo/notificacao/visualizaVoluntario";
 
-            case "EmpresaParceira":
+            case "Empresa Parceira":
                 model.addAttribute("empresa", empresaParceiraService.buscarPorId(id));
                 return "administrativo/notificacao/visualizaEmpresa";
 
@@ -125,7 +125,7 @@ public class NotificacaoController {
 
         aluno.setStatus("ATIVO");
         alunoService.salvar(aluno);
-        redirectAttributes.addFlashAttribute("sucesso", "Aluno aceita com sucesso!");
+        redirectAttributes.addFlashAttribute("sucesso", "Aluno aceito com sucesso!");
         return "redirect:/notificacao/listar";
     }
 
@@ -135,13 +135,13 @@ public class NotificacaoController {
 
         voluntario.setStatus("ATIVO");
         voluntarioService.salvar(voluntario);
-        redirectAttributes.addFlashAttribute("sucesso", "Voluntario aceita com sucesso!");
+        redirectAttributes.addFlashAttribute("sucesso", "Voluntario aceito com sucesso!");
         return "redirect:/notificacao/listar";
     }
 
     @GetMapping("/ativarEmpresaParceira/{id}")
     public String ativarEmpresaParceira(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        Optional<EmpresaParceira> empresaParceira = empresaParceiraService.buscarPorId(id);
+        Optional<EmpresaParceira> empresaParceira = empresaParceiraService.buscarPorIdOptional(id);
 
         if (empresaParceira.isPresent()) {
             EmpresaParceira ep = empresaParceira.get();
