@@ -124,6 +124,10 @@
                 <a th:href="@{'/visitantes/matricula/' + ${curso.id}}" class="btn-matricular">
                     Matricular-se <i class="fa-solid fa-arrow-right"></i>
                 </a>
+                <div class="card-tag">
+                    <i class="fa-solid fa-tags"></i>
+                    <span th:text="${#strings.replace(curso.categorias, ',', ' - ')}"></span>
+                </div>
             </div>
         </div>
     </div>

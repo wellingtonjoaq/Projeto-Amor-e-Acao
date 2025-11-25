@@ -3,160 +3,149 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Projeto Amor & Ação | Página De Parceria</title>
-  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <title>Seja um Parceiro | Projeto Amor & Ação</title>
   <link rel="stylesheet" th:href="@{/css/styleVisitantes.css}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
-<body>
+<body class="bg-light-gray">
 
 <div th:replace="~{visitantes/navbar/navbar :: navbar}"></div>
 
-<div class="container">
+<section class="parceria-banner">
+  <div class="parceria-banner-content">
+    <h1 class="banner-title"><i class="fa-solid fa-handshake"></i> Construa o Futuro Conosco</h1>
+    <p class="banner-subtitle">
+      Empresas parceiras são pilares fundamentais na nossa missão.
+      Junte sua marca a uma causa nobre e gere impacto social real na comunidade.
+    </p>
+  </div>
+</section>
 
-  <div th:if="${successMessage}" class="alert alert-success" role="alert">
-    <p th:text="${successMessage}"></p>
+<div class="container-visitante main-matricula-container">
+
+  <div th:if="${erro}" class="alert-box error">
+    <i class="fa-solid fa-circle-exclamation"></i> <span th:text="${erro}"></span>
+  </div>
+  <div th:if="${successMessage}" class="alert-box success-msg">
+    <i class="fa-solid fa-check-circle"></i> <span th:text="${successMessage}"></span>
   </div>
 
-  <div th:if="${erro}" class="erroGlobal">
-    <p th:text="${erro}"></p>
-  </div>
+  <div class="matricula-form-box">
+    <h2 class="form-title">Proposta de Parceria</h2>
 
-  <form th:action="@{/visitantes/parceria/salvar}" th:object="${empresaParceira}" method="post" class="form-adm">
-    <input type="hidden" th:field="*{id}" />
+    <form th:action="@{/visitantes/parceria/salvar}" th:object="${empresaParceira}" method="post" class="matricula-form">
+      <input type="hidden" th:field="*{id}" />
 
-    <h1>Formulario de Acordo de Parceria</h1>
+      <div class="matricula-split-layout">
 
-    <div class="form-grid">
+        <div class="matricula-col-left">
+          <h3 class="section-form-title">Dados da Empresa</h3>
 
-      <div class="form-group">
-        <label for="nome">
-          Nome da Empresa
-          <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error"></span>
-        </label>
-        <input type="text" id="nome" th:field="*{nome}" th:classappend="${#fields.hasErrors('nome')} ? ' field-error' : ''" minlength="3" maxlength="100" placeholder="Digite o nome da empresa" required />
-      </div>
+          <div class="input-group-modern">
+            <label for="nomeEmpresa">Razão Social / Nome Empresa <span class="required">*</span></label>
+            <input id="nomeEmpresa" type="text" th:field="*{nome}" class="input-modern"
+                   th:classappend="${#fields.hasErrors('nome')} ? ' field-error' : ''" required />
+            <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error-text"></span>
+          </div>
 
-      <div class="form-group">
-        <label for="cnpj">
-          CNPJ
-          <span th:if="${#fields.hasErrors('cnpj')}" th:errors="*{cnpj}" class="error"></span>
-        </label>
-        <input type="text" id="cnpj" th:field="*{cnpj}" th:classappend="${#fields.hasErrors('cnpj')} ? ' field-error' : ''" minlength="14" maxlength="18" placeholder="Ex: 00.000.000/0000-00" required />
-      </div>
+          <div class="input-group-modern">
+            <label for="cnpjEmpresa">CNPJ <span class="required">*</span></label>
+            <input id="cnpjEmpresa" type="text" th:field="*{cnpj}" class="input-modern"
+                   placeholder="00.000.000/0000-00" required />
+            <span th:if="${#fields.hasErrors('cnpj')}" th:errors="*{cnpj}" class="error-text"></span>
+          </div>
 
-      <div class="form-group">
-        <label for="endereco">
-          Endereço
-          <span th:if="${#fields.hasErrors('endereco')}" th:errors="*{endereco}" class="error"></span>
-        </label>
-        <input type="text" id="endereco" th:field="*{endereco}" maxlength="255" placeholder="Ex: Rua Flores, Jardim Botania, 1234"/>
-      </div>
+          <div class="input-group-modern">
+            <label for="emailEmpresa">E-mail Corporativo <span class="required">*</span></label>
+            <input id="emailEmpresa" type="email" th:field="*{email}" class="input-modern" required/>
+            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error-text"></span>
+          </div>
 
-      <div class="form-group">
-        <label for="nomeRepresentante">
-          Nome do Representante
-          <span th:if="${#fields.hasErrors('nomeRepresentante')}" th:errors="*{nomeRepresentante}" class="error"></span>
-        </label>
-        <input type="text" id="nomeRepresentante" th:field="*{nomeRepresentante}" th:classappend="${#fields.hasErrors('nomeRepresentante')} ? ' field-error' : ''" minlength="3" maxlength="100" placeholder="Digite o nome do Representante" required />
-      </div>
+          <div class="input-group-modern">
+            <label for="telefoneEmpresa">Telefone / Contato <span class="required">*</span></label>
+            <input id="telefoneEmpresa" type="text" th:field="*{telefone}" class="input-modern"
+                   placeholder="(00) 00000-0000" required/>
+            <span th:if="${#fields.hasErrors('telefone')}" th:errors="*{telefone}" class="error-text"></span>
+          </div>
 
-      <div class="form-group">
-        <label for="cpfRepresentante">
-          CPF do Representante
-          <span th:if="${#fields.hasErrors('cpfRepresentante')}" th:errors="*{cpfRepresentante}" class="error"></span>
-        </label>
-        <input type="text" id="cpfRepresentante" th:field="*{cpfRepresentante}" th:classappend="${#fields.hasErrors('cpfRepresentante')} ? ' field-error' : ''" minlength="11" maxlength="14" placeholder="Ex: 000.000.000-00" required/>
-      </div>
+          <div class="input-group-modern">
+            <label for="enderecoEmpresa">Endereço Completo</label>
+            <input id="enderecoEmpresa" type="text" th:field="*{endereco}" class="input-modern"
+                   placeholder="Rua, Número, Bairro, Cidade-UF"/>
+          </div>
+        </div>
 
-      <div class="form-group">
-        <label for="email">
-          Email
-          <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></span>
-        </label>
-        <input type="text" id="email" th:field="*{email}" th:classappend="${#fields.hasErrors('email')} ? ' field-error' : ''" maxlength="255" placeholder="Ex: exemplo@gmail.com" required/>
-      </div>
+        <div class="matricula-divider"></div>
 
-      <div class="form-group">
-        <label for="dataInicio">
-          Data de Início
-          <span th:if="${#fields.hasErrors('dataInicio')}" th:errors="*{dataInicio}" class="error"></span>
-        </label>
-        <input type="date" id="dataInicio" th:field="*{dataInicio}" th:classappend="${#fields.hasErrors('dataInicio')} ? ' field-error' : ''" required />
-      </div>
+        <div class="matricula-col-right">
+          <h3 class="section-form-title">Representante & Acordo</h3>
 
-      <div class="form-group">
-        <label for="dataFim">
-          Data de Fim
-          <span th:if="${#fields.hasErrors('dataFim')}" th:errors="*{dataFim}" class="error"></span>
-        </label>
-        <input type="date" id="dataFim" th:field="*{dataFim}" th:classappend="${#fields.hasErrors('dataFim')} ? ' field-error' : ''" />
-      </div>
+          <div class="input-group-modern">
+            <label for="nomeRepresentante">Nome do Representante Legal <span class="required">*</span></label>
+            <input id="nomeRepresentante" type="text" th:field="*{nomeRepresentante}" class="input-modern" required />
+            <span th:if="${#fields.hasErrors('nomeRepresentante')}" th:errors="*{nomeRepresentante}" class="error-text"></span>
+          </div>
 
-      <div class="form-group">
-        <label for="telefone">
-          Telefone
-          <span th:if="${#fields.hasErrors('telefone')}" th:errors="*{telefone}" class="error"></span>
-        </label>
-        <input type="text" id="telefone" th:field="*{telefone}" th:classappend="${#fields.hasErrors('telefone')} ? ' field-error' : ''" minlength="11" maxlength="15" placeholder="Ex: (00) 00000-0000" required/>
-      </div>
+          <div class="input-group-modern">
+            <label for="cpfRepresentante">CPF do Representante <span class="required">*</span></label>
+            <input id="cpfRepresentante" type="text" th:field="*{cpfRepresentante}" class="input-modern"
+                   placeholder="000.000.000-00" required/>
+            <span th:if="${#fields.hasErrors('cpfRepresentante')}" th:errors="*{cpfRepresentante}" class="error-text"></span>
+          </div>
 
-      <div class="form-group">
-        <label for="objetivo">Objetivo</label>
-        <input type="text" id="objetivo" th:field="*{objetivo}" maxlength="500"/>
-      </div>
+          <div class="form-row-split">
+            <div class="input-group-modern">
+              <label for="dataInicio">Início Pretendido</label>
+              <input id="dataInicio" type="date" th:field="*{dataInicio}" class="input-modern" required />
+            </div>
+            <div class="input-group-modern">
+              <label for="dataFim">Fim (Opcional)</label>
+              <input id="dataFim" type="date" th:field="*{dataFim}" class="input-modern" />
+            </div>
+          </div>
 
-      <div class="form-group">
-        <label for="termos">Termos</label>
-        <input type="text" id="termos" th:field="*{termos}" />
-      </div>
+          <div class="input-group-modern">
+            <label for="objetivoParceria">Objetivo da Parceria</label>
+            <input id="objetivoParceria" type="text" th:field="*{objetivo}" class="input-modern"
+                   placeholder="Ex: Doação mensal, patrocínio de evento..." />
+          </div>
 
-      <div class="form-group" th:if="${id != null}">
-        <label for="status">Status</label>
-        <select id="status" th:field="*{status}" required>
-          <option value="ATIVO">ATIVO</option>
-          <option value="INATIVO">INATIVO</option>
-        </select>
-        <span th:if="${#fields.hasErrors('status')}" th:errors="*{status}" class="error"></span>
-      </div>
-
-    </div>
-
-    <button type="submit" class="button-sav">Salvar</button>
-  </form>
-
-</div>
-
-<div id="message-modal" class="modal-overlay" th:if="${erro != null or sucesso != null}">
-  <div class="modal-content">
-    <span id="close-modal" class="close-btn">&times;</span>
-    <p th:if="${erro}" th:text="${erro}" style="color: red; font-weight: bold;"></p>
-    <p th:if="${sucesso}" th:text="${sucesso}" style="color: green; font-weight: bold;"></p>
+          <div class="input-group-modern">
+            <label for="termosParceria">Observações / Termos</label>
+            <input id="termosParceria" type="text" th:field="*{termos}" class="input-modern"
+                   placeholder="Alguma condição específica?" />
+          </div>
+        </div>
+      </div> <button type="submit" class="btn-matricular-large btn-parceria-submit">
+      <i class="fa-solid fa-paper-plane"></i> Enviar Proposta
+    </button>
+    </form>
   </div>
 </div>
 
 <div th:replace="~{visitantes/footer/footer :: footer}"></div>
 
-</body>
+<div id="message-modal" class="modal-overlay" th:if="${erro != null or sucesso != null}">
+  <div class="modal-content">
+    <span id="close-modal" class="close-btn">&times;</span>
+    <div class="modal-icon" th:if="${sucesso}"><i class="fa-solid fa-check-circle" style="color: green;"></i></div>
+    <div class="modal-icon" th:if="${erro}"><i class="fa-solid fa-circle-exclamation" style="color: red;"></i></div>
+    <p th:if="${erro}" th:text="${erro}" class="modal-text error"></p>
+    <p th:if="${sucesso}" th:text="${sucesso}" class="modal-text success"></p>
+  </div>
+</div>
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {
-      const modal = document.getElementById("message-modal");
-      const closeBtn = document.getElementById("close-modal");
+        const modal = document.getElementById("message-modal");
+        const closeBtn = document.getElementById("close-modal");
 
-      if(modal) {
-          modal.style.display = "flex";
-      }
-
-      closeBtn.addEventListener("click", () => {
-          modal.style.display = "none";
-      });
-
-      window.addEventListener("click", (e) => {
-          if(e.target === modal) {
-              modal.style.display = "none";
-          }
-      });
-  });
+        if(modal) {
+            modal.style.display = "flex";
+            closeBtn.addEventListener("click", () => modal.style.display = "none");
+            window.addEventListener("click", (e) => { if(e.target === modal) modal.style.display = "none"; });
+        }
+    });
 </script>
+</body>
 </html>

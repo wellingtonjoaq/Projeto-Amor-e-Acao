@@ -21,6 +21,7 @@
       </p>
       <p><i class="fa-solid fa-clock"></i> Carga horária: <span th:text="${curso.cargaHoraria}">60</span>h</p>
       <p><i class="fa-solid fa-calendar-days"></i> Início: <span th:text="${curso.dataInicio}">Data</span> - Fim: <span th:text="${curso.dataFim}">Data</span></p>
+      <p><i class="fa-solid fa-tags"></i><span th:text="${#strings.replace(curso.categorias, ',', ' - ')}"></span></p>
     </div>
   </div>
   <div class="banner-image-box">
