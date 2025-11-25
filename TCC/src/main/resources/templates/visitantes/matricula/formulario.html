@@ -3,106 +3,119 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Projeto Amor & Ação | Página De Matriculas</title>
-  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <title>Projeto Amor & Ação | Matrícula</title>
   <link rel="stylesheet" th:href="@{/css/styleVisitantes.css}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
-<body>
+<body class="bg-light-gray">
 
 <div th:replace="~{visitantes/navbar/navbar :: navbar}"></div>
 
-<div class="container">
-  <div th:if="${erro}" class="erroGlobal">
-    <p th:text="${erro}"></p>
+<section class="matricula-banner">
+  <div class="banner-content">
+    <h2 class="banner-course-title" th:text="${curso.nome}">Nome do Curso</h2>
+    <div class="banner-details">
+      <p><i class="fa-solid fa-user-tie"></i> <span th:text="${curso.professor}">Professor</span>, <span th:text="${curso.formacao}">Formação</span></p>
+      <p><i class="fa-solid fa-location-dot"></i>
+        <span th:text="${curso.endereco} + ', ' + ${curso.nrLocal} + ' - ' + ${curso.bairro}">Endereço</span>
+      </p>
+      <p><i class="fa-solid fa-clock"></i> Carga horária: <span th:text="${curso.cargaHoraria}">60</span>h</p>
+      <p><i class="fa-solid fa-calendar-days"></i> Início: <span th:text="${curso.dataInicio}">Data</span> - Fim: <span th:text="${curso.dataFim}">Data</span></p>
+    </div>
+  </div>
+  <div class="banner-image-box">
+    <img th:if="${curso.foto}" th:src="${curso.foto}" alt="Imagem do curso" class="banner-img">
+    <div th:if="${curso.foto == null}" class="banner-placeholder">
+      Imagem ilustrativa
+    </div>
+  </div>
+</section>
+
+<div class="container-visitante main-matricula-container">
+
+  <div th:if="${erro}" class="alert-box error">
+    <i class="fa-solid fa-circle-exclamation"></i> <span th:text="${erro}"></span>
   </div>
 
-  <form th:action="@{/visitantes/matricula/salvar}" th:object="${aluno}" method="post" class="form-adm">
-    <input type="hidden" th:field="*{id}" />
+  <div class="matricula-form-box">
+    <h1 class="form-title">Matrícula de Curso</h1>
 
-    <h1>Matricula de Curso</h1>
-
-    <div class="form-grid">
-
-      <div class="form-group">
-        <label for="nomeAluno">
-          Nome Completo
-          <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error"></span>
-        </label>
-        <input id="nomeAluno" type="text" th:field="*{nome}"
-               th:classappend="${#fields.hasErrors('nome')} ? ' field-error' : ''" minlength="3" maxlength="100" placeholder="Digite o nome" required />
-      </div>
-
-      <div class="form-group">
-        <label for="cpfAluno">
-          CPF
-          <span th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}" class="error"></span>
-        </label>
-        <input id="cpfAluno" type="text" th:field="*{cpf}"
-               th:classappend="${#fields.hasErrors('cpf')} ? ' field-error' : ''" placeholder="Ex: 000.000.000-00" required />
-      </div>
-
-      <div class="form-group">
-        <label for="emailAluno">
-          E-mail
-          <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></span>
-        </label>
-        <input id="emailAluno" type="email" th:field="*{email}"
-               th:classappend="${#fields.hasErrors('email')} ? ' field-error' : ''" maxlength="255" placeholder="Ex: exemplo@gmail.com" required />
-      </div>
-
-      <div class="form-group">
-        <label for="telefoneAluno">
-          Telefone
-          <span th:if="${#fields.hasErrors('telefone')}" th:errors="*{telefone}" class="error"></span>
-        </label>
-        <input id="telefoneAluno" type="text" th:field="*{telefone}"
-               th:classappend="${#fields.hasErrors('telefone')} ? ' field-error' : ''" minlength="11" maxlength="15" placeholder="Ex: (00) 00000-0000" required />
-      </div>
-
-      <div class="form-group">
-        <label for="generoAluno">
-          Gênero
-          <span th:if="${#fields.hasErrors('genero')}" th:errors="*{genero}" class="error"></span>
-        </label>
-        <select id="generoAluno" th:field="*{genero}"
-                th:classappend="${#fields.hasErrors('genero')} ? ' field-error' : ''" required>
-          <option value="" hidden="hidden">Selecionar</option>
-          <option value="MASCULINO">MASCULINO</option>
-          <option value="FEMININO">FEMININO</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="cepAluno">CEP</label>
-        <input id="cepAluno" type="text" th:field="*{cep}" minlength="8" maxlength="9" placeholder="Ex: 01001-000" />
-      </div>
-
-      <div class="form-group">
-        <label for="bairroAluno">Bairro</label>
-        <input id="bairroAluno" type="text" th:field="*{bairro}" maxlength="255" placeholder="Ex: Jardim Botanica"/>
-      </div>
-
-      <div class="form-group">
-        <label for="enderecoAluno">Endereço</label>
-        <input id="enderecoAluno" type="text" th:field="*{endereco}" maxlength="255" placeholder="Ex: Rua Flores"/>
-      </div>
-
-      <div class="form-group">
-        <label for="nrCasaAluno">Número da Casa</label>
-        <input id="nrCasaAluno" type="text" th:field="*{nrCasa}" placeholder="Ex: 1234" />
-      </div>
-
-      <div class="form-group">
-        <label>Curso:</label>
-        <input type="text" th:value="${curso.nome}" disabled class="form-control"/>
-      </div>
-
+    <form th:action="@{/visitantes/matricula/salvar}" th:object="${aluno}" method="post" class="matricula-form">
+      <input type="hidden" th:field="*{id}" />
       <input type="hidden" name="cursoId" th:value="${curso.id}" />
-    </div>
 
-    <button type="submit" class="button-sav">Salvar Aluno</button>
-  </form>
+      <div class="matricula-split-layout">
+
+        <div class="matricula-col-left">
+          <div class="input-group-modern">
+            <label for="nomeAluno">Nome Completo <span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error-text"></span></label>
+            <input id="nomeAluno" type="text" th:field="*{nome}" minlength="3" maxlength="100" required class="input-modern"/>
+          </div>
+
+          <div class="input-group-modern">
+            <label for="cpfAluno">CPF <span th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}" class="error-text"></span></label>
+            <input id="cpfAluno" type="text" th:field="*{cpf}" placeholder="000.000.000-00" required class="input-modern"/>
+          </div>
+
+          <div class="input-group-modern">
+            <label for="emailAluno">E-mail <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error-text"></span></label>
+            <input id="emailAluno" type="email" th:field="*{email}" maxlength="255" required class="input-modern"/>
+          </div>
+
+          <div class="input-group-modern">
+            <label for="telefoneAluno">Telefone <span th:if="${#fields.hasErrors('telefone')}" th:errors="*{telefone}" class="error-text"></span></label>
+            <input id="telefoneAluno" type="text" th:field="*{telefone}" minlength="11" maxlength="15" placeholder="(00) 00000-0000" required class="input-modern"/>
+          </div>
+
+          <div class="input-group-modern radio-group">
+            <label class="radio-label-title">Gênero <span th:if="${#fields.hasErrors('genero')}" th:errors="*{genero}" class="error-text"></span></label>
+            <div class="radio-options">
+              <label class="radio-option">
+                <input type="radio" th:field="*{genero}" value="MASCULINO" required>
+                <span><i class="fa-solid fa-mars"></i> Masculino</span>
+              </label>
+              <label class="radio-option">
+                <input type="radio" th:field="*{genero}" value="FEMININO">
+                <span><i class="fa-solid fa-venus"></i> Feminino</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="matricula-divider"></div>
+
+        <div class="matricula-col-right">
+          <div class="input-group-modern">
+            <label>Curso Selecionado</label>
+            <input type="text" th:value="${curso.nome}" disabled class="input-modern readonly-field"/>
+          </div>
+
+          <div class="input-group-modern">
+            <label for="cepAluno">CEP (Busca Automática)</label>
+            <input id="cepAluno" type="text" th:field="*{cep}" minlength="8" maxlength="9" placeholder="00000-000" required class="input-modern"/>
+          </div>
+
+          <div class="input-group-modern">
+            <label for="enderecoAluno">Endereço</label>
+            <input id="enderecoAluno" type="text" th:field="*{endereco}" maxlength="255" required class="input-modern"/>
+          </div>
+
+          <div class="form-row-split">
+            <div class="input-group-modern">
+              <label for="bairroAluno">Bairro</label>
+              <input id="bairroAluno" type="text" th:field="*{bairro}" maxlength="255" required class="input-modern"/>
+            </div>
+            <div class="input-group-modern">
+              <label for="nrCasaAluno">Número</label>
+              <input id="nrCasaAluno" type="text" th:field="*{nrCasa}" required class="input-modern"/>
+            </div>
+          </div>
+        </div>
+      </div> <button type="submit" class="btn-matricular-large">
+      Realizar Matrícula
+    </button>
+    </form>
+  </div>
 </div>
 
 <div th:replace="~{visitantes/footer/footer :: footer}"></div>
@@ -110,15 +123,16 @@
 <div id="message-modal" class="modal-overlay" th:if="${erro != null or sucesso != null}">
   <div class="modal-content">
     <span id="close-modal" class="close-btn">&times;</span>
-    <p th:if="${erro}" th:text="${erro}" style="color: red; font-weight: bold;"></p>
-    <p th:if="${sucesso}" th:text="${sucesso}" style="color: green; font-weight: bold;"></p>
+    <div class="modal-icon" th:if="${sucesso}"><i class="fa-solid fa-check-circle" style="color: green;"></i></div>
+    <div class="modal-icon" th:if="${erro}"><i class="fa-solid fa-circle-exclamation" style="color: red;"></i></div>
+    <p th:if="${erro}" th:text="${erro}" class="modal-text error"></p>
+    <p th:if="${sucesso}" th:text="${sucesso}" class="modal-text success"></p>
   </div>
 </div>
 
 <script>
   document.getElementById('cepAluno').addEventListener('blur', function() {
     let cep = this.value.replace(/\D/g, '');
-
     if (cep.length === 8) {
       fetch(`https://viacep.com.br/ws/${cep}/json/`)
         .then(response => response.json())
@@ -126,34 +140,25 @@
           if (!data.erro) {
             document.getElementById('enderecoAluno').value = data.logradouro || '';
             document.getElementById('bairroAluno').value = data.bairro || '';
+            document.getElementById('nrCasaAluno').focus(); // Pula para o número
           } else {
             alert('CEP não encontrado!');
           }
         })
-        .catch(() => alert('Erro ao buscar o CEP!'));
-    } else if (cep.length > 0) {
-      alert('CEP inválido! Digite 8 números.');
+        .catch(() => alert('Erro ao buscar o CEP! Verifique sua conexão.'));
     }
   });
 
   document.addEventListener("DOMContentLoaded", function() {
       const modal = document.getElementById("message-modal");
       const closeBtn = document.getElementById("close-modal");
-
       if(modal) {
           modal.style.display = "flex";
+          closeBtn.addEventListener("click", () => modal.style.display = "none");
+          window.addEventListener("click", (e) => { if(e.target === modal) modal.style.display = "none"; });
       }
-
-      closeBtn.addEventListener("click", () => {
-          modal.style.display = "none";
-      });
-
-      window.addEventListener("click", (e) => {
-          if(e.target === modal) {
-              modal.style.display = "none";
-          }
-      });
   });
 </script>
+
 </body>
 </html>

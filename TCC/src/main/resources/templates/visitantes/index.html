@@ -14,55 +14,81 @@
 
 <div class="main-content-visitante">
 
-    <section class="section-intro">
-        <div class="intro-box">
-            <img th:src="@{/imagens/logo.png}" alt="Logo Projeto Amor e Ação" class="intro-logo"/>
-            <p class="intro-text">
-                Esse projeto tem como objetivo ajudar e contribuir com a sociedade, divulgando o amor e ação com objetivos bens sociais.
-            </p>
-            <a th:href="@{/visitantes/sobre}" class="btn-primary-visitante">Saiba Mais Sobre o Projeto</a>
+    <section class="hero-section" style="background-image: url('/imagens/pessoalreunido.png');">
+        <div class="hero-overlay">
+            <div class="hero-content">
+                <img th:src="@{/imagens/logo.png}" alt="Logo Projeto Amor e Ação" class="hero-logo animate-fade-in"/>
+                <h1 class="hero-title" style="color: floralwhite;">Transformando Vidas com Amor e Ação</h1>
+                <p class="hero-subtitle">
+                    Junte-se a nós nessa missão de levar esperança e dignidade para quem mais precisa.
+                </p>
+                <div class="hero-buttons">
+                    <a th:href="@{/visitantes/sobre}" class="btn-hero-primary">Conhecer o Projeto</a>
+                    <a th:href="@{/visitantes/doacoes}" class="btn-hero-secondary">Quero Doar</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="impact-section">
+        <div class="impact-container">
+            <div class="impact-item">
+                <i class="fa-solid fa-hands-holding-child"></i>
+                <span class="impact-number">35+</span>
+                <span class="impact-label">Anos de História</span>
+            </div>
+            <div class="impact-item">
+                <i class="fa-solid fa-users"></i>
+                <span class="impact-number">100+</span>
+                <span class="impact-label">Famílias Atendidas</span>
+            </div>
+            <div class="impact-item">
+                <i class="fa-solid fa-heart"></i>
+                <span class="impact-number">50+</span>
+                <span class="impact-label">Voluntários Ativos</span>
+            </div>
         </div>
     </section>
 
     <section class="section-details">
-        <div class="details-content">
-            <h2 class="section-title">Projeto Amor é Ação</h2>
-            <div class="details-grid">
+        <div class="details-content-row">
+            <div class="details-text">
+                <h2 class="section-title">Quem Somos</h2>
                 <p>
-                    É uma iniciativa da ASSEBE (Assistência Social Lar Betel), uma organização sem fins lucrativos fundado em 1986.
+                    O <strong>Projeto Amor & Ação</strong> é uma iniciativa da ASSEBE (Assistência Social Lar Betel),
+                    uma organização sem fins lucrativos fundada em 1986 com o propósito de transformar realidades.
                 </p>
                 <p>
-                    Localizada na Rua Ricardo Reis, 3156, no bairro Parque Dom Pedro I, em Umuarama, a ASSEBE desenvolve atividades voltadas ao apoio e desenvolvimento de crianças, adolescentes e famílias em situação de vulnerabilidade social.
+                    Localizada em Umuarama, desenvolvemos atividades voltadas ao apoio pedagógico,
+                    social e humano de crianças e famílias em situação de vulnerabilidade.
                 </p>
+                <button id="botaoCompartilhar" class="btn-share-large">
+                    <i class="fa-solid fa-share-nodes"></i> Compartilhar Projeto
+                </button>
             </div>
-            <div class="share-box">
-                <div class="share-fill"></div>
-                <button id="botaoCompartilhar" class="btn-share"><i class="fas fa-share-alt"></i> Compartilhar Projeto</button>
+            <div class="details-image-box">
+                <img th:src="@{/imagens/equipeunida.jpeg}" alt="Atividades do Projeto" class="details-img"/>
             </div>
         </div>
     </section>
 
-    <section class="section-doacao">
-        <div class="doacao-card">
-            <div class="doacao-content">
-                <img th:src="@{/imagens/coracaonamao.png}" alt="Coração na Mão" class="doacao-img"/>
-                <p class="doacao-text">
-                    A sua ajuda contribui imensamente para comunidade, faça uma pequena doação
-                </p>
+    <section class="section-actions">
+        <div class="action-card doar">
+            <div class="card-content">
+                <i class="fa-solid fa-hand-holding-heart icon-bg"></i>
+                <h3>Faça uma Doação</h3>
+                <p>Sua contribuição mantém nossas portas abertas e o alimento na mesa de quem precisa.</p>
+                <a th:href="@{/visitantes/doacoes}" class="btn-card">Doar Agora</a>
             </div>
-            <a th:href="@{/visitantes/doacoes}" class="btn-doar">Doar</a>
         </div>
-    </section>
 
-    <section class="section-voluntariado">
-        <div class="voluntariado-card">
-            <div class="voluntariado-text-container">
-                <p class="voluntariado-text">
-                    Sua ajuda voluntária vale mais que mil palavras, sendo um voluntário no nosso projeto a sua contribuição ajuda quem precisa!
-                </p>
-                <a th:href="@{/visitantes/voluntario}" class="btn-voluntariar">Voluntariar-se</a>
+        <div class="action-card voluntario">
+            <div class="card-content">
+                <i class="fa-solid fa-people-group icon-bg"></i>
+                <h3>Seja Voluntário</h3>
+                <p>Doe seu tempo e talento. Sua presença vale mais que mil palavras para nossas crianças.</p>
+                <a th:href="@{/visitantes/voluntario}" class="btn-card-outline">Quero Ajudar</a>
             </div>
-            <img th:src="@{/imagens/equipeunida.jpeg}" alt="Equipe Unida" class="voluntariado-img"/>
         </div>
     </section>
 

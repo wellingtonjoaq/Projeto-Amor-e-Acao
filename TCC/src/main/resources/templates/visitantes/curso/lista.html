@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Cursos Disponíveis | Projeto Amor e Ação</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/styleVisitantes.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
@@ -17,103 +16,129 @@
     <section class="curso-header-section">
         <h1 class="curso-main-title">As habilidades que você precisa em um só lugar</h1>
         <p class="curso-intro-text">
-            Projeto Amor e Ação, promovido pela ASSEBE (Assistência Social Lar Betel) em Umuarama-PR, oferece cursos de qualificação profissional gratuitos em parceria com instituições como o Senac e a Prefeitura Municipal. Esses cursos visam capacitar os participantes para o mercado de trabalho e fomentar o empreendedorismo local.
+            O Projeto Amor e Ação oferece cursos de qualificação profissional gratuitos.
+            Capacite-se para o mercado de trabalho e transforme seu futuro.
         </p>
     </section>
 
-    <div class="header-bar-visitante">
-        <div class="header-actions">
-            <div class="pesquisa-box">
-                <form method="get" th:action="@{/visitantes/cursos/filtrarPesquisa}">
-                    <input type="text" name="pesquisa" class="campo-pesquisa" placeholder="Pesquisar..." th:value="${pesquisa}">
-                    <button class="btn-pesquisar" type="submit">
-                        <i class="fa fa-search"></i>
-                    </button>
-                </form>
+    <div class="visitante-toolbar">
+
+        <form method="get" th:action="@{/visitantes/cursos/filtrarPesquisa}" class="search-form-visitante">
+            <input type="text" name="pesquisa" class="visitante-search-input" placeholder="Buscar curso..." th:value="${pesquisa}">
+            <button class="visitante-search-btn" type="submit">
+                <i class="fa fa-search"></i>
+            </button>
+        </form>
+
+        <div class="filter-wrapper">
+            <button class="btn-filter-toggle" id="toggleFilter">
+                <i class="fa-solid fa-filter"></i> Filtrar Cursos <i class="fas fa-chevron-down arrow-icon"></i>
+            </button>
+
+            <form th:action="@{/visitantes/cursos/filtrar}" method="get" class="filter-dropdown-panel" id="filterPanel">
+
+                <div class="filter-group">
+                    <div class="filter-label"><i class="fa-solid fa-layer-group"></i> Categorias</div>
+                    <div class="filter-options-grid">
+                        <label class="custom-radio">
+                            <input type="radio" name="categoria" value="Educação"> <span>Educação</span>
+                        </label>
+                        <label class="custom-radio">
+                            <input type="radio" name="categoria" value="Saúde"> <span>Saúde</span>
+                        </label>
+                        <label class="custom-radio">
+                            <input type="radio" name="categoria" value="Tecnologia"> <span>Tecnologia</span>
+                        </label>
+                        <label class="custom-radio">
+                            <input type="radio" name="categoria" value="Esporte"> <span>Esporte</span>
+                        </label>
+                        <label class="custom-radio">
+                            <input type="radio" name="categoria" value="Arte"> <span>Arte</span>
+                        </label>
+                        <label class="custom-radio">
+                            <input type="radio" name="categoria" value="Agricultura"> <span>Agricultura</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="filter-divider"></div>
+
+                <div class="filter-group">
+                    <div class="filter-label"><i class="fa-solid fa-clock"></i> Período</div>
+                    <div class="filter-options-row">
+                        <label class="custom-radio">
+                            <input type="radio" name="periodo" value="Manhã"> <span>Manhã</span>
+                        </label>
+                        <label class="custom-radio">
+                            <input type="radio" name="periodo" value="Tarde"> <span>Tarde</span>
+                        </label>
+                        <label class="custom-radio">
+                            <input type="radio" name="periodo" value="Noite"> <span>Noite</span>
+                        </label>
+                        <label class="custom-radio">
+                            <input type="radio" name="periodo" value="TODOS"> <span>Todos</span>
+                        </label>
+                    </div>
+                </div>
+
+                <button class="btn-apply-filter">
+                    Aplicar Filtros
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="visitante-card-grid">
+        <div class="visitante-card" th:each="curso : ${cursos}">
+            <div class="visitante-card-header">
+                <span class="card-badge" th:text="${curso.periodo}">Manhã</span>
+                <img th:if="${curso.foto}" th:src="${curso.foto}" alt="Imagem do curso" class="visitante-card-img">
+                <img th:if="${curso.foto == null}" th:src="@{/imagens/default.png}" alt="Sem imagem" class="visitante-card-img">
             </div>
 
-            <div class="filter-group-visitante">
-                <button class="btn-toggle-curso">
-                    Cursos disponíveis
-                </button>
-                <div class="filter-container">
-                    <button class="btn-toggle-categoria" id="toggleFilter">
-                        Categorias <i class="fas fa-chevron-down dropdown-arrow"></i>
-                    </button>
+            <div class="visitante-card-body">
+                <h2 th:text="${curso.nome}">Nome do Curso</h2>
 
-                    <form th:action="@{/visitantes/cursos/filtrar}"
-                          method="get" class="filter-panel-curso" id="filterPanel">
+                <div class="card-info-row">
+                    <i class="fa-solid fa-user-tie"></i>
+                    <span th:text="${curso.professor}">Professor</span>
+                </div>
 
-                        <div class="filter-section">
-                            <div class="filter-header">
-                                <i class="fa-solid fa-list"></i> Categorias
-                            </div>
-                            <div class="filter-options">
-                                <label><input type="radio" name="categoria" value="Educação"> Educação</label>
-                                <label><input type="radio" name="categoria" value="Saúde"> Saúde</label>
-                                <label><input type="radio" name="categoria" value="Tecnologia"> Tecnologia</label>
-                                <label><input type="radio" name="categoria" value="Esporte"> Esporte</label>
-                                <label><input type="radio" name="categoria" value="Arte"> Arte</label>
-                                <label><input type="radio" name="categoria" value="Moda"> Moda</label>
-                                <label><input type="radio" name="categoria" value="Engenharia"> Engenharia</label>
-                                <label><input type="radio" name="categoria" value="Agricultura"> Agricultura</label>
-                            </div>
-                        </div>
+                <div class="card-info-row">
+                    <i class="fa-solid fa-clock"></i>
+                    <span>Carga: <strong th:text="${curso.cargaHoraria}">0</strong>h</span>
+                </div>
 
-                        <div class="filter-section">
-                            <div class="filter-header">
-                                <i class="fa-solid fa-clock"></i> Periodo
-                            </div>
+                <div class="card-info-row">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    <span><span th:text="${curso.dataInicio}">Início</span> até <span th:text="${curso.dataFim}">Fim</span></span>
+                </div>
 
-                            <div class="filter-options">
-                                <label><input type="radio" name="periodo" value="Manhã"> Manhã</label>
-                                <label><input type="radio" name="periodo" value="Tarde"> Tarde</label>
-                                <label><input type="radio" name="periodo" value="Noite"> Noite</label>
-                                <label><input type="radio" name="periodo" value="TODOS"> Todos</label>
-                            </div>
-                        </div>
-
-                        <button class="btn-buscar-filtro-curso">
-                            <i class="fa fa-search"></i> Buscar
-                        </button>
-                    </form>
+                <div class="card-info-row address">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span th:text="${curso.bairro}">Bairro</span>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div class="card-grid">
-        <div class="card" th:each="curso : ${cursos}">
-            <div class="card-header">
-                <img th:if="${curso.foto}" th:src="${curso.foto}" alt="Imagem do curso" class="card-img">
-                <img th:if="${curso.foto == null}" src="/imagens/default.png" alt="Sem imagem" class="card-img">
-            </div>
-
-            <div class="card-body">
-                <h2 th:text="${curso.nome}">Curso profissionalizante de Manicure</h2>
-                <p><i class="fa-solid fa-user"></i> <span th:text="${curso.professor}">Maria Rocha</span>, <span th:text="${curso.formacao}">Ensino Superior</span></p>
-                <p><i class="fa-solid fa-location-dot"></i>
-                    <span th:text="${curso.endereco} + ', ' + ${curso.nrLocal} + ' - ' + ${curso.bairro} + ', ' + ${curso.cep}">Endereço completo</span>
-                </p>
-                <p><i class="fa-solid fa-clock"></i> Carga horária: <span th:text="${curso.cargaHoraria}"></span> h</p>
-                <p><i class="fa-solid fa-calendar"></i> Início: <span th:text="${curso.dataInicio}">20/08/2025</span> - Fim: <span th:text="${curso.dataFim}">20/11/2025</span></p>
-                <p th:if="${curso.periodo == 'Manhã'}"><i class="fa-solid fa-sun"></i> Periodo: <span th:text="${curso.periodo}"></span></p>
-                <p th:if="${curso.periodo == 'Tarde'}"><i class="fa-solid fa-cloud-sun"></i> Periodo: <span th:text="${curso.periodo}"></span></p>
-                <p th:if="${curso.periodo == 'Noite'}"><i class="fa-solid fa-moon"></i> Periodo: <span th:text="${curso.periodo}"></span></p>
-            </div>
-
-            <div class="card-footer">
-                <a th:href="@{'/visitantes/matricula/' + ${curso.id}}">Matricular-se</a>
+            <div class="visitante-card-footer">
+                <a th:href="@{'/visitantes/matricula/' + ${curso.id}}" class="btn-matricular">
+                    Matricular-se <i class="fa-solid fa-arrow-right"></i>
+                </a>
             </div>
         </div>
     </div>
 
-    <a class="btn-ver-todos" th:href="@{/visitantes/cursos/verTodos}">Ver todos</a>
+    <div class="actions-row">
+        <a class="btn-outline-visitante" th:href="@{/visitantes/cursos/verTodos}">Ver todos os cursos</a>
+    </div>
 
-
-    <section class="section-contato">
-        <p class="contato-text">Você pode entrar em contato diretamente com a ASSEBE para saber sobre novas turmas e requisitos de inscrição.</p>
-        <a th:href="@{https://wa.me/554484593988}" target="_blank" class="btn-contato">Entrar em contato</a>
+    <section class="section-contato-compact">
+        <div class="contato-compact-content">
+            <p>Dúvidas sobre as inscrições? Fale com a gente.</p>
+            <a th:href="@{https://wa.me/554484593988}" target="_blank" class="btn-whatsapp-small">
+                <i class="fa-brands fa-whatsapp"></i> WhatsApp
+            </a>
+        </div>
     </section>
 
 </div>
@@ -123,40 +148,47 @@
 <div id="message-modal" class="modal-overlay" th:if="${erro != null or sucesso != null}">
     <div class="modal-content">
         <span id="close-modal" class="close-btn">&times;</span>
-        <p th:if="${erro}" th:text="${erro}" style="color: red; font-weight: bold;"></p>
-        <p th:if="${sucesso}" th:text="${sucesso}" style="color: green; font-weight: bold;"></p>
+        <div class="modal-icon" th:if="${sucesso}"><i class="fa-solid fa-check-circle" style="color: green;"></i></div>
+        <div class="modal-icon" th:if="${erro}"><i class="fa-solid fa-circle-exclamation" style="color: red;"></i></div>
+        <p th:if="${erro}" th:text="${erro}" class="modal-text error"></p>
+        <p th:if="${sucesso}" th:text="${sucesso}" class="modal-text success"></p>
     </div>
 </div>
 
 <script>
-    const toggleButton = document.getElementById('toggleFilter');
-    const filterPanel = document.getElementById('filterPanel');
-    let open = false;
+    document.addEventListener('DOMContentLoaded', () => {
+        // Toggle do Filtro
+        const toggleButton = document.getElementById('toggleFilter');
+        const filterPanel = document.getElementById('filterPanel');
 
-    toggleButton.addEventListener('click', () => {
-      open = !open;
-      filterPanel.style.display = open ? 'block' : 'none';
-      toggleButton.querySelector('.fa-chevron-down').style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
+        if(toggleButton && filterPanel) {
+            toggleButton.addEventListener('click', (e) => {
+                e.stopPropagation(); // Impede fechar ao clicar no botão
+                filterPanel.classList.toggle('show');
+                toggleButton.querySelector('.arrow-icon').classList.toggle('rotate');
+            });
+
+            // Fecha ao clicar fora
+            document.addEventListener('click', (e) => {
+                if (!filterPanel.contains(e.target) && !toggleButton.contains(e.target)) {
+                    filterPanel.classList.remove('show');
+                    toggleButton.querySelector('.arrow-icon').classList.remove('rotate');
+                }
+            });
+        }
+
+        // Modal de Mensagem
+        const modal = document.getElementById("message-modal");
+        const closeBtn = document.getElementById("close-modal");
+
+        if(modal) {
+            modal.style.display = "flex";
+            closeBtn.addEventListener("click", () => modal.style.display = "none");
+            window.addEventListener("click", (e) => {
+                if(e.target === modal) modal.style.display = "none";
+            });
+        }
     });
-
-    document.addEventListener("DOMContentLoaded", function() {
-      const modal = document.getElementById("message-modal");
-      const closeBtn = document.getElementById("close-modal");
-
-      if(modal) {
-          modal.style.display = "flex";
-      }
-
-      closeBtn.addEventListener("click", () => {
-          modal.style.display = "none";
-      });
-
-      window.addEventListener("click", (e) => {
-          if(e.target === modal) {
-              modal.style.display = "none";
-          }
-      });
-  });
 </script>
 
 </body>

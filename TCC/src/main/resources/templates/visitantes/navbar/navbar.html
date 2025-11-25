@@ -50,47 +50,74 @@
       const dropdownToggle = document.getElementById('comoAjudarDropdown');
       const dropdownMenu = document.querySelector('.dropdown-menu');
       const menuToggleBtn = document.getElementById('menuToggleBtnVisitante');
-      const navLinks = document.querySelector('.visitante-nav-links');
+      const navLinksContainer = document.querySelector('.visitante-nav-links');
 
-      // Toggle do Dropdown "Como Ajudar"
+      const currentPath = window.location.pathname;
+      const allLinks = document.querySelectorAll('.visitante-nav-links a');
+
+      allLinks.forEach(link => {
+          const href = link.getAttribute('href');
+          if (!href || href === '#') return;
+
+          try {
+              const linkPath = new URL(link.href, window.location.origin).pathname;
+
+              if (currentPath === linkPath) {
+                  if (link.classList.contains('nav-link')) {
+                      link.classList.add('active');
+                  }
+                  else if (link.classList.contains('dropdown-item')) {
+                      link.classList.add('active-item');
+
+                      const parentDropdown = link.closest('.dropdown');
+                      if (parentDropdown) {
+                          const toggleBtn = parentDropdown.querySelector('.dropdown-toggle');
+                          if (toggleBtn) toggleBtn.classList.add('active');
+                      }
+                  }
+              }
+          } catch (e) {
+              console.error("Erro ao processar URL do link", e);
+          }
+      });
+
       if (dropdownToggle) {
           dropdownToggle.addEventListener('click', (e) => {
               e.preventDefault();
-              // Fecha o menu principal se estiver aberto
-              if (navLinks.classList.contains('active')) {
-                   navLinks.classList.remove('active');
-                   menuToggleBtn.querySelector('i').classList.replace('fa-times', 'fa-bars');
-              }
+
               dropdownMenu.classList.toggle('show');
+
               const arrow = dropdownToggle.querySelector('.dropdown-arrow');
-              arrow.classList.toggle('rotate-up');
+              if(arrow) arrow.classList.toggle('rotate-up');
           });
       }
 
-      // Fecha o dropdown ao clicar fora
       document.addEventListener('click', (e) => {
-          if (!dropdownToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
+          if (dropdownToggle && !dropdownToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
               dropdownMenu.classList.remove('show');
               const arrow = dropdownToggle.querySelector('.dropdown-arrow');
-              arrow.classList.remove('rotate-up');
+              if(arrow) arrow.classList.remove('rotate-up');
           }
       });
 
-      // Toggle do Menu Mobile
-      menuToggleBtn.addEventListener('click', () => {
-          navLinks.classList.toggle('active');
-          const icon = menuToggleBtn.querySelector('i');
-          if (navLinks.classList.contains('active')) {
-              icon.classList.replace('fa-bars', 'fa-times');
-          } else {
-              icon.classList.replace('fa-times', 'fa-bars');
-              // Garante que o dropdown está fechado ao fechar o menu principal
-              dropdownMenu.classList.remove('show');
-          }
-      });
+      if (menuToggleBtn) {
+          menuToggleBtn.addEventListener('click', () => {
+              navLinksContainer.classList.toggle('active');
+              const icon = menuToggleBtn.querySelector('i');
 
+              if (navLinksContainer.classList.contains('active')) {
+                  icon.classList.replace('fa-bars', 'fa-times');
+              } else {
+                  icon.classList.replace('fa-times', 'fa-bars');
+                  if(dropdownMenu) {
+                      dropdownMenu.classList.remove('show');
+                      const arrow = dropdownToggle.querySelector('.dropdown-arrow');
+                      if(arrow) arrow.classList.remove('rotate-up');
+                  }
+              }
+          });
+      }
   });
 </script>
-
 </body>
 </html>
