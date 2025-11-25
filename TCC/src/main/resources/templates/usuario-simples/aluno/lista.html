@@ -28,57 +28,59 @@
                 </form>
             </div>
 
-            <button class="filter-btn" id="toggleFilter">
-                <i class="fas fa-filter"></i> Filtrar <i class="fas fa-chevron-down"></i>
-            </button>
+            <div class="filter-container">
+                <button class="filter-btn" id="toggleFilter">
+                    <i class="fas fa-filter"></i> Filtrar <i class="fas fa-chevron-down"></i>
+                </button>
+
+                <form th:action="@{/aluno/filtrarUsuarioSimples}" method="get" class="filter-panel-aluno" id="filterPanel" style="right: 0px;">
+
+                    <div class="filter-section">
+                        <div class="filter-header"><i class="fas fa-id-card"></i> Identidade </div>
+                        <div class="filter-options">
+                            <label><input type="checkbox" name="nome" value="true"> Nome</label>
+                            <label><input type="checkbox" name="cpf" value="true"> CPF</label>
+                            <label><input type="checkbox" name="email" value="true"> E-mail</label>
+                            <label><input type="checkbox" name="telefone" value="true"> Telefone</label>
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <div class="filter-header"><i class="fas fa-venus-mars"></i> Gênero </div>
+                        <div class="filter-options">
+                            <label><input type="radio" name="genero" value="MASCULINO"> Masculino</label>
+                            <label><input type="radio" name="genero" value="FEMININO"> Feminino</label>
+                            <label><input type="radio" name="genero" value="TODOS"> Todos</label>
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <div class="filter-header"><i class="fas fa-map-marker-alt"></i> Localização </div>
+                        <div class="filter-options">
+                            <label><input type="checkbox" name="cep" value="true"> CEP</label>
+                            <label><input type="checkbox" name="bairro" value="true"> Bairro</label>
+                            <label><input type="checkbox" name="endereco" value="true"> Endereco</label>
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <div class="filter-header"><i class="fas fa-book"></i> Cursos </div>
+                        <div class="filter-options">
+                            <label th:each="curso : ${cursos}">
+                                <input type="checkbox" name="cursos" th:value="${curso.id}"
+                                       th:checked="${cursosIds != null and cursosIds.contains(curso.id)}">
+                                <span th:text="${curso.nome}"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button class="btn-buscar-filtro-aluno" type="submit">
+                        <i class="fa fa-search"></i> Buscar
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
-
-    <form th:action="@{/aluno/filtrarUsuarioSimples}" method="get" class="filter-panel-aluno" id="filterPanel">
-
-        <div class="filter-section">
-            <div class="filter-header"><i class="fas fa-id-card" id="filtro-icones"></i> Identidade </div>
-            <div class="filter-options">
-                <label><input type="checkbox" name="nome" value="true"> Nome</label>
-                <label><input type="checkbox" name="cpf" value="true"> CPF</label>
-                <label><input type="checkbox" name="email" value="true"> E-mail</label>
-                <label><input type="checkbox" name="telefone" value="true"> Telefone</label>
-            </div>
-        </div>
-
-        <div class="filter-section">
-            <div class="filter-header"><i class="fas fa-venus-mars" id="filtro-icones1"></i> Gênero </div>
-            <div class="filter-options">
-                <label><input type="radio" name="genero" value="MASCULINO"> Masculino</label>
-                <label><input type="radio" name="genero" value="FEMININO"> Feminino</label>
-                <label><input type="radio" name="genero" value="TODOS"> Todos</label>
-            </div>
-        </div>
-
-        <div class="filter-section">
-            <div class="filter-header"><i class="fas fa-map-marker-alt" id="filtro-icones2"></i> Localização </div>
-            <div class="filter-options">
-                <label><input type="checkbox" name="cep" value="true"> CEP</label>
-                <label><input type="checkbox" name="bairro" value="true"> Bairro</label>
-                <label><input type="checkbox" name="endereco" value="true"> Endereco</label>
-            </div>
-        </div>
-
-        <div class="filter-section">
-            <div class="filter-header"><i class="fas fa-book" id="filtro-icones3"></i> Cursos </div>
-            <div class="filter-options">
-                <label th:each="curso : ${cursos}">
-                    <input type="checkbox" name="cursos" th:value="${curso.id}"
-                           th:checked="${cursosIds != null and cursosIds.contains(curso.id)}">
-                    <span th:text="${curso.nome}"></span>
-                </label>
-            </div>
-        </div>
-
-        <button class="btn-buscar-filtro-aluno" type="submit">
-            <i class="fa fa-search"></i> Buscar
-        </button>
-    </form>
 
     <table>
         <thead>
@@ -124,7 +126,7 @@
 
     toggleButton.addEventListener('click', () => {
         open = !open;
-        filterPanel.style.display = open ? 'grid' : 'none';
+        filterPanel.style.display = open ? 'block' : 'none';
         toggleButton.querySelector('.fa-chevron-down').style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
     });
 

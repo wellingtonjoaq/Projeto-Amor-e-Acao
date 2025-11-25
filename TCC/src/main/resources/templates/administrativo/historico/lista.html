@@ -18,7 +18,7 @@
         </div>
 
         <div class="header-actions">
-            <div class="pesquisa-box">
+            <div class="pesquisa-box" id="pesquisa-box-historico">
                 <form method="get" th:action="@{/historico/filtrarPesquisa}">
                     <input type="text" name="pesquisa" class="campo-pesquisa" placeholder="Pesquisar..." th:value="${pesquisa}">
                     <button class="btn-pesquisar" type="submit">
