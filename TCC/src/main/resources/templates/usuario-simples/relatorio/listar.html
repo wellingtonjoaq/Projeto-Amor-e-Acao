@@ -22,10 +22,10 @@
                     <i class="fas fa-filter"></i> Filtrar <i class="fas fa-chevron-down"></i>
                 </button>
 
-                <form method="get" th:action="@{/relatorio/listar}" class="filter-panel-relatorio" id="filterPanel">
+                <form method="get" th:action="@{/relatorio/listarUsuarioSimples}" class="filter-panel-relatorio" id="filterPanel">
 
                     <div class="filter-section">
-                        <div class="filter-header" style="width: 100%;">
+                        <div class="filter-header">
                             <i class="fas fa-chart-pie"></i> Tipo
                         </div>
                         <div class="filter-options">
@@ -36,13 +36,17 @@
                     </div>
 
                     <div class="filter-section">
-                        <div class="filter-header" style="width: 100%;">
+                        <div class="filter-header">
                             <i class="fas fa-book"></i> Curso
                         </div>
                         <div class="filter-options">
-                            <select name="curso" id="curso" class="form-control" style="width: 100%; padding: 5px;">
+                            <select name="curso" class="form-control" style="width: 100%; padding: 5px;">
                                 <option value="" th:selected="${cursoFiltro == null}">Todos</option>
-                                <option th:each="curso : ${cursos}" th:value="${curso.id}" th:text="${curso.nome}" th:selected="${curso.id == cursoFiltro}"></option>
+                                <option th:each="curso : ${cursos}"
+                                        th:value="${curso.id}"
+                                        th:text="${curso.nome}"
+                                        th:selected="${curso.id == cursoFiltro}">
+                                </option>
                             </select>
                         </div>
                     </div>
@@ -60,10 +64,11 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn-buscar-filtro" style="margin-top: 15px; width: 100%;">
+                    <button type="submit" class="btn-buscar-filtro">
                         <i class="fa fa-search"></i> Buscar
                     </button>
-                    <button type="button" onclick="window.location.href='/relatorio/listar'" class="relatorio-limpar" style="margin-top: 5px; width: 100%; padding: 8px; background-color: #6c757d;">
+
+                    <button type="button" onclick="window.location.href='/relatorio/listarUsuarioSimples'" class="relatorio-limpar">
                         Limpar
                     </button>
                 </form>
@@ -71,69 +76,76 @@
         </div>
     </div>
 
-    <div th:switch="${tipoRelatorio}" class="card-grid" style="grid-template-columns: 1fr;"> <div th:case="'alunos'">
-        <div class="card card-relatorio">
-            <h2><i class="fa-solid fa-user-graduate" style="color: #001F3F;"></i> Evasão de Alunos</h2>
-            <p>Análise de matrículas ativas e evasão por curso.</p>
+    <!-- SWITCH DOS RELATÓRIOS -->
+    <div th:switch="${tipoRelatorio}" class="card-grid" style="grid-template-columns: 1fr;">
 
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                    <tr>
-                        <th>Curso</th>
-                        <th>Matriculados</th>
-                        <th>Evasivos</th>
-                        <th>Taxa Evasão</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="dto : ${relatorioAlunos}">
-                        <td th:text="${dto.nomeCurso}"></td>
-                        <td th:text="${dto.totalMatriculados}"></td>
-                        <td th:text="${dto.totalEvasivos}"></td>
-                        <td>
+        <!-- RELATÓRIO DE ALUNOS -->
+        <div th:case="'alunos'">
+            <div class="card card-relatorio">
+                <h2><i class="fa-solid fa-user-graduate"></i> Evasão de Alunos</h2>
+                <p>Análise de matrículas ativas e evasão por curso.</p>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Curso</th>
+                            <th>Matriculados</th>
+                            <th>Evasivos</th>
+                            <th>Taxa Evasão</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="dto : ${relatorioAlunos}">
+                            <td th:text="${dto.nomeCurso}"></td>
+                            <td th:text="${dto.totalMatriculados}"></td>
+                            <td th:text="${dto.totalEvasivos}"></td>
+                            <td>
                                 <span th:class="${dto.taxaEvasao > 50 ? 'status inativo' : 'status ativo'}"
                                       th:text="${#numbers.formatDecimal(dto.taxaEvasao, 1, 2) + '%'}"></span>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="btn-download-container">
-                <a th:href="@{/api/relatorios/alunos/exportar/pdf(curso=${cursoFiltro})}" download class="btn-download">
-                    <i class="fas fa-file-pdf"></i> Baixar PDF
-                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="btn-download-container">
+                    <a th:href="@{/api/relatorios/alunos/exportar/pdf(curso=${cursoFiltro})}" download class="btn-download">
+                        <i class="fas fa-file-pdf"></i> Baixar PDF
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
 
+        <!-- RELATÓRIO DE VOLUNTÁRIOS -->
         <div th:case="'voluntarios'">
             <div class="card card-relatorio">
-                <h2><i class="fa-solid fa-hands-helping" style="color: #001F3F;"></i> Métricas de Voluntariado</h2>
+                <h2><i class="fa-solid fa-hands-helping"></i> Métricas de Voluntariado</h2>
                 <p>Distribuição de voluntários ativos por função, gênero e motivação.</p>
 
                 <div class="form-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
                     <div class="table-responsive">
-                        <h3 style="font-size: 1.1rem; color: #555; margin-bottom: 10px;">Por Função</h3>
+                        <h3>Por Função</h3>
                         <table>
                             <thead><tr><th>Função</th><th>Qtd</th></tr></thead>
                             <tbody>
                             <tr th:each="entry : ${relatorioVoluntarios[0].voluntariosAtivosPorFuncao}">
                                 <td th:text="${entry.key}"></td>
-                                <td th:text="${entry.value}" style="font-weight: bold;"></td>
+                                <td th:text="${entry.value}"></td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
 
+                    <!-- Tabela 'Por Gênero' -->
                     <div class="table-responsive">
-                        <h3 style="font-size: 1.1rem; color: #555; margin-bottom: 10px;">Por Gênero</h3>
+                        <h3>Por Gênero</h3>
                         <table>
                             <thead><tr><th>Gênero</th><th>Qtd</th></tr></thead>
                             <tbody>
                             <tr th:each="entry : ${relatorioVoluntarios[0].distribuicaoPorGenero}">
                                 <td th:text="${entry.key}"></td>
-                                <td th:text="${entry.value}" style="font-weight: bold;"></td>
+                                <td th:text="${entry.value}"></td>
                             </tr>
                             </tbody>
                         </table>
@@ -148,28 +160,26 @@
             </div>
         </div>
 
+        <!-- RELATÓRIO DE ENGAJAMENTO -->
         <div th:case="'engajamento'">
             <div class="card card-relatorio">
-                <h2><i class="fa-solid fa-chart-line" style="color: #001F3F;"></i> Engajamento do Sistema</h2>
+                <h2><i class="fa-solid fa-chart-line"></i> Engajamento do Sistema</h2>
                 <p>Visão geral de cadastros e uso das funcionalidades.</p>
 
                 <div class="table-responsive">
                     <table>
-                        <thead>
-                        <tr>
-                            <th>Métrica</th>
-                            <th>Valor</th>
-                        </tr>
-                        </thead>
+                        <thead><tr><th>Métrica</th><th>Valor</th></tr></thead>
                         <tbody>
                         <tr><td>Total de Alunos</td><td th:text="${relatorioEngajamento[0].totalAlunos}"></td></tr>
                         <tr><td>Total de Voluntários</td><td th:text="${relatorioEngajamento[0].totalVoluntarios}"></td></tr>
                         <tr><td>Total de Registros</td><td th:text="${relatorioEngajamento[0].totalRegistros}"></td></tr>
+                        <!-- Métrica 'Ações no Sistema' -->
                         <tr><td>Ações no Sistema (Logs)</td><td th:text="${relatorioEngajamento[0].totalAcoesChave}"></td></tr>
                         <tr><td>Taxa de Conversão</td><td th:text="${#numbers.formatDecimal(relatorioEngajamento[0].taxaConversaoVisitante, 2, 2) + '%'}"></td></tr>
                         </tbody>
                     </table>
 
+                    <!-- Tabela 'Uso por Funcionalidade' -->
                     <h3 style="margin-top: 20px; font-size: 1.1rem;">Uso por Funcionalidade</h3>
                     <table>
                         <thead><tr><th>Ação / Usuário</th><th>Contagem</th></tr></thead>
@@ -181,6 +191,7 @@
                         </tbody>
                     </table>
                 </div>
+
                 <div class="btn-download-container">
                     <a th:href="@{/api/relatorios/engajamento/pdf(dataInicio=${dataInicio}, dataFim=${dataFim})}" download class="btn-download">
                         <i class="fas fa-file-pdf"></i> Baixar PDF
@@ -188,8 +199,10 @@
                 </div>
             </div>
         </div>
+
     </div>
 </div>
+
 
 <script>
     const toggleButton = document.getElementById('toggleFilter');
@@ -211,6 +224,5 @@
         }
     });
 </script>
-
 </body>
 </html>

@@ -109,15 +109,31 @@ public class RelatorioController {
         return "administrativo/relatorio/listar";
     }
 
+
     @ModelAttribute("notificacoesMenu")
     public List<NotificacaoDTO> carregarNotifMenu() {
         return notificacaoService.listarNotificacaoLimitado(7);
     }
 
+
     @GetMapping("/listarUsuarioSimples")
-    public String mostrarPaginaListarUsuarioSimples(Model model) {
+    public String listarRelatorioUsuarioSimples(
+            @RequestParam(name = "tipoRelatorio", defaultValue = "alunos") String tipoRelatorio,
+            @RequestParam(name = "curso", required = false) Long cursoIdFiltro,
+            @RequestParam(name = "dataInicio", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
+            @RequestParam(name = "dataFim", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim,
+            Model model)
+    {
+        model.addAttribute("tipoRelatorio", tipoRelatorio);
+        model.addAttribute("cursoFiltro", cursoIdFiltro);
+        model.addAttribute("dataInicio", dataInicio);
+        model.addAttribute("dataFim", dataFim);
+
+        listarRelatorio(tipoRelatorio, cursoIdFiltro, dataInicio, dataFim, model);
+
         return "usuario-simples/relatorio/listar";
     }
+
 
     @GetMapping("/relatorios/alunos/pdf")
     public ResponseEntity<InputStreamResource> exportarRelatorioAlunos()
