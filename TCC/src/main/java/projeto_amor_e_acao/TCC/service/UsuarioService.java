@@ -26,9 +26,6 @@ public class UsuarioService{
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private FirebaseStorageService firebaseStorageService;
-
     public Usuario salvar(Usuario usuario) {
         usuario.setDataAlteracaoStatus(LocalDate.now());
 
@@ -176,8 +173,6 @@ public class UsuarioService{
                 throw new IllegalStateException("Não é possível excluir o último administrador ativo");
             }
         }
-
-        firebaseStorageService.deleteFile(usuario.getFotoPerfil());
 
         repository.deleteById(id);
     }

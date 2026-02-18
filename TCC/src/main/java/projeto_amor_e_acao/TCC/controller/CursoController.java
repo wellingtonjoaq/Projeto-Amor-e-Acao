@@ -13,7 +13,6 @@ import projeto_amor_e_acao.TCC.dto.NotificacaoDTO;
 import projeto_amor_e_acao.TCC.model.Curso;
 import projeto_amor_e_acao.TCC.model.Usuario;
 import projeto_amor_e_acao.TCC.service.CursoService;
-import projeto_amor_e_acao.TCC.service.FirebaseStorageService;
 import projeto_amor_e_acao.TCC.service.NotificacaoService;
 import projeto_amor_e_acao.TCC.service.UsuarioService;
 
@@ -30,9 +29,6 @@ public class CursoController {
 
     @Autowired
     private UsuarioService usuarioService;
-
-    @Autowired
-    private FirebaseStorageService firebaseService;
 
     @Autowired
     private NotificacaoService notificacaoService;
@@ -66,18 +62,6 @@ public class CursoController {
             return "administrativo/curso/formulario";
         }
 
-        if (curso.getId() != null) {
-            var cursoExistente = service.buscarPorId(curso.getId());
-
-            if (file != null && !file.isEmpty()) {
-                if (cursoExistente.getFoto() != null && !cursoExistente.getFoto().isBlank()) {
-                    firebaseService.deleteFile(cursoExistente.getFoto());
-                }
-            } else {
-                curso.setFoto(cursoExistente.getFoto());
-            }
-        }
-
         if (categoriasSelecionadas == null || categoriasSelecionadas.isEmpty()) {
             model.addAttribute("curso", curso);
             model.addAttribute("erro", "Selecione pelo menos uma categoria.");
@@ -87,10 +71,6 @@ public class CursoController {
         boolean novo = (curso.getId() == null);
 
         try {
-            if (file != null && !file.isEmpty()) {
-                String url = firebaseService.uploadFile(file);
-                curso.setFoto(url);
-            }
 
             if (categoriasSelecionadas.size() > 3) {
                 categoriasSelecionadas = categoriasSelecionadas.subList(0, 3);
@@ -106,10 +86,6 @@ public class CursoController {
                 redirectAttributes.addFlashAttribute("sucesso", "Curso atualizado com sucesso!");
             }
             return "redirect:/curso/listar";
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Erro ao fazer upload da imagem", e);
 
         } catch (Exception e) {
             model.addAttribute("erro", e.getMessage());

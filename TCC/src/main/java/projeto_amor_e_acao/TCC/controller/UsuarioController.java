@@ -11,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import projeto_amor_e_acao.TCC.dto.NotificacaoDTO;
 import projeto_amor_e_acao.TCC.model.Usuario;
-import projeto_amor_e_acao.TCC.service.FirebaseStorageService;
 import projeto_amor_e_acao.TCC.service.NotificacaoService;
 import projeto_amor_e_acao.TCC.service.UsuarioService;
 
@@ -27,8 +26,8 @@ public class UsuarioController {
     @Autowired
     private UsuarioService service;
 
-    @Autowired
-    private FirebaseStorageService firebaseService;
+//    @Autowired
+//    private FirebaseStorageService firebaseService;
 
     @Autowired
     private NotificacaoService notificacaoService;
@@ -66,11 +65,11 @@ public class UsuarioController {
         try {
             Usuario salvo = service.salvar(usuario);
 
-            if (file != null && !file.isEmpty()) {
-                String url = firebaseService.uploadFile(file);
-                salvo.setFotoPerfil(url);
-                service.atualizar(salvo.getId(), salvo);
-            }
+//            if (file != null && !file.isEmpty()) {
+//                String url = firebaseService.uploadFile(file);
+//                salvo.setFotoPerfil(url);
+//                service.atualizar(salvo.getId(), salvo);
+//            }
 
             redirectAttributes.addFlashAttribute("sucesso", "Usuário salvo com sucesso!");
             return "redirect:/usuario/listar";
@@ -128,13 +127,13 @@ public class UsuarioController {
             usuarioExistente.setDataAlteracaoStatus(LocalDate.now());
 
             if (file != null && !file.isEmpty()) {
-                String novaUrl = firebaseService.uploadFile(file);
-
-                if (usuarioExistente.getFotoPerfil() != null && !usuarioExistente.getFotoPerfil().isBlank()) {
-                    firebaseService.deleteFile(usuarioExistente.getFotoPerfil());
-                }
-
-                usuarioExistente.setFotoPerfil(novaUrl);
+//                String novaUrl = firebaseService.uploadFile(file);
+//
+//                if (usuarioExistente.getFotoPerfil() != null && !usuarioExistente.getFotoPerfil().isBlank()) {
+//                    firebaseService.deleteFile(usuarioExistente.getFotoPerfil());
+//                }
+//
+//                usuarioExistente.setFotoPerfil(novaUrl);
             }
 
             // Atualiza usuário, incluindo validação de senha se preenchida

@@ -20,9 +20,6 @@ public class CursoService {
     @Autowired
     private CursoRepository repository;
 
-    @Autowired
-    private FirebaseStorageService firebaseStorageService;
-
     @Transactional
     public void salvar(Curso curso) {
         try {
@@ -136,7 +133,6 @@ public class CursoService {
 
     public void deletarPorId(Long id) {
             var curso = repository.findById(id).orElseThrow();
-            firebaseStorageService.deleteFile(curso.getFoto());
             repository.deleteById(id);
     }
 }
